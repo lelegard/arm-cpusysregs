@@ -31,31 +31,75 @@
 // - The AArch64 Memory Model Feature registers ID_AA64MMFR0_EL1, ID_AA64MMFR1_EL1, and ID_AA64MMFR2_EL1.
 // - The AArch64 Instruction Set Attribute registers ID_AA64ISAR0_EL1 and ID_AA64ISAR1_EL1.
 
-// Description of one ID register.
+// Description of one value in a bitfield in a register.
 typedef struct {
-    const char* name;    // register name
-    size_t      offset;  // offset in bytes in structure csr_registers_t
-} id_reg_description_t;
+    csr_u64_t   value;
+    const char* name;
+} value_t;
 
-// Descriptions of all ID system registers which are returned by the kernel module.
-static const id_reg_description_t all_id_registers[] = {
-    {"ID_AA64PFR0_EL1", offsetof(csr_registers_t, id_aa64pfr0_el1)},
-    {"ID_AA64PFR1_EL1", offsetof(csr_registers_t, id_aa64pfr1_el1)},
-    {"ID_AA64ISAR0_EL1", offsetof(csr_registers_t, id_aa64isar0_el1)},
-    {"ID_AA64ISAR1_EL1", offsetof(csr_registers_t, id_aa64isar1_el1)},
-    {"ID_AA64ISAR2_EL1", offsetof(csr_registers_t, id_aa64isar2_el1)},
-    {NULL} // end of list
+// Description of one bit-field in a register.
+typedef struct {
+    const char* name;       // bitfield name
+    size_t      msb;        // most significant bit index
+    size_t      lsb;        // least significant bit index
+    value_t     values[20]; // known values, end with a NULL name
+} bitfield_t;
+
+// Description of one register with bitfields.
+typedef struct {
+    const char* name;       // register name
+    size_t      offset;     // offset in bytes in structure csr_registers_t
+    bitfield_t  fields[20]; // known bitfields
+} id_register_t;
+
+// Descriptions of registers which are returned by the kernel module. End with a NULL name.
+static const id_register_t all_id_registers[] = {
+    {
+        "ID_AA64PFR0_EL1", offsetof(csr_registers_t, id_aa64pfr0_el1),
+        {
+            {"CSV3", 63, 60, {{0, "undefined"}, {1, "safe"}, {0, NULL}}},
+            {"CSV2", 59, 56, {{0, "none"}, {1, "CSV2"}, {2, "CSV2_2"}, {3, "CSV2_3"}, {0, NULL}}},
+            {"RME", 55, 52, {{0, "none"}, {1, "RMEv1"}, {0, NULL}}},
+            {"DIT", 51, 48, {{0, "none"}, {1, "DIT"}, {0, NULL}}},
+            {"AMU", 47, 44, {{0, "none"}, {1, "AMUv1p1"}, {0, NULL}}},
+            {"MPAM", 43, 40, {{0, "v0"}, {1, "v1"}, {0, NULL}}},
+            {"SEL2", 39, 36, {{0, "none"}, {1, "Secure EL2"}, {0, NULL}}},
+            {"SVE", 35, 32, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"RAS", 31, 28, {{0, "none"}, {1, "RAS"}, {2, "RASv1p1"}, {0, NULL}}},
+            {"GIC", 27, 24, {{0, "none"}, {1, "3.0+4.0"}, {2, "4.1"}, {0, NULL}}},
+            {"", 23, 20, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"", 19, 16, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"", 15, 12, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"", 11, 8, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"", 7, 4, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {"", 3, 0, {{0, "none"}, {1, ""}, {0, NULL}}},
+            {NULL}
+        }
+    },
+    {
+        "ID_AA64PFR1_EL1", offsetof(csr_registers_t, id_aa64pfr1_el1)
+    },
+    {
+        "ID_AA64ISAR0_EL1", offsetof(csr_registers_t, id_aa64isar0_el1)
+    },
+    {
+        "ID_AA64ISAR1_EL1", offsetof(csr_registers_t, id_aa64isar1_el1)
+    },
+    {
+        "ID_AA64ISAR2_EL1", offsetof(csr_registers_t, id_aa64isar2_el1)
+    },
+    {NULL}
 };
 
 
 //----------------------------------------------------------------------------
-// Display all ID registers.
+// Display all registers.
 //----------------------------------------------------------------------------
 
-static void print_all_id_registers(const csr_registers_t* regs)                                   
+static void print_all_registers(const csr_registers_t* regs)                                   
 {
     // Loop on all supported registers.
-    for (const id_reg_description_t* desc = all_id_registers; desc->name != NULL; desc++) {
+    for (const id_register_t* desc = all_id_registers; desc->name != NULL; desc++) {
 
         // Extract the register value from the structure.
         const csr_u64_t value = *(const csr_u64_t*)((const char*)regs + desc->offset);
@@ -91,7 +135,7 @@ int main(int argc, char* argv)
         perror("get regs");
         return EXIT_FAILURE;
     }
-    print_all_id_registers(&regs);
+    print_all_registers(&regs);
 
     // Cleanup resources.
     close(fd);
