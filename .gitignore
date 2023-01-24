@@ -1,3 +1,9 @@
+# Executable files.
+show-regs
+
+# Temporary files.
+.#*
+
 # Prerequisites
 *.d
 
