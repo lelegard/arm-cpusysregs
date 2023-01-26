@@ -1,8 +1,23 @@
+//----------------------------------------------------------------------------
+//
+// Arm64 CPU system registers tools
+// Copyright (c) 2023, Thierry Lelegard
+// BSD-2-Clause license, see the LICENSE file.
+//
+// Kernel module interface.
+// Can be included in kernel and userland, C or C++.
+//
+//----------------------------------------------------------------------------
+
 #if !defined(CPUSYSREGS_H)
 #define CPUSYSREGS_H 1
 
 #include <linux/types.h>
 #include <linux/ioctl.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #define CSR_DEVICE_NAME "cpusysregs"
 #define CSR_DEVICE_PATH "/dev/" CSR_DEVICE_NAME
@@ -17,12 +32,44 @@ typedef struct _csr_registers {
     csr_u64_t id_aa64isar0_el1;  // AArch64 Instruction Set Attribute Register 0
     csr_u64_t id_aa64isar1_el1;  // AArch64 Instruction Set Attribute Register 1
     csr_u64_t id_aa64isar2_el1;  // AArch64 Instruction Set Attribute Register 2
+    csr_u64_t tcr_el1;           // Translation Control Register
+    csr_u64_t apiakeyhi_el1;     // Pointer Authentication Key A for Instruction (bits[127:64])
+    csr_u64_t apiakeylo_el1;     // Pointer Authentication Key A for Instruction (bits[63:0])
+    csr_u64_t apibkeyhi_el1;     // Pointer Authentication Key B for Instruction (bits[127:64])
+    csr_u64_t apibkeylo_el1;     // Pointer Authentication Key B for Instruction (bits[63:0])
+    csr_u64_t apdakeyhi_el1;     // Pointer Authentication Key A for Data (bits[127:64])
+    csr_u64_t apdakeylo_el1;     // Pointer Authentication Key A for Data (bits[63:0])
+    csr_u64_t apdbkeyhi_el1;     // Pointer Authentication Key B for Data (bits[127:64])
+    csr_u64_t apdbkeylo_el1;     // Pointer Authentication Key B for Data (bits[63:0])
+    csr_u64_t apgakeyhi_el1;     // Pointer Authentication Generic Key (bits[127:64])
+    csr_u64_t apgakeylo_el1;     // Pointer Authentication Generic Key (bits[63:0])
 } csr_registers_t;
 
-// IOCTL codes for 
+// This macro checks if PACI and PACD are supported, based on the values of the
+// ID_AA64ISAR1_EL1 (API or APA) and ID_AA64ISAR2_EL1 (APA3) system registers.
+#define CSR_HAS_PAC(isar1,isar2) (((isar1) & 0x00000FF0) || ((isar2) & 0x0000F000))
+
+// This macro checks if PACGA is supported, based on the values of the
+// ID_AA64ISAR1_EL1 (GPI or GPA) and ID_AA64ISAR2_EL1 (GPA3) system registers.
+#define CSR_HAS_GPAC(isar1,isar2) (((isar1) & 0xFF000000) || ((isar2) & 0x00000F00))
+
+// Description of a pair of hi/lo registers for PAC authentication key.
+typedef struct _csr_pac_key {
+    csr_u64_t high;
+    csr_u64_t low;
+} csr_pac_key_t;
+
+// IOCTL codes for /dev/cpusysregs
 #define CSR_IOC_MAGIC '\xF0'
-#define CSR_IOCTL_GET_REGS _IOR(CSR_IOC_MAGIC, 0, csr_registers_t)  // read all system registers
-#define CSR_IOCTL_SET_KEYA _IOW(CSR_IOC_MAGIC, 1, csr_u64_t)
-#define CSR_IOCTL_SET_KEYB _IOW(CSR_IOC_MAGIC, 2, csr_u64_t)
+#define CSR_IOCTL_GET_REGS  _IOR(CSR_IOC_MAGIC, 0, csr_registers_t)  // read all system registers
+#define CSR_IOCTL_SET_KEYIA _IOW(CSR_IOC_MAGIC, 1, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYIB _IOW(CSR_IOC_MAGIC, 2, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYDA _IOW(CSR_IOC_MAGIC, 3, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYDB _IOW(CSR_IOC_MAGIC, 4, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYG  _IOW(CSR_IOC_MAGIC, 5, csr_pac_key_t)
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // CPUSYSREGS_H

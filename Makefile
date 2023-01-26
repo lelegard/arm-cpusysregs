@@ -10,8 +10,11 @@ default: module $(EXECS)
 # All source files depend on the kernel module interface.
 $(addsuffix .o,$(basename $(wildcard *.c))): $(MODULE).h
 
-# Kernel module
+# Kernel module.
 obj-m += $(MODULE).o
+
+# Minimum version of the Arm architecture to compile PAC key register names
+# ccflags-y += -march=armv8.3-a
 
 # Path to the kernel build utilities.
 KBUILD=/lib/modules/$(shell uname -r)/build/

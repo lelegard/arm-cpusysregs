@@ -1,4 +1,20 @@
+//----------------------------------------------------------------------------
+//
+// Arm64 CPU system registers tools
+// Copyright (c) 2023, Thierry Lelegard
+//
+// Dual license BSD-2-Clause / GPLv2. See the LICENSE file.
+// All files in this project use a BSD-2-Clause license, except this one for
+// compatibility with the Linux kernel license requirements.
+//
+// Linux kernel module for /dev/cpusysregs.
+// Reads the Arm64 CPU system registers and return them to userland.
+// For test and educational purpose only, can have unexpected security effects.
+//
+//----------------------------------------------------------------------------
+
 #include "cpusysregs.h"
+#include "defsysregs.h"
 #include <linux/device.h>
 #include <linux/fs.h>
 #include <linux/init.h>
@@ -7,6 +23,7 @@
 #include <linux/uaccess.h>
 
 // Description of the kernel module.
+
 MODULE_AUTHOR("Thierry Lelegard");
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("Access the Arm64 CPU system registers");
@@ -14,29 +31,38 @@ MODULE_VERSION("1.0");
 
 // Description of the /dev/cpusysregs device.
 // The major number is dynamically allocated when the module is loaded.
+
 #define CSR_MODULE_NAME "cpusysregs"
 #define CSR_CLASS_NAME  "cpusysregs"
+
 static int csr_major_number = 0;
 static struct class* csr_class = NULL;
 static struct device* csr_device = NULL;
 
 // Functions in this module.
+
 static int __init csr_init(void);
 static void __exit csr_exit(void);
 static char* csr_devnode(struct device* dev, umode_t* mode);
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long argp);
 
 // Registration of the module.
+
 module_init(csr_init);
 module_exit(csr_exit);
 
 // File operations instance for our device.
+
 static struct file_operations csr_fops = {
     .owner = THIS_MODULE,
     .unlocked_ioctl = csr_ioctl,
 };
 
+
+//----------------------------------------------------------------------------
 // Initialize the kernel module (upon "insmod").
+//----------------------------------------------------------------------------
+
 static int __init csr_init(void)
 {
     // Register the device. Allocating a major number (first param iz zero).
@@ -68,7 +94,11 @@ static int __init csr_init(void)
     return 0;
 }
 
+
+//----------------------------------------------------------------------------
 // Cleanup the kernel module (upon "rmmod").
+//----------------------------------------------------------------------------
+
 static void __exit csr_exit(void)
 {
     // Close resources in reverse order from csr_init().
@@ -78,7 +108,11 @@ static void __exit csr_exit(void)
     pr_info("%s: module removed\n", CSR_MODULE_NAME);
 }
 
+
+//----------------------------------------------------------------------------
 // Called during the creation of our device to set its permissions.
+//----------------------------------------------------------------------------
+
 static char* csr_devnode(struct device* dev, umode_t* mode)
 {
     // Warning, mode is null when called on device deletion.
@@ -89,46 +123,126 @@ static char* csr_devnode(struct device* dev, umode_t* mode)
     return NULL;
 }
 
+
+//----------------------------------------------------------------------------
+// Get ioctl() parameter from userland for CSR_IOCTL_SET_KEYxx commands.
+//----------------------------------------------------------------------------
+
+static long csr_ioctl_get_key(csr_pac_key_t* key, unsigned long param, int ga)
+{
+    csr_u64_t isar1, isar2;
+    CSR_MRS_STR(isar1, "id_aa64isar1_el1");
+    CSR_MRS_STR(isar2, "id_aa64isar2_el1");
+    if ((!ga && !CSR_HAS_PAC(isar1, isar2)) || (ga && !CSR_HAS_GPAC(isar1, isar2))) {
+        return -ENOKEY;
+    }
+    else if (copy_to_user((void*)param, key, sizeof(csr_pac_key_t))) {
+        return -EFAULT;
+    }
+    else {
+        return 0;
+    }
+}
+
+
+//----------------------------------------------------------------------------
 // Called on ioctl() from userland.
+//----------------------------------------------------------------------------
+
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
 {
+    long status = 0;
+    csr_registers_t regs;
+    csr_pac_key_t key;
+
     switch (cmd) {
         case CSR_IOCTL_GET_REGS: {
             // Get all CPU system registers.
-            csr_registers_t regs;
-#define MRS(name) asm("mrs %[result], " #name : [result] "=r" (regs.name))
-            MRS(id_aa64pfr0_el1);
-            MRS(id_aa64pfr1_el1);
-            MRS(id_aa64isar0_el1);
-            MRS(id_aa64isar1_el1);
-            MRS(id_aa64isar2_el1);
-#undef MRS
+            CSR_MRS_STR(regs.id_aa64pfr0_el1, "id_aa64pfr0_el1");
+            CSR_MRS_STR(regs.id_aa64pfr1_el1, "id_aa64pfr1_el1");
+            CSR_MRS_STR(regs.id_aa64isar0_el1, "id_aa64isar0_el1");
+            CSR_MRS_STR(regs.id_aa64isar1_el1, "id_aa64isar1_el1");
+            CSR_MRS_STR(regs.id_aa64isar2_el1, "id_aa64isar2_el1");
+            CSR_MRS_STR(regs.tcr_el1, "tcr_el1");
+            if (CSR_HAS_PAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
+                // PAC is supported, registers are available.
+                CSR_MRS_NUM(regs.apiakeyhi_el1, CSR_APIAKEYHI_EL1);
+                CSR_MRS_NUM(regs.apiakeylo_el1, CSR_APIAKEYLO_EL1);
+                CSR_MRS_NUM(regs.apibkeyhi_el1, CSR_APIBKEYHI_EL1);
+                CSR_MRS_NUM(regs.apibkeylo_el1, CSR_APIBKEYLO_EL1);
+                CSR_MRS_NUM(regs.apdakeyhi_el1, CSR_APDAKEYHI_EL1);
+                CSR_MRS_NUM(regs.apdakeylo_el1, CSR_APDAKEYLO_EL1);
+                CSR_MRS_NUM(regs.apdbkeyhi_el1, CSR_APDBKEYHI_EL1);
+                CSR_MRS_NUM(regs.apdbkeylo_el1, CSR_APDBKEYLO_EL1);
+            }
+            else {
+                // PAC is not supported, clear key registers.
+                regs.apiakeyhi_el1 = regs.apiakeylo_el1 = regs.apibkeyhi_el1 = regs.apibkeylo_el1 = 0;
+                regs.apdakeyhi_el1 = regs.apdakeylo_el1 = regs.apdbkeyhi_el1 = regs.apdbkeylo_el1 = 0;
+            }
+            if (CSR_HAS_GPAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
+                // PACGA is supported, registers are available.
+                CSR_MRS_NUM(regs.apgakeyhi_el1, CSR_APGAKEYHI_EL1);
+                CSR_MRS_NUM(regs.apgakeylo_el1, CSR_APGAKEYLO_EL1);
+            }
+            else {
+                // PACGA is not supported, clear key registers.
+                regs.apgakeyhi_el1 = regs.apgakeylo_el1 = 0;
+            }
             if (copy_to_user((void*)param, &regs, sizeof(regs))) {
-                return -EFAULT;
+                status = -EFAULT;
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYA: {
-            // Set PAC key A register.
-            csr_u64_t key = 0;
-            if (copy_from_user(&key, (const void*)param, sizeof(key))) {
-                return -EFAULT;
+        case CSR_IOCTL_SET_KEYIA: {
+            // Set PAC key A register for instruction pointers.
+            status = csr_ioctl_get_key(&key, param, 0);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APIAKEYHI_EL1, key.high);
+                CSR_MSR_NUM(CSR_APIAKEYLO_EL1, key.low);
             }
-            pr_info("key A: %08X-%08X\n", (__u32)((key >> 32) & 0xFFFFFFFF), (__u32)(key & 0xFFFFFFFF));
             break;
         }
-        case CSR_IOCTL_SET_KEYB: {
-            // Set PAC key B register.
-            csr_u64_t key = 0;
-            if (copy_from_user(&key, (const void*)param, sizeof(key))) {
-                return -EFAULT;
+        case CSR_IOCTL_SET_KEYIB: {
+            // Set PAC key B register for instruction pointers.
+            status = csr_ioctl_get_key(&key, param, 0);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APIBKEYHI_EL1, key.high);
+                CSR_MSR_NUM(CSR_APIBKEYLO_EL1, key.low);
             }
-            pr_info("key B: %08X-%08X\n", (__u32)((key >> 32) & 0xFFFFFFFF), (__u32)(key & 0xFFFFFFFF));
+            break;
+        }
+        case CSR_IOCTL_SET_KEYDA: {
+            // Set PAC key A register for data pointers.
+            status = csr_ioctl_get_key(&key, param, 0);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APDAKEYHI_EL1, key.high);
+                CSR_MSR_NUM(CSR_APDAKEYLO_EL1, key.low);
+            }
+            break;
+        }
+        case CSR_IOCTL_SET_KEYDB: {
+            // Set PAC key B register for data pointers.
+            status = csr_ioctl_get_key(&key, param, 0);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APDBKEYHI_EL1, key.high);
+                CSR_MSR_NUM(CSR_APDBKEYLO_EL1, key.low);
+            }
+            break;
+        }
+        case CSR_IOCTL_SET_KEYG: {
+            // Set PAC generic key register.
+            status = csr_ioctl_get_key(&key, param, 1);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APGAKEYHI_EL1, key.high);
+                CSR_MSR_NUM(CSR_APGAKEYLO_EL1, key.low);
+            }
             break;
         }
         default: {
-            return -EINVAL;
+            status = -EINVAL;
+            break;
         }
     }
-    return 0;
+    return status;
 }
