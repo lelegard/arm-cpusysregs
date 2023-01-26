@@ -25,7 +25,7 @@ Usage instructions:
 
 ## Demo application
 
-The C++ application `show-regs` reads the system registers from the kernel module and displays their content. Most system registers are structured using bit-field of various size and interpretation. They are all indivudually displayed.
+The C++ application `show-regs` reads the system registers from the kernel module and displays their content. Most system registers are structured using bit-field of various size and interpretation. They are all individually displayed.
 
 ## References
 
