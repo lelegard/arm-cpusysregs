@@ -1,5 +1,16 @@
+#----------------------------------------------------------------------------
+#
+# Arm64 CPU system registers tools
+# Copyright (c) 2023, Thierry Lelegard
+# BSD-2-Clause license, see the LICENSE file.
+#
+# Makefile for Linux kernel module and userlan tools.
+#
+#----------------------------------------------------------------------------
+
 # List of userland tools.
 EXECS = show-regs
+CXXFLAGS += -std=c++17
 
 # Kernel module name.
 MODULE = cpusysregs
@@ -10,11 +21,19 @@ default: module $(EXECS)
 # All source files depend on the kernel module interface.
 $(addsuffix .o,$(basename $(wildcard *.c))): $(MODULE).h
 
+clean: clean-module
+	rm -f *.o $(EXECS)
+
+
+#----------------------------------------------------------------------------
+# Kernel module.
+#----------------------------------------------------------------------------
+
+# Module name.
+MODULE = cpusysregs
+
 # Kernel module.
 obj-m += $(MODULE).o
-
-# Minimum version of the Arm architecture to compile PAC key register names
-# ccflags-y += -march=armv8.3-a
 
 # Path to the kernel build utilities.
 KBUILD=/lib/modules/$(shell uname -r)/build/
@@ -22,16 +41,15 @@ KBUILD=/lib/modules/$(shell uname -r)/build/
 # Standard targets for kernel modules.
 module:
 	$(MAKE) -C $(KBUILD) M=$(PWD) modules
-clean:
+clean-module:
 	$(MAKE) -C $(KBUILD) M=$(PWD) clean
-	rm -rf $(EXECS)
 
 # Load/unload kernel module for tests.
 load:
-	-sudo insmod $(MODULE).ko
-	-lsmod | grep $(MODULE)
-	-sudo dmesg | tail -5
+	sudo insmod $(MODULE).ko || true
+	lsmod | grep $(MODULE) || true
+	sudo dmesg | tail -5
 unload:
-	-sudo rmmod $(MODULE).ko
-	-lsmod | grep $(MODULE)
-	-sudo dmesg | tail -5
+	sudo rmmod $(MODULE).ko || true
+	lsmod | grep $(MODULE) || true
+	sudo dmesg | tail -5

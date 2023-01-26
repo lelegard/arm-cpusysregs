@@ -53,6 +53,18 @@ typedef struct _csr_registers {
 // ID_AA64ISAR1_EL1 (GPI or GPA) and ID_AA64ISAR2_EL1 (GPA3) system registers.
 #define CSR_HAS_GPAC(isar1,isar2) (((isar1) & 0xFF000000) || ((isar2) & 0x00000F00))
 
+// This macro checks if BTI (Branch Target Identification) is supported,
+// based on the values of the ID_AA64PFR1_EL1 system register.
+#define CSR_HAS_BTI(pfr1) ((pfr1) & 0x0F)
+
+// This macro checks if RME (Realm Management Extension) is supported,
+// based on the values of the ID_AA64PFR0_EL1 system register.
+#define CSR_HAS_RME(pfr0) ((pfr0) & 0x00F0000000000000llu)
+
+// This macro gets the RME version (Realm Management Extension),
+// based on the values of the ID_AA64PFR0_EL1 system register.
+#define CSR_RME_VERSION(pfr0) (((pfr0) >> 52) & 0x0F)
+
 // Description of a pair of hi/lo registers for PAC authentication key.
 typedef struct _csr_pac_key {
     csr_u64_t high;
