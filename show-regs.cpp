@@ -74,7 +74,7 @@ struct Register {
     std::list<BitField>          fields;   // known bitfields
 };
 
-// Descriptions of registers which are returned by the kernel module. End with a NULL name.
+// Descriptions of registers which are returned by the kernel module.
 const std::list<Register> all_id_registers {
     {
         "ID_AA64PFR0_EL1", "D17.2.67", &csr_registers_t::id_aa64pfr0_el1, ALWAYS,
@@ -304,8 +304,9 @@ static void PrintAllRegisters(const csr_registers_t& regs)
         }
         std::cout << std::endl << std::endl << "  Arch. Ref. Manual section " << desc.section << std::endl;
 
+        // Print the details of the register content.
         if (desc.fields.empty()) {
-            // No bitfield defined, just display the value.
+            // No bitfield defined, just display the value in hexadecimal.
             std::cout << Format("  Value: 0x%08llX-%08llX", regval >> 32, regval & 0xFFFFFFFF) << std::endl;
         }
         else {

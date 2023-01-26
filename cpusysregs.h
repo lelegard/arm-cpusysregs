@@ -73,7 +73,7 @@ typedef struct _csr_pac_key {
 
 // IOCTL codes for /dev/cpusysregs
 #define CSR_IOC_MAGIC '\xF0'
-#define CSR_IOCTL_GET_REGS  _IOR(CSR_IOC_MAGIC, 0, csr_registers_t)  // read all system registers
+#define CSR_IOCTL_GET_REGS  _IOR(CSR_IOC_MAGIC, 0, csr_registers_t)
 #define CSR_IOCTL_SET_KEYIA _IOW(CSR_IOC_MAGIC, 1, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYIB _IOW(CSR_IOC_MAGIC, 2, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYDA _IOW(CSR_IOC_MAGIC, 3, csr_pac_key_t)
