@@ -65,7 +65,7 @@ static struct file_operations csr_fops = {
 
 static int __init csr_init(void)
 {
-    // Register the device. Allocating a major number (first param iz zero).
+    // Register the device. Allocating a major number (first param is zero).
     csr_major_number = register_chrdev(0, CSR_DEVICE_NAME, &csr_fops);
     if (csr_major_number < 0) {
         pr_alert("%s: failed to register a major number\n", CSR_MODULE_NAME);
@@ -133,10 +133,10 @@ static long csr_ioctl_get_key(csr_pac_key_t* key, unsigned long param, int ga)
     csr_u64_t isar1, isar2;
     CSR_MRS_STR(isar1, "id_aa64isar1_el1");
     CSR_MRS_STR(isar2, "id_aa64isar2_el1");
-    if ((!ga && !CSR_HAS_PAC(isar1, isar2)) || (ga && !CSR_HAS_GPAC(isar1, isar2))) {
+    if ((!ga && !CSR_HAS_PAC(isar1, isar2)) || (ga && !CSR_HAS_PACGA(isar1, isar2))) {
         return -ENOKEY;
     }
-    else if (copy_to_user((void*)param, key, sizeof(csr_pac_key_t))) {
+    else if (copy_from_user(key, (void*)param, sizeof(csr_pac_key_t))) {
         return -EFAULT;
     }
     else {
@@ -180,7 +180,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
                 regs.apiakeyhi_el1 = regs.apiakeylo_el1 = regs.apibkeyhi_el1 = regs.apibkeylo_el1 = 0;
                 regs.apdakeyhi_el1 = regs.apdakeylo_el1 = regs.apdbkeyhi_el1 = regs.apdbkeylo_el1 = 0;
             }
-            if (CSR_HAS_GPAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
+            if (CSR_HAS_PACGA(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
                 // PACGA is supported, registers are available.
                 CSR_MRS_NUM(regs.apgakeyhi_el1, CSR_APGAKEYHI_EL1);
                 CSR_MRS_NUM(regs.apgakeylo_el1, CSR_APGAKEYLO_EL1);
@@ -230,7 +230,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYG: {
+        case CSR_IOCTL_SET_KEYGA: {
             // Set PAC generic key register.
             status = csr_ioctl_get_key(&key, param, 1);
             if (!status) {

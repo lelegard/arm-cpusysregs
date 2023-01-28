@@ -9,13 +9,12 @@
 //----------------------------------------------------------------------------
 
 #include "cpusysregs.h"
+#include "apputils.h"
 
-#include <string>
 #include <list>
 #include <iostream>
 #include <cstdio>
 #include <cstddef>
-#include <cstdarg>
 #include <cstdlib>
 
 #include <unistd.h>
@@ -60,10 +59,10 @@ struct BitField {
 
 // Define the condition of existence of a register.
 // This is a bitmask. At least one condition is necessary for the register to exist.
-#define ALWAYS     0x0000
-#define NEED_PAC   0x0001
-#define NEED_GPAC  0x0002
-#define NEED_BTI   0x0004
+#define ALWAYS      0x0000
+#define NEED_PAC    0x0001
+#define NEED_PACGA  0x0002
+#define NEED_BTI    0x0004
 
 // Description of one register with bitfields.
 struct Register {
@@ -75,7 +74,7 @@ struct Register {
 };
 
 // Descriptions of registers which are returned by the kernel module.
-const std::list<Register> all_id_registers {
+const std::list<Register> AllRegisters {
     {
         "ID_AA64PFR0_EL1", "D17.2.67", &csr_registers_t::id_aa64pfr0_el1, ALWAYS,
         {
@@ -227,69 +226,46 @@ const std::list<Register> all_id_registers {
         "APDBKEYLO_EL1", "D17.2.18", &csr_registers_t::apdbkeylo_el1, NEED_PAC, {}
     },
     {
-        "APGAKEYHI_EL1", "D17.2.19", &csr_registers_t::apgakeyhi_el1, NEED_GPAC, {}
+        "APGAKEYHI_EL1", "D17.2.19", &csr_registers_t::apgakeyhi_el1, NEED_PACGA, {}
     },
     {
-        "APGAKEYLO_EL1", "D17.2.20", &csr_registers_t::apgakeylo_el1, NEED_GPAC, {}
+        "APGAKEYLO_EL1", "D17.2.20", &csr_registers_t::apgakeylo_el1, NEED_PACGA, {}
     },
 };
 
 
 //----------------------------------------------------------------------------
-// Format a boolean.
+// Program entry point
 //----------------------------------------------------------------------------
 
-std::string YesNo(bool value)
+int main(int argc, char* argv[])
 {
-    return value ? "yes" : "no";
-}
-
-
-//----------------------------------------------------------------------------
-// Format a C++ string in a printf-way.
-//----------------------------------------------------------------------------
-
-std::string Format(const char* fmt, ...)
-{
-    va_list ap;
-
-    // Get required output size.
-    va_start(ap, fmt);
-    int len = ::vsnprintf(nullptr, 0, fmt, ap);
-    va_end(ap);
-
-    if (len < 0) {
-        return std::string(); // error
+    // Open the pseudo-device for the kernel module.
+    const int csr_fd = open(CSR_DEVICE_PATH, O_RDONLY);
+    if (csr_fd < 0) {
+        perror(CSR_DEVICE_PATH);
+        return EXIT_FAILURE;
     }
 
-    // Actual formatting.
-    std::string buf(len + 1, '\0');
-    va_start(ap, fmt);
-    len = ::vsnprintf(buf.data(), buf.size(), fmt, ap);
-    va_end(ap);
+    // Read all system registers.
+    csr_registers_t regs;
+    if (ioctl(csr_fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
+        perror("ioctl get regs");
+        return EXIT_FAILURE;
+    }
+    close(csr_fd);
 
-    buf.resize(std::max(0, len));
-    return buf;
-}
-
-
-//----------------------------------------------------------------------------
-// Display all registers.
-//----------------------------------------------------------------------------
-
-static void PrintAllRegisters(const csr_registers_t& regs)
-{
     // CPU features.
     const int features =
         (CSR_HAS_PAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1) ? NEED_PAC : 0) |
-        (CSR_HAS_GPAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1) ? NEED_GPAC : 0) |
+        (CSR_HAS_PACGA(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1) ? NEED_PACGA : 0) |
         (CSR_HAS_BTI(regs.id_aa64pfr1_el1) ? NEED_BTI : 0);
 
     // Loop on all supported registers.
-    for (const auto& desc : all_id_registers) {
+    for (const auto& desc : AllRegisters) {
 
         // If the CPU does not have the required feature for this register, skip it.
-        if ((desc.require & features) == 0) {
+        if (desc.require != 0 && (desc.require & features) == 0) {
             continue;
         }
 
@@ -297,17 +273,15 @@ static void PrintAllRegisters(const csr_registers_t& regs)
         const csr_u64_t regval = regs.*desc.offset;
 
         // Print the register content as a suite of 4-bit binary values.
-        std::cout << std::endl << desc.name << ":";
-        for (int shift = 60; shift >= 0; shift -= 4) {
-            const int n = int(regval >> shift);
-            std::cout << (shift == 28 ? " - " : " ") << ((n >> 3) & 1) << ((n >> 2) & 1) << ((n >> 1) & 1) << (n & 1);
-        }
-        std::cout << std::endl << std::endl << "  Arch. Ref. Manual section " << desc.section << std::endl;
+        std::cout << std::endl
+                  << desc.name << ": " << ToBinary(regval) << std::endl
+                  << std::endl
+                  << "  Arch. Ref. Manual section " << desc.section << std::endl;
 
         // Print the details of the register content.
         if (desc.fields.empty()) {
             // No bitfield defined, just display the value in hexadecimal.
-            std::cout << Format("  Value: 0x%08llX-%08llX", regval >> 32, regval & 0xFFFFFFFF) << std::endl;
+            std::cout << "  Value: " << ToString(regval) << std::endl;
         }
         else {
             // Print the various bit fields.
@@ -329,34 +303,10 @@ static void PrintAllRegisters(const csr_registers_t& regs)
         }
     }
     std::cout << std::endl;
-}
 
-
-//----------------------------------------------------------------------------
-// Program entry point
-//----------------------------------------------------------------------------
-
-int main(int argc, char* argv[])
-{
-    // Open the pseudo-device for the kernel module.
-    const int fd = open(CSR_DEVICE_PATH, O_RDONLY);
-    if (fd < 0) {
-        perror(CSR_DEVICE_PATH);
-        return EXIT_FAILURE;
-    }
-
-    // Read all system registers.
-    csr_registers_t regs;
-    if (ioctl(fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
-        perror("get regs");
-        return EXIT_FAILURE;
-    }
-    close(fd);
-
-    // Print CPU configuration.
-    PrintAllRegisters(regs);
+    // Summary of CPU features.
     std::cout << "Summary: PAC: " << YesNo(CSR_HAS_PAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1))
-              << ", PACGA: " << YesNo(CSR_HAS_GPAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1))
+              << ", PACGA: " << YesNo(CSR_HAS_PACGA(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1))
               << ", BTI: " << YesNo(CSR_HAS_BTI(regs.id_aa64pfr1_el1))
               << ", RME: " << YesNo(CSR_HAS_RME(regs.id_aa64pfr0_el1))
               << std::endl << std::endl;

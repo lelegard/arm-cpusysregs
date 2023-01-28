@@ -51,7 +51,7 @@ typedef struct _csr_registers {
 
 // This macro checks if PACGA is supported, based on the values of the
 // ID_AA64ISAR1_EL1 (GPI or GPA) and ID_AA64ISAR2_EL1 (GPA3) system registers.
-#define CSR_HAS_GPAC(isar1,isar2) (((isar1) & 0xFF000000) || ((isar2) & 0x00000F00))
+#define CSR_HAS_PACGA(isar1,isar2) (((isar1) & 0xFF000000) || ((isar2) & 0x00000F00))
 
 // This macro checks if BTI (Branch Target Identification) is supported,
 // based on the values of the ID_AA64PFR1_EL1 system register.
@@ -78,7 +78,7 @@ typedef struct _csr_pac_key {
 #define CSR_IOCTL_SET_KEYIB _IOW(CSR_IOC_MAGIC, 2, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYDA _IOW(CSR_IOC_MAGIC, 3, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYDB _IOW(CSR_IOC_MAGIC, 4, csr_pac_key_t)
-#define CSR_IOCTL_SET_KEYG  _IOW(CSR_IOC_MAGIC, 5, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYGA _IOW(CSR_IOC_MAGIC, 5, csr_pac_key_t)
 
 #if defined(__cplusplus)
 }

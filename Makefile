@@ -9,17 +9,21 @@
 #----------------------------------------------------------------------------
 
 # List of userland tools.
-EXECS = show-regs
+EXECS = show-regs demo-pac
 CXXFLAGS += -std=c++17
-
-# Kernel module name.
-MODULE = cpusysregs
+LDLIBS += -lstdc++
 
 # Build the kernel module and the tools.
-default: module $(EXECS)
+default: module apps
+apps: $(EXECS)
 
-# All source files depend on the kernel module interface.
-$(addsuffix .o,$(basename $(wildcard *.c))): $(MODULE).h
+demo-pac: CXXFLAGS += -march=armv8.3-a
+
+show-regs: show-regs.o apputils.o
+demo-pac: demo-pac.o apputils.o
+show-regs.o: cpusysregs.h apputils.h
+demo-pac.o: cpusysregs.h apputils.h
+apputils.o: apputils.h
 
 clean: clean-module
 	rm -f *.o $(EXECS)
@@ -29,11 +33,10 @@ clean: clean-module
 # Kernel module.
 #----------------------------------------------------------------------------
 
-# Module name.
-MODULE = cpusysregs
+cpusysregs.o: cpusysregs.h defsysregs.h
 
 # Kernel module.
-obj-m += $(MODULE).o
+obj-m += cpusysregs.o
 
 # Path to the kernel build utilities.
 KBUILD=/lib/modules/$(shell uname -r)/build/
@@ -46,10 +49,10 @@ clean-module:
 
 # Load/unload kernel module for tests.
 load:
-	sudo insmod $(MODULE).ko || true
-	lsmod | grep $(MODULE) || true
+	sudo insmod cpusysregs.ko || true
+	lsmod | grep cpusysregs || true
 	sudo dmesg | tail -5
 unload:
-	sudo rmmod $(MODULE).ko || true
-	lsmod | grep $(MODULE) || true
+	sudo rmmod cpusysregs.ko || true
+	lsmod | grep cpusysregs || true
 	sudo dmesg | tail -5

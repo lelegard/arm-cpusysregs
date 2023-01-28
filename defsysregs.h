@@ -81,7 +81,7 @@
     ".equ .csr_gpr_wzr, 31\n"
 
 //
-// Macros the read/write system registers by name.
+// Macros to read/write system registers by name.
 // The corresponding register names must be known at all levels of architecture.
 // Examples:
 //    csr_u64_t r;
@@ -92,7 +92,7 @@
 #define CSR_MRS_STR(result,sreg)  asm("mrs %0, " sreg : "=r" (result))
 
 //
-// Macros the read/write system registers by identifier.
+// Macros to read/write system registers by identifiers.
 // This method works at all levels of architecture.
 // Examples:
 //    csr_u64_t r;
@@ -100,9 +100,9 @@
 //    CSR_MRS_NUM(r, CSR_APIAKEYHI_EL1);
 //
 #define CSR_MSR_NUM(sreg,value) \
-    asm(CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY((sreg)) ")|(.csr_gpr_%0)" : : "r" (value))
+    asm(CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
 
 #define CSR_MRS_NUM(result,sreg) \
-    asm(CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY((sreg)) ")|(.csr_gpr_%0)" : "=r" (result))
+    asm(CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
 
 #endif // DEFSYSREGS_H
