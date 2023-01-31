@@ -4,55 +4,20 @@
 # Copyright (c) 2023, Thierry Lelegard
 # BSD-2-Clause license, see the LICENSE file.
 #
-# Makefile for Linux kernel module and userlan tools.
-#
 #----------------------------------------------------------------------------
 
-# List of userland tools.
-EXECS = show-regs demo-pac
-CXXFLAGS += -std=c++17
-LDLIBS += -lstdc++
+# System is either "linux" or "mac".
+SYSTEM := $(subst Linux,linux,$(subst Darwin,mac,$(shell uname -s)))
 
-# Build the kernel module and the tools.
-default: module apps
-apps: $(EXECS)
+MAKEFLAGS += --no-print-directory
 
-demo-pac: CXXFLAGS += -march=armv8.3-a
+default:
+	$(MAKE) -C kernel/$(SYSTEM)
+	$(MAKE) -C apps
 
-show-regs: show-regs.o apputils.o
-demo-pac: demo-pac.o apputils.o
-show-regs.o: cpusysregs.h apputils.h
-demo-pac.o: cpusysregs.h apputils.h
-apputils.o: apputils.h
+clean:
+	$(MAKE) $@ -C kernel/$(SYSTEM)
+	$(MAKE) $@ -C apps
 
-clean: clean-module
-	rm -f *.o $(EXECS)
-
-
-#----------------------------------------------------------------------------
-# Kernel module.
-#----------------------------------------------------------------------------
-
-cpusysregs.o: cpusysregs.h defsysregs.h
-
-# Kernel module.
-obj-m += cpusysregs.o
-
-# Path to the kernel build utilities.
-KBUILD=/lib/modules/$(shell uname -r)/build/
-
-# Standard targets for kernel modules.
-module:
-	$(MAKE) -C $(KBUILD) M=$(PWD) modules
-clean-module:
-	$(MAKE) -C $(KBUILD) M=$(PWD) clean
-
-# Load/unload kernel module for tests.
-load:
-	sudo insmod cpusysregs.ko || true
-	lsmod | grep cpusysregs || true
-	sudo dmesg | tail -5
-unload:
-	sudo rmmod cpusysregs.ko || true
-	lsmod | grep cpusysregs || true
-	sudo dmesg | tail -5
+install load unload show:
+	$(MAKE) $@ -C kernel/$(SYSTEM)

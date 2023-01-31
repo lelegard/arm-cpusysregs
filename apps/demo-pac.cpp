@@ -14,7 +14,7 @@
 //----------------------------------------------------------------------------
 
 #include "cpusysregs.h"
-#include "apputils.h"
+#include "strutils.h"
 
 #include <iostream>
 #include <cstdio>

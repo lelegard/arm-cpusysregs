@@ -1,0 +1,31 @@
+#----------------------------------------------------------------------------
+#
+# Arm64 CPU system registers tools
+# Copyright (c) 2023, Thierry Lelegard
+# BSD-2-Clause license, see the LICENSE file.
+#
+# Makefile for userland applications and tools.
+#
+#----------------------------------------------------------------------------
+
+CXXFLAGS += -std=c++17 -I../kernel
+LDLIBS += -lstdc++
+
+SOURCES   := $(wildcard *.cpp)
+HEADERS   := $(wildcard *.h)
+EXECS     := $(filter-out $(basename $(HEADERS)),$(basename $(SOURCES)))
+ALL_OBJS  := $(patsubst %.cpp,%.o,$(SOURCES))
+UTIL_OBJS := $(addsuffix .o,$(filter $(basename $(HEADERS)),$(basename $(SOURCES))))
+EXEC_OBJS := $(addsuffix .o,$(EXECS))
+
+default: $(EXECS)
+
+$(EXECS): $(UTIL_OBJS)
+$(ALL_OBJS): ../kernel/cpusysregs.h
+$(EXEC_OBJS): strutils.h
+demo-pac.o: CXXFLAGS += -march=armv8.3-a
+strutils.o: strutils.h
+regutils.o: regutils.h
+
+clean:
+	rm -f *.o $(EXECS)

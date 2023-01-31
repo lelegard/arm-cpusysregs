@@ -9,7 +9,7 @@
 //----------------------------------------------------------------------------
 
 #include "cpusysregs.h"
-#include "apputils.h"
+#include "strutils.h"
 
 #include <list>
 #include <iostream>

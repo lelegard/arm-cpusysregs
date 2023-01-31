@@ -4,7 +4,7 @@
 // Copyright (c) 2023, Thierry Lelegard
 // BSD-2-Clause license, see the LICENSE file.
 //
-// Some common utilities for userland applications.
+// Some string utilities.
 //
 //----------------------------------------------------------------------------
 
@@ -25,3 +25,6 @@ std::string Format(const char* fmt, ...);
 
 // Pad a string to a given width.
 std::string Pad(const std::string& str, size_t width, char pad = '.', bool right = true);
+
+// Transform an errno value into an error message string.
+std::string Error(int);

@@ -14,7 +14,6 @@
 //----------------------------------------------------------------------------
 
 #include "cpusysregs.h"
-#include "defsysregs.h"
 #include <linux/device.h>
 #include <linux/fs.h>
 #include <linux/init.h>
