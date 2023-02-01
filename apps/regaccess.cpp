@@ -87,7 +87,7 @@ bool RegAccess::open()
     if (_fd >= 0) {
         return setError(EINVAL, "already open", false);
     }
-    
+
 #if defined(__linux__)
 
     // Open the pseudo-device for the kernel module.

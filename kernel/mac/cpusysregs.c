@@ -34,7 +34,7 @@ static errno_t csr_setopt(kern_ctl_ref, u_int32_t, void*, int, void*, size_t);
 
 extern kern_return_t _start(kmod_info_t *ki, void *data);
 extern kern_return_t _stop(kmod_info_t *ki, void *data);
- 
+
 __attribute__((visibility("default"))) KMOD_EXPLICIT_DECL(cpusysregs, "1.0.0d1", _start, _stop)
 __private_extern__ kmod_start_func_t* _realmain = csr_start;
 __private_extern__ kmod_stop_func_t* _antimain = csr_stop;
@@ -58,7 +58,7 @@ static kern_return_t csr_start(kmod_info_t* kinfo, void* data)
     reg.ctl_disconnect = csr_disconnect;
     reg.ctl_getopt = csr_getopt;
     reg.ctl_setopt = csr_setopt;
- 
+
     const int err = ctl_register(&reg, &_ctlref);
     if (err != 0) {
         os_log_error(OS_LOG_DEFAULT, "ctl_register failed, error %d\n", err);
@@ -121,7 +121,7 @@ static errno_t csr_disconnect(kern_ctl_ref kctlref, u_int32_t unit, void* unitin
         else {
             os_log_info(OS_LOG_DEFAULT, "%s unloaded\n", CSR_MODULE_NAME);
             _ctlref = NULL;
-            stop_pending = 1;
+            stop_pending = 0;
         }
     }
     return 0;
@@ -129,10 +129,28 @@ static errno_t csr_disconnect(kern_ctl_ref kctlref, u_int32_t unit, void* unitin
 
 
 //----------------------------------------------------------------------------
-// Check setsockopt() parameters, update the requested size.
+// Check presence of PAC and/or PACGA.
 //----------------------------------------------------------------------------
 
-static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize)
+static errno_t csr_check_pac(int need_pac, int need_pacga)
+{
+    if (need_pac || need_pacga) {
+        csr_u64_t isar1, isar2;
+        CSR_MRS_STR(isar1, "id_aa64isar1_el1");
+        CSR_MRS_STR(isar2, "id_aa64isar2_el1");
+        if ((need_pac && !CSR_HAS_PAC(isar1, isar2)) || (need_pacga && !CSR_HAS_PACGA(isar1, isar2))) {
+            return ENOTSUP;
+        }
+    }
+    return 0;
+}
+
+
+//----------------------------------------------------------------------------
+// Check getsockopt() parameters, update the requested size.
+//----------------------------------------------------------------------------
+
+static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int need_pac, int need_pacga)
 {
     if (len == NULL) {
         return EFAULT;
@@ -142,7 +160,7 @@ static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize)
     }
     else {
         *len = retsize;
-        return 0;
+        return csr_check_pac(need_pac, need_pacga);
     }
 }
 
@@ -155,25 +173,90 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
 {
     errno_t status = 0;
     switch (opt) {
-        case CSR_SO_GET_REGS: {
-            // Get all CPU system registers.
-            status = csr_check_getopt(data, len, sizeof(csr_registers_t));
+        case CSR_CMD_GET_AA64PFR0: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
             if (!status && data) {
-                csr_registers_t* regs = (csr_registers_t*)(data);
-                // TODO: temporary code, only load general registers.
-                // Do not load PAC key registers, it crashes the system.
-                CSR_MRS_STR(regs->id_aa64pfr0_el1, "id_aa64pfr0_el1");
-                CSR_MRS_STR(regs->id_aa64pfr1_el1, "id_aa64pfr1_el1");
-                CSR_MRS_STR(regs->id_aa64isar0_el1, "id_aa64isar0_el1");
-                CSR_MRS_STR(regs->id_aa64isar1_el1, "id_aa64isar1_el1");
-                CSR_MRS_STR(regs->id_aa64isar2_el1, "id_aa64isar2_el1");
-                CSR_MRS_STR(regs->tcr_el1, "tcr_el1");
-                regs->apiakeyhi_el1 = regs->apiakeylo_el1 = regs->apibkeyhi_el1 = regs->apibkeylo_el1 = 0;
-                regs->apdakeyhi_el1 = regs->apdakeylo_el1 = regs->apdbkeyhi_el1 = regs->apdbkeylo_el1 = 0;
-                regs->apgakeyhi_el1 = regs->apgakeylo_el1 = 0;
-                // Don't do this:
-                // CSR_MRS_STR(regs->apgakeyhi_el1, "apgakeyhi_el1");
-                // csr_read_registers((csr_registers_t*)(data));
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr0_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_AA64PFR1: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr1_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_AA64ISAR0: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar0_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_AA64ISAR1: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar1_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_AA64ISAR2: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar2_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_TCR: {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "tcr_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_APIAKEY: {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                csr_pair_t* pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apiakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apiakeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_APIBKEY: {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                csr_pair_t* pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apibkeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apibkeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_APDAKEY: {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                csr_pair_t* pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apdakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apdakeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_APDBKEY: {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                csr_pair_t* pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apdbkeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apdbkeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_APGAKEY: {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 0, 1);
+            if (!status && data) {
+                csr_pair_t* pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apgakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apgakeylo_el1");
             }
             break;
         }
@@ -187,26 +270,19 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
 
 
 //----------------------------------------------------------------------------
-// Get setsockopt() parameter from userland for CSR_SO_SET_KEYxx commands.
+// Check setsockopt() parameters.
 //----------------------------------------------------------------------------
 
-static errno_t csr_get_key(csr_pac_key_t* key, void* data, size_t len, int ga)
+static errno_t csr_check_setopt(void* data, size_t len, size_t retsize, int need_pac, int need_pacga)
 {
-    csr_u64_t isar1, isar2;
-    CSR_MRS_STR(isar1, "id_aa64isar1_el1");
-    CSR_MRS_STR(isar2, "id_aa64isar2_el1");
     if (data == NULL) {
         return EFAULT;
     }
-    else if (len < sizeof(csr_pac_key_t)) {
+    else if (len < retsize) {
         return EINVAL;
     }
-    else if ((!ga && !CSR_HAS_PAC(isar1, isar2)) || (ga && !CSR_HAS_PACGA(isar1, isar2))) {
-        return ENOTSUP;
-    }
     else {
-        *key = *(csr_pac_key_t*)(data);
-        return 0;
+        return csr_check_pac(need_pac, need_pacga);
     }
 }
 
@@ -218,51 +294,44 @@ static errno_t csr_get_key(csr_pac_key_t* key, void* data, size_t len, int ga)
 static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, int opt, void* data, size_t len)
 {
     errno_t status = 0;
-    csr_pac_key_t key;
-
     switch (opt) {
-        case CSR_SO_SET_KEYIA: {
-            // Set PAC key A register for instruction pointers.
-            status = csr_get_key(&key, data, len, 0);
+        case CSR_CMD_SET_APIAKEY: {
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APIAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APIAKEYLO_EL1, key.low);
+                CSR_MSR_STR("apiakeyhi_el1", ((csr_pair_t*)(data))->high);
+                CSR_MSR_STR("apiakeylo_el1", ((csr_pair_t*)(data))->low);
             }
             break;
         }
-        case CSR_SO_SET_KEYIB: {
-            // Set PAC key B register for instruction pointers.
-            status = csr_get_key(&key, data, len, 0);
+        case CSR_CMD_SET_APIBKEY: {
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APIBKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APIBKEYLO_EL1, key.low);
+                CSR_MSR_STR("apibkeyhi_el1", ((csr_pair_t*)(data))->high);
+                CSR_MSR_STR("apibkeylo_el1", ((csr_pair_t*)(data))->low);
             }
             break;
         }
-        case CSR_SO_SET_KEYDA: {
-            // Set PAC key A register for data pointers.
-            status = csr_get_key(&key, data, len, 0);
+        case CSR_CMD_SET_APDAKEY: {
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APDAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APDAKEYLO_EL1, key.low);
+                CSR_MSR_STR("apdakeyhi_el1", ((csr_pair_t*)(data))->high);
+                CSR_MSR_STR("apdakeylo_el1", ((csr_pair_t*)(data))->low);
             }
             break;
         }
-        case CSR_SO_SET_KEYDB: {
-            // Set PAC key B register for data pointers.
-            status = csr_get_key(&key, data, len, 0);
+        case CSR_CMD_SET_APDBKEY: {
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APDBKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APDBKEYLO_EL1, key.low);
+                CSR_MSR_STR("apdbkeyhi_el1", ((csr_pair_t*)(data))->high);
+                CSR_MSR_STR("apdbkeylo_el1", ((csr_pair_t*)(data))->low);
             }
             break;
         }
-        case CSR_SO_SET_KEYGA: {
-            // Set PAC generic key register.
-            status = csr_get_key(&key, data, len, 0);
+        case CSR_CMD_SET_APGAKEY: {
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 0, 1);
             if (!status) {
-                CSR_MSR_NUM(CSR_APGAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APGAKEYLO_EL1, key.low);
+                CSR_MSR_STR("apgakeyhi_el1", ((csr_pair_t*)(data))->high);
+                CSR_MSR_STR("apgakeylo_el1", ((csr_pair_t*)(data))->low);
             }
             break;
         }

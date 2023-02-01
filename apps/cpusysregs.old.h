@@ -14,16 +14,12 @@
 
 // Define an unsigned 64-bit int which is valid in userland and kernel, Linux and macOS.
 #if defined(__linux__)
-
     #include <linux/types.h>
     #include <linux/ioctl.h>
     typedef __u64 csr_u64_t;
-
 #elif defined(__APPLE__)
-
     #include <mach/mach_types.h>
     typedef u_int64_t csr_u64_t;
-
 #endif
 
 #if defined(__cplusplus)
@@ -38,13 +34,25 @@ extern "C" {
 // Linux kernel module or macOS kernel extension name.
 #define CSR_MODULE_NAME "cpusysregs"
 
-// Description of a pair of hi/lo registers for PAC authentication keys.
-// Most registers are individually read/written. Some registers, such as
-// PAC keys, can be accessed only in pairs.
-typedef struct {
-    csr_u64_t high;
-    csr_u64_t low;
-} csr_pair_t;
+// All Arm64 system registers which are read by the kernel module and returned to userland.
+typedef struct _csr_registers {
+    csr_u64_t id_aa64pfr0_el1;   // AArch64 Processor Feature registers 0
+    csr_u64_t id_aa64pfr1_el1;   // AArch64 Processor Feature registers 1
+    csr_u64_t id_aa64isar0_el1;  // AArch64 Instruction Set Attribute Register 0
+    csr_u64_t id_aa64isar1_el1;  // AArch64 Instruction Set Attribute Register 1
+    csr_u64_t id_aa64isar2_el1;  // AArch64 Instruction Set Attribute Register 2
+    csr_u64_t tcr_el1;           // Translation Control Register
+    csr_u64_t apiakeyhi_el1;     // Pointer Authentication Key A for Instruction (bits[127:64])
+    csr_u64_t apiakeylo_el1;     // Pointer Authentication Key A for Instruction (bits[63:0])
+    csr_u64_t apibkeyhi_el1;     // Pointer Authentication Key B for Instruction (bits[127:64])
+    csr_u64_t apibkeylo_el1;     // Pointer Authentication Key B for Instruction (bits[63:0])
+    csr_u64_t apdakeyhi_el1;     // Pointer Authentication Key A for Data (bits[127:64])
+    csr_u64_t apdakeylo_el1;     // Pointer Authentication Key A for Data (bits[63:0])
+    csr_u64_t apdbkeyhi_el1;     // Pointer Authentication Key B for Data (bits[127:64])
+    csr_u64_t apdbkeylo_el1;     // Pointer Authentication Key B for Data (bits[63:0])
+    csr_u64_t apgakeyhi_el1;     // Pointer Authentication Generic Key (bits[127:64])
+    csr_u64_t apgakeylo_el1;     // Pointer Authentication Generic Key (bits[63:0])
+} csr_registers_t;
 
 // This macro checks if PACI and PACD are supported, based on the values of the
 // ID_AA64ISAR1_EL1 (API or APA) and ID_AA64ISAR2_EL1 (APA3) system registers.
@@ -66,57 +74,54 @@ typedef struct {
 // based on the values of the ID_AA64PFR0_EL1 system register.
 #define CSR_RME_VERSION(pfr0) (((pfr0) >> 52) & 0x0F)
 
+// Description of a pair of hi/lo registers for PAC authentication key.
+typedef struct _csr_pac_key {
+    csr_u64_t high;
+    csr_u64_t low;
+} csr_pac_key_t;
+
 
 //----------------------------------------------------------------------------
-// Kernel module commands.
-// Linux: Use ioctl() on /dev/cpusysregs.
-// macOS: Use getsockopt() and setsockopt() on system control cpusysregs.
+// Linux kernel module interface.
+// Use ioctl() on /dev/cpusysregs.
 //----------------------------------------------------------------------------
 
 #if defined(__linux__)
 
-    // Special device for this module.
-    #define CSR_DEVICE_PATH "/dev/" CSR_MODULE_NAME
+// Special device for this module.
+#define CSR_DEVICE_PATH "/dev/" CSR_MODULE_NAME
 
-    // IOCTL codes for /dev/cpusysregs
-    #define _CSR_IOC_MAGIC         '\xF0'
-    #define _CSR_GET(index, type)  _IOR(_CSR_IOC_MAGIC, (index), type)
-    #define _CSR_SET(index, type)  _IOW(_CSR_IOC_MAGIC, (index), type)
+// IOCTL codes for /dev/cpusysregs
+#define CSR_IOC_MAGIC '\xF0'
+#define CSR_IOCTL_GET_REGS  _IOR(CSR_IOC_MAGIC, 0, csr_registers_t)
+#define CSR_IOCTL_SET_KEYIA _IOW(CSR_IOC_MAGIC, 1, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYIB _IOW(CSR_IOC_MAGIC, 2, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYDA _IOW(CSR_IOC_MAGIC, 3, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYDB _IOW(CSR_IOC_MAGIC, 4, csr_pac_key_t)
+#define CSR_IOCTL_SET_KEYGA _IOW(CSR_IOC_MAGIC, 5, csr_pac_key_t)
+
+
+//----------------------------------------------------------------------------
+// macOS kernel extension interface.
+// Use getsockopt() and setsockopt() on system control cpusysregs.
+//----------------------------------------------------------------------------
 
 #elif defined(__APPLE__)
 
-    // Use CSR_MODULE_NAME as system control name.
-    // Socket options for system control cpusysregs
-    #define _CSR_SO_BASE           0x00AC0000
-    #define _CSR_GET(index, type)  (_CSR_SO_BASE + (index))
-    #define _CSR_SET(index, type)  (_CSR_SO_BASE + (index))
+// Socket options for system control cpusysregs
+#define CSR_SO_BASE      0x00AC0000
+#define CSR_SO_GET_REGS  (CSR_SO_BASE + 0)
+#define CSR_SO_SET_KEYIA (CSR_SO_BASE + 1)
+#define CSR_SO_SET_KEYIB (CSR_SO_BASE + 2)
+#define CSR_SO_SET_KEYDA (CSR_SO_BASE + 3)
+#define CSR_SO_SET_KEYDB (CSR_SO_BASE + 4)
+#define CSR_SO_SET_KEYGA (CSR_SO_BASE + 5)
 
 #endif
-
-// Common system commands.
-// Most system registers have get access only.
-// Some system registers have get/set access.
-#define CSR_CMD_GET_AA64PFR0   _CSR_GET(0,  csr_u64_t)   // Get AArch64 Processor Feature registers 0
-#define CSR_CMD_GET_AA64PFR1   _CSR_GET(1,  csr_u64_t)   // Get AArch64 Processor Feature registers 1
-#define CSR_CMD_GET_AA64ISAR0  _CSR_GET(2,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 0
-#define CSR_CMD_GET_AA64ISAR1  _CSR_GET(3,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 1
-#define CSR_CMD_GET_AA64ISAR2  _CSR_GET(4,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 2
-#define CSR_CMD_GET_TCR        _CSR_GET(5,  csr_u64_t)   // Get Translation Control Register
-#define CSR_CMD_GET_APIAKEY    _CSR_GET(6,  csr_pair_t)  // Get Pointer Authentication Key A for Instruction
-#define CSR_CMD_SET_APIAKEY    _CSR_SET(7,  csr_pair_t)  // Set Pointer Authentication Key A for Instruction
-#define CSR_CMD_GET_APIBKEY    _CSR_GET(8,  csr_pair_t)  // Get Pointer Authentication Key B for Instruction
-#define CSR_CMD_SET_APIBKEY    _CSR_SET(9,  csr_pair_t)  // Set Pointer Authentication Key B for Instruction
-#define CSR_CMD_GET_APDAKEY    _CSR_GET(10, csr_pair_t)  // Get Pointer Authentication Key A for Data
-#define CSR_CMD_SET_APDAKEY    _CSR_SET(11, csr_pair_t)  // Set Pointer Authentication Key A for Data
-#define CSR_CMD_GET_APDBKEY    _CSR_GET(12, csr_pair_t)  // Get Pointer Authentication Key B for Data
-#define CSR_CMD_SET_APDBKEY    _CSR_SET(13, csr_pair_t)  // Set Pointer Authentication Key B for Data
-#define CSR_CMD_GET_APGAKEY    _CSR_GET(14, csr_pair_t)  // Get Pointer Authentication Generic Key
-#define CSR_CMD_SET_APGAKEY    _CSR_SET(15, csr_pair_t)  // Set Pointer Authentication Generic Key
 
 
 //----------------------------------------------------------------------------
 // Definitions of Arm64 system registers and instructions to access them.
-// Useful in the kernel only with accessing EL1 registers.
 //----------------------------------------------------------------------------
 //
 // The system registers are described in section D17 of the Arm Architecture Reference Manual.
@@ -165,10 +170,10 @@ typedef struct {
 #define CSR_APGAKEYHI_EL1 CSR_SREG(3, 0, 2, 3, 1)
 
 //
-// Standard stringification macro (not so standard since we must define it again and again).
+// Standard stringification macro (not so standard since we must define it again).
 //
-#define _CSR_STRINGIFY_1(x) #x
-#define CSR_STRINGIFY(x) _CSR_STRINGIFY_1(x)
+#define CSR_STRINGIFY_1(x) #x
+#define CSR_STRINGIFY(x) CSR_STRINGIFY_1(x)
 
 //
 // The following macro is a trick to forge instructions with general-purpose registers (GPR),
@@ -179,7 +184,7 @@ typedef struct {
 // which will be replaced by .csr_gpr_x24 (if GPR x24 has been allocated), which will be
 // replaced by 24. We also define xzr and wzr as x31 (zero register).
 //
-#define _CSR_DEFINE_GPR             \
+#define CSR_DEFINE_GPR              \
     ".irp num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30\n" \
     ".equ .csr_gpr_x\\num, \\num\n" \
     ".equ .csr_gpr_w\\num, \\num\n" \
@@ -207,10 +212,54 @@ typedef struct {
 //    CSR_MRS_NUM(r, CSR_APIAKEYHI_EL1);
 //
 #define CSR_MSR_NUM(sreg,value) \
-    asm(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
+    asm(CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
 
 #define CSR_MRS_NUM(result,sreg) \
-    asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+    asm(CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+
+
+//----------------------------------------------------------------------------
+// An inline function to fill a csr_registers_t from the CPU registers.
+//----------------------------------------------------------------------------
+
+__attribute__((always_inline)) inline void csr_read_registers(csr_registers_t* regs)
+{
+    // General registers.
+    CSR_MRS_STR(regs->id_aa64pfr0_el1, "id_aa64pfr0_el1");
+    CSR_MRS_STR(regs->id_aa64pfr1_el1, "id_aa64pfr1_el1");
+    CSR_MRS_STR(regs->id_aa64isar0_el1, "id_aa64isar0_el1");
+    CSR_MRS_STR(regs->id_aa64isar1_el1, "id_aa64isar1_el1");
+    CSR_MRS_STR(regs->id_aa64isar2_el1, "id_aa64isar2_el1");
+    CSR_MRS_STR(regs->tcr_el1, "tcr_el1");
+
+    // PAC-specific registers.
+    if (CSR_HAS_PAC(regs->id_aa64isar1_el1, regs->id_aa64isar2_el1)) {
+        // PAC is supported, registers are available.
+        CSR_MRS_NUM(regs->apiakeyhi_el1, CSR_APIAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apiakeylo_el1, CSR_APIAKEYLO_EL1);
+        CSR_MRS_NUM(regs->apibkeyhi_el1, CSR_APIBKEYHI_EL1);
+        CSR_MRS_NUM(regs->apibkeylo_el1, CSR_APIBKEYLO_EL1);
+        CSR_MRS_NUM(regs->apdakeyhi_el1, CSR_APDAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apdakeylo_el1, CSR_APDAKEYLO_EL1);
+        CSR_MRS_NUM(regs->apdbkeyhi_el1, CSR_APDBKEYHI_EL1);
+        CSR_MRS_NUM(regs->apdbkeylo_el1, CSR_APDBKEYLO_EL1);
+    }
+    else {
+        // PAC is not supported, clear key registers.
+        regs->apiakeyhi_el1 = regs->apiakeylo_el1 = regs->apibkeyhi_el1 = regs->apibkeylo_el1 = 0;
+        regs->apdakeyhi_el1 = regs->apdakeylo_el1 = regs->apdbkeyhi_el1 = regs->apdbkeylo_el1 = 0;
+    }
+    if (CSR_HAS_PACGA(regs->id_aa64isar1_el1, regs->id_aa64isar2_el1)) {
+        // PACGA is supported, registers are available.
+        CSR_MRS_NUM(regs->apgakeyhi_el1, CSR_APGAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apgakeylo_el1, CSR_APGAKEYLO_EL1);
+    }
+    else {
+        // PACGA is not supported, clear key registers.
+        regs->apgakeyhi_el1 = regs->apgakeylo_el1 = 0;
+    }
+}
+
 
 #if defined(__cplusplus)
 }

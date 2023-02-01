@@ -19,7 +19,8 @@
 // If fail_on_error is true in the constructor, any error is fatal: a message
 // is printed on the standard error and the application terminates.
 //
-// Most methods return true on success and false on error. Use 
+// Most methods return true on success and false on error. Use error reporting
+// methods to print errors.
 //
 class RegAccess
 {
