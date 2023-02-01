@@ -31,7 +31,9 @@ void GetKeyGA(RegAccess& regaccess, const std::string& title, csr_pac_key_t& key
     // Read all system registers.
     csr_registers_t regs;
     regaccess.read(regs);
-    std::cout << Pad(title, 20) << " " << ToString(regs.apgakeyhi_el1, regs.apgakeylo_el1) << std::endl;
+    key.high = regs.apgakeyhi_el1;
+    key.low  = regs.apgakeylo_el1;
+    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
 }
 
 void SetKeyGA(RegAccess& regaccess, const std::string& title, const csr_pac_key_t& key)
@@ -57,7 +59,9 @@ void GetKeyDB(RegAccess& regaccess, const std::string& title, csr_pac_key_t& key
     // Read all system registers.
     csr_registers_t regs;
     regaccess.read(regs);
-    std::cout << Pad(title, 20) << " " << ToString(regs.apdbkeyhi_el1, regs.apdbkeylo_el1) << std::endl;
+    key.high = regs.apdbkeyhi_el1;
+    key.low  = regs.apdbkeylo_el1;
+    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
 }
 
 void SetKeyDB(RegAccess& regaccess, const std::string& title, const csr_pac_key_t& key)
@@ -83,6 +87,7 @@ int main(int argc, char* argv[])
     // Open the pseudo-device for the kernel module.
     // Fail application on error, don't need to check for success.
     RegAccess regaccess(true);
+    regaccess.open();
 
     std::cout << std::endl << "---- Generic key" << std::endl << std::endl;
 
