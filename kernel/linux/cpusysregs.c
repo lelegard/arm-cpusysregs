@@ -31,9 +31,6 @@ MODULE_VERSION("1.0");
 // Description of the /dev/cpusysregs device.
 // The major number is dynamically allocated when the module is loaded.
 
-#define CSR_MODULE_NAME "cpusysregs"
-#define CSR_CLASS_NAME  "cpusysregs"
-
 static int csr_major_number = 0;
 static struct class* csr_class = NULL;
 static struct device* csr_device = NULL;
@@ -64,29 +61,30 @@ static struct file_operations csr_fops = {
 
 static int __init csr_init(void)
 {
-    // Register the device. Allocating a major number (first param is zero).
-    csr_major_number = register_chrdev(0, CSR_DEVICE_NAME, &csr_fops);
+    // Register the device. Use same name for module and device.
+    // Allocate a major number (first param is zero).
+    csr_major_number = register_chrdev(0, CSR_MODULE_NAME, &csr_fops);
     if (csr_major_number < 0) {
         pr_alert("%s: failed to register a major number\n", CSR_MODULE_NAME);
         return csr_major_number;
     }
     pr_info("%s: device major number is %d\n", CSR_MODULE_NAME, csr_major_number);
 
-    // Create the device class.
-    csr_class = class_create(THIS_MODULE, CSR_CLASS_NAME);
+    // Create the device class. Use same name for class and module and device.
+    csr_class = class_create(THIS_MODULE, CSR_MODULE_NAME);
     if (IS_ERR(csr_class)) {
-        unregister_chrdev(csr_major_number, CSR_DEVICE_NAME);
+        unregister_chrdev(csr_major_number, CSR_MODULE_NAME);
         pr_alert("%s: failed to register device class\n", CSR_MODULE_NAME);
         return PTR_ERR(csr_class);
     }
     csr_class->devnode = csr_devnode;
 
     // Create the device.
-    csr_device = device_create(csr_class, NULL, MKDEV(csr_major_number, 0), NULL, CSR_DEVICE_NAME);
+    csr_device = device_create(csr_class, NULL, MKDEV(csr_major_number, 0), NULL, CSR_MODULE_NAME);
     if (IS_ERR(csr_device)) {
         class_destroy(csr_class);
-        unregister_chrdev(csr_major_number, CSR_DEVICE_NAME);
-        pr_alert("%s: failed to create the device\n", CSR_DEVICE_NAME);
+        unregister_chrdev(csr_major_number, CSR_MODULE_NAME);
+        pr_alert("%s: failed to create the device\n", CSR_MODULE_NAME);
         return PTR_ERR(csr_device);
     }
 
@@ -103,7 +101,7 @@ static void __exit csr_exit(void)
     // Close resources in reverse order from csr_init().
     device_destroy(csr_class, MKDEV(csr_major_number, 0));
     class_destroy(csr_class);
-    unregister_chrdev(csr_major_number, CSR_DEVICE_NAME);
+    unregister_chrdev(csr_major_number, CSR_MODULE_NAME);
     pr_info("%s: module removed\n", CSR_MODULE_NAME);
 }
 
@@ -157,37 +155,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
     switch (cmd) {
         case CSR_IOCTL_GET_REGS: {
             // Get all CPU system registers.
-            CSR_MRS_STR(regs.id_aa64pfr0_el1, "id_aa64pfr0_el1");
-            CSR_MRS_STR(regs.id_aa64pfr1_el1, "id_aa64pfr1_el1");
-            CSR_MRS_STR(regs.id_aa64isar0_el1, "id_aa64isar0_el1");
-            CSR_MRS_STR(regs.id_aa64isar1_el1, "id_aa64isar1_el1");
-            CSR_MRS_STR(regs.id_aa64isar2_el1, "id_aa64isar2_el1");
-            CSR_MRS_STR(regs.tcr_el1, "tcr_el1");
-            if (CSR_HAS_PAC(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
-                // PAC is supported, registers are available.
-                CSR_MRS_NUM(regs.apiakeyhi_el1, CSR_APIAKEYHI_EL1);
-                CSR_MRS_NUM(regs.apiakeylo_el1, CSR_APIAKEYLO_EL1);
-                CSR_MRS_NUM(regs.apibkeyhi_el1, CSR_APIBKEYHI_EL1);
-                CSR_MRS_NUM(regs.apibkeylo_el1, CSR_APIBKEYLO_EL1);
-                CSR_MRS_NUM(regs.apdakeyhi_el1, CSR_APDAKEYHI_EL1);
-                CSR_MRS_NUM(regs.apdakeylo_el1, CSR_APDAKEYLO_EL1);
-                CSR_MRS_NUM(regs.apdbkeyhi_el1, CSR_APDBKEYHI_EL1);
-                CSR_MRS_NUM(regs.apdbkeylo_el1, CSR_APDBKEYLO_EL1);
-            }
-            else {
-                // PAC is not supported, clear key registers.
-                regs.apiakeyhi_el1 = regs.apiakeylo_el1 = regs.apibkeyhi_el1 = regs.apibkeylo_el1 = 0;
-                regs.apdakeyhi_el1 = regs.apdakeylo_el1 = regs.apdbkeyhi_el1 = regs.apdbkeylo_el1 = 0;
-            }
-            if (CSR_HAS_PACGA(regs.id_aa64isar1_el1, regs.id_aa64isar2_el1)) {
-                // PACGA is supported, registers are available.
-                CSR_MRS_NUM(regs.apgakeyhi_el1, CSR_APGAKEYHI_EL1);
-                CSR_MRS_NUM(regs.apgakeylo_el1, CSR_APGAKEYLO_EL1);
-            }
-            else {
-                // PACGA is not supported, clear key registers.
-                regs.apgakeyhi_el1 = regs.apgakeylo_el1 = 0;
-            }
+            csr_read_registers(&regs);
             if (copy_to_user((void*)param, &regs, sizeof(regs))) {
                 status = -EFAULT;
             }

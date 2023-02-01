@@ -21,11 +21,9 @@ EXEC_OBJS := $(addsuffix .o,$(EXECS))
 default: $(EXECS)
 
 $(EXECS): $(UTIL_OBJS)
-$(ALL_OBJS): ../kernel/cpusysregs.h
-$(EXEC_OBJS): strutils.h
+$(ALL_OBJS): strutils.h ../kernel/cpusysregs.h
+$(EXEC_OBJS) regaccess.o: regaccess.h
 demo-pac.o: CXXFLAGS += -march=armv8.3-a
-strutils.o: strutils.h
-regutils.o: regutils.h
 
 clean:
 	rm -f *.o $(EXECS)

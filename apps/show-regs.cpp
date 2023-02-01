@@ -10,16 +10,12 @@
 
 #include "cpusysregs.h"
 #include "strutils.h"
+#include "regaccess.h"
 
 #include <list>
 #include <iostream>
-#include <cstdio>
 #include <cstddef>
 #include <cstdlib>
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
 
 
 //----------------------------------------------------------------------------
@@ -241,19 +237,14 @@ const std::list<Register> AllRegisters {
 int main(int argc, char* argv[])
 {
     // Open the pseudo-device for the kernel module.
-    const int csr_fd = open(CSR_DEVICE_PATH, O_RDONLY);
-    if (csr_fd < 0) {
-        perror(CSR_DEVICE_PATH);
-        return EXIT_FAILURE;
-    }
+    // Fail application on error, don't need to check for success.
+    RegAccess regaccess(true);
 
     // Read all system registers.
     csr_registers_t regs;
-    if (ioctl(csr_fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
-        perror("ioctl get regs");
-        return EXIT_FAILURE;
-    }
-    close(csr_fd);
+    regaccess.open();
+    regaccess.read(regs);
+    regaccess.close();
 
     // CPU features.
     const int features =

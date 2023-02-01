@@ -12,11 +12,14 @@
 #if !defined(CPUSYSREGS_H)
 #define CPUSYSREGS_H 1
 
+// Define an unsigned 64-bit int which is valid in userland and kernel, Linux and macOS.
 #if defined(__linux__)
     #include <linux/types.h>
     #include <linux/ioctl.h>
     typedef __u64 csr_u64_t;
 #elif defined(__APPLE__)
+    #include <mach/mach_types.h>
+    typedef u_int64_t csr_u64_t;
 #endif
 
 #if defined(__cplusplus)
@@ -29,7 +32,7 @@ extern "C" {
 //----------------------------------------------------------------------------
 
 // Linux kernel module or macOS kernel extension name.
-#define CSR_DEVICE_NAME "cpusysregs"
+#define CSR_MODULE_NAME "cpusysregs"
 
 // All Arm64 system registers which are read by the kernel module and returned to userland.
 typedef struct _csr_registers {
@@ -86,7 +89,7 @@ typedef struct _csr_pac_key {
 #if defined(__linux__)
 
 // Special device for this module.
-#define CSR_DEVICE_PATH "/dev/" CSR_DEVICE_NAME
+#define CSR_DEVICE_PATH "/dev/" CSR_MODULE_NAME
 
 // IOCTL codes for /dev/cpusysregs
 #define CSR_IOC_MAGIC '\xF0'
@@ -96,6 +99,7 @@ typedef struct _csr_pac_key {
 #define CSR_IOCTL_SET_KEYDA _IOW(CSR_IOC_MAGIC, 3, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYDB _IOW(CSR_IOC_MAGIC, 4, csr_pac_key_t)
 #define CSR_IOCTL_SET_KEYGA _IOW(CSR_IOC_MAGIC, 5, csr_pac_key_t)
+
 
 //----------------------------------------------------------------------------
 // macOS kernel extension interface.
@@ -114,6 +118,7 @@ typedef struct _csr_pac_key {
 #define CSR_SO_SET_KEYGA (CSR_SO_BASE + 5)
 
 #endif
+
 
 //----------------------------------------------------------------------------
 // Definitions of Arm64 system registers and instructions to access them.
@@ -211,6 +216,50 @@ typedef struct _csr_pac_key {
 
 #define CSR_MRS_NUM(result,sreg) \
     asm(CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+
+
+//----------------------------------------------------------------------------
+// An inline function to fill a csr_registers_t from the CPU registers.
+//----------------------------------------------------------------------------
+
+__attribute__((always_inline)) inline void csr_read_registers(csr_registers_t* regs)
+{
+    // General registers.
+    CSR_MRS_STR(regs->id_aa64pfr0_el1, "id_aa64pfr0_el1");
+    CSR_MRS_STR(regs->id_aa64pfr1_el1, "id_aa64pfr1_el1");
+    CSR_MRS_STR(regs->id_aa64isar0_el1, "id_aa64isar0_el1");
+    CSR_MRS_STR(regs->id_aa64isar1_el1, "id_aa64isar1_el1");
+    CSR_MRS_STR(regs->id_aa64isar2_el1, "id_aa64isar2_el1");
+    CSR_MRS_STR(regs->tcr_el1, "tcr_el1");
+
+    // PAC-specific registers.
+    if (CSR_HAS_PAC(regs->id_aa64isar1_el1, regs->id_aa64isar2_el1)) {
+        // PAC is supported, registers are available.
+        CSR_MRS_NUM(regs->apiakeyhi_el1, CSR_APIAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apiakeylo_el1, CSR_APIAKEYLO_EL1);
+        CSR_MRS_NUM(regs->apibkeyhi_el1, CSR_APIBKEYHI_EL1);
+        CSR_MRS_NUM(regs->apibkeylo_el1, CSR_APIBKEYLO_EL1);
+        CSR_MRS_NUM(regs->apdakeyhi_el1, CSR_APDAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apdakeylo_el1, CSR_APDAKEYLO_EL1);
+        CSR_MRS_NUM(regs->apdbkeyhi_el1, CSR_APDBKEYHI_EL1);
+        CSR_MRS_NUM(regs->apdbkeylo_el1, CSR_APDBKEYLO_EL1);
+    }
+    else {
+        // PAC is not supported, clear key registers.
+        regs->apiakeyhi_el1 = regs->apiakeylo_el1 = regs->apibkeyhi_el1 = regs->apibkeylo_el1 = 0;
+        regs->apdakeyhi_el1 = regs->apdakeylo_el1 = regs->apdbkeyhi_el1 = regs->apdbkeylo_el1 = 0;
+    }
+    if (CSR_HAS_PACGA(regs->id_aa64isar1_el1, regs->id_aa64isar2_el1)) {
+        // PACGA is supported, registers are available.
+        CSR_MRS_NUM(regs->apgakeyhi_el1, CSR_APGAKEYHI_EL1);
+        CSR_MRS_NUM(regs->apgakeylo_el1, CSR_APGAKEYLO_EL1);
+    }
+    else {
+        // PACGA is not supported, clear key registers.
+        regs->apgakeyhi_el1 = regs->apgakeylo_el1 = 0;
+    }
+}
+
 
 #if defined(__cplusplus)
 }

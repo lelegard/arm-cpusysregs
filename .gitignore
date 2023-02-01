@@ -1,7 +1,3 @@
-# Executable files.
-demo-pac
-show-regs
-
 # Temporary files.
 .#*
 
@@ -49,7 +45,8 @@ show-regs
 *.idb
 *.pdb
 
-# Kernel Module Compile Results
+# Kernel modules
+*.kext
 *.mod*
 *.cmd
 .tmp_versions/

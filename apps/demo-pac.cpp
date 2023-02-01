@@ -15,39 +15,29 @@
 
 #include "cpusysregs.h"
 #include "strutils.h"
+#include "regaccess.h"
 
 #include <iostream>
-#include <cstdio>
 #include <cstddef>
 #include <cstdlib>
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
 
 
 //----------------------------------------------------------------------------
 // Manipulate the generic key.
 //----------------------------------------------------------------------------
 
-void GetKeyGA(int fd, const std::string& title, csr_pac_key_t& key)
+void GetKeyGA(RegAccess& regaccess, const std::string& title, csr_pac_key_t& key)
 {
     // Read all system registers.
     csr_registers_t regs;
-    if (ioctl(fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
-        perror("ioctl get regs");
-    }
-    else {
-        std::cout << Pad(title, 20) << " " << ToString(regs.apgakeyhi_el1, regs.apgakeylo_el1) << std::endl;
-    }
+    regaccess.read(regs);
+    std::cout << Pad(title, 20) << " " << ToString(regs.apgakeyhi_el1, regs.apgakeylo_el1) << std::endl;
 }
 
-void SetKeyGA(int fd, const std::string& title, const csr_pac_key_t& key)
+void SetKeyGA(RegAccess& regaccess, const std::string& title, const csr_pac_key_t& key)
 {
     std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
-    if (ioctl(fd, CSR_IOCTL_SET_KEYGA, &key) < 0) {
-        perror("ioctl set key");
-    }
+    regaccess.setKeyGA(key);
 }
 
 void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
@@ -62,24 +52,18 @@ void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
 // Manipulate the data pointer key B.
 //----------------------------------------------------------------------------
 
-void GetKeyDB(int fd, const std::string& title, csr_pac_key_t& key)
+void GetKeyDB(RegAccess& regaccess, const std::string& title, csr_pac_key_t& key)
 {
     // Read all system registers.
     csr_registers_t regs;
-    if (ioctl(fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
-        perror("ioctl get regs");
-    }
-    else {
-        std::cout << Pad(title, 20) << " " << ToString(regs.apdbkeyhi_el1, regs.apdbkeylo_el1) << std::endl;
-    }
+    regaccess.read(regs);
+    std::cout << Pad(title, 20) << " " << ToString(regs.apdbkeyhi_el1, regs.apdbkeylo_el1) << std::endl;
 }
 
-void SetKeyDB(int fd, const std::string& title, const csr_pac_key_t& key)
+void SetKeyDB(RegAccess& regaccess, const std::string& title, const csr_pac_key_t& key)
 {
     std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
-    if (ioctl(fd, CSR_IOCTL_SET_KEYDB, &key) < 0) {
-        perror("ioctl set key");
-    }
+    regaccess.setKeyDB(key);
 }
 
 void TestDB(const std::string& title, csr_u64_t& value, csr_u64_t modifier)
@@ -97,33 +81,30 @@ void TestDB(const std::string& title, csr_u64_t& value, csr_u64_t modifier)
 int main(int argc, char* argv[])
 {
     // Open the pseudo-device for the kernel module.
-    const int fd = open(CSR_DEVICE_PATH, O_RDONLY);
-    if (fd < 0) {
-        perror(CSR_DEVICE_PATH);
-        return EXIT_FAILURE;
-    }
+    // Fail application on error, don't need to check for success.
+    RegAccess regaccess(true);
 
     std::cout << std::endl << "---- Generic key" << std::endl << std::endl;
 
     csr_u64_t modifier = 7;
     csr_pac_key_t key0;
-    GetKeyGA(fd, "Initial GA key", key0);
+    GetKeyGA(regaccess, "Initial GA key", key0);
     TestGA("PACGA", 0xFEDCBA9876543210, modifier);
 
     const csr_pac_key_t key1 {0xDEADBEEFBADC0FFE, 0x0123456789ABCDEF};
-    SetKeyGA(fd, "Update GA key", key1);
+    SetKeyGA(regaccess, "Update GA key", key1);
 
     csr_pac_key_t key2;
-    GetKeyGA(fd, "Updated GA key", key2);
+    GetKeyGA(regaccess, "Updated GA key", key2);
     TestGA("PACGA", 0xFEDCBA9876543210, modifier);
 
-    SetKeyGA(fd, "Restore GA key", key0);
-    GetKeyGA(fd, "Restored GA key", key2);
+    SetKeyGA(regaccess, "Restore GA key", key0);
+    GetKeyGA(regaccess, "Restored GA key", key2);
     TestGA("PACGA", 0xFEDCBA9876543210, modifier);
 
     std::cout << std::endl << "---- Data pointer key B" << std::endl << std::endl;
 
-    GetKeyDB(fd, "Initial DB key", key0);
+    GetKeyDB(regaccess, "Initial DB key", key0);
 
     modifier = 47;
     csr_u64_t data = 0x123456789A;
@@ -140,6 +121,5 @@ int main(int argc, char* argv[])
     std::cout << Pad("After AUTDB", 20) << " " << ToString(corrupted) << std::endl;
 
     std::cout << std::endl;
-    close(fd);
     return EXIT_SUCCESS;
 }
