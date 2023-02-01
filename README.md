@@ -7,7 +7,7 @@ accessible only in hypervisor mode and `_EL3` in monitor mode.
 
 Reading and writing system registers is done using the special instructions `MRS` and `MSR`,
 respectively. Trying to access a system register from an outer level results in an "illegal
- instruction" exception.
+instruction" exception.
 
 On Linux, there is a special feature in the kernel which allows a limited access to
 a few `_EL1` system registers from user mode. The kernel intecepts the `SIGILL` exception
@@ -23,40 +23,28 @@ This is a Linux-only feature and it is limited to a few registers, or a subpart 
 This means that we are never really sure of what the physical register was.
 
 This educational project provides a way to return the exact content of a few Arm64 registers
-to userland through a dedicated loadable kernel module. An application program is provided to
-display an analysis of the contents of these registers.
+to userland through a dedicated loadable kernel module, on Linux and macOS. Some application
+programs are provided to display an analysis of the contents of these registers.
 
 Warning: This project is for educational purpose only, for people wanting to increase their
 knowledge in the Arm64 architecture. Loading a custom kernel module may always have unexpected
 side effects, including:
+
 - Security effects: the content of the system registers could be used to gain information on
   the system, including the pointer authentication keys.
 - Stability effects: modifying the PACIA key using a kernel which is built with pointer authentication
   crashes the system since the return pointer of the kernel functions are authenticated with a
   different key as used by the previous PACIA (believe me, I tried...)
 
-## Linux kernel module
+## Usage instructions
 
-The file `cpusysregs.c` contains the source code of the kernel module. The module name is `cpusysregs`.
-It creates a special device named `/dev/cpusysregs` which can be accessed from any userland process.
-It is not possible to read or write on this device. We can only send a few `ioctl()`.
-This is the way the system registers of the CPU are returned.
+- `make` : Build the kernel module and the applications.
+- `make install` : Install the kernel module in the system tree.
+- `make load` : Load the kernel module.
+- `make unload` : Unload the kernel module.
+- `make show` : Show the loaded kernel module.
 
-The kernel module interface is described in the file `cpusysregs.h`. It defines the structure
-`csr_registers_t` which is used to return the content of the selected system registers.
-
-Usage instructions:
-- `make module` : Build the kernel module. This is also part of the default `make`.
-- `make load` : Load the kernel module. A `sudo` command is used.
-- `make unload` : Unload the kernel module. A `sudo` command is used.
-
-## Demo application
-
-The C++ application `show-regs` reads the system registers from the kernel module and displays
-their content. Most system registers are structured using bit-field of various size and
-interpretation. They are all individually displayed.
-
-The C++ application `demo-pac` demonstrates some usages of the pointer authentication features.
+See more details in the README files of the various subdirectories.
 
 ## References
 

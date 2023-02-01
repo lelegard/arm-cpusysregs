@@ -9,7 +9,8 @@
 #----------------------------------------------------------------------------
 
 CXXFLAGS += -std=c++17 -I../kernel
-LDLIBS += -lstdc++
+CXXFLAGS += -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Werror
+LDLIBS   += -lstdc++
 
 SOURCES   := $(wildcard *.cpp)
 HEADERS   := $(wildcard *.h)

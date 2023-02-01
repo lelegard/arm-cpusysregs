@@ -159,7 +159,21 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
             // Get all CPU system registers.
             status = csr_check_getopt(data, len, sizeof(csr_registers_t));
             if (!status && data) {
-                csr_read_registers((csr_registers_t*)(data));
+                csr_registers_t* regs = (csr_registers_t*)(data);
+                // TODO: temporary code, only load general registers.
+                // Do not load PAC key registers, it crashes the system.
+                CSR_MRS_STR(regs->id_aa64pfr0_el1, "id_aa64pfr0_el1");
+                CSR_MRS_STR(regs->id_aa64pfr1_el1, "id_aa64pfr1_el1");
+                CSR_MRS_STR(regs->id_aa64isar0_el1, "id_aa64isar0_el1");
+                CSR_MRS_STR(regs->id_aa64isar1_el1, "id_aa64isar1_el1");
+                CSR_MRS_STR(regs->id_aa64isar2_el1, "id_aa64isar2_el1");
+                CSR_MRS_STR(regs->tcr_el1, "tcr_el1");
+                regs->apiakeyhi_el1 = regs->apiakeylo_el1 = regs->apibkeyhi_el1 = regs->apibkeylo_el1 = 0;
+                regs->apdakeyhi_el1 = regs->apdakeylo_el1 = regs->apdbkeyhi_el1 = regs->apdbkeylo_el1 = 0;
+                regs->apgakeyhi_el1 = regs->apgakeylo_el1 = 0;
+                // Don't do this:
+                // CSR_MRS_STR(regs->apgakeyhi_el1, "apgakeyhi_el1");
+                // csr_read_registers((csr_registers_t*)(data));
             }
             break;
         }
