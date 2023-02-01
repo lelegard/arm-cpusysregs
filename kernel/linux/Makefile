@@ -10,6 +10,9 @@
 
 default: module
 
+# The directory of this makefile.
+PWD := $(abspath $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST)))))
+
 # Kernel module.
 obj-m += cpusysregs.o
 
