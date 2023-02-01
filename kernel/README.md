@@ -1,7 +1,7 @@
 # Kernel modules for Linux and macOS
 
 This directory contains the kernel modules for Linux and macOS, in their respective subdirectories.
-On both cases, the name of the module is `cpusysregs`.
+In both cases, the name of the module is `cpusysregs`.
 
 The header file `cpusysregs.h` defines the interface between the kernel module and the userland.
 This file is included in the sources of the kernel modules (Linux and macOS) and in the applications.

@@ -65,7 +65,7 @@ is rebuilt and the system reboots.
 
 Once the system is rebooted, the kernel extension is present in the system but not loaded.
 It can be loaded and unloaded as many times as we want using `make load` and `make unload`.
-Until we modify the extension and need to reboot.
+Until we modify the extension and need to reboot again.
 
 ### Reading the PAC key registers is not allowed
 
@@ -76,10 +76,11 @@ The corresponding keys are stored in 5 pairs of system registers which are acces
 at EL1 (kernel mode). Typically, these keys are specific per process. The kernel generates
 random values for these keys when a process is created. These values remain valid for the
 life of that process. The PAC key registers are initialized with these values each time the
-process is scheduled.
+process is scheduled on a CPU core.
 
-In the macOS kernel, trying to read any of these registers result in a fault, which then
+In the macOS kernel, trying to read any of these registers results in a fault, which then
 crashes the system since we are in kernel mode.
 
 This limitation is not hard-coded in the hardware of the CPU. When running a Linux
 virtual machine on the same CPU, these registers are readable from the Linux kernel.
+More information is needed on this topic...
