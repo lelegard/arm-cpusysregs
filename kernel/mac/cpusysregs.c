@@ -53,7 +53,7 @@ static kern_return_t csr_start(kmod_info_t* kinfo, void* data)
     // Control id and unit are left as zero and will be dynamically allocated.
     struct kern_ctl_reg reg;
     bzero(&reg, sizeof(reg));
-    strncpy(reg.ctl_name, CSR_MODULE_NAME, sizeof(reg.ctl_name));
+    strncpy(reg.ctl_name, CSR_SOCKET_NAME, sizeof(reg.ctl_name));
     reg.ctl_connect = csr_connect;
     reg.ctl_disconnect = csr_disconnect;
     reg.ctl_getopt = csr_getopt;

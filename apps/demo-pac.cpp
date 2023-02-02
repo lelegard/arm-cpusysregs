@@ -32,7 +32,7 @@ void GetKey(RegAccess& regaccess, const std::string& title, csr_pair_t& key, int
     const auto& desc(RegView::getRegister(key_index));
     if (desc.features & RegView::READ) {
         regaccess.read(key_index, key);
-        std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+        std::cout << Pad(title, 20) << " " << ToHexa(key) << std::endl;
     }
     else {
         std::cout << Pad(title, 20) << " Cannot read " << desc.name << " on this CPU" << std::endl;
@@ -43,7 +43,7 @@ void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& ke
 {
     const auto& desc(RegView::getRegister(key_index));
     if (desc.features & RegView::WRITE) {
-        std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+        std::cout << Pad(title, 20) << " " << ToHexa(key) << std::endl;
         regaccess.write(key_index, key);
     }
     else {
@@ -65,7 +65,7 @@ void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
 {
     csr_u64_t result = 0x1111111111111111;
     asm("pacga %[res], %[val], %[mod]" : [res] "+r" (result) : [val] "r" (value), [mod] "r" (modifier));
-    std::cout << Pad(title, 20) << " " << ToString(value) << " -> " << ToString(result) << std::endl;
+    std::cout << Pad(title, 20) << " " << ToHexa(value) << " -> " << ToHexa(result) << std::endl;
 }
 
 void GetKeyDB(RegAccess& regaccess, const std::string& title, csr_pair_t& key)
@@ -82,7 +82,7 @@ void TestDB(const std::string& title, csr_u64_t& value, csr_u64_t modifier)
 {
     csr_u64_t result = 0x1111111111111111;
     asm("pacga %[res], %[val], %[mod]" : [res] "+r" (result) : [val] "r" (value), [mod] "r" (modifier));
-    std::cout << Pad(title, 20) << " " << ToString(value) << " -> " << ToString(result) << std::endl;
+    std::cout << Pad(title, 20) << " " << ToHexa(value) << " -> " << ToHexa(result) << std::endl;
 }
 
 
@@ -119,17 +119,17 @@ int main(int argc, char* argv[])
 
     modifier = 47;
     csr_u64_t data = 0x123456789A;
-    std::cout << Pad("Before PACDB", 20) << " " << ToString(data) << std::endl;
+    std::cout << Pad("Before PACDB", 20) << " " << ToHexa(data) << std::endl;
     asm("pacdb %[dat], %[mod]" : [dat] "+r" (data) : [mod] "r" (modifier));
-    std::cout << Pad("After PACDB", 20) << " " << ToString(data) << std::endl;
+    std::cout << Pad("After PACDB", 20) << " " << ToHexa(data) << std::endl;
     csr_u64_t corrupted = data ^ 1;
 
     asm("autdb %[dat], %[mod]" : [dat] "+r" (data) : [mod] "r" (modifier));
-    std::cout << Pad("After AUTDB", 20) << " " << ToString(data) << std::endl;
+    std::cout << Pad("After AUTDB", 20) << " " << ToHexa(data) << std::endl;
 
-    std::cout << Pad("Corrupted", 20) << " " << ToString(corrupted) << std::endl;
+    std::cout << Pad("Corrupted", 20) << " " << ToHexa(corrupted) << std::endl;
     asm("autdb %[dat], %[mod]" : [dat] "+r" (corrupted) : [mod] "r" (modifier));
-    std::cout << Pad("After AUTDB", 20) << " " << ToString(corrupted) << std::endl;
+    std::cout << Pad("After AUTDB", 20) << " " << ToHexa(corrupted) << std::endl;
 
     std::cout << std::endl;
     return EXIT_SUCCESS;

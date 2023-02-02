@@ -15,10 +15,14 @@
 
 // Format booleans and integers.
 std::string YesNo(bool);
-std::string ToString(csr_u64_t);
-std::string ToString(csr_u64_t hi, csr_u64_t lo);
-std::string ToString(const csr_pair_t&);
+std::string ToHexa(csr_u64_t);
+std::string ToHexa(csr_u64_t hi, csr_u64_t lo);
+std::string ToHexa(const csr_pair_t&);
 std::string ToBinary(csr_u64_t);
+
+// Decode hexadecimal strings, return false on invalid input.
+bool DecodeHexa(csr_u64_t&, const std::string&, const std::string& sep = "-_., \t\r\n");
+bool DecodeHexa(csr_pair_t&, const std::string&, const std::string& sep = "-_., \t\r\n");
 
 // Format a C++ string in a printf-way.
 std::string Format(const char* fmt, ...);

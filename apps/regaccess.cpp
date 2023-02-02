@@ -59,7 +59,7 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
     // Get the control id of the cpusysregs kernel extension.
     struct ctl_info info;
     bzero(&info, sizeof(info));
-    ::strncpy(info.ctl_name, CSR_MODULE_NAME, sizeof(info.ctl_name));
+    ::strncpy(info.ctl_name, CSR_SOCKET_NAME, sizeof(info.ctl_name));
     if (::ioctl(_fd, CTLIOCGINFO, &info) < 0) {
         setError(errno, "ioctl(CTLIOCGINFO)", true, exit_on_open_error);
         return;

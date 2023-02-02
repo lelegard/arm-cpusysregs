@@ -23,19 +23,19 @@ std::string YesNo(bool value)
     return value ? "yes" : "no";
 }
 
-std::string ToString(csr_u64_t value)
+std::string ToHexa(csr_u64_t value)
 {
     return Format("%08llX-%08llX", value >> 32, value & 0xFFFFFFFF);
 }
 
-std::string ToString(csr_u64_t hi, csr_u64_t lo)
+std::string ToHexa(csr_u64_t hi, csr_u64_t lo)
 {
     return Format("%08llX-%08llX-%08llX-%08llX", hi >> 32, hi & 0xFFFFFFFF, lo >> 32, lo & 0xFFFFFFFF);
 }
 
-std::string ToString(const csr_pair_t& pair)
+std::string ToHexa(const csr_pair_t& pair)
 {
-    return ToString(pair.high, pair.low);
+    return ToHexa(pair.high, pair.low);
 }
 
 std::string ToBinary(csr_u64_t value)
@@ -52,6 +52,49 @@ std::string ToBinary(csr_u64_t value)
         str += (int(value >> shift) & 1) ? '1' : '0';
     }
     return str;
+}
+
+
+//----------------------------------------------------------------------------
+// Decode hexadecimal strings, return false on invalid input.
+//----------------------------------------------------------------------------
+
+bool DecodeHexa(csr_u64_t& value, const std::string& hex, const std::string& sep)
+{
+    csr_pair_t pair;
+    const bool res = DecodeHexa(pair, hex, sep);
+    value = pair.low;
+    return res;
+}
+
+bool DecodeHexa(csr_pair_t& value, const std::string& hex, const std::string& sep)
+{
+    value.high = value.low = 0;
+    bool found = false;
+    for (char c : hex) {
+        int nibble = 0;
+        if (c >= '0' && c <= '9') {
+            nibble = c - '0';
+            found = true;
+        }
+        else if (c >= 'a' && c <= 'f') {
+            nibble = c - 'a' + 10;
+            found = true;
+        }
+        else if (c >= 'A' && c <= 'F') {
+            nibble = c - 'A' + 10;
+            found = true;
+        }
+        else if (sep.find(c) != std::string::npos) {
+            continue; // ignore acceptable separator
+        }
+        else {
+            return false; // invalid character
+        }
+        value.high = (value.high << 4) | (value.low >> 60);
+        value.low = (value.low << 4) | nibble;
+    }
+    return found;
 }
 
 

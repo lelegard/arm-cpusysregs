@@ -31,6 +31,8 @@ public:
     // Command line options.
     std::string command;
     std::string read_register;
+    std::string write_register;
+    csr_pair_t write_value;
     bool all_registers;
     bool binary;
     bool force;
@@ -53,9 +55,11 @@ void Options::usage() const
               << "  -a : read all supported Arm64 system registers" << std::endl
               << "  -b : display register value in binary (default: hex)" << std::endl
               << "  -f : force read/write register, even if not supposed to" << std::endl
+              << "  -h : display this help text" << std::endl
               << "  -l : list all supported Arm64 system registers" << std::endl
-              << "  -r name : read the content of a register" << std::endl
+              << "  -r name : read the content of the named register" << std::endl
               << "  -s : summary of CPU features" << std::endl
+              << "  -w name hex-value : write the value in the named register" << std::endl
               << "  -v : verbose, display register analysis and fields" << std::endl
               << std::endl;
     ::exit(EXIT_FAILURE);
@@ -70,6 +74,8 @@ void Options::fatal(const std::string& message) const
 Options::Options(int argc, char* argv[]) :
     command(argc < 1 ? "" : argv[0]),
     read_register(),
+    write_register(),
+    write_value{0, 0},
     all_registers(false),
     binary(false),
     force(false),
@@ -82,6 +88,15 @@ Options::Options(int argc, char* argv[]) :
         if (arg == "--help" || arg == "-h") {
             usage();
         }
+        else if (arg == "-r" && i+1 < argc) {
+            read_register = argv[++i];
+        }
+        else if (arg == "-w" && i+2 < argc) {
+            write_register = argv[++i];
+            if (!DecodeHexa(write_value, argv[++i])) {
+                fatal("invalid hexa value to write");
+            }
+        }
         else if (arg == "-a") {
             all_registers = true;
         }
@@ -93,9 +108,6 @@ Options::Options(int argc, char* argv[]) :
         }
         else if (arg == "-l") {
             list_registers = true;
-        }
-        else if (arg == "-r" && i+1 < argc) {
-            read_register = argv[++i];
         }
         else if (arg == "-s") {
             summary = true;
@@ -183,6 +195,34 @@ void ReadRegister(const Options& opt, std::ostream& out)
 
 
 //----------------------------------------------------------------------------
+// Write a register
+//----------------------------------------------------------------------------
+
+void WriteRegister(const Options& opt, std::ostream& out)
+{
+    const auto& desc(RegView::getRegister(opt.write_register));
+
+    if (!desc.isValid()) {
+        opt.fatal("unknown register " + opt.write_register + ", try -l");
+    }
+    if (!opt.force && !(desc.features & RegView::WRITE)) {
+        opt.fatal("register " + opt.write_register + " is not writeable on this CPU, try -f at your own risks");        
+    }
+    if (opt.verbose) {
+        out << opt.command << ": writing " << desc.hexa(opt.write_value) << " " << desc.name << std::endl;
+    }
+
+    RegAccess regaccess;
+    if (!regaccess.isOpen()) {
+        regaccess.printLastError(opt.command);
+    }
+    else if (!regaccess.write(desc.csr_index, opt.write_value)) {
+        regaccess.printLastError(opt.command + ": error writing " + opt.write_register);
+    }
+}
+
+
+//----------------------------------------------------------------------------
 // Read all registers
 //----------------------------------------------------------------------------
 
@@ -246,6 +286,9 @@ int main(int argc, char* argv[])
     }
     if (opt.all_registers) {
         ReadAllRegisters(opt, std::cout);
+    }
+    if (!opt.write_register.empty()) {
+        WriteRegister(opt, std::cout);
     }
     if (!opt.read_register.empty()) {
         ReadRegister(opt, std::cout);

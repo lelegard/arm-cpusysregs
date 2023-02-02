@@ -236,12 +236,12 @@ const RegView::Register& RegView::getRegister(const std::string& name)
 
 std::string RegView::Register::hexa(csr_u64_t value) const
 {
-    return ToString(value);
+    return ToHexa(value);
 }
 
 std::string RegView::Register::hexa(const csr_pair_t& value) const
 {
-    return isPair() ? ToString(value) : ToString(value.low);
+    return isPair() ? ToHexa(value) : ToHexa(value.low);
 }
 
 
@@ -274,6 +274,10 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
     }
     else {
         // Print the various bit fields.
+        size_t name_width = 0;
+        for (const auto& bf : fields) {
+            name_width = std::max(name_width, bf.name.length());
+        }
         for (const auto& bf : fields) {
             // Value of the bitfield.
             const csr_u64_t bfval = bf.lsb >= 64 ?
@@ -289,7 +293,8 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
             }
             // Print the bitfield description.
             const int hexwidth = (bf.msb - bf.lsb) / 4 + 1;
-            out << "  " << bf.name << ": " << Format("0x%*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
+            out << "  " << Pad(bf.name + ":", name_width + 1, ' ')
+                << " " << Format("0x%*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
         }
     }
 }
