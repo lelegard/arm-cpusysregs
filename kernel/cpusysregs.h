@@ -107,9 +107,9 @@ typedef struct {
     #define _CSR_IOC_MAGIC         0x10
     #define _CSR_IOC_MAGIC2        0x20
     #define CSR_CMD_GET_REG(reg)   _IOR(_CSR_IOC_MAGIC,  (reg) - _CSR_REG_BASE,  csr_u64_t)
-    #define CSR_CMD_GET_REG2(reg)  _IOR(_CSR_IOC_MAGIC2, (reg) - _CSR_REG_BASE2, csr_pair_t)
+    #define CSR_CMD_GET_REG2(reg)  _IOR(_CSR_IOC_MAGIC2, (reg) - _CSR_REG2_BASE, csr_pair_t)
     #define CSR_CMD_SET_REG(reg)   _IOW(_CSR_IOC_MAGIC,  (reg) - _CSR_REG_BASE,  csr_u64_t)
-    #define CSR_CMD_SET_REG2(reg)  _IOW(_CSR_IOC_MAGIC2, (reg) - _CSR_REG_BASE2, csr_pair_t)
+    #define CSR_CMD_SET_REG2(reg)  _IOW(_CSR_IOC_MAGIC2, (reg) - _CSR_REG2_BASE, csr_pair_t)
 
 #elif defined(__APPLE__)
 

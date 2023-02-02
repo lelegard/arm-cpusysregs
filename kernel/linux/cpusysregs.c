@@ -122,23 +122,51 @@ static char* csr_devnode(struct device* dev, umode_t* mode)
 
 
 //----------------------------------------------------------------------------
-// Get ioctl() parameter from userland for CSR_IOCTL_SET_KEYxx commands.
+// Check presence of PAC and/or PACGA.
+// Return zero if required features are present, an error code otherwise.
 //----------------------------------------------------------------------------
 
-static long csr_ioctl_get_key(csr_pac_key_t* key, unsigned long param, int ga)
+static long csr_check_pac(int need_pac, int need_pacga)
 {
-    csr_u64_t isar1, isar2;
-    CSR_MRS_STR(isar1, "id_aa64isar1_el1");
-    CSR_MRS_STR(isar2, "id_aa64isar2_el1");
-    if ((!ga && !CSR_HAS_PAC(isar1, isar2)) || (ga && !CSR_HAS_PACGA(isar1, isar2))) {
-        return -ENOKEY;
+    if (need_pac || need_pacga) {
+        csr_u64_t isar1, isar2;
+        CSR_MRS_STR(isar1, "id_aa64isar1_el1");
+        CSR_MRS_STR(isar2, "id_aa64isar2_el1");
+        if ((need_pac && !CSR_HAS_PAC(isar1, isar2)) || (need_pacga && !CSR_HAS_PACGA(isar1, isar2))) {
+            return -EINVAL;
+        }
     }
-    else if (copy_from_user(key, (void*)param, sizeof(csr_pac_key_t))) {
-        return -EFAULT;
+    return 0;
+}
+
+
+//----------------------------------------------------------------------------
+// Return the value of a register to userland or fetch it from userland.
+// Return the ioctl() status.
+//----------------------------------------------------------------------------
+
+static inline long csr_return_reg(csr_u64_t reg, unsigned long param)
+{
+    return copy_to_user((void*)param, &reg, sizeof(csr_u64_t)) ? -EFAULT : 0;
+}
+
+static inline long csr_return_pair(const csr_pair_t* reg, unsigned long param)
+{
+    return copy_to_user((void*)param, reg, sizeof(csr_pair_t)) ? -EFAULT : 0;
+}
+
+static inline long csr_fetch_reg(csr_u64_t* reg, unsigned long param)
+{
+    return copy_from_user(reg, (void*)param, sizeof(csr_u64_t)) ? -EFAULT : 0;
+}
+
+static long csr_fetch_pair(csr_pair_t* reg, unsigned long param, int need_pac, int need_pacga)
+{
+    long status = csr_check_pac(need_pac, need_pacga);
+    if (!status && copy_from_user(reg, (void*)param, sizeof(csr_pair_t))) {
+        status = -EFAULT;
     }
-    else {
-        return 0;
-    }
+    return status;
 }
 
 
@@ -149,60 +177,121 @@ static long csr_ioctl_get_key(csr_pac_key_t* key, unsigned long param, int ga)
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
 {
     long status = 0;
-    csr_registers_t regs;
-    csr_pac_key_t key;
+    csr_pair_t reg;
 
     switch (cmd) {
-        case CSR_IOCTL_GET_REGS: {
-            // Get all CPU system registers.
-            csr_read_registers(&regs);
-            if (copy_to_user((void*)param, &regs, sizeof(regs))) {
-                status = -EFAULT;
+        case CSR_CMD_GET_REG(CSR_REG_AA64PFR0): {
+            CSR_MRS_STR(reg.low, "id_aa64pfr0_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64PFR1): {
+            CSR_MRS_STR(reg.low, "id_aa64pfr1_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR0): {
+            CSR_MRS_STR(reg.low, "id_aa64isar0_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR1): {
+            CSR_MRS_STR(reg.low, "id_aa64isar1_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR2): {
+            CSR_MRS_STR(reg.low, "id_aa64isar2_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_TCR): {
+            CSR_MRS_STR(reg.low, "tcr_el1");
+            status = csr_return_reg(reg.low, param);
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APIAKEY): {
+            status = csr_check_pac(1, 0);
+            if (!status) {
+                CSR_MRS_NUM(reg.high, CSR_APIAKEYHI_EL1);
+                CSR_MRS_NUM(reg.low,  CSR_APIAKEYLO_EL1);
+                status = csr_return_pair(&reg, param);
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYIA: {
-            // Set PAC key A register for instruction pointers.
-            status = csr_ioctl_get_key(&key, param, 0);
+        case CSR_CMD_SET_REG2(CSR_REG2_APIAKEY): {
+            status = csr_fetch_pair(&reg, param, 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APIAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APIAKEYLO_EL1, key.low);
+                CSR_MSR_NUM(CSR_APIAKEYHI_EL1, reg.high);
+                CSR_MSR_NUM(CSR_APIAKEYLO_EL1, reg.low);
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYIB: {
-            // Set PAC key B register for instruction pointers.
-            status = csr_ioctl_get_key(&key, param, 0);
+        case CSR_CMD_GET_REG2(CSR_REG2_APIBKEY): {
+            status = csr_check_pac(1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APIBKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APIBKEYLO_EL1, key.low);
+                CSR_MRS_NUM(reg.high, CSR_APIBKEYHI_EL1);
+                CSR_MRS_NUM(reg.low,  CSR_APIBKEYLO_EL1);
+                status = csr_return_pair(&reg, param);
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYDA: {
-            // Set PAC key A register for data pointers.
-            status = csr_ioctl_get_key(&key, param, 0);
+        case CSR_CMD_SET_REG2(CSR_REG2_APIBKEY): {
+            status = csr_fetch_pair(&reg, param, 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APDAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APDAKEYLO_EL1, key.low);
+                CSR_MSR_NUM(CSR_APIBKEYHI_EL1, reg.high);
+                CSR_MSR_NUM(CSR_APIBKEYLO_EL1, reg.low);
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYDB: {
-            // Set PAC key B register for data pointers.
-            status = csr_ioctl_get_key(&key, param, 0);
+        case CSR_CMD_GET_REG2(CSR_REG2_APDAKEY): {
+            status = csr_check_pac(1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APDBKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APDBKEYLO_EL1, key.low);
+                CSR_MRS_NUM(reg.high, CSR_APDAKEYHI_EL1);
+                CSR_MRS_NUM(reg.low,  CSR_APDAKEYLO_EL1);
+                status = csr_return_pair(&reg, param);
             }
             break;
         }
-        case CSR_IOCTL_SET_KEYGA: {
-            // Set PAC generic key register.
-            status = csr_ioctl_get_key(&key, param, 1);
+        case CSR_CMD_SET_REG2(CSR_REG2_APDAKEY): {
+            status = csr_fetch_pair(&reg, param, 1, 0);
             if (!status) {
-                CSR_MSR_NUM(CSR_APGAKEYHI_EL1, key.high);
-                CSR_MSR_NUM(CSR_APGAKEYLO_EL1, key.low);
+                CSR_MSR_NUM(CSR_APDAKEYHI_EL1, reg.high);
+                CSR_MSR_NUM(CSR_APDAKEYLO_EL1, reg.low);
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APDBKEY): {
+            status = csr_check_pac(1, 0);
+            if (!status) {
+                CSR_MRS_NUM(reg.high, CSR_APDBKEYHI_EL1);
+                CSR_MRS_NUM(reg.low,  CSR_APDBKEYLO_EL1);
+                status = csr_return_pair(&reg, param);
+            }
+            break;
+        }
+        case CSR_CMD_SET_REG2(CSR_REG2_APDBKEY): {
+            status = csr_fetch_pair(&reg, param, 1, 0);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APDBKEYHI_EL1, reg.high);
+                CSR_MSR_NUM(CSR_APDBKEYLO_EL1, reg.low);
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APGAKEY): {
+            status = csr_check_pac(0, 1);
+            if (!status) {
+                CSR_MRS_NUM(reg.high, CSR_APGAKEYHI_EL1);
+                CSR_MRS_NUM(reg.low,  CSR_APGAKEYLO_EL1);
+                status = csr_return_pair(&reg, param);
+            }
+            break;
+        }
+        case CSR_CMD_SET_REG2(CSR_REG2_APGAKEY): {
+            status = csr_fetch_pair(&reg, param, 0, 1);
+            if (!status) {
+                CSR_MSR_NUM(CSR_APGAKEYHI_EL1, reg.high);
+                CSR_MSR_NUM(CSR_APGAKEYLO_EL1, reg.low);
             }
             break;
         }
