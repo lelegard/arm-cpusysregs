@@ -11,6 +11,7 @@
 #include "strutils.h"
 #include <cstring>
 #include <cstdarg>
+#include <algorithm>
 
 
 //----------------------------------------------------------------------------

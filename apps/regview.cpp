@@ -228,3 +228,68 @@ const RegView::Register& RegView::getRegister(const std::string& name)
     const auto iter(AllRegistersByName.find(ToUpper(name)));
     return iter == AllRegistersByName.end() ? EmptyRegister : iter->second;
 }
+
+
+//----------------------------------------------------------------------------
+// Format an hexa value of the register.
+//----------------------------------------------------------------------------
+
+std::string RegView::Register::hexa(csr_u64_t value) const
+{
+    return ToString(value);
+}
+
+std::string RegView::Register::hexa(const csr_pair_t& value) const
+{
+    return isPair() ? ToString(value) : ToString(value.low);
+}
+
+
+//----------------------------------------------------------------------------
+// Display a detailed descriptions of one register value.
+//----------------------------------------------------------------------------
+
+void RegView::Register::display(std::ostream& out, csr_u64_t value) const
+{
+    csr_pair_t pair;
+    pair.high = 0;
+    pair.low = value;
+    display(out, pair);
+}
+
+void RegView::Register::display(std::ostream& out, const csr_pair_t& value) const
+{
+    // Print the register content as a suite of 4-bit binary values.
+    out << name << ": ";
+    if (isPair()) {
+        out << ToBinary(value.high) << std::endl << std::string(name.length() + 2, ' ');
+    }
+    out << ToBinary(value.low) << std::endl << std::endl;
+    out << "  Arch. Ref. Manual section " << section << std::endl;
+
+    // Print the details of the register content.
+    if (fields.empty()) {
+        // No bitfield defined, just display the value in hexadecimal.
+        out << "  Value: " << hexa(value) << std::endl;
+    }
+    else {
+        // Print the various bit fields.
+        for (const auto& bf : fields) {
+            // Value of the bitfield.
+            const csr_u64_t bfval = bf.lsb >= 64 ?
+                ((value.high << (127 - bf.msb)) >> (63 - bf.msb + bf.lsb)) :
+                ((value.low << (63 - bf.msb)) >> (63 - bf.msb + bf.lsb));
+            // Look for a name for this value.
+            std::string name(bf.values.empty() ? Format("%lld", bfval) : "reserved");
+            for (const auto& nm : bf.values) {
+                if (nm.value == bfval) {
+                    name = nm.name;
+                    break;
+                }
+            }
+            // Print the bitfield description.
+            const int hexwidth = (bf.msb - bf.lsb) / 4 + 1;
+            out << "  " << bf.name << ": " << Format("0x%*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
+        }
+    }
+}

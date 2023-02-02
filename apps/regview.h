@@ -11,6 +11,7 @@
 #pragma once
 
 #include "cpusysregs.h"
+#include <ostream>
 #include <string>
 #include <list>
 #include <map>
@@ -44,16 +45,31 @@ public:
     };
 
     // Description of one register with bitfields.
-    struct Register {
+    class Register
+    {
+    public:
         std::string         name;       // register name
         std::string         section;    // section in Arm arch ref manual
         int                 csr_index;  // CSR_REG_ or CSR_REG2_ value from cpusysregs.h
         int                 features;   // required features (bit mask)
         std::list<BitField> fields;     // known bitfields
 
+        // Get a string version of the features field.
         std::string featuresList() const;
+
+        // Check if the register description is valid.
         bool isValid() const { return csr_index != INVALID; }
+
+        // Check if the register is in fact a pair of registers (e.g. PAK key)
         bool isPair() const { return CSR_REG_IS_PAIR(csr_index); }
+
+        // Format an hexa value of the register.
+        std::string hexa(csr_u64_t value) const;
+        std::string hexa(const csr_pair_t& value) const;
+
+        // Display a detailed descriptions of one register value.
+        void display(std::ostream& out, csr_u64_t value) const;
+        void display(std::ostream& out, const csr_pair_t& value) const;
     };
 
     // This value of 'csr_index' fields indicates an invalid register description.
