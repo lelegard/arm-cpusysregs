@@ -28,7 +28,7 @@ ARCH      = arm64e
 TARGET    = $(ARCH)-apple-macos$(SDKVERSION)
 CPPFLAGS += -isysroot $(SDKPATH) -I$(KFRAMEWORK)/Headers -I$(KFRAMEWORK)/PrivateHeaders -I..
 CPPFLAGS += -DKERNEL -DKERNEL_PRIVATE -DDRIVER_PRIVATE -DAPPLE -DNeXT
-CFLAGS   += -target $(TARGET) -mkernel -nostdinc -std=gnu11
+CFLAGS   += -target $(TARGET) -mkernel -O2 -nostdinc -std=gnu11
 CFLAGS   += -fno-builtin -fno-common -fno-builtin -fstrict-aliasing
 CFLAGS   += -Wall -Wextra -Wno-unused-parameter
 LDFLAGS  += -target $(TARGET) -isysroot $(SDKPATH) -nostdlib

@@ -83,6 +83,25 @@ std::string Format(const char* fmt, ...)
 
 
 //----------------------------------------------------------------------------
+// Case conversions.
+//----------------------------------------------------------------------------
+
+std::string ToLower(const std::string& s)
+{
+    std::string res(s);
+    std::transform(res.begin(), res.end(), res.begin(), [](unsigned char c){ return std::tolower(c); });
+    return res;
+}
+
+std::string ToUpper(const std::string& s)
+{
+    std::string res(s);
+    std::transform(res.begin(), res.end(), res.begin(), [](unsigned char c){ return std::toupper(c); });
+    return res;
+}
+
+
+//----------------------------------------------------------------------------
 // Pad a string to a given width.
 //----------------------------------------------------------------------------
 

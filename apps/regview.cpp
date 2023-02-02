@@ -9,6 +9,7 @@
 //----------------------------------------------------------------------------
 
 #include "regview.h"
+#include "strutils.h"
 
 // Accessing the PAC key registers crashes macOS.
 #if defined(__linux__)
@@ -16,14 +17,15 @@
     #define WRITE_PAC RegView::WRITE
 #elif defined(__APPLE__)
     #define READ_PAC  0
-    #define WRITE_PAC RegView::WRITE
+    #define WRITE_PAC 0
 #endif
 
-// Map view of AllRegisters, indexed by CMD_REG_ values.
+// Map view of AllRegisters, indexed by CMD_REG_ values and names.
 std::map<int, RegView::Register> RegView::AllRegistersByIndex;
+std::map<std::string, RegView::Register> RegView::AllRegistersByName;
 
 // A dummy empty description.
-const RegView::Register RegView::EmptyRegister {"", "", -1, 0, {}};
+const RegView::Register RegView::EmptyRegister {"", "", INVALID, 0, {}};
 
 // Descriptions of all known registers.
 const std::list<RegView::Register> RegView::AllRegisters {
@@ -119,7 +121,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "TCR_EL1,", "D17.2.131", CSR_REG_TCR, READ,
+        "TCR_EL1", "D17.2.131", CSR_REG_TCR, READ,
         {
             {"IPS",   34, 32, {{0, "32 bits, 4GB"}, {1, "36 bits, 64 GB"}, {2, "40 bits, 1 TB"}, {3, "42 bits, 4 TB"},
                                {4, "44 bits, 16 TB"}, {5, "48 bits, 256 TB"}, {6, "52 bits, 4 PB"}}},
@@ -172,26 +174,57 @@ const std::list<RegView::Register> RegView::AllRegisters {
 
 
 //----------------------------------------------------------------------------
-// Initialize AllRegistersByIndex.
+// Register features field as a string
 //----------------------------------------------------------------------------
 
-void RegView::initializeAllRegistersByIndex()
+std::string RegView::Register::featuresList() const
 {
-    if (AllRegistersByIndex.empty()) {
+    std::list<std::string> res;
+    if (features & RegView::READ) {
+        res.push_back("read");
+    }
+    if (features & RegView::WRITE) {
+        res.push_back("write");
+    }
+    if (features & RegView::NEED_PAC) {
+        res.push_back("need PAC");
+    }
+    if (features & RegView::NEED_PACGA) {
+        res.push_back("need PACGA");
+    }
+    return Join(res, ", ");
+}
+
+
+//----------------------------------------------------------------------------
+// Initialize AllRegistersByIndex and AllRegistersByName.
+//----------------------------------------------------------------------------
+
+void RegView::initializeCache()
+{
+    if (AllRegistersByIndex.empty() || AllRegistersByName.empty()) {
         for (const auto& reg : AllRegisters) {
             AllRegistersByIndex[reg.csr_index] = reg;
+            AllRegistersByName[ToUpper(reg.name)] = reg;
         }
     }
 }
 
 
 //----------------------------------------------------------------------------
-// Get the description of register by its csr_index.
+// Get the description of register by its csr_index or name.
 //----------------------------------------------------------------------------
 
 const RegView::Register& RegView::getRegister(int csr_index)
 {
-    initializeAllRegistersByIndex();
+    initializeCache();
     const auto iter(AllRegistersByIndex.find(csr_index));
     return iter == AllRegistersByIndex.end() ? EmptyRegister : iter->second;
+}
+
+const RegView::Register& RegView::getRegister(const std::string& name)
+{
+    initializeCache();
+    const auto iter(AllRegistersByName.find(ToUpper(name)));
+    return iter == AllRegistersByName.end() ? EmptyRegister : iter->second;
 }

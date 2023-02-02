@@ -50,21 +50,30 @@ public:
         int                 csr_index;  // CSR_REG_ or CSR_REG2_ value from cpusysregs.h
         int                 features;   // required features (bit mask)
         std::list<BitField> fields;     // known bitfields
+
+        std::string featuresList() const;
+        bool isValid() const { return csr_index != INVALID; }
+        bool isPair() const { return CSR_REG_IS_PAIR(csr_index); }
     };
+
+    // This value of 'csr_index' fields indicates an invalid register description.
+    static constexpr int INVALID = ~0;
 
     // Descriptions of all known registers.
     static const std::list<Register> AllRegisters;
 
-    // Get the description of register by its csr_index.
+    // Get the description of register by its csr_index or name (case insensitive).
     static const Register& getRegister(int csr_index);
+    static const Register& getRegister(const std::string& name);
 
 private:
     // A dummy empty description.
     static const Register EmptyRegister;
 
-    // Map view of AllRegisters, indexed by CMD_REG_ values.
+    // Map view of AllRegisters, indexed by CMD_REG_ values and names.
     static std::map<int, Register> AllRegistersByIndex;
+    static std::map<std::string, Register> AllRegistersByName;
 
-    // Initialize AllRegistersByIndex.
-    static void initializeAllRegistersByIndex();
+    // Initialize AllRegistersByIndex and AllRegistersByName.
+    static void initializeCache();
 };

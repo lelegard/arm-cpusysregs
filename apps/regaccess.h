@@ -47,6 +47,7 @@ public:
     bool write(int index, csr_u64_t reg);
 
     // Read a pair of CPU registers, use a CSR_REGZ_ symbol for index.
+    // If the specified register is not a pair, use reg.low only.
     bool read(int index, csr_pair_t& reg);
     bool write(int index, const csr_pair_t& reg);
 
