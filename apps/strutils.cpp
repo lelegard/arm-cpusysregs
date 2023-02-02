@@ -32,9 +32,9 @@ std::string ToString(csr_u64_t hi, csr_u64_t lo)
     return Format("%08llX-%08llX-%08llX-%08llX", hi >> 32, hi & 0xFFFFFFFF, lo >> 32, lo & 0xFFFFFFFF);
 }
 
-std::string ToString(const csr_pac_key_t& key)
+std::string ToString(const csr_pair_t& pair)
 {
-    return ToString(key.high, key.low);
+    return ToString(pair.high, pair.low);
 }
 
 std::string ToBinary(csr_u64_t value)

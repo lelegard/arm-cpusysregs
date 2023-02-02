@@ -16,53 +16,61 @@
 //
 // A class to access Arm64 system registers.
 //
-// If fail_on_error is true in the constructor, any error is fatal: a message
-// is printed on the standard error and the application terminates.
-//
-// Most methods return true on success and false on error. Use error reporting
-// methods to print errors.
+// Most methods return true on success and false on error.
+// Use error reporting methods to print errors.
 //
 class RegAccess
 {
 public:
     // Constructor and destructor.
-    RegAccess(bool fail_on_error = false);
+    // If print_errors is true, error messages are automatically displayed on stderr.
+    // Terminate application when exit_on_open_error is true and the kernel module not accessible.
+    RegAccess(bool print_errors = false, bool exit_on_open_error = false);
     ~RegAccess();
 
+    // Check if the kernel module was successfully open.
+    bool isOpen() const { return _fd >= 0; }
+    
     // Forbid copy (keep only one instance per file descriptor.
     RegAccess(RegAccess&&) = delete;
     RegAccess(const RegAccess&) = delete;
     RegAccess& operator=(RegAccess&&) = delete;
     RegAccess& operator=(const RegAccess&) = delete;
 
-    // Open and close access to the kernel module.
-    bool open();
-    bool close();
-    bool isOpen() const { return _fd >= 0; }
-
-    // Read CPU registers.
-    bool read(csr_registers_t& regs);
-
-    // Set the various Pointer Authentication keys.
-    // Warning: setting a key which is already used by the kernel or the application to
-    // authenticate its own code will mostly likely crash the system or the application.
-    bool setKeyIA(const csr_pac_key_t& key);
-    bool setKeyIB(const csr_pac_key_t& key);
-    bool setKeyDA(const csr_pac_key_t& key);
-    bool setKeyDB(const csr_pac_key_t& key);
-    bool setKeyGA(const csr_pac_key_t& key);
-
     // Error reporting.
     int lastError() const { return _error; }
     void clearError() { _error = 0; }
     void printLastError(const std::string& label = std::string(), std::ostream& file = std::cerr) const;
 
-private:
-    int  _fd;      // file descriptor to access the kernel module
-    bool _fail;    // fail on error
-    int  _error;   // last error code
-    std::string _error_ref;  // reference of last error
+    // Read/write one CPU register, use a CSR_REG_ symbol for index.
+    bool read(int index, csr_u64_t& reg);
+    bool write(int index, csr_u64_t reg);
 
-    // Set error code and return false. Fail when necessary.
-    bool setError(int code, const char* ref, bool close_fd);
+    // Read a pair of CPU registers, use a CSR_REGZ_ symbol for index.
+    bool read(int index, csr_pair_t& reg);
+    bool write(int index, const csr_pair_t& reg);
+
+    // Get features of the processor.
+    bool hasPAC();
+    bool hasPACGA();
+    bool hasBTI();
+    bool hasRME();
+    int versionRME();
+
+private:
+    int         _fd;            // file descriptor to access the kernel module
+    bool        _print_errors;  // automatic error reporting
+    int         _error;         // last error code
+    std::string _error_ref;     // reference of last error
+    bool        _loaded_regs;   // registers below are loaded and cached
+    csr_u64_t   _aa64isar1;     // cached value of ID_AA64ISAR1_EL1
+    csr_u64_t   _aa64isar2;     // cached value of ID_AA64ISAR2_EL1
+    csr_u64_t   _aa64pfr0;      // cached value of ID_AA64PFR0_EL1
+    csr_u64_t   _aa64pfr1;      // cached value of ID_AA64PFR1_EL1
+
+    // Set error code and return false. Report when necessary.
+    bool setError(int code, const std::string& ref, bool close_fd = false, bool exit_on_error = false);
+
+    // Load the cached registers.
+    bool loadCache();
 };

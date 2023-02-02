@@ -17,7 +17,7 @@
 std::string YesNo(bool);
 std::string ToString(csr_u64_t);
 std::string ToString(csr_u64_t hi, csr_u64_t lo);
-std::string ToString(const csr_pac_key_t&);
+std::string ToString(const csr_pair_t&);
 std::string ToBinary(csr_u64_t);
 
 // Format a C++ string in a printf-way.

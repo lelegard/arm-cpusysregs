@@ -29,19 +29,63 @@
 // Constructor and destructor.
 //----------------------------------------------------------------------------
 
-RegAccess::RegAccess(bool fail_on_error) :
+RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
     _fd(-1),
-    _fail(fail_on_error),
+    _print_errors(print_errors),
     _error(0),
-    _error_ref()
+    _error_ref(),
+    _loaded_regs(false),
+    _aa64isar1(0),
+    _aa64isar2(0),
+    _aa64pfr0(0),
+    _aa64pfr1(0)
 {
+#if defined(__linux__)
+
+    // Open the pseudo-device for the kernel module.
+    if ((_fd = ::open(CSR_DEVICE_PATH, O_RDONLY)) < 0) {
+        setError(errno, CSR_DEVICE_PATH, false, exit_on_open_error);
+        return;
+    }
+
+#elif defined(__APPLE__)
+
+    // We use a system socket to communicate with the kernel extension.
+    if ((_fd = ::socket(PF_SYSTEM, SOCK_DGRAM, SYSPROTO_CONTROL)) < 0) {
+        setError(errno, "socket()", false, exit_on_open_error);
+        return;
+    }
+
+    // Get the control id of the cpusysregs kernel extension.
+    struct ctl_info info;
+    bzero(&info, sizeof(info));
+    ::strncpy(info.ctl_name, CSR_MODULE_NAME, sizeof(info.ctl_name));
+    if (::ioctl(_fd, CTLIOCGINFO, &info) < 0) {
+        setError(errno, "ioctl(CTLIOCGINFO)", true, exit_on_open_error);
+        return;
+    }
+
+    // Connect to the kernel extension using its id.
+    struct sockaddr_ctl addr;
+    bzero(&addr, sizeof(addr));
+    addr.sc_len = sizeof(addr);
+    addr.sc_family = AF_SYSTEM;
+    addr.ss_sysaddr = AF_SYS_CONTROL;
+    addr.sc_id = info.ctl_id;
+    if (::connect(_fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
+        setError(errno, "connect()", true, exit_on_open_error);
+        return;
+    }
+
+#endif
 }
 
 RegAccess::~RegAccess()
 {
-    if (_fd >= 0) {
-        close();
+    if (_fd >= 0 && ::close(_fd) < 0) {
+        setError(errno, "close");
     }
+    _fd = -1;
 }
 
 
@@ -62,7 +106,7 @@ void RegAccess::printLastError(const std::string& label, std::ostream& file) con
     }
 }
 
-bool RegAccess::setError(int code, const char* ref, bool close_fd)
+bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool exit_on_error)
 {
     _error = code;
     _error_ref = ref;
@@ -70,8 +114,10 @@ bool RegAccess::setError(int code, const char* ref, bool close_fd)
         ::close(_fd);
         _fd = -1;
     }
-    if (_fail) {
+    if (_print_errors) {
         printLastError();
+    }
+    if (exit_on_error) {
         ::exit(EXIT_FAILURE);
     }
     return false;
@@ -79,151 +125,132 @@ bool RegAccess::setError(int code, const char* ref, bool close_fd)
 
 
 //----------------------------------------------------------------------------
-// Open and close access to the kernel module.
-//----------------------------------------------------------------------------
-
-bool RegAccess::open()
-{
-    if (_fd >= 0) {
-        return setError(EINVAL, "already open", false);
-    }
-
-#if defined(__linux__)
-
-    // Open the pseudo-device for the kernel module.
-    if ((_fd = ::open(CSR_DEVICE_PATH, O_RDONLY)) < 0) {
-        return setError(errno, CSR_DEVICE_PATH, false);
-    }
-
-#elif defined(__APPLE__)
-
-    // We use a system socket to communicate with the kernel extension.
-    if ((_fd = ::socket(PF_SYSTEM, SOCK_DGRAM, SYSPROTO_CONTROL)) < 0) {
-        return setError(errno, "socket()", false);
-    }
-
-    // Get the control id of the cpusysregs kernel extension.
-    struct ctl_info info;
-    bzero(&info, sizeof(info));
-    ::strncpy(info.ctl_name, CSR_MODULE_NAME, sizeof(info.ctl_name));
-    if (::ioctl(_fd, CTLIOCGINFO, &info) < 0) {
-        return setError(errno, "ioctl(CTLIOCGINFO)", true);
-    }
-
-    // Connect to the kernel extension using its id.
-    struct sockaddr_ctl addr;
-    bzero(&addr, sizeof(addr));
-    addr.sc_len = sizeof(addr);
-    addr.sc_family = AF_SYSTEM;
-    addr.ss_sysaddr = AF_SYS_CONTROL;
-    addr.sc_id = info.ctl_id;
-    if (::connect(_fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-        return setError(errno, "connect()", true);
-    }
-
-#endif
-
-    return true;
-}
-
-bool RegAccess::close()
-{
-    // Same stuff on Linux and macOS.
-    if (::close(_fd) < 0) {
-        return setError(errno, "close", false);
-    }
-    else {
-        _fd = -1;
-        return true;
-    }
-}
-
-
-//----------------------------------------------------------------------------
 // Read CPU registers.
 //----------------------------------------------------------------------------
 
-bool RegAccess::read(csr_registers_t& regs)
+bool RegAccess::read(int index, csr_u64_t& reg)
 {
+    if (!CSR_REG_IS_SINGLE(index)) {
+        return setError(EINVAL, "invalid register index");
+    }
 #if defined(__linux__)
-
-    if (::ioctl(_fd, CSR_IOCTL_GET_REGS, &regs) < 0) {
-        return setError(errno, "ioctl(GET_REGS)", false);
+    if (::ioctl(_fd, CSR_CMD_GET_REG(index), &reg) < 0) {
+        return setError(errno, "ioctl(GET_REG)");
     }
-
 #elif defined(__APPLE__)
-
-    ::socklen_t len = sizeof(regs);
-    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_GET_REGS, &regs, &len) < 0)  {
-        return setError(errno, "getsockopt(GET_REGS)", false);
+    ::socklen_t len = sizeof(reg);
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_GET_REG(index), &reg, &len) < 0)  {
+        return setError(errno, "getsockopt(GET_REG)");
     }
-
 #endif
+    return true;
+}
 
+bool RegAccess::read(int index, csr_pair_t& reg)
+{
+    if (CSR_REG_IS_SINGLE(index)) {
+        reg.high = 0;
+        return read(index, reg.low);
+    }
+    if (!CSR_REG_IS_PAIR(index)) {
+        return setError(EINVAL, "invalid register pair index");
+    }
+#if defined(__linux__)
+    if (::ioctl(_fd, CSR_CMD_GET_REG2(index), &reg) < 0) {
+        return setError(errno, "ioctl(GET_REG2)");
+    }
+#elif defined(__APPLE__)
+    ::socklen_t len = sizeof(reg);
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_GET_REG2(index), &reg, &len) < 0)  {
+        return setError(errno, "getsockopt(GET_REG2)");
+    }
+#endif
     return true;
 }
 
 
 //----------------------------------------------------------------------------
-// Set the various Pointer Authentication keys.
+// Write CPU registers.
 //----------------------------------------------------------------------------
 
-bool RegAccess::setKeyIA(const csr_pac_key_t& key)
+bool RegAccess::write(int index, csr_u64_t reg)
 {
-#if defined(__linux__)
-    if (::ioctl(_fd, CSR_IOCTL_SET_KEYIA, &key) < 0) {
-#elif defined(__APPLE__)
-        if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_SET_KEYIA, &key, sizeof(key)) < 0)  {
-#endif
-        return setError(errno, "SET_KEYIA", false);
+    if (!CSR_REG_IS_SINGLE(index)) {
+        return setError(EINVAL, "invalid register index");
     }
+#if defined(__linux__)
+    if (::ioctl(_fd, CSR_CMD_SET_REG(index), &reg) < 0) {
+        return setError(errno, "ioctl(SET_REG)");
+    }
+#elif defined(__APPLE__)
+    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_SET_REG(index), &reg, sizeof(reg)) < 0)  {
+        return setError(errno, "getsockopt(SET_REG)");
+    }
+#endif
     return true;
 }
 
-bool RegAccess::setKeyIB(const csr_pac_key_t& key)
+bool RegAccess::write(int index, const csr_pair_t& reg)
 {
-#if defined(__linux__)
-    if (::ioctl(_fd, CSR_IOCTL_SET_KEYIB, &key) < 0) {
-#elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_SET_KEYIB, &key, sizeof(key)) < 0)  {
-#endif
-        return setError(errno, "SET_KEYIB", false);
+    if (CSR_REG_IS_SINGLE(index)) {
+        return write(index, reg.low);
     }
+    if (!CSR_REG_IS_PAIR(index)) {
+        return setError(EINVAL, "invalid register pair index");
+    }
+#if defined(__linux__)
+    if (::ioctl(_fd, CSR_CMD_SET_REG2(index), &reg) < 0) {
+        return setError(errno, "ioctl(SET_REG2)");
+    }
+#elif defined(__APPLE__)
+    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_SET_REG2(index), &reg, sizeof(reg)) < 0)  {
+        return setError(errno, "getsockopt(SET_REG2)");
+    }
+#endif
     return true;
 }
 
-bool RegAccess::setKeyDA(const csr_pac_key_t& key)
+
+//----------------------------------------------------------------------------
+// Load the cached registers.
+//----------------------------------------------------------------------------
+
+bool RegAccess::loadCache()
 {
-#if defined(__linux__)
-    if (::ioctl(_fd, CSR_IOCTL_SET_KEYDA, &key) < 0) {
-#elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_SET_KEYDA, &key, sizeof(key)) < 0)  {
-#endif
-        return setError(errno, "SET_KEYDA", false);
+    if (!_loaded_regs) {
+        _loaded_regs =
+            read(CSR_REG_AA64ISAR1, _aa64isar1) && read(CSR_REG_AA64ISAR2, _aa64isar2) &&
+            read(CSR_REG_AA64PFR0, _aa64pfr0) && read(CSR_REG_AA64PFR1, _aa64pfr1);
     }
-    return true;
+    return _loaded_regs;
 }
 
-bool RegAccess::setKeyDB(const csr_pac_key_t& key)
+
+//----------------------------------------------------------------------------
+// Get features of the processor.
+//----------------------------------------------------------------------------
+
+bool RegAccess::hasPAC()
 {
-#if defined(__linux__)
-    if (::ioctl(_fd, CSR_IOCTL_SET_KEYDB, &key) < 0) {
-#elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_SET_KEYDB, &key, sizeof(key)) < 0)  {
-#endif
-        return setError(errno, "SET_KEYDB", false);
-    }
-    return true;
+    return loadCache() && CSR_HAS_PAC(_aa64isar1, _aa64isar2);
 }
 
-bool RegAccess::setKeyGA(const csr_pac_key_t& key)
+bool RegAccess::hasPACGA()
 {
-#if defined(__linux__)
-    if (::ioctl(_fd, CSR_IOCTL_SET_KEYGA, &key) < 0) {
-#elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SO_SET_KEYGA, &key, sizeof(key)) < 0)  {
-#endif
-        return setError(errno, "SET_KEYGA", false);
-    }
-    return true;
+    return loadCache() && CSR_HAS_PACGA(_aa64isar1, _aa64isar2);
+}
+
+bool RegAccess::hasBTI()
+{
+    return loadCache() && CSR_HAS_BTI(_aa64pfr1);
+}
+
+bool RegAccess::hasRME()
+{
+    return loadCache() && CSR_HAS_RME(_aa64pfr0);
+}
+
+int RegAccess::versionRME()
+{
+    return loadCache() ? CSR_RME_VERSION(_aa64pfr0) : 0;
 }

@@ -26,15 +26,6 @@
 
 #endif
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-
-//----------------------------------------------------------------------------
-// Definitions of types used to communicate with the kernel.
-//----------------------------------------------------------------------------
-
 // Linux kernel module or macOS kernel extension name.
 #define CSR_MODULE_NAME "cpusysregs"
 
@@ -45,6 +36,11 @@ typedef struct {
     csr_u64_t high;
     csr_u64_t low;
 } csr_pair_t;
+
+
+//----------------------------------------------------------------------------
+// Check CPU features based on system registers values.
+//----------------------------------------------------------------------------
 
 // This macro checks if PACI and PACD are supported, based on the values of the
 // ID_AA64ISAR1_EL1 (API or APA) and ID_AA64ISAR2_EL1 (APA3) system registers.
@@ -68,6 +64,34 @@ typedef struct {
 
 
 //----------------------------------------------------------------------------
+// List of system registers which are handled by the kernel module.
+// Most registers are individually accessible on 64 bits, using csr_u64_t.
+// Some registers are accessible as pairs (_REG2), using csr_pair_t.
+//----------------------------------------------------------------------------
+
+#define _CSR_REG_BASE      0x0000
+#define _CSR_REG2_BASE     0x0100
+#define _CSR_REG_MASK      0x00FF
+
+#define CSR_REG_AA64PFR0   (_CSR_REG_BASE | 0x00)   // AArch64 Processor Feature registers 0 (read-only)
+#define CSR_REG_AA64PFR1   (_CSR_REG_BASE | 0x01)   // AArch64 Processor Feature registers 1 (read-only)
+#define CSR_REG_AA64ISAR0  (_CSR_REG_BASE | 0x02)   // AArch64 Instruction Set Attribute Register 0 (read-only)
+#define CSR_REG_AA64ISAR1  (_CSR_REG_BASE | 0x03)   // AArch64 Instruction Set Attribute Register 1 (read-only)
+#define CSR_REG_AA64ISAR2  (_CSR_REG_BASE | 0x04)   // AArch64 Instruction Set Attribute Register 2 (read-only)
+#define CSR_REG_TCR        (_CSR_REG_BASE | 0x05)   // Translation Control Register (read-only)
+
+#define CSR_REG2_APIAKEY   (_CSR_REG2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
+#define CSR_REG2_APIBKEY   (_CSR_REG2_BASE | 0x01)  // Pointer Authentication Key B for Instruction
+#define CSR_REG2_APDAKEY   (_CSR_REG2_BASE | 0x02)  // Pointer Authentication Key A for Data
+#define CSR_REG2_APDBKEY   (_CSR_REG2_BASE | 0x03)  // Pointer Authentication Key B for Data
+#define CSR_REG2_APGAKEY   (_CSR_REG2_BASE | 0x04)  // Pointer Authentication Generic Key
+
+// Check if a register id is a single register or a pair.
+#define CSR_REG_IS_SINGLE(reg) (((reg) & ~_CSR_REG_MASK) == _CSR_REG_BASE)
+#define CSR_REG_IS_PAIR(reg)   (((reg) & ~_CSR_REG_MASK) == _CSR_REG2_BASE)
+
+
+//----------------------------------------------------------------------------
 // Kernel module commands.
 // Linux: Use ioctl() on /dev/cpusysregs.
 // macOS: Use getsockopt() and setsockopt() on system control cpusysregs.
@@ -78,40 +102,29 @@ typedef struct {
     // Special device for this module.
     #define CSR_DEVICE_PATH "/dev/" CSR_MODULE_NAME
 
-    // IOCTL codes for /dev/cpusysregs
-    #define _CSR_IOC_MAGIC         '\xF0'
-    #define _CSR_GET(index, type)  _IOR(_CSR_IOC_MAGIC, (index), type)
-    #define _CSR_SET(index, type)  _IOW(_CSR_IOC_MAGIC, (index), type)
+    // IOCTL codes for /dev/cpusysregs.
+    // Each code shall be unique since all commands go through ioctl().
+    #define _CSR_IOC_MAGIC         0x10
+    #define _CSR_IOC_MAGIC2        0x20
+    #define CSR_CMD_GET_REG(reg)   _IOR(_CSR_IOC_MAGIC,  (reg) - _CSR_REG_BASE,  csr_u64_t)
+    #define CSR_CMD_GET_REG2(reg)  _IOR(_CSR_IOC_MAGIC2, (reg) - _CSR_REG_BASE2, csr_pair_t)
+    #define CSR_CMD_SET_REG(reg)   _IOW(_CSR_IOC_MAGIC,  (reg) - _CSR_REG_BASE,  csr_u64_t)
+    #define CSR_CMD_SET_REG2(reg)  _IOW(_CSR_IOC_MAGIC2, (reg) - _CSR_REG_BASE2, csr_pair_t)
 
 #elif defined(__APPLE__)
 
-    // Use CSR_MODULE_NAME as system control name.
-    // Socket options for system control cpusysregs
-    #define _CSR_SO_BASE           0x00AC0000
-    #define _CSR_GET(index, type)  (_CSR_SO_BASE + (index))
-    #define _CSR_SET(index, type)  (_CSR_SO_BASE + (index))
+    // System socket name for this module.
+    #define CSR_SOCKET_NAME CSR_MODULE_NAME
+
+    // Socket options for system control cpusysregs.
+    // Get and set commands have identical values since they are used by distinct syscalls.
+    #define _CSR_SOCKOPT_BASE      0x00AC0000
+    #define CSR_CMD_GET_REG(reg)   (_CSR_SOCKOPT_BASE + (reg))
+    #define CSR_CMD_GET_REG2(reg)  (_CSR_SOCKOPT_BASE + (reg))
+    #define CSR_CMD_SET_REG(reg)   (_CSR_SOCKOPT_BASE + (reg))
+    #define CSR_CMD_SET_REG2(reg)  (_CSR_SOCKOPT_BASE + (reg))
 
 #endif
-
-// Common system commands.
-// Most system registers have get access only.
-// Some system registers have get/set access.
-#define CSR_CMD_GET_AA64PFR0   _CSR_GET(0,  csr_u64_t)   // Get AArch64 Processor Feature registers 0
-#define CSR_CMD_GET_AA64PFR1   _CSR_GET(1,  csr_u64_t)   // Get AArch64 Processor Feature registers 1
-#define CSR_CMD_GET_AA64ISAR0  _CSR_GET(2,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 0
-#define CSR_CMD_GET_AA64ISAR1  _CSR_GET(3,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 1
-#define CSR_CMD_GET_AA64ISAR2  _CSR_GET(4,  csr_u64_t)   // Get AArch64 Instruction Set Attribute Register 2
-#define CSR_CMD_GET_TCR        _CSR_GET(5,  csr_u64_t)   // Get Translation Control Register
-#define CSR_CMD_GET_APIAKEY    _CSR_GET(6,  csr_pair_t)  // Get Pointer Authentication Key A for Instruction
-#define CSR_CMD_SET_APIAKEY    _CSR_SET(7,  csr_pair_t)  // Set Pointer Authentication Key A for Instruction
-#define CSR_CMD_GET_APIBKEY    _CSR_GET(8,  csr_pair_t)  // Get Pointer Authentication Key B for Instruction
-#define CSR_CMD_SET_APIBKEY    _CSR_SET(9,  csr_pair_t)  // Set Pointer Authentication Key B for Instruction
-#define CSR_CMD_GET_APDAKEY    _CSR_GET(10, csr_pair_t)  // Get Pointer Authentication Key A for Data
-#define CSR_CMD_SET_APDAKEY    _CSR_SET(11, csr_pair_t)  // Set Pointer Authentication Key A for Data
-#define CSR_CMD_GET_APDBKEY    _CSR_GET(12, csr_pair_t)  // Get Pointer Authentication Key B for Data
-#define CSR_CMD_SET_APDBKEY    _CSR_SET(13, csr_pair_t)  // Set Pointer Authentication Key B for Data
-#define CSR_CMD_GET_APGAKEY    _CSR_GET(14, csr_pair_t)  // Get Pointer Authentication Generic Key
-#define CSR_CMD_SET_APGAKEY    _CSR_SET(15, csr_pair_t)  // Set Pointer Authentication Generic Key
 
 
 //----------------------------------------------------------------------------
@@ -211,9 +224,5 @@ typedef struct {
 
 #define CSR_MRS_NUM(result,sreg) \
     asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif // CPUSYSREGS_H

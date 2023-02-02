@@ -130,6 +130,7 @@ static errno_t csr_disconnect(kern_ctl_ref kctlref, u_int32_t unit, void* unitin
 
 //----------------------------------------------------------------------------
 // Check presence of PAC and/or PACGA.
+// Return zero if required features are present, an error code otherwise.
 //----------------------------------------------------------------------------
 
 static errno_t csr_check_pac(int need_pac, int need_pacga)
@@ -166,110 +167,6 @@ static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int nee
 
 
 //----------------------------------------------------------------------------
-// Called on getsockopt() from userland.
-//----------------------------------------------------------------------------
-
-static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, int opt, void* data, size_t* len)
-{
-    errno_t status = 0;
-    switch (opt) {
-        case CSR_CMD_GET_AA64PFR0: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr0_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_AA64PFR1: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr1_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_AA64ISAR0: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar0_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_AA64ISAR1: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar1_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_AA64ISAR2: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar2_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_TCR: {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "tcr_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_APIAKEY: {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                csr_pair_t* pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apiakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apiakeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_APIBKEY: {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                csr_pair_t* pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apibkeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apibkeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_APDAKEY: {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                csr_pair_t* pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apdakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apdakeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_APDBKEY: {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                csr_pair_t* pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apdbkeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apdbkeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_APGAKEY: {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 0, 1);
-            if (!status && data) {
-                csr_pair_t* pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apgakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apgakeylo_el1");
-            }
-            break;
-        }
-        default: {
-            status = EINVAL;
-            break;
-        }
-    }
-    return status;
-}
-
-
-//----------------------------------------------------------------------------
 // Check setsockopt() parameters.
 //----------------------------------------------------------------------------
 
@@ -288,54 +185,168 @@ static errno_t csr_check_setopt(void* data, size_t len, size_t retsize, int need
 
 
 //----------------------------------------------------------------------------
+// Called on getsockopt() from userland.
+//----------------------------------------------------------------------------
+
+static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, int opt, void* data, size_t* len)
+{
+    errno_t status = 0;
+    csr_pair_t* pair = NULL;
+
+    switch (opt) {
+        case CSR_CMD_GET_REG(CSR_REG_AA64PFR0): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr0_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64PFR1): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr1_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR0): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar0_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR1): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar1_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR2): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar2_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG(CSR_REG_TCR): {
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
+            if (!status && data) {
+                CSR_MRS_STR(*(csr_u64_t*)(data), "tcr_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APIAKEY): {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apiakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apiakeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APIBKEY): {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apibkeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apibkeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APDAKEY): {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apdakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apdakeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APDBKEY): {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
+            if (!status && data) {
+                pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apdbkeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apdbkeylo_el1");
+            }
+            break;
+        }
+        case CSR_CMD_GET_REG2(CSR_REG2_APGAKEY): {
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 0, 1);
+            if (!status && data) {
+                pair = (csr_pair_t*)(data);
+                CSR_MRS_STR(pair->high, "apgakeyhi_el1");
+                CSR_MRS_STR(pair->low,  "apgakeylo_el1");
+            }
+            break;
+        }
+        default: {
+            status = EINVAL;
+            break;
+        }
+    }
+    return status;
+}
+
+
+//----------------------------------------------------------------------------
 // Called on setsockopt() from userland.
 //----------------------------------------------------------------------------
 
 static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, int opt, void* data, size_t len)
 {
     errno_t status = 0;
+    csr_pair_t* pair = NULL;
+
     switch (opt) {
-        case CSR_CMD_SET_APIAKEY: {
+        case CSR_CMD_SET_REG2(CSR_REG2_APIAKEY): {
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_STR("apiakeyhi_el1", ((csr_pair_t*)(data))->high);
-                CSR_MSR_STR("apiakeylo_el1", ((csr_pair_t*)(data))->low);
+                pair = (csr_pair_t*)(data);
+                CSR_MSR_STR("apiakeyhi_el1", pair->high);
+                CSR_MSR_STR("apiakeylo_el1", pair->low);
             }
             break;
         }
-        case CSR_CMD_SET_APIBKEY: {
+        case CSR_CMD_SET_REG2(CSR_REG2_APIBKEY): {
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_STR("apibkeyhi_el1", ((csr_pair_t*)(data))->high);
-                CSR_MSR_STR("apibkeylo_el1", ((csr_pair_t*)(data))->low);
+                pair = (csr_pair_t*)(data);
+                CSR_MSR_STR("apibkeyhi_el1", pair->high);
+                CSR_MSR_STR("apibkeylo_el1", pair->low);
             }
             break;
         }
-        case CSR_CMD_SET_APDAKEY: {
+        case CSR_CMD_SET_REG2(CSR_REG2_APDAKEY): {
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_STR("apdakeyhi_el1", ((csr_pair_t*)(data))->high);
-                CSR_MSR_STR("apdakeylo_el1", ((csr_pair_t*)(data))->low);
+                pair = (csr_pair_t*)(data);
+                CSR_MSR_STR("apdakeyhi_el1", pair->high);
+                CSR_MSR_STR("apdakeylo_el1", pair->low);
             }
             break;
         }
-        case CSR_CMD_SET_APDBKEY: {
+        case CSR_CMD_SET_REG2(CSR_REG2_APDBKEY): {
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
             if (!status) {
-                CSR_MSR_STR("apdbkeyhi_el1", ((csr_pair_t*)(data))->high);
-                CSR_MSR_STR("apdbkeylo_el1", ((csr_pair_t*)(data))->low);
+                pair = (csr_pair_t*)(data);
+                CSR_MSR_STR("apdbkeyhi_el1", pair->high);
+                CSR_MSR_STR("apdbkeylo_el1", pair->low);
             }
             break;
         }
-        case CSR_CMD_SET_APGAKEY: {
+        case CSR_CMD_SET_REG2(CSR_REG2_APGAKEY): {
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), 0, 1);
             if (!status) {
-                CSR_MSR_STR("apgakeyhi_el1", ((csr_pair_t*)(data))->high);
-                CSR_MSR_STR("apgakeylo_el1", ((csr_pair_t*)(data))->low);
+                pair = (csr_pair_t*)(data);
+                CSR_MSR_STR("apgakeyhi_el1", pair->high);
+                CSR_MSR_STR("apgakeylo_el1", pair->low);
             }
             break;
         }
         default: {
+            // Trying to set read-only registers ends up here.
             status = EINVAL;
             break;
         }
