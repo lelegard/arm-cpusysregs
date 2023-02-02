@@ -32,10 +32,10 @@ int main(int argc, char* argv[])
 
         csr_pair_t reg;
 
-        // If the CPU does not have the required feature for this register, or cannot read it, skip it.
-        if (!(desc.feature & RegView::READ) ||
-            ((desc.feature & RegView::NEED_PAC) && !regaccess.hasPAC()) ||
-            ((desc.feature & RegView::NEED_PACGA) && !regaccess.hasPACGA()) ||
+        // If the CPU does not have the required features for this register, or cannot read it, skip it.
+        if (!(desc.features & RegView::READ) ||
+            ((desc.features & RegView::NEED_PAC) && !regaccess.hasPAC()) ||
+            ((desc.features & RegView::NEED_PACGA) && !regaccess.hasPACGA()) ||
             !regaccess.read(desc.csr_index, reg))
         {
             continue;

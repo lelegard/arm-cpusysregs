@@ -48,7 +48,7 @@ public:
         std::string         name;       // register name
         std::string         section;    // section in Arm arch ref manual
         int                 csr_index;  // CSR_REG_ or CSR_REG2_ value from cpusysregs.h
-        int                 feature;    // required features (bit mask)
+        int                 features;   // required features (bit mask)
         std::list<BitField> fields;     // known bitfields
     };
 

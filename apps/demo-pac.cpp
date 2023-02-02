@@ -16,6 +16,7 @@
 #include "cpusysregs.h"
 #include "strutils.h"
 #include "regaccess.h"
+#include "regview.h"
 
 #include <iostream>
 #include <cstddef>
@@ -23,19 +24,41 @@
 
 
 //----------------------------------------------------------------------------
-// Manipulate the generic key.
+// Manipulate the PAC keys.
 //----------------------------------------------------------------------------
+
+void GetKey(RegAccess& regaccess, const std::string& title, csr_pair_t& key, int key_index)
+{
+    const auto& desc(RegView::getRegister(key_index));
+    if (desc.features & RegView::READ) {
+        regaccess.read(key_index, key);
+        std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+    }
+    else {
+        std::cout << Pad(title, 20) << " Cannot read " << desc.name << " on this CPU" << std::endl;
+    }
+}
+
+void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& key, int key_index)
+{
+    const auto& desc(RegView::getRegister(key_index));
+    if (desc.features & RegView::WRITE) {
+        std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+        regaccess.write(key_index, key);
+    }
+    else {
+        std::cout << Pad(title, 20) << " Cannot write " << desc.name << " on this CPU" << std::endl;
+    }
+}
 
 void GetKeyGA(RegAccess& regaccess, const std::string& title, csr_pair_t& key)
 {
-    regaccess.read(CSR_REG2_APGAKEY, key);
-    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+    GetKey(regaccess, title, key, CSR_REG2_APGAKEY);
 }
 
 void SetKeyGA(RegAccess& regaccess, const std::string& title, const csr_pair_t& key)
 {
-    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
-    regaccess.write(CSR_REG2_APGAKEY, key);
+    SetKey(regaccess, title, key, CSR_REG2_APGAKEY);
 }
 
 void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
@@ -45,21 +68,14 @@ void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
     std::cout << Pad(title, 20) << " " << ToString(value) << " -> " << ToString(result) << std::endl;
 }
 
-
-//----------------------------------------------------------------------------
-// Manipulate the data pointer key B.
-//----------------------------------------------------------------------------
-
 void GetKeyDB(RegAccess& regaccess, const std::string& title, csr_pair_t& key)
 {
-    regaccess.read(CSR_REG2_APDBKEY, key);
-    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
+    GetKey(regaccess, title, key, CSR_REG2_APDBKEY);
 }
 
 void SetKeyDB(RegAccess& regaccess, const std::string& title, const csr_pair_t& key)
 {
-    std::cout << Pad(title, 20) << " " << ToString(key) << std::endl;
-    regaccess.write(CSR_REG2_APDBKEY, key);
+    SetKey(regaccess, title, key, CSR_REG2_APDBKEY);
 }
 
 void TestDB(const std::string& title, csr_u64_t& value, csr_u64_t modifier)
