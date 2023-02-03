@@ -160,21 +160,18 @@ void ListRegisters(const Options& opt, std::ostream& out)
 
 void ReadRegister(const Options& opt, std::ostream& out)
 {
-    const auto& desc(RegView::getRegister(opt.read_register));
+    RegAccess regaccess(false, true);
 
+    const auto& desc(RegView::getRegister(opt.read_register));
     if (!desc.isValid()) {
         opt.fatal("unknown register " + opt.read_register + ", try -l");
     }
-    if (!opt.force && !(desc.features & RegView::READ)) {
+    if (!opt.force && !desc.canRead(regaccess)) {
         opt.fatal("register " + opt.read_register + " is not readable on this CPU, try -f at your own risks");        
     }
 
-    RegAccess regaccess;
     csr_pair_t reg;
-    if (!regaccess.isOpen()) {
-        regaccess.printLastError(opt.command);
-    }
-    else if (!regaccess.read(desc.csr_index, reg)) {
+    if (!regaccess.read(desc.csr_index, reg)) {
         regaccess.printLastError(opt.command + ": error reading " + opt.read_register);
     }
     else if (opt.verbose) {
@@ -200,23 +197,19 @@ void ReadRegister(const Options& opt, std::ostream& out)
 
 void WriteRegister(const Options& opt, std::ostream& out)
 {
-    const auto& desc(RegView::getRegister(opt.write_register));
+    RegAccess regaccess(false, true);
 
+    const auto& desc(RegView::getRegister(opt.write_register));
     if (!desc.isValid()) {
         opt.fatal("unknown register " + opt.write_register + ", try -l");
     }
-    if (!opt.force && !(desc.features & RegView::WRITE)) {
+    if (!opt.force && !desc.canWrite(regaccess)) {
         opt.fatal("register " + opt.write_register + " is not writeable on this CPU, try -f at your own risks");        
     }
     if (opt.verbose) {
         out << opt.command << ": writing " << desc.hexa(opt.write_value) << " " << desc.name << std::endl;
     }
-
-    RegAccess regaccess;
-    if (!regaccess.isOpen()) {
-        regaccess.printLastError(opt.command);
-    }
-    else if (!regaccess.write(desc.csr_index, opt.write_value)) {
+    if (!regaccess.write(desc.csr_index, opt.write_value)) {
         regaccess.printLastError(opt.command + ": error writing " + opt.write_register);
     }
 }
@@ -236,14 +229,12 @@ void ReadAllRegisters(const Options& opt, std::ostream& out)
         out << std::endl;
     }
 
+    // Loop on all registers.
     RegAccess regaccess(true, true);
     for (const auto& desc : RegView::AllRegisters) {
         csr_pair_t reg;
-        if ((desc.features & RegView::READ) &&
-            (!(desc.features & RegView::NEED_PAC) || regaccess.hasPAC()) &&
-            (!(desc.features & RegView::NEED_PACGA) || regaccess.hasPACGA()) &&
-            regaccess.read(desc.csr_index, reg))
-        {
+        // Check if this register is readable and compatible with the CPU features.
+        if (desc.canRead(regaccess) && regaccess.read(desc.csr_index, reg)) {
             if (opt.verbose) {
                 out << std::endl;
                 desc.display(out, reg);
@@ -269,6 +260,7 @@ void FeaturesSummary(const Options& opt, std::ostream& out)
         << ", PACGA: " << YesNo(regaccess.hasPACGA())
         << ", BTI: " << YesNo(regaccess.hasBTI())
         << ", RME: " << YesNo(regaccess.hasRME())
+        << ", CSV2_2: " << YesNo(regaccess.hasCSV2_2())
         << std::endl << std::endl;
 }
 

@@ -20,6 +20,7 @@
 
 static void* _ctlref = NULL;
 static int stop_pending = 0;
+static int cpu_features = 0;
 
 // Functions in this module.
 
@@ -47,6 +48,8 @@ __private_extern__ int _kext_apple_cc = __APPLE_CC__;
 
 static kern_return_t csr_start(kmod_info_t* kinfo, void* data)
 {
+    // Get CPU features we may need later.
+    cpu_features = csr_get_cpu_features();
     stop_pending = 0;
 
     // Register the control interface of this kernel extension.

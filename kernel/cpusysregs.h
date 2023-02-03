@@ -62,6 +62,10 @@ typedef struct {
 // based on the values of the ID_AA64PFR0_EL1 system register.
 #define CSR_RME_VERSION(pfr0) (((pfr0) >> 52) & 0x0F)
 
+// This macro checks if CSV2_2 (Cache Speculation Variant 2_2) is supported,
+// based on the values of the ID_AA64PFR0_EL1 system register.
+#define CSR_HAS_CSV2_2(pfr0) ((((pfr0) >> 56) & 0x0F) >= 2)
+
 
 //----------------------------------------------------------------------------
 // List of system registers which are handled by the kernel module.
@@ -185,6 +189,8 @@ typedef struct {
 #define CSR_APDBKEYHI_EL1 CSR_SREG(3, 0, 2, 2, 3)
 #define CSR_APGAKEYLO_EL1 CSR_SREG(3, 0, 2, 3, 0)
 #define CSR_APGAKEYHI_EL1 CSR_SREG(3, 0, 2, 3, 1)
+#define CSR_SCXTNUM_EL0   CSR_SREG(3, 3, 13, 0, 7)
+#define CSR_SCXTNUM_EL1   CSR_SREG(3, 0, 13, 0, 7)
 
 //
 // Standard stringification macro (not so standard since we must define it again and again).
@@ -234,5 +240,35 @@ typedef struct {
 
 #define CSR_MRS_NUM(result,sreg) \
     asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+
+
+//----------------------------------------------------------------------------
+// Define a few CPU features which are required to access some registers.
+// This code in used in the kernel only (Linux or macOS).
+//----------------------------------------------------------------------------
+
+#if defined(KERNEL)
+
+#define FEAT_PAC    0x0001
+#define FEAT_PACGA  0x0002
+#define FEAT_BTI    0x0004
+#define FEAT_RME    0x0008
+#define FEAT_CSV2_2 0x0010
+
+static inline __attribute__((always_inline)) int csr_get_cpu_features(void)
+{
+    csr_u64_t pfr0, pfr1, isar1, isar2;
+    CSR_MRS_STR(pfr0,  "id_aa64pfr0_el1");
+    CSR_MRS_STR(pfr1,  "id_aa64pfr1_el1");
+    CSR_MRS_STR(isar1, "id_aa64isar1_el1");
+    CSR_MRS_STR(isar2, "id_aa64isar2_el1");
+    return (CSR_HAS_PAC(isar1, isar2) ? FEAT_PAC : 0) |
+           (CSR_HAS_PACGA(isar1, isar2) ? FEAT_PACGA : 0) |
+           (CSR_HAS_BTI(pfr1) ? FEAT_BTI : 0) |
+           (CSR_HAS_RME(pfr0) ? FEAT_RME : 0) |
+           (CSR_HAS_CSV2_2(pfr0) ? FEAT_CSV2_2 : 0);
+}
+
+#endif // KERNEL
 
 #endif // CPUSYSREGS_H

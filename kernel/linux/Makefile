@@ -18,7 +18,7 @@ obj-m += cpusysregs.o
 
 # Kernel interface header is upstairs.
 cpusysregs.o: ../cpusysregs.h
-ccflags-y := -I$(PWD)/..
+ccflags-y := -DKERNEL -I$(PWD)/..
 
 # Path to the kernel build utilities.
 KBUILD=/lib/modules/$(shell uname -r)/build/

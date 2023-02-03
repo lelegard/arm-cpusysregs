@@ -11,6 +11,7 @@
 #pragma once
 
 #include "cpusysregs.h"
+#include "regaccess.h"
 #include <ostream>
 #include <string>
 #include <list>
@@ -38,10 +39,11 @@ public:
 
     // Define the properties and condition of existence of a register.
     enum {
-        READ       = 0x0001,  // readable register
-        WRITE      = 0x0002,  // writeable register
-        NEED_PAC   = 0x0004,  // exist only with PAC
-        NEED_PACGA = 0x0008,  // exist only with PACGA
+        READ        = 0x0001,  // readable register
+        WRITE       = 0x0002,  // writeable register
+        NEED_PAC    = 0x0004,  // exist only with PAC
+        NEED_PACGA  = 0x0008,  // exist only with PACGA
+        NEED_CSV2_2 = 0x0010,  // exist only with CSV2_2
     };
 
     // Description of one register with bitfields.
@@ -70,6 +72,11 @@ public:
         // Display a detailed descriptions of one register value.
         void display(std::ostream& out, csr_u64_t value) const;
         void display(std::ostream& out, const csr_pair_t& value) const;
+
+        // Check if the register is supported on this CPU.
+        bool isSupported(RegAccess&) const;
+        bool canRead(RegAccess&) const;
+        bool canWrite(RegAccess&) const;
     };
 
     // This value of 'csr_index' fields indicates an invalid register description.

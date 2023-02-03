@@ -190,10 +190,10 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "TPIDR_EL1", "D17.2.140", CSR_REG_TPIDR_EL1, READ | WRITE, {}
     },
     {
-        "SCXTNUM_EL0", "D17.2.121", CSR_REG_SCXTNUM_EL0, READ | WRITE, {}
+        "SCXTNUM_EL0", "D17.2.121", CSR_REG_SCXTNUM_EL0, READ | WRITE | NEED_CSV2_2, {}
     },
     {
-        "SCXTNUM_EL1", "D17.2.122", CSR_REG_SCXTNUM_EL1, READ | WRITE, {}
+        "SCXTNUM_EL1", "D17.2.122", CSR_REG_SCXTNUM_EL1, READ | WRITE | NEED_CSV2_2, {}
     },
     {
         "SCTLR_EL1", "D17.2.118", CSR_REG_SCTLR, READ | WRITE,
@@ -293,6 +293,9 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_PACGA) {
         res.push_back("need PACGA");
+    }
+    if (features & RegView::NEED_CSV2_2) {
+        res.push_back("need CSV2_2");
     }
     return Join(res, ", ");
 }
@@ -399,4 +402,26 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
                 << " " << Format("0x%0*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
         }
     }
+}
+
+
+//----------------------------------------------------------------------------
+// Check if the register is supported on this CPU.
+//----------------------------------------------------------------------------
+
+bool RegView::Register::isSupported(RegAccess& ra) const
+{
+    return (!(features & NEED_PAC) || ra.hasPAC()) &&
+           (!(features & NEED_PACGA) || ra.hasPACGA()) &&
+           (!(features & NEED_CSV2_2) || ra.hasCSV2_2());
+}
+
+bool RegView::Register::canRead(RegAccess& ra) const
+{
+    return (features & RegView::READ) && isSupported(ra);
+}
+
+bool RegView::Register::canWrite(RegAccess& ra) const
+{
+    return (features & RegView::WRITE) && isSupported(ra);
 }

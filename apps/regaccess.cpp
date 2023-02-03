@@ -114,7 +114,7 @@ bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool e
         ::close(_fd);
         _fd = -1;
     }
-    if (_print_errors) {
+    if (_print_errors || exit_on_error) {
         printLastError();
     }
     if (exit_on_error) {
@@ -253,4 +253,9 @@ bool RegAccess::hasRME()
 int RegAccess::versionRME()
 {
     return loadCache() ? CSR_RME_VERSION(_aa64pfr0) : 0;
+}
+
+bool RegAccess::hasCSV2_2()
+{
+    return loadCache() && CSR_HAS_CSV2_2(_aa64pfr0);
 }

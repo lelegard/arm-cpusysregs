@@ -57,6 +57,7 @@ public:
     bool hasBTI();
     bool hasRME();
     int versionRME();
+    bool hasCSV2_2();
 
 private:
     int         _fd;            // file descriptor to access the kernel module
