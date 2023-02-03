@@ -180,121 +180,80 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
     csr_pair_t reg;
 
     switch (cmd) {
-        case CSR_CMD_GET_REG(CSR_REG_AA64PFR0): {
-            CSR_MRS_STR(reg.low, "id_aa64pfr0_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
+
+#define _GET_SINGLE(index, name)                      \
+        case CSR_CMD_GET_REG(index): {                \
+            CSR_MRS_STR(reg.low, name);               \
+            status = csr_return_reg(reg.low, param);  \
+            break;                                    \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64PFR1): {
-            CSR_MRS_STR(reg.low, "id_aa64pfr1_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
+#define _GET_PAIR(index, num_high, num_low, need_pac, need_pacga)  \
+        case CSR_CMD_GET_REG2(index): {                            \
+            status = csr_check_pac((need_pac), (need_pacga));      \
+            if (!status) {                                         \
+                CSR_MRS_NUM(reg.high, num_high);                   \
+                CSR_MRS_NUM(reg.low, num_low);                     \
+                status = csr_return_pair(&reg, param);             \
+            }                                                      \
+            break;                                                 \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR0): {
-            CSR_MRS_STR(reg.low, "id_aa64isar0_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
+#define _SET_SINGLE(index, name)                      \
+        case CSR_CMD_SET_REG(index): {                \
+            status = csr_fetch_reg(&reg.low, param);  \
+            if (!status) {                            \
+                CSR_MSR_STR(name, reg.low);           \
+            }                                         \
+            break;                                    \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR1): {
-            CSR_MRS_STR(reg.low, "id_aa64isar1_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
+#define _SET_PAIR(index, num_high, num_low, need_pac, need_pacga)            \
+        case CSR_CMD_SET_REG2(index): {                                      \
+            status = csr_fetch_pair(&reg, param, (need_pac), (need_pacga));  \
+            if (!status) {                                                   \
+                CSR_MSR_NUM(num_high, reg.high);                             \
+                CSR_MSR_NUM(num_low, reg.low);                               \
+            }                                                                \
+            break;                                                           \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR2): {
-            CSR_MRS_STR(reg.low, "id_aa64isar2_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
-        }
-        case CSR_CMD_GET_REG(CSR_REG_TCR): {
-            CSR_MRS_STR(reg.low, "tcr_el1");
-            status = csr_return_reg(reg.low, param);
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APIAKEY): {
-            status = csr_check_pac(1, 0);
-            if (!status) {
-                CSR_MRS_NUM(reg.high, CSR_APIAKEYHI_EL1);
-                CSR_MRS_NUM(reg.low,  CSR_APIAKEYLO_EL1);
-                status = csr_return_pair(&reg, param);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APIAKEY): {
-            status = csr_fetch_pair(&reg, param, 1, 0);
-            if (!status) {
-                CSR_MSR_NUM(CSR_APIAKEYHI_EL1, reg.high);
-                CSR_MSR_NUM(CSR_APIAKEYLO_EL1, reg.low);
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APIBKEY): {
-            status = csr_check_pac(1, 0);
-            if (!status) {
-                CSR_MRS_NUM(reg.high, CSR_APIBKEYHI_EL1);
-                CSR_MRS_NUM(reg.low,  CSR_APIBKEYLO_EL1);
-                status = csr_return_pair(&reg, param);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APIBKEY): {
-            status = csr_fetch_pair(&reg, param, 1, 0);
-            if (!status) {
-                CSR_MSR_NUM(CSR_APIBKEYHI_EL1, reg.high);
-                CSR_MSR_NUM(CSR_APIBKEYLO_EL1, reg.low);
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APDAKEY): {
-            status = csr_check_pac(1, 0);
-            if (!status) {
-                CSR_MRS_NUM(reg.high, CSR_APDAKEYHI_EL1);
-                CSR_MRS_NUM(reg.low,  CSR_APDAKEYLO_EL1);
-                status = csr_return_pair(&reg, param);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APDAKEY): {
-            status = csr_fetch_pair(&reg, param, 1, 0);
-            if (!status) {
-                CSR_MSR_NUM(CSR_APDAKEYHI_EL1, reg.high);
-                CSR_MSR_NUM(CSR_APDAKEYLO_EL1, reg.low);
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APDBKEY): {
-            status = csr_check_pac(1, 0);
-            if (!status) {
-                CSR_MRS_NUM(reg.high, CSR_APDBKEYHI_EL1);
-                CSR_MRS_NUM(reg.low,  CSR_APDBKEYLO_EL1);
-                status = csr_return_pair(&reg, param);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APDBKEY): {
-            status = csr_fetch_pair(&reg, param, 1, 0);
-            if (!status) {
-                CSR_MSR_NUM(CSR_APDBKEYHI_EL1, reg.high);
-                CSR_MSR_NUM(CSR_APDBKEYLO_EL1, reg.low);
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APGAKEY): {
-            status = csr_check_pac(0, 1);
-            if (!status) {
-                CSR_MRS_NUM(reg.high, CSR_APGAKEYHI_EL1);
-                CSR_MRS_NUM(reg.low,  CSR_APGAKEYLO_EL1);
-                status = csr_return_pair(&reg, param);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APGAKEY): {
-            status = csr_fetch_pair(&reg, param, 0, 1);
-            if (!status) {
-                CSR_MSR_NUM(CSR_APGAKEYHI_EL1, reg.high);
-                CSR_MSR_NUM(CSR_APGAKEYLO_EL1, reg.low);
-            }
-            break;
-        }
+
+        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1")
+        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1")
+        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1")
+        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1")
+        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1")
+        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1")
+        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
+        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
+        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
+        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+
+        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
+        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
+        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
+        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+
+        _GET_PAIR(CSR_REG2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, 1, 0)
+        _GET_PAIR(CSR_REG2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, 1, 0)
+        _GET_PAIR(CSR_REG2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, 1, 0)
+        _GET_PAIR(CSR_REG2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, 1, 0)
+        _GET_PAIR(CSR_REG2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, 0, 1)
+  
+        _SET_PAIR(CSR_REG2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, 1, 0)
+        _SET_PAIR(CSR_REG2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, 1, 0)
+        _SET_PAIR(CSR_REG2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, 1, 0)
+        _SET_PAIR(CSR_REG2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, 1, 0)
+        _SET_PAIR(CSR_REG2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, 0, 1)
+
+#undef _SET_PAIR
+#undef _GET_PAIR
+#undef _GET_SINGLE
+
         default: {
             status = -EINVAL;
             break;

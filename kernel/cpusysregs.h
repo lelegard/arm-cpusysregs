@@ -73,18 +73,27 @@ typedef struct {
 #define _CSR_REG2_BASE     0x0100
 #define _CSR_REG_MASK      0x00FF
 
-#define CSR_REG_AA64PFR0   (_CSR_REG_BASE | 0x00)   // AArch64 Processor Feature registers 0 (read-only)
-#define CSR_REG_AA64PFR1   (_CSR_REG_BASE | 0x01)   // AArch64 Processor Feature registers 1 (read-only)
-#define CSR_REG_AA64ISAR0  (_CSR_REG_BASE | 0x02)   // AArch64 Instruction Set Attribute Register 0 (read-only)
-#define CSR_REG_AA64ISAR1  (_CSR_REG_BASE | 0x03)   // AArch64 Instruction Set Attribute Register 1 (read-only)
-#define CSR_REG_AA64ISAR2  (_CSR_REG_BASE | 0x04)   // AArch64 Instruction Set Attribute Register 2 (read-only)
-#define CSR_REG_TCR        (_CSR_REG_BASE | 0x05)   // Translation Control Register (read-only)
+#define CSR_REG_AA64PFR0     (_CSR_REG_BASE | 0x00)   // AArch64 Processor Feature registers 0 (read-only)
+#define CSR_REG_AA64PFR1     (_CSR_REG_BASE | 0x01)   // AArch64 Processor Feature registers 1 (read-only)
+#define CSR_REG_AA64ISAR0    (_CSR_REG_BASE | 0x02)   // AArch64 Instruction Set Attribute Register 0 (read-only)
+#define CSR_REG_AA64ISAR1    (_CSR_REG_BASE | 0x03)   // AArch64 Instruction Set Attribute Register 1 (read-only)
+#define CSR_REG_AA64ISAR2    (_CSR_REG_BASE | 0x04)   // AArch64 Instruction Set Attribute Register 2 (read-only)
+#define CSR_REG_TCR          (_CSR_REG_BASE | 0x05)   // Translation Control Register (read-only)
+#define CSR_REG_MIDR         (_CSR_REG_BASE | 0x06)   // Main ID Register (read-only)
+#define CSR_REG_MPIDR        (_CSR_REG_BASE | 0x07)   // Multiprocessor Affinity Register (read-only)
+#define CSR_REG_REVIDR       (_CSR_REG_BASE | 0x08)   // Revision ID Register (read-only)
+#define CSR_REG_TPIDRRO_EL0  (_CSR_REG_BASE | 0x09)   // EL0 Read-Only Software Thread ID Register (R/W at EL1)
+#define CSR_REG_TPIDR_EL0    (_CSR_REG_BASE | 0x0A)   // EL0 Read/Write Software Thread ID Register
+#define CSR_REG_TPIDR_EL1    (_CSR_REG_BASE | 0x0C)   // EL1 Software Thread ID Register
+#define CSR_REG_SCXTNUM_EL0  (_CSR_REG_BASE | 0x0D)   // EL0 Read/Write Software Context Number
+#define CSR_REG_SCXTNUM_EL1  (_CSR_REG_BASE | 0x0E)   // EL1 Read/Write Software Context Number
+#define CSR_REG_SCTLR        (_CSR_REG_BASE | 0x0F)   // System Control Register
 
-#define CSR_REG2_APIAKEY   (_CSR_REG2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
-#define CSR_REG2_APIBKEY   (_CSR_REG2_BASE | 0x01)  // Pointer Authentication Key B for Instruction
-#define CSR_REG2_APDAKEY   (_CSR_REG2_BASE | 0x02)  // Pointer Authentication Key A for Data
-#define CSR_REG2_APDBKEY   (_CSR_REG2_BASE | 0x03)  // Pointer Authentication Key B for Data
-#define CSR_REG2_APGAKEY   (_CSR_REG2_BASE | 0x04)  // Pointer Authentication Generic Key
+#define CSR_REG2_APIAKEY     (_CSR_REG2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
+#define CSR_REG2_APIBKEY     (_CSR_REG2_BASE | 0x01)  // Pointer Authentication Key B for Instruction
+#define CSR_REG2_APDAKEY     (_CSR_REG2_BASE | 0x02)  // Pointer Authentication Key A for Data
+#define CSR_REG2_APDBKEY     (_CSR_REG2_BASE | 0x03)  // Pointer Authentication Key B for Data
+#define CSR_REG2_APGAKEY     (_CSR_REG2_BASE | 0x04)  // Pointer Authentication Generic Key
 
 // Check if a register id is a single register or a pair.
 #define CSR_REG_IS_SINGLE(reg) (((reg) & ~_CSR_REG_MASK) == _CSR_REG_BASE)
@@ -197,6 +206,7 @@ typedef struct {
     ".equ .csr_gpr_x\\num, \\num\n" \
     ".equ .csr_gpr_w\\num, \\num\n" \
     ".endr\n"                       \
+    ".equ .csr_gpr_sp, 31\n"        \
     ".equ .csr_gpr_xzr, 31\n"       \
     ".equ .csr_gpr_wzr, 31\n"
 

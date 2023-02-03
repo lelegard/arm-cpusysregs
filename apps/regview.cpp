@@ -156,6 +156,108 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "MIDR_EL1", "D17.2.100", CSR_REG_MIDR, READ,
+        {
+            {"Implementer",  31, 24, {{0x41, "Arm"}, {0x61, "Apple"}, {0xC0, "Ampere"}}},
+            {"Variant",      23, 20, {}},
+            {"Architecture", 19, 16, {{1, "v4"}, {2, "v4T"}, {3, "v5"}, {4, "v5T"}, {5, "v5TE"},
+                                      {6, "v5TEJ"}, {7, "v6"}, {15, "By features"}}},
+            {"PartNum",      15,  4, {}},
+            {"Revision",      3,  0, {}},
+        }
+    },
+    {
+        "MPIDR_EL1", "D17.2.101", CSR_REG_MPIDR, READ,
+        {
+            {"Aff3", 39, 32, {}},
+            {"U",    30, 30, {{0, "Multiprocessor"}, {1, "Uniprocessor"}}},
+            {"MT",   24, 24, {{0, "Independent perf."}, {1, "Interdependent perf."}}},
+            {"Aff2", 23, 16, {}},
+            {"Aff1", 15,  8, {}},
+            {"Aff0",  7,  0, {}},
+        }
+    },
+    {
+        "REVIDR_EL1", "D17.2.106", CSR_REG_REVIDR, READ, {}
+    },
+    {
+        "TPIDRRO_EL0", "D17.2.143", CSR_REG_TPIDRRO_EL0, READ | WRITE, {}
+    },
+    {
+        "TPIDR_EL0", "D17.2.139", CSR_REG_TPIDR_EL0, READ | WRITE, {}
+    },
+    {
+        "TPIDR_EL1", "D17.2.140", CSR_REG_TPIDR_EL1, READ | WRITE, {}
+    },
+    {
+        "SCXTNUM_EL0", "D17.2.121", CSR_REG_SCXTNUM_EL0, READ | WRITE, {}
+    },
+    {
+        "SCXTNUM_EL1", "D17.2.122", CSR_REG_SCXTNUM_EL1, READ | WRITE, {}
+    },
+    {
+        "SCTLR_EL1", "D17.2.118", CSR_REG_SCTLR, READ | WRITE,
+        {
+            {"TIDCP",     63, 63, {{0, "none"}, {1, "trap EL0 access to system registers"}}},
+            {"SPINTMASK", 62, 62, {{0, "none"}, {1, "SPINTMASK"}}},
+            {"NMI",       61, 61, {{0, "none"}, {1, "NMI"}}},
+            {"EnTP2",     60, 60, {{0, "none"}, {1, "EnTP2"}}},
+            {"EPAN",      57, 57, {{0, "none"}, {1, "EPAN"}}},
+            {"EnALS",     56, 56, {{0, "none"}, {1, "EnALS"}}},
+            {"EnAS0",     55, 55, {{0, "none"}, {1, "EnAS0"}}},
+            {"EnASR",     54, 54, {{0, "none"}, {1, "EnASR"}}},
+            {"TME",       53, 53, {{0, "none"}, {1, "TME"}}},
+            {"TME0",      52, 52, {{0, "none"}, {1, "TME0"}}},
+            {"TMT",       51, 51, {{0, "none"}, {1, "TMT"}}},
+            {"TMT0",      50, 50, {{0, "none"}, {1, "TMT0"}}},
+            {"TWEDEL",    49, 46, {{0, "none"}, {1, "TWEDEL"}}},
+            {"TWEDEn",    45, 45, {{0, "none"}, {1, "TWEDEn"}}},
+            {"DSSBS",     44, 44, {{0, "none"}, {1, "DSSBS"}}},
+            {"ATA",       43, 43, {{0, "none"}, {1, "ATA"}}},
+            {"ATA0",      42, 42, {{0, "none"}, {1, "ATA0"}}},
+            {"TCF",       41, 40, {{0, "none"}, {1, "TCF"}}},
+            {"TCF0",      39, 38, {{0, "none"}, {1, "TCF0"}}},
+            {"ITFSB",     37, 37, {{0, "none"}, {1, "ITFSB"}}},
+            {"BT1",       36, 36, {{0, "BTI at EL1: PACIxSP is compatible with BTYPE:11"},
+                                   {1, "BTI at EL1: PACIxSP NOT compatible with BTYPE:11"}}},
+            {"BT0",       35, 35, {{0, "BTI at EL0: PACIxSP is compatible with BTYPE:11"},
+                                   {1, "BTI at EL0: PACIxSP NOT compatible with BTYPE:11"}}},
+            {"MSCEn",     33, 33, {{0, "none"}, {1, "MSCEn"}}},
+            {"CMOW",      32, 33, {{0, "none"}, {1, "CMOW"}}},
+            {"EnIA",      31, 31, {{0, "PACIA key NOT enabled"}, {1, "PACIA key enabled"}}},
+            {"EnIB",      30, 30, {{0, "PACIB key NOT enabled"}, {1, "PACIB key enabled"}}},
+            {"LSMAOE",    29, 29, {{0, "none"}, {1, "LSMAOE"}}},
+            {"nTLSMD",    28, 28, {{0, "none"}, {1, "nTLSMD"}}},
+            {"EnDA",      27, 27, {{0, "PACDA key NOT enabled"}, {1, "PACDA key enabled"}}},
+            {"UCI",       26, 26, {{0, "none"}, {1, "UCI"}}},
+            {"EE",        25, 25, {{0, "TT EL1 is little endian"}, {1, "TT EL1 is big endian"}}},
+            {"E0E",       24, 24, {{0, "EL0 data access is little endian"}, {1, "EL0 data access is big endian"}}},
+            {"SPAN",      23, 23, {{0, "none"}, {1, "SPAN"}}},
+            {"EIS",       22, 22, {{0, "none"}, {1, "EIS"}}},
+            {"IESB",      21, 21, {{0, "none"}, {1, "IESB"}}},
+            {"TSCTX",     20, 20, {{0, "none"}, {1, "TSCTX"}}},
+            {"WXN",       19, 19, {{0, "none"}, {1, "WXN"}}},
+            {"nTWE",      18, 18, {{0, "none"}, {1, "nTWE"}}},
+            {"nTWI",      16, 16, {{0, "none"}, {1, "nTWI"}}},
+            {"UCT",       15, 15, {{0, "none"}, {1, "UCT"}}},
+            {"DZE",       14, 14, {{0, "none"}, {1, "DZE"}}},
+            {"EnDB",      13, 13, {{0, "PACDB key NOT enabled"}, {1, "PACDB key enabled"}}},
+            {"I",         12, 12, {{0, "none"}, {1, "I"}}},
+            {"EOS",       11, 11, {{0, "none"}, {1, "EOS"}}},
+            {"EnRCTX",    10, 10, {{0, "none"}, {1, "EnRCTX"}}},
+            {"UMA",        9,  9, {{0, "none"}, {1, "UMA"}}},
+            {"SED",        8,  8, {{0, "none"}, {1, "SED"}}},
+            {"ITD",        7,  7, {{0, "none"}, {1, "ITD"}}},
+            {"nAA",        6,  6, {{0, "none"}, {1, "nAA"}}},
+            {"CP15BEN",    5,  5, {{0, "none"}, {1, "CP15BEN"}}},
+            {"SA0",        4,  4, {{0, "none"}, {1, "SA0"}}},
+            {"SA",         3,  3, {{0, "none"}, {1, "SA"}}},
+            {"C",          2,  2, {{0, "none"}, {1, "C"}}},
+            {"A",          1,  1, {{0, "none"}, {1, "A"}}},
+            {"M",          0,  0, {{0, "none"}, {1, "M"}}},
+        }
+    },
+    {
         "APIAKEY_EL1", "D17.2.21/22", CSR_REG2_APIAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
@@ -294,7 +396,7 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
             // Print the bitfield description.
             const int hexwidth = (bf.msb - bf.lsb) / 4 + 1;
             out << "  " << Pad(bf.name + ":", name_width + 1, ' ')
-                << " " << Format("0x%*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
+                << " " << Format("0x%0*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
         }
     }
 }

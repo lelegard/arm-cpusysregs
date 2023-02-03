@@ -78,13 +78,6 @@ void SetKeyDB(RegAccess& regaccess, const std::string& title, const csr_pair_t& 
     SetKey(regaccess, title, key, CSR_REG2_APDBKEY);
 }
 
-void TestDB(const std::string& title, csr_u64_t& value, csr_u64_t modifier)
-{
-    csr_u64_t result = 0x1111111111111111;
-    asm("pacga %[res], %[val], %[mod]" : [res] "+r" (result) : [val] "r" (value), [mod] "r" (modifier));
-    std::cout << Pad(title, 20) << " " << ToHexa(value) << " -> " << ToHexa(result) << std::endl;
-}
-
 
 //----------------------------------------------------------------------------
 // Program entry point

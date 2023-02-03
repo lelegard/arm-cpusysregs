@@ -194,93 +194,51 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
     csr_pair_t* pair = NULL;
 
     switch (opt) {
-        case CSR_CMD_GET_REG(CSR_REG_AA64PFR0): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr0_el1");
-            }
-            break;
+
+#define _GET_SINGLE(index, name)                                            \
+        case CSR_CMD_GET_REG(index): {                                      \
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);  \
+            if (!status && data) {                                          \
+                CSR_MRS_STR(*(csr_u64_t*)(data), name);                     \
+            }                                                               \
+            break;                                                          \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64PFR1): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64pfr1_el1");
-            }
-            break;
+#define _GET_PAIR(index, name_high, name_low, need_pac, need_pacga)  \
+        case CSR_CMD_GET_REG2(index): {                              \
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), (need_pac), (need_pacga)); \
+            if (!status && data) {                                   \
+                pair = (csr_pair_t*)(data);                          \
+                CSR_MRS_STR(pair->high, name_high);                  \
+                CSR_MRS_STR(pair->low,  name_low);                   \
+            }                                                        \
+            break;                                                   \
         }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR0): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar0_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR1): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar1_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG(CSR_REG_AA64ISAR2): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "id_aa64isar2_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG(CSR_REG_TCR): {
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);
-            if (!status && data) {
-                CSR_MRS_STR(*(csr_u64_t*)(data), "tcr_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APIAKEY): {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apiakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apiakeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APIBKEY): {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apibkeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apibkeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APDAKEY): {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apdakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apdakeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APDBKEY): {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status && data) {
-                pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apdbkeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apdbkeylo_el1");
-            }
-            break;
-        }
-        case CSR_CMD_GET_REG2(CSR_REG2_APGAKEY): {
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), 0, 1);
-            if (!status && data) {
-                pair = (csr_pair_t*)(data);
-                CSR_MRS_STR(pair->high, "apgakeyhi_el1");
-                CSR_MRS_STR(pair->low,  "apgakeylo_el1");
-            }
-            break;
-        }
+
+        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1")
+        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1")
+        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1")
+        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1")
+        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1")
+        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1")
+        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1")
+        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
+        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
+        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
+        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+
+        _GET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", 1, 0)
+        _GET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", 1, 0)
+        _GET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", 1, 0)
+        _GET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", 1, 0)
+        _GET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", 0, 1)
+
+#undef _GET_PAIR
+#undef _GET_SINGLE
+
         default: {
             status = EINVAL;
             break;
@@ -300,51 +258,42 @@ static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
     csr_pair_t* pair = NULL;
 
     switch (opt) {
-        case CSR_CMD_SET_REG2(CSR_REG2_APIAKEY): {
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status) {
-                pair = (csr_pair_t*)(data);
-                CSR_MSR_STR("apiakeyhi_el1", pair->high);
-                CSR_MSR_STR("apiakeylo_el1", pair->low);
-            }
-            break;
+
+#define _SET_SINGLE(index, name)  \
+        case CSR_CMD_SET_REG2(index): {                             \
+            status = csr_check_setopt(data, len, sizeof(csr_u64_t), 0, 0); \
+            if (!status) {                                           \
+                CSR_MSR_STR(name, *(csr_u64_t*)(data));              \
+            }                                                        \
+            break;                                                   \
         }
-        case CSR_CMD_SET_REG2(CSR_REG2_APIBKEY): {
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status) {
-                pair = (csr_pair_t*)(data);
-                CSR_MSR_STR("apibkeyhi_el1", pair->high);
-                CSR_MSR_STR("apibkeylo_el1", pair->low);
-            }
-            break;
+#define _SET_PAIR(index, name_high, name_low, need_pac, need_pacga)  \
+        case CSR_CMD_SET_REG2(index): {                              \
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), (need_pac), (need_pacga)); \
+            if (!status) {                                           \
+                pair = (csr_pair_t*)(data);                          \
+                CSR_MSR_STR(name_high, pair->high);                  \
+                CSR_MSR_STR(name_low, pair->low);                    \
+            }                                                        \
+            break;                                                   \
         }
-        case CSR_CMD_SET_REG2(CSR_REG2_APDAKEY): {
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status) {
-                pair = (csr_pair_t*)(data);
-                CSR_MSR_STR("apdakeyhi_el1", pair->high);
-                CSR_MSR_STR("apdakeylo_el1", pair->low);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APDBKEY): {
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 1, 0);
-            if (!status) {
-                pair = (csr_pair_t*)(data);
-                CSR_MSR_STR("apdbkeyhi_el1", pair->high);
-                CSR_MSR_STR("apdbkeylo_el1", pair->low);
-            }
-            break;
-        }
-        case CSR_CMD_SET_REG2(CSR_REG2_APGAKEY): {
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), 0, 1);
-            if (!status) {
-                pair = (csr_pair_t*)(data);
-                CSR_MSR_STR("apgakeyhi_el1", pair->high);
-                CSR_MSR_STR("apgakeylo_el1", pair->low);
-            }
-            break;
-        }
+
+        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
+        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
+        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
+        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+
+        _SET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", 1, 0)
+        _SET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", 1, 0)
+        _SET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", 1, 0)
+        _SET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", 1, 0)
+        _SET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", 0, 1)
+
+#undef _SET_SINGLE
+#undef _SET_PAIR
+
         default: {
             // Trying to set read-only registers ends up here.
             status = EINVAL;
