@@ -132,21 +132,13 @@ static errno_t csr_disconnect(kern_ctl_ref kctlref, u_int32_t unit, void* unitin
 
 
 //----------------------------------------------------------------------------
-// Check presence of PAC and/or PACGA.
+// Check the presence of some CPU features.
 // Return zero if required features are present, an error code otherwise.
 //----------------------------------------------------------------------------
 
-static errno_t csr_check_pac(int need_pac, int need_pacga)
+static inline __attribute__((always_inline)) errno_t csr_check_feature(int features)
 {
-    if (need_pac || need_pacga) {
-        csr_u64_t isar1, isar2;
-        CSR_MRS_STR(isar1, "id_aa64isar1_el1");
-        CSR_MRS_STR(isar2, "id_aa64isar2_el1");
-        if ((need_pac && !CSR_HAS_PAC(isar1, isar2)) || (need_pacga && !CSR_HAS_PACGA(isar1, isar2))) {
-            return ENOTSUP;
-        }
-    }
-    return 0;
+    return features == (features & cpu_features) ? 0 : ENOTSUP;
 }
 
 
@@ -154,7 +146,7 @@ static errno_t csr_check_pac(int need_pac, int need_pacga)
 // Check getsockopt() parameters, update the requested size.
 //----------------------------------------------------------------------------
 
-static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int need_pac, int need_pacga)
+static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int features)
 {
     if (len == NULL) {
         return EFAULT;
@@ -164,7 +156,7 @@ static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int nee
     }
     else {
         *len = retsize;
-        return csr_check_pac(need_pac, need_pacga);
+        return csr_check_feature(features);
     }
 }
 
@@ -173,7 +165,7 @@ static errno_t csr_check_getopt(void* data, size_t* len, size_t retsize, int nee
 // Check setsockopt() parameters.
 //----------------------------------------------------------------------------
 
-static errno_t csr_check_setopt(void* data, size_t len, size_t retsize, int need_pac, int need_pacga)
+static errno_t csr_check_setopt(void* data, size_t len, size_t retsize, int features)
 {
     if (data == NULL) {
         return EFAULT;
@@ -182,7 +174,7 @@ static errno_t csr_check_setopt(void* data, size_t len, size_t retsize, int need
         return EINVAL;
     }
     else {
-        return csr_check_pac(need_pac, need_pacga);
+        return csr_check_feature(features);
     }
 }
 
@@ -198,46 +190,47 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
 
     switch (opt) {
 
-#define _GET_SINGLE(index, name)                                            \
-        case CSR_CMD_GET_REG(index): {                                      \
-            status = csr_check_getopt(data, len, sizeof(csr_u64_t), 0, 0);  \
-            if (!status && data) {                                          \
-                CSR_MRS_STR(*(csr_u64_t*)(data), name);                     \
-            }                                                               \
-            break;                                                          \
+#define _GET_SINGLE(index, name, features)               \
+        case CSR_CMD_GET_REG(index): {                   \
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), (features)); \
+            if (!status && data) {                       \
+                CSR_MRS_STR(*(csr_u64_t*)(data), name);  \
+            }                                            \
+            break;                                       \
         }
-#define _GET_PAIR(index, name_high, name_low, need_pac, need_pacga)  \
-        case CSR_CMD_GET_REG2(index): {                              \
-            status = csr_check_getopt(data, len, sizeof(csr_pair_t), (need_pac), (need_pacga)); \
-            if (!status && data) {                                   \
-                pair = (csr_pair_t*)(data);                          \
-                CSR_MRS_STR(pair->high, name_high);                  \
-                CSR_MRS_STR(pair->low,  name_low);                   \
-            }                                                        \
-            break;                                                   \
+#define _GET_PAIR(index, name_high, name_low, features)  \
+        case CSR_CMD_GET_REG2(index): {                  \
+            status = csr_check_getopt(data, len, sizeof(csr_pair_t), (features)); \
+            if (!status && data) {                       \
+                pair = (csr_pair_t*)(data);              \
+                CSR_MRS_STR(pair->high, name_high);      \
+                CSR_MRS_STR(pair->low,  name_low);       \
+            }                                            \
+            break;                                       \
         }
 
-        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1")
-        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1")
-        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1")
-        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1")
-        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1")
-        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1")
-        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1")
-        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1")
-        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1")
-        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
-        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
-        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
-        _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
-        _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
-        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1", 0)
+        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1", 0)
+        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1", 0)
+        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1", 0)
+        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1", 0)
+        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1", 0)
+        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1", 0)
+        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1", 0)
+        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1", 0)
+        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
+        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
+        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
 
-        _GET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", 1, 0)
-        _GET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", 1, 0)
-        _GET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", 1, 0)
-        _GET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", 1, 0)
-        _GET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", 0, 1)
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
+        _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
+
+        _GET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
 
 #undef _GET_PAIR
 #undef _GET_SINGLE
@@ -262,37 +255,38 @@ static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
 
     switch (opt) {
 
-#define _SET_SINGLE(index, name)  \
-        case CSR_CMD_SET_REG2(index): {                             \
-            status = csr_check_setopt(data, len, sizeof(csr_u64_t), 0, 0); \
-            if (!status) {                                           \
-                CSR_MSR_STR(name, *(csr_u64_t*)(data));              \
-            }                                                        \
-            break;                                                   \
+#define _SET_SINGLE(index, name, features)               \
+        case CSR_CMD_SET_REG2(index): {                  \
+            status = csr_check_setopt(data, len, sizeof(csr_u64_t), (features)); \
+            if (!status) {                               \
+                CSR_MSR_STR(name, *(csr_u64_t*)(data));  \
+            }                                            \
+            break;                                       \
         }
-#define _SET_PAIR(index, name_high, name_low, need_pac, need_pacga)  \
-        case CSR_CMD_SET_REG2(index): {                              \
-            status = csr_check_setopt(data, len, sizeof(csr_pair_t), (need_pac), (need_pacga)); \
-            if (!status) {                                           \
-                pair = (csr_pair_t*)(data);                          \
-                CSR_MSR_STR(name_high, pair->high);                  \
-                CSR_MSR_STR(name_low, pair->low);                    \
-            }                                                        \
-            break;                                                   \
+#define _SET_PAIR(index, name_high, name_low, features)  \
+        case CSR_CMD_SET_REG2(index): {                  \
+            status = csr_check_setopt(data, len, sizeof(csr_pair_t), (features)); \
+            if (!status) {                               \
+                pair = (csr_pair_t*)(data);              \
+                CSR_MSR_STR(name_high, pair->high);      \
+                CSR_MSR_STR(name_low, pair->low);        \
+            }                                            \
+            break;                                       \
         }
 
-        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0")
-        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0")
-        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1")
-        _SET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0")
-        _SET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1")
-        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1")
+        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
+        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
+        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
 
-        _SET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", 1, 0)
-        _SET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", 1, 0)
-        _SET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", 1, 0)
-        _SET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", 1, 0)
-        _SET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", 0, 1)
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
+        _SET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
+
+        _SET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
 
 #undef _SET_SINGLE
 #undef _SET_PAIR
