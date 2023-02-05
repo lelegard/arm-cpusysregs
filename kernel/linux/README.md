@@ -6,6 +6,7 @@ It is not possible to read or write on this device. We can only send a few `ioct
 This is the way the system registers of the CPU are accessed.
 
 Usage instructions:
+
 - `make` : Build the kernel module.
 - `make install` : Install the module in the kernel file tree (`sudo` inside).
 - `make load` : Load the kernel module (`sudo` inside).

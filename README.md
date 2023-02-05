@@ -36,7 +36,7 @@ side effects, including:
   crashes the system since the return pointer of the kernel functions are authenticated with a
   different key as used by the previous PACIA (believe me, I tried...)
 
-## Usage instructions
+## Build instructions
 
 - `make` : Build the kernel module and the applications.
 - `make install` : Install the kernel module in the system tree.
@@ -46,7 +46,72 @@ side effects, including:
 
 See more details in the README files of the various subdirectories.
 
+##  Usage instructions
+
+The C++ application `sysregs` is a generic tool to read and write the system registers.
+With option `-v` (verbose), most system registers are structured using bit-fields of various
+sizes and interpretation.
+~~~
+Syntax: sysregs [options]
+
+  -r name : read the content of the named register
+  -w name value : write the specified hexadecimal value in the named register
+
+  -a : read all supported Arm64 system registers
+  -b : display register value in binary (default: hex)
+  -f : force read/write register, even if not supposed to (risk of system crash)
+  -h : display this help text
+  -l : list the names of all supported Arm64 system registers
+  -s : summary of CPU features
+  -v : verbose, display register analysis and fields
+~~~
+
+See more details in:
+
+- The `apps` subdirectory for command line tools.
+
+- The `kernel` subdirectory for programming guidelines.
+
+## List of accessible registers
+
+The reference list of registers which can be accessed by this project is given by the list of
+`CSR_REG_xxx` and `CSR_REG2_xxx` constants in file `kernel/cpusysregs.h`.
+
+The following table lists them with the corresponding reference sections in the
+[Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
+version 0487I.a.
+
+| Register         | Section       | Access  | Description
+| ---------------- | ------------- | ------- | -----------
+| APDAKey_EL1      | D17.2.15/.16  | R/W (*) | Pointer Authentication Key A for Data (Hi/Lo pair)
+| APDBKey_EL1      | D17.2.17/.18  | R/W (*) | Pointer Authentication Key B for Data (Hi/Lo pair)
+| APGAKey_EL1      | D17.2.19/.20  | R/W (*) | Pointer Authentication Generic Key
+| APIAKey_EL1      | D17.2.21/.22  | R/W (*) | Pointer Authentication Key A for Instructions (Hi/Lo pair)
+| APIBKey_EL1      | D17.2.23/.24  | R/W (*) | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| ID_AA64ISAR0_EL1 | D17.2.61      | R       | AArch64 Instruction Set Attribute Register 0
+| ID_AA64ISAR1_EL1 | D17.2.62      | R       | AArch64 Instruction Set Attribute Register 1
+| ID_AA64ISAR2_EL1 | D17.2.63      | R       | AArch64 Instruction Set Attribute Register 2
+| ID_AA64PFR0_EL1  | D17.2.67      | R       | AArch64 Processor Feature Register 0
+| ID_AA64PFR1_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 1
+| MIDR_EL1         | D17.2.100     | R       | Main ID Register
+| MPIDR_EL1        | D17.2.101     | R       | Multiprocessor Affinity Register
+| REVIDR_EL1       | D17.2.106     | R       | Revision ID Register
+| SCTLR_EL1        | D17.2.118     | R/W     | System Control Register (EL1)
+| SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
+| SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
+| TCR_EL1          | D17.2.131     | R       | Translation Control Register (EL1)
+| TPIDR_EL0        | D17.2.139     | R/W     | EL0 Read/Write Software Thread ID Register
+| TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
+| TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register
+
+(*) The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
+This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers
+can be accessed at EL3 only. This is explained in
+[this article](https://gist.github.com/lelegard/009cbdae78e5993ed9e02160b9130d7f).
+Accessing the PAC key registers at EL1 crashes macOS.
+
 ## References
 
 - [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
   nearly 12,000 pages...
+- [Apple architectures arm64 and arm64e on macOS](https://gist.github.com/lelegard/009cbdae78e5993ed9e02160b9130d7f).

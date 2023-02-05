@@ -67,7 +67,7 @@ Once the system is rebooted, the kernel extension is present in the system but n
 It can be loaded and unloaded as many times as we want using `make load` and `make unload`.
 Until we modify the extension and need to reboot again.
 
-### Reading the PAC key registers is not allowed
+### Reading the PAC key registers is not allowed by default at EL1
 
 The pointer authentication (PAC) feature uses 5 keys: PACIA, PACIB (instruction), PACDA,
 PACDB (data) and PACGA (generic).
@@ -79,8 +79,5 @@ life of that process. The PAC key registers are initialized with these values ea
 process is scheduled on a CPU core.
 
 In the macOS kernel, trying to read any of these registers results in a fault, which then
-crashes the system since we are in kernel mode.
-
-This limitation is not hard-coded in the hardware of the CPU. When running a Linux
-virtual machine on the same CPU, these registers are readable from the Linux kernel.
-More information is needed on this topic...
+crashes the system since we are in kernel mode. This is explained in more details in
+[this article](https://gist.github.com/lelegard/009cbdae78e5993ed9e02160b9130d7f).
