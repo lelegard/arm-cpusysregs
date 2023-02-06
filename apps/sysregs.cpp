@@ -12,6 +12,7 @@
 #include "strutils.h"
 #include "regaccess.h"
 #include "regview.h"
+#include "armfeatures.h"
 
 #include <iostream>
 #include <cstddef>
@@ -37,9 +38,10 @@ public:
     bool binary;
     bool force;
     bool list_registers;
-    bool summary;
+    bool cpu_summary;
+    bool pac_summary;
     bool verbose;
-    
+
     // Print help and exits.
     void usage() const;
 
@@ -57,6 +59,7 @@ void Options::usage() const
               << "  -f : force read/write register, even if not supposed to" << std::endl
               << "  -h : display this help text" << std::endl
               << "  -l : list all supported Arm64 system registers" << std::endl
+              << "  -p : summary of supported PAC features" << std::endl
               << "  -r name : read the content of the named register" << std::endl
               << "  -s : summary of CPU features" << std::endl
               << "  -w name hex-value : write the value in the named register" << std::endl
@@ -80,7 +83,8 @@ Options::Options(int argc, char* argv[]) :
     binary(false),
     force(false),
     list_registers(false),
-    summary(false),
+    cpu_summary(false),
+    pac_summary(false),
     verbose(false)
 {
     for (int i = 1; i < argc; ++i) {
@@ -109,8 +113,11 @@ Options::Options(int argc, char* argv[]) :
         else if (arg == "-l") {
             list_registers = true;
         }
+        else if (arg == "-p") {
+            pac_summary = true;
+        }
         else if (arg == "-s") {
-            summary = true;
+            cpu_summary = true;
         }
         else if (arg == "-v") {
             verbose = true;
@@ -167,7 +174,7 @@ void ReadRegister(const Options& opt, std::ostream& out)
         opt.fatal("unknown register " + opt.read_register + ", try -l");
     }
     if (!opt.force && !desc.canRead(regaccess)) {
-        opt.fatal("register " + opt.read_register + " is not readable on this CPU, try -f at your own risks");        
+        opt.fatal("register " + opt.read_register + " is not readable on this CPU, try -f at your own risks");
     }
 
     csr_pair_t reg;
@@ -204,7 +211,7 @@ void WriteRegister(const Options& opt, std::ostream& out)
         opt.fatal("unknown register " + opt.write_register + ", try -l");
     }
     if (!opt.force && !desc.canWrite(regaccess)) {
-        opt.fatal("register " + opt.write_register + " is not writeable on this CPU, try -f at your own risks");        
+        opt.fatal("register " + opt.write_register + " is not writeable on this CPU, try -f at your own risks");
     }
     if (opt.verbose) {
         out << opt.command << ": writing " << desc.hexa(opt.write_value) << " " << desc.name << std::endl;
@@ -249,19 +256,63 @@ void ReadAllRegisters(const Options& opt, std::ostream& out)
 
 
 //----------------------------------------------------------------------------
+// Display a summary of PAC features.
+//----------------------------------------------------------------------------
+
+void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
+{
+    RegAccess regaccess(true, true);
+    ArmFeatures feat(regaccess);
+
+    out << std::endl
+        << "Summary: PAC: " << YesNo(feat.FEAT_PAuth())
+        << ", PACGA: " << YesNo(feat.hasPACGA())
+        << std::endl
+        << "Pauth: " << YesNo(feat.FEAT_PAuth())
+        << ", Pauth2: " << YesNo(feat.FEAT_PAuth2())
+        << ", EPAC: " << YesNo(feat.FEAT_EPAC())
+        << ", FPAC: " << YesNo(feat.FEAT_FPAC())
+        << ", FPACCOMBINE: " << YesNo(feat.FEAT_FPACCOMBINE())
+        << ", CONSTPACFIELD: " << YesNo(feat.FEAT_CONSTPACFIELD())
+        << std::endl
+        << "Algorithms: QARMA3: " << YesNo(feat.FEAT_PACQARMA3())
+        << ", QARMA5: " << YesNo(feat.FEAT_PACQARMA5())
+        << ", implementation-defined: " << YesNo(feat.FEAT_PACIMP())
+        << std::endl
+        << "Memory tagging: " << YesNo(feat.addressTaggingEnabled());
+    if (feat.addressTaggingEnabled()) {
+        out << ", TBI (top byte ignore) 0: " << feat.TCR_EL1_TBI0() << ", TBI 1: " << feat.TCR_EL1_TBI1();
+    }
+    out << std::endl;
+    if (feat.FEAT_PAuth()) {
+        const int bottom_PAC_bit = 64 - feat.TCR_EL1_T0SZ();
+        if (feat.addressTaggingEnabled()) {
+            out << "PAC fields: size: " << (55 - bottom_PAC_bit) << " bits, bit range: 54:" << bottom_PAC_bit << std::endl;
+        }
+        else {
+            out << "PAC fields: size: " << (63 - bottom_PAC_bit) << " bits, bit range: 63:56,54:" << bottom_PAC_bit << std::endl;
+        }
+    }
+    out << std::endl;
+}
+
+
+//----------------------------------------------------------------------------
 // Display a summary of CPU features.
 //----------------------------------------------------------------------------
 
 void FeaturesSummary(const Options& opt, std::ostream& out)
 {
+    size_t name_width = 0;
+    for (const auto& feat : ArmFeatures::AllFeatures) {
+        name_width = std::max(name_width, feat.name.length());
+    }
+
     RegAccess regaccess(true, true);
-    out << std::endl
-        << "Summary: PAC: " << YesNo(regaccess.hasPAC())
-        << ", PACGA: " << YesNo(regaccess.hasPACGA())
-        << ", BTI: " << YesNo(regaccess.hasBTI())
-        << ", RME: " << YesNo(regaccess.hasRME())
-        << ", CSV2_2: " << YesNo(regaccess.hasCSV2_2())
-        << std::endl << std::endl;
+    ArmFeatures features(regaccess);
+    for (const auto& feat : ArmFeatures::AllFeatures) {
+        out << Pad (feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
+    }
 }
 
 
@@ -285,7 +336,10 @@ int main(int argc, char* argv[])
     if (!opt.read_register.empty()) {
         ReadRegister(opt, std::cout);
     }
-    if (opt.summary) {
+    if (opt.pac_summary) {
+        PointerAuthenticationSummary(opt, std::cout);
+    }
+    if (opt.cpu_summary) {
         FeaturesSummary(opt, std::cout);
     }
 

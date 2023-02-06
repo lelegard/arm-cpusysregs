@@ -62,6 +62,7 @@ Syntax: sysregs [options]
   -f : force read/write register, even if not supposed to (risk of system crash)
   -h : display this help text
   -l : list the names of all supported Arm64 system registers
+  -p : summary of supported PAC features
   -s : summary of CPU features
   -v : verbose, display register analysis and fields
 ~~~

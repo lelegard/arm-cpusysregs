@@ -9,7 +9,6 @@
 //----------------------------------------------------------------------------
 
 #pragma once
-
 #include "cpusysregs.h"
 #include "regaccess.h"
 #include <ostream>

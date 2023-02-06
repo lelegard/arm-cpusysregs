@@ -9,6 +9,7 @@
 //----------------------------------------------------------------------------
 
 #include "regview.h"
+#include "armfeatures.h"
 #include "strutils.h"
 
 // Accessing the PAC key registers crashes macOS.
@@ -499,9 +500,10 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
 
 bool RegView::Register::isSupported(RegAccess& ra) const
 {
-    return (!(features & NEED_PAC) || ra.hasPAC()) &&
-           (!(features & NEED_PACGA) || ra.hasPACGA()) &&
-           (!(features & NEED_CSV2_2) || ra.hasCSV2_2());
+    ArmFeatures feat(ra);
+    return (!(features & NEED_PAC) || feat.FEAT_PAuth()) &&
+           (!(features & NEED_PACGA) || feat.hasPACGA()) &&
+           (!(features & NEED_CSV2_2) || feat.FEAT_CSV2_2());
 }
 
 bool RegView::Register::canRead(RegAccess& ra) const

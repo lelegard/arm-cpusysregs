@@ -33,12 +33,7 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
     _fd(-1),
     _print_errors(print_errors),
     _error(0),
-    _error_ref(),
-    _loaded_regs(false),
-    _aa64isar1(0),
-    _aa64isar2(0),
-    _aa64pfr0(0),
-    _aa64pfr1(0)
+    _error_ref()
 {
 #if defined(__linux__)
 
@@ -208,54 +203,4 @@ bool RegAccess::write(int index, const csr_pair_t& reg)
     }
 #endif
     return true;
-}
-
-
-//----------------------------------------------------------------------------
-// Load the cached registers.
-//----------------------------------------------------------------------------
-
-bool RegAccess::loadCache()
-{
-    if (!_loaded_regs) {
-        _loaded_regs =
-            read(CSR_REG_AA64ISAR1, _aa64isar1) && read(CSR_REG_AA64ISAR2, _aa64isar2) &&
-            read(CSR_REG_AA64PFR0, _aa64pfr0) && read(CSR_REG_AA64PFR1, _aa64pfr1);
-    }
-    return _loaded_regs;
-}
-
-
-//----------------------------------------------------------------------------
-// Get features of the processor.
-//----------------------------------------------------------------------------
-
-bool RegAccess::hasPAC()
-{
-    return loadCache() && CSR_HAS_PAC(_aa64isar1, _aa64isar2);
-}
-
-bool RegAccess::hasPACGA()
-{
-    return loadCache() && CSR_HAS_PACGA(_aa64isar1, _aa64isar2);
-}
-
-bool RegAccess::hasBTI()
-{
-    return loadCache() && CSR_HAS_BTI(_aa64pfr1);
-}
-
-bool RegAccess::hasRME()
-{
-    return loadCache() && CSR_HAS_RME(_aa64pfr0);
-}
-
-int RegAccess::versionRME()
-{
-    return loadCache() ? CSR_RME_VERSION(_aa64pfr0) : 0;
-}
-
-bool RegAccess::hasCSV2_2()
-{
-    return loadCache() && CSR_HAS_CSV2_2(_aa64pfr0);
 }

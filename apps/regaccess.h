@@ -9,7 +9,6 @@
 //----------------------------------------------------------------------------
 
 #pragma once
-
 #include "cpusysregs.h"
 #include <iostream>
 
@@ -30,7 +29,7 @@ public:
 
     // Check if the kernel module was successfully open.
     bool isOpen() const { return _fd >= 0; }
-    
+
     // Forbid copy (keep only one instance per file descriptor.
     RegAccess(RegAccess&&) = delete;
     RegAccess(const RegAccess&) = delete;
@@ -51,28 +50,12 @@ public:
     bool read(int index, csr_pair_t& reg);
     bool write(int index, const csr_pair_t& reg);
 
-    // Get features of the processor.
-    bool hasPAC();
-    bool hasPACGA();
-    bool hasBTI();
-    bool hasRME();
-    int versionRME();
-    bool hasCSV2_2();
-
 private:
     int         _fd;            // file descriptor to access the kernel module
     bool        _print_errors;  // automatic error reporting
     int         _error;         // last error code
     std::string _error_ref;     // reference of last error
-    bool        _loaded_regs;   // registers below are loaded and cached
-    csr_u64_t   _aa64isar1;     // cached value of ID_AA64ISAR1_EL1
-    csr_u64_t   _aa64isar2;     // cached value of ID_AA64ISAR2_EL1
-    csr_u64_t   _aa64pfr0;      // cached value of ID_AA64PFR0_EL1
-    csr_u64_t   _aa64pfr1;      // cached value of ID_AA64PFR1_EL1
 
     // Set error code and return false. Report when necessary.
     bool setError(int code, const std::string& ref, bool close_fd = false, bool exit_on_error = false);
-
-    // Load the cached registers.
-    bool loadCache();
 };
