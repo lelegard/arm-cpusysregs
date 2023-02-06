@@ -222,6 +222,7 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
         _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
         _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
+        _GET_SINGLE(CSR_REG_HCR,         "hcr_el2", 0)
 
         _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
         _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)

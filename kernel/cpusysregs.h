@@ -92,6 +92,7 @@ typedef struct {
 #define CSR_REG_SCXTNUM_EL0  (_CSR_REG_BASE | 0x0D)   // EL0 Read/Write Software Context Number
 #define CSR_REG_SCXTNUM_EL1  (_CSR_REG_BASE | 0x0E)   // EL1 Read/Write Software Context Number
 #define CSR_REG_SCTLR        (_CSR_REG_BASE | 0x0F)   // System Control Register
+#define CSR_REG_HCR          (_CSR_REG_BASE | 0x10)   // System Control Register (EL2)
 
 #define CSR_REG2_APIAKEY     (_CSR_REG2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
 #define CSR_REG2_APIBKEY     (_CSR_REG2_BASE | 0x01)  // Pointer Authentication Key B for Instruction

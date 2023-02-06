@@ -250,6 +250,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
         _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
         _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
+        _GET_SINGLE(CSR_REG_HCR,         "hcr_el2", 0)
 
         _GET_SINGLE_NUM(CSR_REG_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
         _GET_SINGLE_NUM(CSR_REG_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)

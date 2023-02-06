@@ -88,6 +88,7 @@ version 0487I.a.
 | APGAKey_EL1      | D17.2.19/.20  | R/W (*) | Pointer Authentication Generic Key
 | APIAKey_EL1      | D17.2.21/.22  | R/W (*) | Pointer Authentication Key A for Instructions (Hi/Lo pair)
 | APIBKey_EL1      | D17.2.23/.24  | R/W (*) | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| HCR_EL2          | D17.2.48      | R       | Hypervisor Configuration Register
 | ID_AA64ISAR0_EL1 | D17.2.61      | R       | AArch64 Instruction Set Attribute Register 0
 | ID_AA64ISAR1_EL1 | D17.2.62      | R       | AArch64 Instruction Set Attribute Register 1
 | ID_AA64ISAR2_EL1 | D17.2.63      | R       | AArch64 Instruction Set Attribute Register 2
