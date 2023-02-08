@@ -66,6 +66,10 @@ typedef struct {
 // based on the values of the ID_AA64PFR0_EL1 system register.
 #define CSR_HAS_CSV2_2(pfr0) ((((pfr0) >> 56) & 0x0F) >= 2)
 
+// This macro checks if random number generation is supported, based on the value of the
+// ID_AA64ISAR0_EL1 system register.
+#define CSR_HAS_RNG(isar0) ((isar0) & 0xF000000000000000llu)
+
 
 //----------------------------------------------------------------------------
 // List of system registers which are handled by the kernel module.
@@ -88,11 +92,14 @@ typedef struct {
 #define CSR_REG_REVIDR       (_CSR_REG_BASE | 0x08)   // Revision ID Register (read-only)
 #define CSR_REG_TPIDRRO_EL0  (_CSR_REG_BASE | 0x09)   // EL0 Read-Only Software Thread ID Register (R/W at EL1)
 #define CSR_REG_TPIDR_EL0    (_CSR_REG_BASE | 0x0A)   // EL0 Read/Write Software Thread ID Register
-#define CSR_REG_TPIDR_EL1    (_CSR_REG_BASE | 0x0C)   // EL1 Software Thread ID Register
-#define CSR_REG_SCXTNUM_EL0  (_CSR_REG_BASE | 0x0D)   // EL0 Read/Write Software Context Number
-#define CSR_REG_SCXTNUM_EL1  (_CSR_REG_BASE | 0x0E)   // EL1 Read/Write Software Context Number
-#define CSR_REG_SCTLR        (_CSR_REG_BASE | 0x0F)   // System Control Register
-#define CSR_REG_HCR          (_CSR_REG_BASE | 0x10)   // System Control Register (EL2)
+#define CSR_REG_TPIDR_EL1    (_CSR_REG_BASE | 0x0B)   // EL1 Software Thread ID Register
+#define CSR_REG_SCXTNUM_EL0  (_CSR_REG_BASE | 0x0C)   // EL0 Read/Write Software Context Number
+#define CSR_REG_SCXTNUM_EL1  (_CSR_REG_BASE | 0x0D)   // EL1 Read/Write Software Context Number
+#define CSR_REG_SCTLR        (_CSR_REG_BASE | 0x0E)   // System Control Register
+#define CSR_REG_HCR          (_CSR_REG_BASE | 0x0F)   // System Control Register (EL2)
+#define CSR_REG_RNDR         (_CSR_REG_BASE | 0x10)   // Random Number
+#define CSR_REG_RNDRRS       (_CSR_REG_BASE | 0x11)   // Reseeded Random Number
+#define CSR_REG_SCR          (_CSR_REG_BASE | 0x12)   // Secure Configuration Register (EL3)
 
 #define CSR_REG2_APIAKEY     (_CSR_REG2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
 #define CSR_REG2_APIBKEY     (_CSR_REG2_BASE | 0x01)  // Pointer Authentication Key B for Instruction
@@ -133,10 +140,10 @@ typedef struct {
     // Socket options for system control cpusysregs.
     // Get and set commands have identical values since they are used by distinct syscalls.
     #define _CSR_SOCKOPT_BASE      0x00AC0000
-    #define CSR_CMD_GET_REG(reg)   (_CSR_SOCKOPT_BASE + (reg))
-    #define CSR_CMD_GET_REG2(reg)  (_CSR_SOCKOPT_BASE + (reg))
-    #define CSR_CMD_SET_REG(reg)   (_CSR_SOCKOPT_BASE + (reg))
-    #define CSR_CMD_SET_REG2(reg)  (_CSR_SOCKOPT_BASE + (reg))
+    #define CSR_CMD_GET_REG(reg)   (_CSR_SOCKOPT_BASE | (reg))
+    #define CSR_CMD_GET_REG2(reg)  (_CSR_SOCKOPT_BASE | (reg))
+    #define CSR_CMD_SET_REG(reg)   (_CSR_SOCKOPT_BASE | (reg))
+    #define CSR_CMD_SET_REG2(reg)  (_CSR_SOCKOPT_BASE | (reg))
 
 #endif
 
@@ -180,16 +187,18 @@ typedef struct {
 // The following macros define the encoding of some system registers the names of which
 // are not recognized with the default level of architecture.
 //
-#define CSR_APIAKEYLO_EL1 CSR_SREG(3, 0, 2, 1, 0)
-#define CSR_APIAKEYHI_EL1 CSR_SREG(3, 0, 2, 1, 1)
-#define CSR_APIBKEYLO_EL1 CSR_SREG(3, 0, 2, 1, 2)
-#define CSR_APIBKEYHI_EL1 CSR_SREG(3, 0, 2, 1, 3)
-#define CSR_APDAKEYLO_EL1 CSR_SREG(3, 0, 2, 2, 0)
-#define CSR_APDAKEYHI_EL1 CSR_SREG(3, 0, 2, 2, 1)
-#define CSR_APDBKEYLO_EL1 CSR_SREG(3, 0, 2, 2, 2)
-#define CSR_APDBKEYHI_EL1 CSR_SREG(3, 0, 2, 2, 3)
-#define CSR_APGAKEYLO_EL1 CSR_SREG(3, 0, 2, 3, 0)
-#define CSR_APGAKEYHI_EL1 CSR_SREG(3, 0, 2, 3, 1)
+#define CSR_APIAKEYLO_EL1 CSR_SREG(3, 0,  2, 1, 0)
+#define CSR_APIAKEYHI_EL1 CSR_SREG(3, 0,  2, 1, 1)
+#define CSR_APIBKEYLO_EL1 CSR_SREG(3, 0,  2, 1, 2)
+#define CSR_APIBKEYHI_EL1 CSR_SREG(3, 0,  2, 1, 3)
+#define CSR_APDAKEYLO_EL1 CSR_SREG(3, 0,  2, 2, 0)
+#define CSR_APDAKEYHI_EL1 CSR_SREG(3, 0,  2, 2, 1)
+#define CSR_APDBKEYLO_EL1 CSR_SREG(3, 0,  2, 2, 2)
+#define CSR_APDBKEYHI_EL1 CSR_SREG(3, 0,  2, 2, 3)
+#define CSR_APGAKEYLO_EL1 CSR_SREG(3, 0,  2, 3, 0)
+#define CSR_APGAKEYHI_EL1 CSR_SREG(3, 0,  2, 3, 1)
+#define CSR_RNDR          CSR_SREG(3, 3,  2, 4, 0)
+#define CSR_RNDRRS        CSR_SREG(3, 3,  2, 4, 1)
 #define CSR_SCXTNUM_EL0   CSR_SREG(3, 3, 13, 0, 7)
 #define CSR_SCXTNUM_EL1   CSR_SREG(3, 0, 13, 0, 7)
 
@@ -255,19 +264,22 @@ typedef struct {
 #define FEAT_BTI    0x0004
 #define FEAT_RME    0x0008
 #define FEAT_CSV2_2 0x0010
+#define FEAT_RNG    0x0020
 
 static inline __attribute__((always_inline)) int csr_get_cpu_features(void)
 {
-    csr_u64_t pfr0, pfr1, isar1, isar2;
+    csr_u64_t pfr0, pfr1, isar0, isar1, isar2;
     CSR_MRS_STR(pfr0,  "id_aa64pfr0_el1");
     CSR_MRS_STR(pfr1,  "id_aa64pfr1_el1");
+    CSR_MRS_STR(isar0, "id_aa64isar0_el1");
     CSR_MRS_STR(isar1, "id_aa64isar1_el1");
     CSR_MRS_STR(isar2, "id_aa64isar2_el1");
     return (CSR_HAS_PAC(isar1, isar2) ? FEAT_PAC : 0) |
            (CSR_HAS_PACGA(isar1, isar2) ? FEAT_PACGA : 0) |
            (CSR_HAS_BTI(pfr1) ? FEAT_BTI : 0) |
            (CSR_HAS_RME(pfr0) ? FEAT_RME : 0) |
-           (CSR_HAS_CSV2_2(pfr0) ? FEAT_CSV2_2 : 0);
+           (CSR_HAS_CSV2_2(pfr0) ? FEAT_CSV2_2 : 0) |
+           (CSR_HAS_RNG(isar0) ? FEAT_RNG : 0);
 }
 
 #endif // KERNEL

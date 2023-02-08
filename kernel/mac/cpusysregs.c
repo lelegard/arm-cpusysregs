@@ -198,6 +198,14 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
             }                                            \
             break;                                       \
         }
+#define _GET_SINGLE_NUM(index, num, features)            \
+        case CSR_CMD_GET_REG(index): {                   \
+            status = csr_check_getopt(data, len, sizeof(csr_u64_t), (features)); \
+            if (!status && data) {                       \
+                CSR_MRS_NUM(*(csr_u64_t*)(data), num);   \
+            }                                            \
+            break;                                       \
+        }
 #define _GET_PAIR(index, name_high, name_low, features)  \
         case CSR_CMD_GET_REG2(index): {                  \
             status = csr_check_getopt(data, len, sizeof(csr_pair_t), (features)); \
@@ -223,9 +231,12 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
         _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
         _GET_SINGLE(CSR_REG_HCR,         "hcr_el2", 0)
+        _GET_SINGLE(CSR_REG_SCR,         "scr_el3", 0)
 
         _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
         _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
+        _GET_SINGLE_NUM(CSR_REG_RNDR,    CSR_RNDR, FEAT_RNG)
+        _GET_SINGLE_NUM(CSR_REG_RNDRRS,  CSR_RNDRRS, FEAT_RNG)
 
         _GET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
         _GET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
@@ -234,6 +245,7 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         _GET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
 
 #undef _GET_PAIR
+#undef _GET_SINGLE_NUM
 #undef _GET_SINGLE
 
         default: {

@@ -56,6 +56,7 @@ Syntax: sysregs [options]
 
   -r name : read the content of the named register
   -w name value : write the specified hexadecimal value in the named register
+  -d name value : display the specified value in the named register format
 
   -a : read all supported Arm64 system registers
   -b : display register value in binary (default: hex)

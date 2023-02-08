@@ -33,7 +33,9 @@ public:
     std::string command;
     std::string read_register;
     std::string write_register;
+    std::string display_register;
     csr_pair_t write_value;
+    csr_pair_t display_value;
     bool all_registers;
     bool binary;
     bool force;
@@ -56,6 +58,7 @@ void Options::usage() const
               << std::endl
               << "  -a : read all supported Arm64 system registers" << std::endl
               << "  -b : display register value in binary (default: hex)" << std::endl
+              << "  -d name value : display the value in the named register format" << std::endl
               << "  -f : force read/write register, even if not supposed to" << std::endl
               << "  -h : display this help text" << std::endl
               << "  -l : list all supported Arm64 system registers" << std::endl
@@ -78,7 +81,9 @@ Options::Options(int argc, char* argv[]) :
     command(argc < 1 ? "" : argv[0]),
     read_register(),
     write_register(),
+    display_register(),
     write_value{0, 0},
+    display_value{0, 0},
     all_registers(false),
     binary(false),
     force(false),
@@ -99,6 +104,12 @@ Options::Options(int argc, char* argv[]) :
             write_register = argv[++i];
             if (!DecodeHexa(write_value, argv[++i])) {
                 fatal("invalid hexa value to write");
+            }
+        }
+        else if (arg == "-d" && i+2 < argc) {
+            display_register = argv[++i];
+            if (!DecodeHexa(display_value, argv[++i])) {
+                fatal("invalid hexa value to display");
             }
         }
         else if (arg == "-a") {
@@ -162,8 +173,26 @@ void ListRegisters(const Options& opt, std::ostream& out)
 
 
 //----------------------------------------------------------------------------
-// Read a register
+// Read or display a register
 //----------------------------------------------------------------------------
+
+void DisplayRegisterValue(const Options& opt, const RegView::Register& desc, const csr_pair_t& reg, std::ostream& out)
+{
+    if (opt.verbose) {
+        out << std::endl;
+        desc.display(out, reg);
+        out << std::endl;
+    }
+    else if (opt.binary) {
+        if (desc.isPair()) {
+            out << ToBinary(reg.high) << std::endl;
+        }
+        out << ToBinary(reg.low) << std::endl;
+    }
+    else {
+        out << desc.hexa(reg) << std::endl;
+    }
+}
 
 void ReadRegister(const Options& opt, std::ostream& out)
 {
@@ -181,19 +210,19 @@ void ReadRegister(const Options& opt, std::ostream& out)
     if (!regaccess.read(desc.csr_index, reg)) {
         regaccess.printLastError(opt.command + ": error reading " + opt.read_register);
     }
-    else if (opt.verbose) {
-        out << std::endl;
-        desc.display(out, reg);
-        out << std::endl;
+    else {
+        DisplayRegisterValue(opt, desc, reg, out);
     }
-    else if (opt.binary) {
-        if (desc.isPair()) {
-            out << ToBinary(reg.high) << std::endl;
-        }
-        out << ToBinary(reg.low) << std::endl;
+}
+
+void DisplayRegister(const Options& opt, std::ostream& out)
+{
+    const auto& desc(RegView::getRegister(opt.display_register));
+    if (!desc.isValid()) {
+        opt.fatal("unknown register " + opt.display_register + ", try -l");
     }
     else {
-        out << desc.hexa(reg) << std::endl;
+        DisplayRegisterValue(opt, desc, opt.display_value, out);
     }
 }
 
@@ -268,8 +297,8 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
         << "Summary: PAC: " << YesNo(feat.FEAT_PAuth())
         << ", PACGA: " << YesNo(feat.hasPACGA())
         << std::endl
-        << "Pauth: " << YesNo(feat.FEAT_PAuth())
-        << ", Pauth2: " << YesNo(feat.FEAT_PAuth2())
+        << "PAuth: " << YesNo(feat.FEAT_PAuth())
+        << ", PAuth2: " << YesNo(feat.FEAT_PAuth2())
         << ", EPAC: " << YesNo(feat.FEAT_EPAC())
         << ", FPAC: " << YesNo(feat.FEAT_FPAC())
         << ", FPACCOMBINE: " << YesNo(feat.FEAT_FPACCOMBINE())
@@ -287,10 +316,10 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
     if (feat.FEAT_PAuth()) {
         const int bottom_PAC_bit = 64 - feat.TCR_EL1_T0SZ();
         if (feat.addressTaggingEnabled()) {
-            out << "PAC fields: size: " << (55 - bottom_PAC_bit) << " bits, bit range: 54:" << bottom_PAC_bit << std::endl;
+            out << "PAC field: size: " << (55 - bottom_PAC_bit) << " bits, bit range: 54:" << bottom_PAC_bit << std::endl;
         }
         else {
-            out << "PAC fields: size: " << (63 - bottom_PAC_bit) << " bits, bit range: 63:56,54:" << bottom_PAC_bit << std::endl;
+            out << "PAC field: size: " << (63 - bottom_PAC_bit) << " bits, bit range: 63:56,54:" << bottom_PAC_bit << std::endl;
         }
     }
     out << std::endl;
@@ -329,6 +358,9 @@ int main(int argc, char* argv[])
     }
     if (opt.all_registers) {
         ReadAllRegisters(opt, std::cout);
+    }
+    if (!opt.display_register.empty()) {
+        DisplayRegister(opt, std::cout);
     }
     if (!opt.write_register.empty()) {
         WriteRegister(opt, std::cout);
