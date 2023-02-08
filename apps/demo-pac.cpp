@@ -53,12 +53,12 @@ void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& ke
 
 void GetKeyGA(RegAccess& regaccess, const std::string& title, csr_pair_t& key)
 {
-    GetKey(regaccess, title, key, CSR_REG2_APGAKEY);
+    GetKey(regaccess, title, key, CSR_REGID2_APGAKEY);
 }
 
 void SetKeyGA(RegAccess& regaccess, const std::string& title, const csr_pair_t& key)
 {
-    SetKey(regaccess, title, key, CSR_REG2_APGAKEY);
+    SetKey(regaccess, title, key, CSR_REGID2_APGAKEY);
 }
 
 void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
@@ -70,12 +70,12 @@ void TestGA(const std::string& title, csr_u64_t value, csr_u64_t modifier)
 
 void GetKeyDB(RegAccess& regaccess, const std::string& title, csr_pair_t& key)
 {
-    GetKey(regaccess, title, key, CSR_REG2_APDBKEY);
+    GetKey(regaccess, title, key, CSR_REGID2_APDBKEY);
 }
 
 void SetKeyDB(RegAccess& regaccess, const std::string& title, const csr_pair_t& key)
 {
-    SetKey(regaccess, title, key, CSR_REG2_APDBKEY);
+    SetKey(regaccess, title, key, CSR_REGID2_APDBKEY);
 }
 
 

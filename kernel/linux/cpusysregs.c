@@ -185,7 +185,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_GET_REG(index): {                     \
             status = csr_check_feature(features);          \
             if (!status) {                                 \
-                CSR_MRS_STR(reg.low, name);                \
+                csr_mrs_str(reg.low, name);                \
                 status = csr_return_reg(reg.low, param);   \
             }                                              \
             break;                                         \
@@ -194,7 +194,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_GET_REG(index): {                     \
             status = csr_check_feature(features);          \
             if (!status) {                                 \
-                CSR_MRS_NUM(reg.low, num);                 \
+                csr_mrs_num(reg.low, num);                 \
                 status = csr_return_reg(reg.low, param);   \
             }                                              \
             break;                                         \
@@ -203,8 +203,8 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_GET_REG2(index): {                    \
             status = csr_check_feature(features);          \
             if (!status) {                                 \
-                CSR_MRS_NUM(reg.high, num_high);           \
-                CSR_MRS_NUM(reg.low, num_low);             \
+                csr_mrs_num(reg.high, num_high);           \
+                csr_mrs_num(reg.low, num_low);             \
                 status = csr_return_pair(&reg, param);     \
             }                                              \
             break;                                         \
@@ -213,7 +213,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_SET_REG(index): {                           \
             status = csr_fetch_reg(&reg.low, param, (features)); \
             if (!status) {                                       \
-                CSR_MSR_STR(name, reg.low);                      \
+                csr_msr_str(name, reg.low);                      \
             }                                                    \
             break;                                               \
         }
@@ -221,7 +221,7 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_SET_REG(index): {                           \
             status = csr_fetch_reg(&reg.low, param, (features)); \
             if (!status) {                                       \
-                CSR_MSR_NUM(num, reg.low);                       \
+                csr_msr_num(num, reg.low);                       \
             }                                                    \
             break;                                               \
         }
@@ -229,56 +229,56 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
         case CSR_CMD_SET_REG2(index): {                          \
             status = csr_fetch_pair(&reg, param, (features));    \
             if (!status) {                                       \
-                CSR_MSR_NUM(num_high, reg.high);                 \
-                CSR_MSR_NUM(num_low, reg.low);                   \
+                csr_msr_num(num_high, reg.high);                 \
+                csr_msr_num(num_low, reg.low);                   \
             }                                                    \
             break;                                               \
         }
 
         // Read registers.
 
-        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1", 0)
-        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1", 0)
-        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1", 0)
-        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1", 0)
-        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1", 0)
-        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
-        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
-        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
-        _GET_SINGLE(CSR_REG_HCR,         "hcr_el2", 0)
-        _GET_SINGLE(CSR_REG_SCR,         "scr_el3", 0)
+        _GET_SINGLE(CSR_REGID_AA64PFR0,    "id_aa64pfr0_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64PFR1,    "id_aa64pfr1_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR0,   "id_aa64isar0_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR1,   "id_aa64isar1_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR2,   "id_aa64isar2_el1", 0)
+        _GET_SINGLE(CSR_REGID_TCR,         "tcr_el1", 0)
+        _GET_SINGLE(CSR_REGID_MIDR,        "midr_el1", 0)
+        _GET_SINGLE(CSR_REGID_MPIDR,       "mpidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_REVIDR,      "revidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _GET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
+        _GET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
+        _GET_SINGLE(CSR_REGID_HCR,         "hcr_el2", 0)
+        _GET_SINGLE(CSR_REGID_SCR,         "scr_el3", 0)
 
-        _GET_SINGLE_NUM(CSR_REG_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
-        _GET_SINGLE_NUM(CSR_REG_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
-        _GET_SINGLE_NUM(CSR_REG_RNDR,        CSR_RNDR, FEAT_RNG)
-        _GET_SINGLE_NUM(CSR_REG_RNDRRS,      CSR_RNDRRS, FEAT_RNG)
+        _GET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
+        _GET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
+        _GET_SINGLE_NUM(CSR_REGID_RNDR,        CSR_RNDR, FEAT_RNG)
+        _GET_SINGLE_NUM(CSR_REGID_RNDRRS,      CSR_RNDRRS, FEAT_RNG)
 
-        _GET_PAIR_NUM(CSR_REG2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REG2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REG2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REG2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REG2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
+        _GET_PAIR_NUM(CSR_REGID2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
+        _GET_PAIR_NUM(CSR_REGID2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
+        _GET_PAIR_NUM(CSR_REGID2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
+        _GET_PAIR_NUM(CSR_REGID2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
+        _GET_PAIR_NUM(CSR_REGID2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
 
         // Write registers.
 
-        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
-        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
-        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
+        _SET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _SET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
+        _SET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
+        _SET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
 
-        _SET_SINGLE_NUM(CSR_REG_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
-        _SET_SINGLE_NUM(CSR_REG_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
+        _SET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
+        _SET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
 
-        _SET_PAIR_NUM(CSR_REG2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REG2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REG2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REG2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REG2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
+        _SET_PAIR_NUM(CSR_REGID2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
+        _SET_PAIR_NUM(CSR_REGID2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
+        _SET_PAIR_NUM(CSR_REGID2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
+        _SET_PAIR_NUM(CSR_REGID2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
+        _SET_PAIR_NUM(CSR_REGID2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
 
 #undef _SET_PAIR_NUM
 #undef _SET_SINGLE_NUM

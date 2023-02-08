@@ -52,7 +52,7 @@ public:
     public:
         std::string         name;       // register name
         std::string         section;    // section in Arm arch ref manual
-        int                 csr_index;  // CSR_REG_ or CSR_REG2_ value from cpusysregs.h
+        int                 csr_index;  // CSR_REGID_ or CSR_REGID2_ value from cpusysregs.h
         int                 features;   // required features (bit mask)
         std::list<BitField> fields;     // known bitfields
 
@@ -63,7 +63,7 @@ public:
         bool isValid() const { return csr_index != INVALID; }
 
         // Check if the register is in fact a pair of registers (e.g. PAK key)
-        bool isPair() const { return CSR_REG_IS_PAIR(csr_index); }
+        bool isPair() const { return csr_regid_is_pair(csr_index); }
 
         // Format an hexa value of the register.
         std::string hexa(csr_u64_t value) const;

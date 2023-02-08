@@ -31,22 +31,22 @@ const RegView::Register RegView::EmptyRegister {"", "", INVALID, 0, {}};
 // Descriptions of all known registers.
 const std::list<RegView::Register> RegView::AllRegisters {
     {
-        "APDAKEY_EL1", "D17.2.15/16", CSR_REG2_APDAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
+        "APDAKEY_EL1", "D17.2.15/16", CSR_REGID2_APDAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
-        "APDBKEY_EL1", "D17.2.17/18", CSR_REG2_APDBKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
+        "APDBKEY_EL1", "D17.2.17/18", CSR_REGID2_APDBKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
-        "APGAKEY_EL1", "D17.2.19/20", CSR_REG2_APGAKEY, READ_PAC | WRITE_PAC | NEED_PACGA, {}
+        "APGAKEY_EL1", "D17.2.19/20", CSR_REGID2_APGAKEY, READ_PAC | WRITE_PAC | NEED_PACGA, {}
     },
     {
-        "APIAKEY_EL1", "D17.2.21/22", CSR_REG2_APIAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
+        "APIAKEY_EL1", "D17.2.21/22", CSR_REGID2_APIAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
-        "APIBKEY_EL1", "D17.2.23/24", CSR_REG2_APIBKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
+        "APIBKEY_EL1", "D17.2.23/24", CSR_REGID2_APIBKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
-        "HCR_EL2", "D17.2.48", CSR_REG_HCR, 0, {
+        "HCR_EL2", "D17.2.48", CSR_REGID_HCR, 0, {
             {"TWEDEL",   63, 60, {}},
             {"TWEDEn",   59, 59, {}},
             {"TID5",     58, 58, {{0, "none"}, {1, "trap"}}},
@@ -110,7 +110,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64ISAR0_EL1", "D17.2.61", CSR_REG_AA64ISAR0, READ,
+        "ID_AA64ISAR0_EL1", "D17.2.61", CSR_REGID_AA64ISAR0, READ,
         {
             {"RNDR",   63, 60, {{0, "none"}, {1, "RNG"}}},
             {"TLB",    59, 56, {{0, "none"}, {1, "TLBIOS"}, {2, "TLBIOS+TLBIRANGE"}}},
@@ -130,7 +130,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64ISAR1_EL1", "D17.2.62", CSR_REG_AA64ISAR1, READ,
+        "ID_AA64ISAR1_EL1", "D17.2.62", CSR_REGID_AA64ISAR1, READ,
         {
             {"LS64",    63, 60, {{0, "none"}, {1, "LS64"}, {2, "LS64+LS64_V"}, {3, "LS64+LS64_V+LS64_ACCDATA"}}},
             {"XS",      59, 56, {{0, "none"}, {1, "XS"}}},
@@ -153,7 +153,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64ISAR2_EL1", "D17.2.63", CSR_REG_AA64ISAR2, READ,
+        "ID_AA64ISAR2_EL1", "D17.2.63", CSR_REGID_AA64ISAR2, READ,
         {
             {"PAC_frac", 27, 24, {{0, "none"}, {1, "ConstPACField"}}},
             {"BC",       23, 20, {{0, "none"}, {1, "HBC"}}},
@@ -166,7 +166,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64PFR0_EL1", "D17.2.67", CSR_REG_AA64PFR0, READ,
+        "ID_AA64PFR0_EL1", "D17.2.67", CSR_REGID_AA64PFR0, READ,
         {
             {"CSV3",    63, 60, {{0, "undefined"}, {1, "safe"}}},
             {"CSV2",    59, 56, {{0, "none"}, {1, "CSV2"}, {2, "CSV2_2"}, {3, "CSV2_3"}}},
@@ -187,7 +187,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64PFR1_EL1", "D17.2.68", CSR_REG_AA64PFR1, READ,
+        "ID_AA64PFR1_EL1", "D17.2.68", CSR_REGID_AA64PFR1, READ,
         {
             {"NMI",       39, 36, {{0, "none"}, {1, "NMI"}}},
             {"CSV2_frac", 35, 32, {{0, "none"}, {1, "CSV2_1p1"}, {2, "CSV2_1p2"}}},
@@ -201,7 +201,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "MIDR_EL1", "D17.2.100", CSR_REG_MIDR, READ,
+        "MIDR_EL1", "D17.2.100", CSR_REGID_MIDR, READ,
         {
             {"Implementer",  31, 24, {{0x41, "Arm"}, {0x61, "Apple"}, {0xC0, "Ampere"}}},
             {"Variant",      23, 20, {}},
@@ -212,7 +212,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "MPIDR_EL1", "D17.2.101", CSR_REG_MPIDR, READ,
+        "MPIDR_EL1", "D17.2.101", CSR_REGID_MPIDR, READ,
         {
             {"Aff3", 39, 32, {}},
             {"U",    30, 30, {{0, "Multiprocessor"}, {1, "Uniprocessor"}}},
@@ -223,16 +223,16 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "REVIDR_EL1", "D17.2.106", CSR_REG_REVIDR, READ, {}
+        "REVIDR_EL1", "D17.2.106", CSR_REGID_REVIDR, READ, {}
     },
     {
-        "RNDR", "D17.2.111", CSR_REG_RNDR, READ | NEED_RNG, {}
+        "RNDR", "D17.2.111", CSR_REGID_RNDR, READ | NEED_RNG, {}
     },
     {
-        "RNDRRS", "D17.2.112", CSR_REG_RNDRRS, READ | NEED_RNG, {}
+        "RNDRRS", "D17.2.112", CSR_REGID_RNDRRS, READ | NEED_RNG, {}
     },
     {
-        "SCR_EL3", "D17.2.111", CSR_REG_SCR, 0,
+        "SCR_EL3", "D17.2.111", CSR_REGID_SCR, 0,
         {
             {"NSE",      62, 62, {}},
             {"GPF",      48, 48, {{0, "none"}, {1, "exception"}}},
@@ -271,7 +271,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "SCTLR_EL1", "D17.2.118", CSR_REG_SCTLR, READ | WRITE,
+        "SCTLR_EL1", "D17.2.118", CSR_REGID_SCTLR, READ | WRITE,
         {
             {"TIDCP",     63, 63, {{0, "none"}, {1, "trap EL0 access to system registers"}}},
             {"SPINTMASK", 62, 62, {{0, "none"}, {1, "SPINTMASK"}}},
@@ -333,13 +333,13 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "SCXTNUM_EL0", "D17.2.121", CSR_REG_SCXTNUM_EL0, READ | WRITE | NEED_CSV2_2, {}
+        "SCXTNUM_EL0", "D17.2.121", CSR_REGID_SCXTNUM_EL0, READ | WRITE | NEED_CSV2_2, {}
     },
     {
-        "SCXTNUM_EL1", "D17.2.122", CSR_REG_SCXTNUM_EL1, READ | WRITE | NEED_CSV2_2, {}
+        "SCXTNUM_EL1", "D17.2.122", CSR_REGID_SCXTNUM_EL1, READ | WRITE | NEED_CSV2_2, {}
     },
     {
-        "TCR_EL1", "D17.2.131", CSR_REG_TCR, READ,
+        "TCR_EL1", "D17.2.131", CSR_REGID_TCR, READ,
         {
             {"DS",     59, 59, {{0, "48-bit addresses"}, {1, "52-bit addresses"}}},
             {"TCMA1",  58, 58, {{0, "none"}, {1, "unchecked"}}},
@@ -398,13 +398,13 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "TPIDRRO_EL0", "D17.2.143", CSR_REG_TPIDRRO_EL0, READ | WRITE, {}
+        "TPIDRRO_EL0", "D17.2.143", CSR_REGID_TPIDRRO_EL0, READ | WRITE, {}
     },
     {
-        "TPIDR_EL0", "D17.2.139", CSR_REG_TPIDR_EL0, READ | WRITE, {}
+        "TPIDR_EL0", "D17.2.139", CSR_REGID_TPIDR_EL0, READ | WRITE, {}
     },
     {
-        "TPIDR_EL1", "D17.2.140", CSR_REG_TPIDR_EL1, READ | WRITE, {}
+        "TPIDR_EL1", "D17.2.140", CSR_REGID_TPIDR_EL1, READ | WRITE, {}
     },
 };
 

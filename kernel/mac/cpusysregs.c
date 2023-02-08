@@ -194,7 +194,7 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         case CSR_CMD_GET_REG(index): {                   \
             status = csr_check_getopt(data, len, sizeof(csr_u64_t), (features)); \
             if (!status && data) {                       \
-                CSR_MRS_STR(*(csr_u64_t*)(data), name);  \
+                csr_mrs_str(*(csr_u64_t*)(data), name);  \
             }                                            \
             break;                                       \
         }
@@ -202,7 +202,7 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         case CSR_CMD_GET_REG(index): {                   \
             status = csr_check_getopt(data, len, sizeof(csr_u64_t), (features)); \
             if (!status && data) {                       \
-                CSR_MRS_NUM(*(csr_u64_t*)(data), num);   \
+                csr_mrs_num(*(csr_u64_t*)(data), num);   \
             }                                            \
             break;                                       \
         }
@@ -211,38 +211,38 @@ static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
             status = csr_check_getopt(data, len, sizeof(csr_pair_t), (features)); \
             if (!status && data) {                       \
                 pair = (csr_pair_t*)(data);              \
-                CSR_MRS_STR(pair->high, name_high);      \
-                CSR_MRS_STR(pair->low,  name_low);       \
+                csr_mrs_str(pair->high, name_high);      \
+                csr_mrs_str(pair->low,  name_low);       \
             }                                            \
             break;                                       \
         }
 
-        _GET_SINGLE(CSR_REG_AA64PFR0,    "id_aa64pfr0_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64PFR1,    "id_aa64pfr1_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR0,   "id_aa64isar0_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR1,   "id_aa64isar1_el1", 0)
-        _GET_SINGLE(CSR_REG_AA64ISAR2,   "id_aa64isar2_el1", 0)
-        _GET_SINGLE(CSR_REG_TCR,         "tcr_el1", 0)
-        _GET_SINGLE(CSR_REG_MIDR,        "midr_el1", 0)
-        _GET_SINGLE(CSR_REG_MPIDR,       "mpidr_el1", 0)
-        _GET_SINGLE(CSR_REG_REVIDR,      "revidr_el1", 0)
-        _GET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _GET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
-        _GET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
-        _GET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
-        _GET_SINGLE(CSR_REG_HCR,         "hcr_el2", 0)
-        _GET_SINGLE(CSR_REG_SCR,         "scr_el3", 0)
+        _GET_SINGLE(CSR_REGID_AA64PFR0,    "id_aa64pfr0_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64PFR1,    "id_aa64pfr1_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR0,   "id_aa64isar0_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR1,   "id_aa64isar1_el1", 0)
+        _GET_SINGLE(CSR_REGID_AA64ISAR2,   "id_aa64isar2_el1", 0)
+        _GET_SINGLE(CSR_REGID_TCR,         "tcr_el1", 0)
+        _GET_SINGLE(CSR_REGID_MIDR,        "midr_el1", 0)
+        _GET_SINGLE(CSR_REGID_MPIDR,       "mpidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_REVIDR,      "revidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _GET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
+        _GET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
+        _GET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
+        _GET_SINGLE(CSR_REGID_HCR,         "hcr_el2", 0)
+        _GET_SINGLE(CSR_REGID_SCR,         "scr_el3", 0)
 
-        _GET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
-        _GET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
-        _GET_SINGLE_NUM(CSR_REG_RNDR,    CSR_RNDR, FEAT_RNG)
-        _GET_SINGLE_NUM(CSR_REG_RNDRRS,  CSR_RNDRRS, FEAT_RNG)
+        _GET_SINGLE(CSR_REGID_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
+        _GET_SINGLE(CSR_REGID_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
+        _GET_SINGLE_NUM(CSR_REGID_RNDR,    CSR_RNDR, FEAT_RNG)
+        _GET_SINGLE_NUM(CSR_REGID_RNDRRS,  CSR_RNDRRS, FEAT_RNG)
 
-        _GET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
-        _GET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
-        _GET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
-        _GET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
-        _GET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
+        _GET_PAIR(CSR_REGID2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REGID2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REGID2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REGID2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
+        _GET_PAIR(CSR_REGID2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
 
 #undef _GET_PAIR
 #undef _GET_SINGLE_NUM
@@ -272,7 +272,7 @@ static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
         case CSR_CMD_SET_REG2(index): {                  \
             status = csr_check_setopt(data, len, sizeof(csr_u64_t), (features)); \
             if (!status) {                               \
-                CSR_MSR_STR(name, *(csr_u64_t*)(data));  \
+                csr_msr_str(name, *(csr_u64_t*)(data));  \
             }                                            \
             break;                                       \
         }
@@ -281,25 +281,25 @@ static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
             status = csr_check_setopt(data, len, sizeof(csr_pair_t), (features)); \
             if (!status) {                               \
                 pair = (csr_pair_t*)(data);              \
-                CSR_MSR_STR(name_high, pair->high);      \
-                CSR_MSR_STR(name_low, pair->low);        \
+                csr_msr_str(name_high, pair->high);      \
+                csr_msr_str(name_low, pair->low);        \
             }                                            \
             break;                                       \
         }
 
-        _SET_SINGLE(CSR_REG_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _SET_SINGLE(CSR_REG_TPIDR_EL0,   "tpidr_el0", 0)
-        _SET_SINGLE(CSR_REG_TPIDR_EL1,   "tpidr_el1", 0)
-        _SET_SINGLE(CSR_REG_SCTLR,       "sctlr_el1", 0)
+        _SET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
+        _SET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
+        _SET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
+        _SET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
 
-        _SET_SINGLE(CSR_REG_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
-        _SET_SINGLE(CSR_REG_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
+        _SET_SINGLE(CSR_REGID_SCXTNUM_EL0, "scxtnum_el0", FEAT_CSV2_2)
+        _SET_SINGLE(CSR_REGID_SCXTNUM_EL1, "scxtnum_el1", FEAT_CSV2_2)
 
-        _SET_PAIR(CSR_REG2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
-        _SET_PAIR(CSR_REG2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
-        _SET_PAIR(CSR_REG2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
-        _SET_PAIR(CSR_REG2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
-        _SET_PAIR(CSR_REG2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
+        _SET_PAIR(CSR_REGID2_APIAKEY, "apiakeyhi_el1", "apiakeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REGID2_APIBKEY, "apibkeyhi_el1", "apibkeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REGID2_APDAKEY, "apdakeyhi_el1", "apdakeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REGID2_APDBKEY, "apdbkeyhi_el1", "apdbkeylo_el1", FEAT_PAC)
+        _SET_PAIR(CSR_REGID2_APGAKEY, "apgakeyhi_el1", "apgakeylo_el1", FEAT_PACGA)
 
 #undef _SET_SINGLE
 #undef _SET_PAIR

@@ -125,7 +125,7 @@ bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool e
 
 bool RegAccess::read(int index, csr_u64_t& reg)
 {
-    if (!CSR_REG_IS_SINGLE(index)) {
+    if (!csr_regid_is_single(index)) {
         return setError(EINVAL, "invalid register index");
     }
 #if defined(__linux__)
@@ -143,11 +143,11 @@ bool RegAccess::read(int index, csr_u64_t& reg)
 
 bool RegAccess::read(int index, csr_pair_t& reg)
 {
-    if (CSR_REG_IS_SINGLE(index)) {
+    if (csr_regid_is_single(index)) {
         reg.high = 0;
         return read(index, reg.low);
     }
-    if (!CSR_REG_IS_PAIR(index)) {
+    if (!csr_regid_is_pair(index)) {
         return setError(EINVAL, "invalid register pair index");
     }
 #if defined(__linux__)
@@ -170,7 +170,7 @@ bool RegAccess::read(int index, csr_pair_t& reg)
 
 bool RegAccess::write(int index, csr_u64_t reg)
 {
-    if (!CSR_REG_IS_SINGLE(index)) {
+    if (!csr_regid_is_single(index)) {
         return setError(EINVAL, "invalid register index");
     }
 #if defined(__linux__)
@@ -187,10 +187,10 @@ bool RegAccess::write(int index, csr_u64_t reg)
 
 bool RegAccess::write(int index, const csr_pair_t& reg)
 {
-    if (CSR_REG_IS_SINGLE(index)) {
+    if (csr_regid_is_single(index)) {
         return write(index, reg.low);
     }
-    if (!CSR_REG_IS_PAIR(index)) {
+    if (!csr_regid_is_pair(index)) {
         return setError(EINVAL, "invalid register pair index");
     }
 #if defined(__linux__)

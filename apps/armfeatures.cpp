@@ -40,12 +40,12 @@ ArmFeatures::ArmFeatures(RegAccess& regaccess) :
 bool ArmFeatures::load(RegAccess& regaccess)
 {
     _loaded =
-        regaccess.read(CSR_REG_AA64ISAR0, _aa64isar0) &&
-        regaccess.read(CSR_REG_AA64ISAR1, _aa64isar1) &&
-        regaccess.read(CSR_REG_AA64ISAR2, _aa64isar2) &&
-        regaccess.read(CSR_REG_AA64PFR0, _aa64pfr0) &&
-        regaccess.read(CSR_REG_AA64PFR1, _aa64pfr1) &&
-        regaccess.read(CSR_REG_TCR, _tcr);
+        regaccess.read(CSR_REGID_AA64ISAR0, _aa64isar0) &&
+        regaccess.read(CSR_REGID_AA64ISAR1, _aa64isar1) &&
+        regaccess.read(CSR_REGID_AA64ISAR2, _aa64isar2) &&
+        regaccess.read(CSR_REGID_AA64PFR0, _aa64pfr0) &&
+        regaccess.read(CSR_REGID_AA64PFR1, _aa64pfr1) &&
+        regaccess.read(CSR_REGID_TCR, _tcr);
 
     return _loaded;
 }
