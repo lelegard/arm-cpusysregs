@@ -183,7 +183,7 @@ CSR_INLINE int csr_regid_is_pair(long regid)
     // Extract the register id from a command.
     CSR_INLINE int csr_cmd_to_regid(long cmd)
     {
-        return cmd & ~_CSR_SOCKOPT_BASE;
+        return (int)(cmd & ~_CSR_SOCKOPT_BASE);
     }
 
 #endif
