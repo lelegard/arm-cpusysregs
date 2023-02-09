@@ -126,171 +126,49 @@ static char* csr_devnode(struct device* dev, umode_t* mode)
 
 
 //----------------------------------------------------------------------------
-// Check the presence of some CPU features.
-// Return zero if required features are present, an error code otherwise.
-//----------------------------------------------------------------------------
-
-static inline __attribute__((always_inline)) long csr_check_feature(int features)
-{
-    return features == (features & cpu_features) ? 0 : -EINVAL;
-}
-
-
-//----------------------------------------------------------------------------
-// Return the value of a register to userland or fetch it from userland.
-// Return the ioctl() status.
-//----------------------------------------------------------------------------
-
-static inline long csr_return_reg(csr_u64_t reg, unsigned long param)
-{
-    return copy_to_user((void*)param, &reg, sizeof(csr_u64_t)) ? -EFAULT : 0;
-}
-
-static inline long csr_return_pair(const csr_pair_t* reg, unsigned long param)
-{
-    return copy_to_user((void*)param, reg, sizeof(csr_pair_t)) ? -EFAULT : 0;
-}
-
-static inline long csr_fetch_reg(csr_u64_t* reg, unsigned long param, int features)
-{
-    long status = csr_check_feature(features);
-    if (!status && copy_from_user(reg, (void*)param, sizeof(csr_u64_t))) {
-        status = -EFAULT;
-    }
-    return status;
-}
-
-static long csr_fetch_pair(csr_pair_t* reg, unsigned long param, int features)
-{
-    long status = csr_check_feature(features);
-    if (!status && copy_from_user(reg, (void*)param, sizeof(csr_pair_t))) {
-        status = -EFAULT;
-    }
-    return status;
-}
-
-
-//----------------------------------------------------------------------------
 // Called on ioctl() from userland.
 //----------------------------------------------------------------------------
 
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
 {
-    long status = 0;
+    // Get REGID from ioctl() command.
     csr_pair_t reg;
-
-    switch (cmd) {
-
-#define _GET_SINGLE(index, name, features)                 \
-        case CSR_CMD_GET_REG(index): {                     \
-            status = csr_check_feature(features);          \
-            if (!status) {                                 \
-                csr_mrs_str(reg.low, name);                \
-                status = csr_return_reg(reg.low, param);   \
-            }                                              \
-            break;                                         \
-        }
-#define _GET_SINGLE_NUM(index, num, features)              \
-        case CSR_CMD_GET_REG(index): {                     \
-            status = csr_check_feature(features);          \
-            if (!status) {                                 \
-                csr_mrs_num(reg.low, num);                 \
-                status = csr_return_reg(reg.low, param);   \
-            }                                              \
-            break;                                         \
-        }
-#define _GET_PAIR_NUM(index, num_high, num_low, features)  \
-        case CSR_CMD_GET_REG2(index): {                    \
-            status = csr_check_feature(features);          \
-            if (!status) {                                 \
-                csr_mrs_num(reg.high, num_high);           \
-                csr_mrs_num(reg.low, num_low);             \
-                status = csr_return_pair(&reg, param);     \
-            }                                              \
-            break;                                         \
-        }
-#define _SET_SINGLE(index, name, features)                       \
-        case CSR_CMD_SET_REG(index): {                           \
-            status = csr_fetch_reg(&reg.low, param, (features)); \
-            if (!status) {                                       \
-                csr_msr_str(name, reg.low);                      \
-            }                                                    \
-            break;                                               \
-        }
-#define _SET_SINGLE_NUM(index, num, features)                    \
-        case CSR_CMD_SET_REG(index): {                           \
-            status = csr_fetch_reg(&reg.low, param, (features)); \
-            if (!status) {                                       \
-                csr_msr_num(num, reg.low);                       \
-            }                                                    \
-            break;                                               \
-        }
-#define _SET_PAIR_NUM(index, num_high, num_low, features)        \
-        case CSR_CMD_SET_REG2(index): {                          \
-            status = csr_fetch_pair(&reg, param, (features));    \
-            if (!status) {                                       \
-                csr_msr_num(num_high, reg.high);                 \
-                csr_msr_num(num_low, reg.low);                   \
-            }                                                    \
-            break;                                               \
-        }
-
-        // Read registers.
-
-        _GET_SINGLE(CSR_REGID_AA64PFR0,    "id_aa64pfr0_el1", 0)
-        _GET_SINGLE(CSR_REGID_AA64PFR1,    "id_aa64pfr1_el1", 0)
-        _GET_SINGLE(CSR_REGID_AA64ISAR0,   "id_aa64isar0_el1", 0)
-        _GET_SINGLE(CSR_REGID_AA64ISAR1,   "id_aa64isar1_el1", 0)
-        _GET_SINGLE(CSR_REGID_AA64ISAR2,   "id_aa64isar2_el1", 0)
-        _GET_SINGLE(CSR_REGID_TCR,         "tcr_el1", 0)
-        _GET_SINGLE(CSR_REGID_MIDR,        "midr_el1", 0)
-        _GET_SINGLE(CSR_REGID_MPIDR,       "mpidr_el1", 0)
-        _GET_SINGLE(CSR_REGID_REVIDR,      "revidr_el1", 0)
-        _GET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _GET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
-        _GET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
-        _GET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
-        _GET_SINGLE(CSR_REGID_HCR,         "hcr_el2", 0)
-        _GET_SINGLE(CSR_REGID_SCR,         "scr_el3", 0)
-
-        _GET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
-        _GET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
-        _GET_SINGLE_NUM(CSR_REGID_RNDR,        CSR_RNDR, FEAT_RNG)
-        _GET_SINGLE_NUM(CSR_REGID_RNDRRS,      CSR_RNDRRS, FEAT_RNG)
-
-        _GET_PAIR_NUM(CSR_REGID2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REGID2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REGID2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REGID2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
-        _GET_PAIR_NUM(CSR_REGID2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
-
-        // Write registers.
-
-        _SET_SINGLE(CSR_REGID_TPIDRRO_EL0, "tpidrro_el0", 0)
-        _SET_SINGLE(CSR_REGID_TPIDR_EL0,   "tpidr_el0", 0)
-        _SET_SINGLE(CSR_REGID_TPIDR_EL1,   "tpidr_el1", 0)
-        _SET_SINGLE(CSR_REGID_SCTLR,       "sctlr_el1", 0)
-
-        _SET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL0, CSR_SCXTNUM_EL0, FEAT_CSV2_2)
-        _SET_SINGLE_NUM(CSR_REGID_SCXTNUM_EL1, CSR_SCXTNUM_EL1, FEAT_CSV2_2)
-
-        _SET_PAIR_NUM(CSR_REGID2_APIAKEY, CSR_APIAKEYHI_EL1, CSR_APIAKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REGID2_APIBKEY, CSR_APIBKEYHI_EL1, CSR_APIBKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REGID2_APDAKEY, CSR_APDAKEYHI_EL1, CSR_APDAKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REGID2_APDBKEY, CSR_APDBKEYHI_EL1, CSR_APDBKEYLO_EL1, FEAT_PAC)
-        _SET_PAIR_NUM(CSR_REGID2_APGAKEY, CSR_APGAKEYHI_EL1, CSR_APGAKEYLO_EL1, FEAT_PACGA)
-
-#undef _SET_PAIR_NUM
-#undef _SET_SINGLE_NUM
-#undef _SET_SINGLE
-#undef _GET_PAIR_NUM
-#undef _GET_SINGLE_NUM
-#undef _GET_SINGLE
-
-        default: {
-            status = -EINVAL;
-            break;
-        }
+    const int regid = csr_cmd_to_regid(cmd);
+    const size_t size = csr_regid_is_pair(regid) ? sizeof(reg) : sizeof(reg.low);
+    if (!csr_regid_is_valid(regid)) {
+        return -EINVAL;
     }
-    return status;
+
+    // Redundant sanity check on data size and layout.
+    if (size != _IOC_SIZE(cmd) || (char*)(&reg) != (char*)(&reg.low)) {
+        return -EPROTO;
+    }
+
+    // Get or set operation.
+    switch (_IOC_DIR(cmd)) {
+        case _IOC_READ:
+            // Get register value.
+            if (csr_get_register(regid, &reg, cpu_features)) {
+                return -EINVAL;
+            }
+            else if (copy_to_user((void*)param, &reg, size)) {
+                return -EFAULT;
+            }
+            else {
+                return 0;
+            }
+        case _IOC_WRITE:
+            // Set register value.
+            if (copy_from_user(&reg, (void*)param, size)) {
+                return -EFAULT;
+            }
+            else if (csr_set_register(regid, &reg, cpu_features)) {
+                return -EINVAL;
+            }
+            else {
+                return 0;
+            }
+        default:
+            return -EINVAL;
+    }
 }
