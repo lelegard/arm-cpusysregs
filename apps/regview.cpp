@@ -486,7 +486,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"BT0",       35, 35, {{0, "BTI at EL0: PACIxSP is compatible with BTYPE:11"},
                                    {1, "BTI at EL0: PACIxSP NOT compatible with BTYPE:11"}}},
             {"MSCEn",     33, 33, {{0, "none"}, {1, "MSCEn"}}},
-            {"CMOW",      32, 33, {{0, "none"}, {1, "CMOW"}}},
+            {"CMOW",      32, 32, {{0, "none"}, {1, "CMOW"}}},
             {"EnIA",      31, 31, {{0, "PACIA key NOT enabled"}, {1, "PACIA key enabled"}}},
             {"EnIB",      30, 30, {{0, "PACIB key NOT enabled"}, {1, "PACIB key enabled"}}},
             {"LSMAOE",    29, 29, {{0, "none"}, {1, "LSMAOE"}}},
