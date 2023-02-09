@@ -35,7 +35,7 @@ _features.h: armfeatures.h
 $(LIB_FILE): $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 clean:
-	rm -f *.o *.a *.d _feat.h $(EXECS)
+	rm -f *.o *.a *.d _*.h $(EXECS)
 
 # Regenerate implicit dependencies.
 ifneq ($(if $(MAKECMDGOALS),$(filter-out clean,$(MAKECMDGOALS)),true),)
