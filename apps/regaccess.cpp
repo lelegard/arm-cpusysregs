@@ -123,40 +123,40 @@ bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool e
 // Read CPU registers.
 //----------------------------------------------------------------------------
 
-bool RegAccess::read(int index, csr_u64_t& reg)
+bool RegAccess::read(int regid, csr_u64_t& reg)
 {
-    if (!csr_regid_is_single(index)) {
-        return setError(EINVAL, "invalid register index");
+    if (!csr_regid_is_single(regid)) {
+        return setError(EINVAL, "invalid register id");
     }
 #if defined(__linux__)
-    if (::ioctl(_fd, CSR_CMD_GET_REG(index), &reg) < 0) {
+    if (::ioctl(_fd, CSR_IOC_GET_REG(regid), &reg) < 0) {
         return setError(errno, "ioctl(GET_REG)");
     }
 #elif defined(__APPLE__)
     ::socklen_t len = sizeof(reg);
-    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_GET_REG(index), &reg, &len) < 0)  {
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, &len) < 0)  {
         return setError(errno, "getsockopt(GET_REG)");
     }
 #endif
     return true;
 }
 
-bool RegAccess::read(int index, csr_pair_t& reg)
+bool RegAccess::read(int regid, csr_pair_t& reg)
 {
-    if (csr_regid_is_single(index)) {
+    if (csr_regid_is_single(regid)) {
         reg.high = 0;
-        return read(index, reg.low);
+        return read(regid, reg.low);
     }
-    if (!csr_regid_is_pair(index)) {
-        return setError(EINVAL, "invalid register pair index");
+    if (!csr_regid_is_pair(regid)) {
+        return setError(EINVAL, "invalid register pair id");
     }
 #if defined(__linux__)
-    if (::ioctl(_fd, CSR_CMD_GET_REG2(index), &reg) < 0) {
+    if (::ioctl(_fd, CSR_IOC_GET_REG2(regid), &reg) < 0) {
         return setError(errno, "ioctl(GET_REG2)");
     }
 #elif defined(__APPLE__)
     ::socklen_t len = sizeof(reg);
-    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_GET_REG2(index), &reg, &len) < 0)  {
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, &len) < 0)  {
         return setError(errno, "getsockopt(GET_REG2)");
     }
 #endif
@@ -168,37 +168,37 @@ bool RegAccess::read(int index, csr_pair_t& reg)
 // Write CPU registers.
 //----------------------------------------------------------------------------
 
-bool RegAccess::write(int index, csr_u64_t reg)
+bool RegAccess::write(int regid, csr_u64_t reg)
 {
-    if (!csr_regid_is_single(index)) {
-        return setError(EINVAL, "invalid register index");
+    if (!csr_regid_is_single(regid)) {
+        return setError(EINVAL, "invalid register id");
     }
 #if defined(__linux__)
-    if (::ioctl(_fd, CSR_CMD_SET_REG(index), &reg) < 0) {
+    if (::ioctl(_fd, CSR_IOC_SET_REG(regid), &reg) < 0) {
         return setError(errno, "ioctl(SET_REG)");
     }
 #elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_SET_REG(index), &reg, sizeof(reg)) < 0)  {
+    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
         return setError(errno, "getsockopt(SET_REG)");
     }
 #endif
     return true;
 }
 
-bool RegAccess::write(int index, const csr_pair_t& reg)
+bool RegAccess::write(int regid, const csr_pair_t& reg)
 {
-    if (csr_regid_is_single(index)) {
-        return write(index, reg.low);
+    if (csr_regid_is_single(regid)) {
+        return write(regid, reg.low);
     }
-    if (!csr_regid_is_pair(index)) {
-        return setError(EINVAL, "invalid register pair index");
+    if (!csr_regid_is_pair(regid)) {
+        return setError(EINVAL, "invalid register pair id");
     }
 #if defined(__linux__)
-    if (::ioctl(_fd, CSR_CMD_SET_REG2(index), &reg) < 0) {
+    if (::ioctl(_fd, CSR_IOC_SET_REG2(regid), &reg) < 0) {
         return setError(errno, "ioctl(SET_REG2)");
     }
 #elif defined(__APPLE__)
-    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_CMD_SET_REG2(index), &reg, sizeof(reg)) < 0)  {
+    if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
         return setError(errno, "getsockopt(SET_REG2)");
     }
 #endif

@@ -1,3 +1,6 @@
 # Executable files in apps directory
 demo-pac
 sysregs
+
+# Generated header files
+_*.h

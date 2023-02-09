@@ -95,6 +95,86 @@ public:
     int ID_AA64PFR1_EL1_SSBS() const { return (int)(_aa64pfr1 >> 4) & 0x0F; }
     int ID_AA64PFR1_EL1_BT() const { return (int)(_aa64pfr1) & 0x0F; }
 
+    int ID_AA64DFR0_EL1_HPMN0() const { return (int)(_aa64dfr0 >> 60) & 0x0F; }
+    int ID_AA64DFR0_EL1_BRBE() const { return (int)(_aa64dfr0 >> 52) & 0x0F; }
+    int ID_AA64DFR0_EL1_MTPMU() const { return (int)(_aa64dfr0 >> 48) & 0x0F; }
+    int ID_AA64DFR0_EL1_TraceBuffer() const { return (int)(_aa64dfr0 >> 44) & 0x0F; }
+    int ID_AA64DFR0_EL1_TraceFilt() const { return (int)(_aa64dfr0 >> 40) & 0x0F; }
+    int ID_AA64DFR0_EL1_DoubleLock() const { return (int)(_aa64dfr0 >> 36) & 0x0F; }
+    int ID_AA64DFR0_EL1_PMSVer() const { return (int)(_aa64dfr0 >> 32) & 0x0F; }
+    int ID_AA64DFR0_EL1_CTX_CMPs() const { return (int)(_aa64dfr0 >> 28) & 0x0F; }
+    int ID_AA64DFR0_EL1_WRPs() const { return (int)(_aa64dfr0 >> 20) & 0x0F; }
+    int ID_AA64DFR0_EL1_BRPs() const { return (int)(_aa64dfr0 >> 12) & 0x0F; }
+    int ID_AA64DFR0_EL1_PMUVer() const { return (int)(_aa64dfr0 >> 8) & 0x0F; }
+    int ID_AA64DFR0_EL1_TraceVer() const { return (int)(_aa64dfr0 >> 4) & 0x0F; }
+    int ID_AA64DFR0_EL1_DebugVer() const { return (int)(_aa64dfr0) & 0x0F; }
+
+    int ID_AA64MMFR0_EL1_ECV() const { return (int)(_aa64mmfr0 >> 60) & 0x0F; }
+    int ID_AA64MMFR0_EL1_FGT() const { return (int)(_aa64mmfr0 >> 56) & 0x0F; }
+    int ID_AA64MMFR0_EL1_ExS() const { return (int)(_aa64mmfr0 >> 44) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran4_2() const { return (int)(_aa64mmfr0 >> 40) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran64_2() const { return (int)(_aa64mmfr0 >> 36) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran16_2() const { return (int)(_aa64mmfr0 >> 32) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran4() const { return (int)(_aa64mmfr0 >> 28) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran64() const { return (int)(_aa64mmfr0 >> 24) & 0x0F; }
+    int ID_AA64MMFR0_EL1_TGran16() const { return (int)(_aa64mmfr0 >> 20) & 0x0F; }
+    int ID_AA64MMFR0_EL1_BigEndEL0() const { return (int)(_aa64mmfr0 >> 16) & 0x0F; }
+    int ID_AA64MMFR0_EL1_SNSMem() const { return (int)(_aa64mmfr0 >> 12) & 0x0F; }
+    int ID_AA64MMFR0_EL1_BigEnd() const { return (int)(_aa64mmfr0 >> 8) & 0x0F; }
+    int ID_AA64MMFR0_EL1_ASIDBits() const { return (int)(_aa64mmfr0 >> 4) & 0x0F; }
+    int ID_AA64MMFR0_EL1_PARange() const { return (int)(_aa64mmfr0) & 0x0F; }
+
+    int ID_AA64MMFR1_EL1_CMOW() const { return (int)(_aa64mmfr1 >> 56) & 0x0F; }
+    int ID_AA64MMFR1_EL1_TIDCP1() const { return (int)(_aa64mmfr1 >> 52) & 0x0F; }
+    int ID_AA64MMFR1_EL1_nTLBPA() const { return (int)(_aa64mmfr1 >> 48) & 0x0F; }
+    int ID_AA64MMFR1_EL1_AFP() const { return (int)(_aa64mmfr1 >> 44) & 0x0F; }
+    int ID_AA64MMFR1_EL1_HCX() const { return (int)(_aa64mmfr1 >> 40) & 0x0F; }
+    int ID_AA64MMFR1_EL1_ETS() const { return (int)(_aa64mmfr1 >> 36) & 0x0F; }
+    int ID_AA64MMFR1_EL1_TWED() const { return (int)(_aa64mmfr1 >> 32) & 0x0F; }
+    int ID_AA64MMFR1_EL1_XNX() const { return (int)(_aa64mmfr1 >> 28) & 0x0F; }
+    int ID_AA64MMFR1_EL1_SpecSEI() const { return (int)(_aa64mmfr1 >> 24) & 0x0F; }
+    int ID_AA64MMFR1_EL1_PAN() const { return (int)(_aa64mmfr1 >> 20) & 0x0F; }
+    int ID_AA64MMFR1_EL1_LO() const { return (int)(_aa64mmfr1 >> 16) & 0x0F; }
+    int ID_AA64MMFR1_EL1_HPDS() const { return (int)(_aa64mmfr1 >> 12) & 0x0F; }
+    int ID_AA64MMFR1_EL1_VH() const { return (int)(_aa64mmfr1 >> 8) & 0x0F; }
+    int ID_AA64MMFR1_EL1_VMIDBits() const { return (int)(_aa64mmfr1 >> 4) & 0x0F; }
+    int ID_AA64MMFR1_EL1_HAFDBS() const { return (int)(_aa64mmfr1) & 0x0F; }
+
+    int ID_AA64MMFR2_EL1_E0PD() const { return (int)(_aa64mmfr2 >> 60) & 0x0F; }
+    int ID_AA64MMFR2_EL1_EVT() const { return (int)(_aa64mmfr2 >> 56) & 0x0F; }
+    int ID_AA64MMFR2_EL1_BBM() const { return (int)(_aa64mmfr2 >> 52) & 0x0F; }
+    int ID_AA64MMFR2_EL1_TTL() const { return (int)(_aa64mmfr2 >> 48) & 0x0F; }
+    int ID_AA64MMFR2_EL1_FWB() const { return (int)(_aa64mmfr2 >> 40) & 0x0F; }
+    int ID_AA64MMFR2_EL1_IDS() const { return (int)(_aa64mmfr2 >> 36) & 0x0F; }
+    int ID_AA64MMFR2_EL1_AT() const { return (int)(_aa64mmfr2 >> 32) & 0x0F; }
+    int ID_AA64MMFR2_EL1_ST() const { return (int)(_aa64mmfr2 >> 28) & 0x0F; }
+    int ID_AA64MMFR2_EL1_NV() const { return (int)(_aa64mmfr2 >> 24) & 0x0F; }
+    int ID_AA64MMFR2_EL1_CCIDX() const { return (int)(_aa64mmfr2 >> 20) & 0x0F; }
+    int ID_AA64MMFR2_EL1_VARange() const { return (int)(_aa64mmfr2 >> 16) & 0x0F; }
+    int ID_AA64MMFR2_EL1_IESB() const { return (int)(_aa64mmfr2 >> 12) & 0x0F; }
+    int ID_AA64MMFR2_EL1_LSM() const { return (int)(_aa64mmfr2 >> 8) & 0x0F; }
+    int ID_AA64MMFR2_EL1_UAO() const { return (int)(_aa64mmfr2 >> 4) & 0x0F; }
+    int ID_AA64MMFR2_EL1_CnP() const { return (int)(_aa64mmfr2) & 0x0F; }
+
+    int ID_AA64SMFR0_EL1_FA64() const { return (int)(_aa64smfr0 >> 63) & 0x01; }
+    int ID_AA64SMFR0_EL1_SMEver() const { return (int)(_aa64smfr0 >> 56) & 0x0F; }
+    int ID_AA64SMFR0_EL1_I16I64() const { return (int)(_aa64smfr0 >> 52) & 0x0F; }
+    int ID_AA64SMFR0_EL1_F64F64() const { return (int)(_aa64smfr0 >> 48) & 0x01; }
+    int ID_AA64SMFR0_EL1_I8I32() const { return (int)(_aa64smfr0 >> 36) & 0x0F; }
+    int ID_AA64SMFR0_EL1_F16F32() const { return (int)(_aa64smfr0 >> 25) & 0x01; }
+    int ID_AA64SMFR0_EL1_B16F32() const { return (int)(_aa64smfr0 >> 34) & 0x01; }
+    int ID_AA64SMFR0_EL1_F32F32() const { return (int)(_aa64smfr0 >> 32) & 0x01; }
+
+    int ID_AA64ZFR0_EL1_F64MM() const { return (int)(_aa64zfr0 >> 56) & 0x0F; }
+    int ID_AA64ZFR0_EL1_F32MM() const { return (int)(_aa64zfr0 >> 52) & 0x0F; }
+    int ID_AA64ZFR0_EL1_I8MM() const { return (int)(_aa64zfr0 >> 44) & 0x0F; }
+    int ID_AA64ZFR0_EL1_SM4() const { return (int)(_aa64zfr0 >> 40) & 0x0F; }
+    int ID_AA64ZFR0_EL1_SHA3() const { return (int)(_aa64zfr0 >> 32) & 0x0F; }
+    int ID_AA64ZFR0_EL1_BF16() const { return (int)(_aa64zfr0 >> 20) & 0x0F; }
+    int ID_AA64ZFR0_EL1_BitPerm() const { return (int)(_aa64zfr0 >> 16) & 0x0F; }
+    int ID_AA64ZFR0_EL1_AES() const { return (int)(_aa64zfr0 >> 4) & 0x0F; }
+    int ID_AA64ZFR0_EL1_SVEver() const { return (int)(_aa64zfr0) & 0x0F; }
+
     int TCR_EL1_TCMA1() const { return (int)(_tcr >> 58) & 0x01; }
     int TCR_EL1_TCMA0() const { return (int)(_tcr >> 57) & 0x01; }
     int TCR_EL1_TBID1() const { return (int)(_tcr >> 52) & 0x01; }
@@ -108,10 +188,16 @@ public:
     // Processor features, using same names as Arm Architecture Reference Manual.
 
     bool FEAT_AES() const { return ID_AA64ISAR0_EL1_AES() >= 1; }
-    bool FEAT_BTI() const { return ID_AA64PFR1_EL1_BT() >= 1; }
+    bool FEAT_AFP() const { return ID_AA64MMFR1_EL1_AFP() >= 1; }
     bool FEAT_AMUv1() const { return ID_AA64PFR0_EL1_AMU() >= 1; }
     bool FEAT_AMUv1p1() const { return ID_AA64PFR0_EL1_AMU() >= 2; }
-    bool FEAT_BF16() const { return ID_AA64ISAR1_EL1_BF16() >= 1; }
+    bool FEAT_BBM() const { return ID_AA64MMFR2_EL1_BBM() >= 1; }
+    bool FEAT_BF16() const { return ID_AA64ISAR1_EL1_BF16() >= 1 || ID_AA64ZFR0_EL1_BF16() >= 1; }
+    bool FEAT_BRBE() const { return ID_AA64DFR0_EL1_BRBE() >= 1; }
+    bool FEAT_BRBEv1p1() const { return ID_AA64DFR0_EL1_BRBE() >= 2; }
+    bool FEAT_BTI() const { return ID_AA64PFR1_EL1_BT() >= 1; }
+    bool FEAT_CCIDX() const { return ID_AA64MMFR2_EL1_CCIDX() >= 1; }
+    bool FEAT_CMOW() const { return ID_AA64MMFR1_EL1_CMOW() >= 1; }
     bool FEAT_CONSTPACFIELD() const { return ID_AA64ISAR2_EL1_PAC_frac() >= 1; }
     bool FEAT_CSV2() const { return ID_AA64PFR0_EL1_CSV2() >= 1; }
     bool FEAT_CSV2_1p1() const { return ID_AA64PFR1_EL1_CSV2_frac() >= 1; }
@@ -121,8 +207,17 @@ public:
     bool FEAT_CSV3() const { return ID_AA64PFR0_EL1_CSV3() >= 1; }
     bool FEAT_DIT() const { return ID_AA64PFR0_EL1_DIT() >= 1; }
     bool FEAT_DotProd() const { return ID_AA64ISAR0_EL1_DP() >= 1; }
-    bool FEAT_EBF16() const { return ID_AA64ISAR1_EL1_BF16() >= 2; }
+    bool FEAT_DoubleLock() const { return ID_AA64DFR0_EL1_DoubleLock() != 15; }
+    bool FEAT_E0PD() const { return ID_AA64MMFR2_EL1_E0PD() >= 1; }
+    bool FEAT_EBF16() const { return ID_AA64ISAR1_EL1_BF16() >= 2 || ID_AA64ZFR0_EL1_BF16() >= 2; }
+    bool FEAT_ECV() const { return ID_AA64MMFR0_EL1_ECV() >= 1; }
     bool FEAT_EPAC() const { return ID_AA64ISAR1_EL1_API() >= 2 || ID_AA64ISAR1_EL1_APA() >= 2 || ID_AA64ISAR2_EL1_APA3() >= 2; }
+    bool FEAT_ETS() const { return ID_AA64MMFR1_EL1_ETS() >= 1; }
+    bool FEAT_EVT() const { return ID_AA64MMFR2_EL1_EVT() >= 1; }
+    bool FEAT_ExS() const { return ID_AA64MMFR0_EL1_ExS() >= 1; }
+    bool FEAT_F32MM() const { return ID_AA64ZFR0_EL1_F32MM() >= 1; }
+    bool FEAT_F64MM() const { return ID_AA64ZFR0_EL1_F64MM() >= 1; }
+    bool FEAT_FGT() const { return ID_AA64MMFR0_EL1_FGT() >= 1; }
     bool FEAT_FHM() const { return ID_AA64ISAR0_EL1_FHM() >= 1; }
     bool FEAT_FlagM() const { return ID_AA64ISAR0_EL1_TS() >= 1; }
     bool FEAT_FlagM2() const { return ID_AA64ISAR0_EL1_TS() >= 2; }
@@ -131,24 +226,50 @@ public:
     bool FEAT_FPAC() const { return ID_AA64ISAR1_EL1_API() >= 4 || ID_AA64ISAR1_EL1_APA() >= 4 || ID_AA64ISAR2_EL1_APA3() >= 4; }
     bool FEAT_FPACCOMBINE() const { return ID_AA64ISAR1_EL1_API() >= 5 || ID_AA64ISAR1_EL1_APA() >= 5 || ID_AA64ISAR2_EL1_APA3() >= 5; }
     bool FEAT_FRINTTS() const { return ID_AA64ISAR1_EL1_FRINTTS() >= 1; }
+    bool FEAT_HAFDBS() const { return ID_AA64MMFR1_EL1_HAFDBS() >= 1; }
     bool FEAT_HBC() const { return ID_AA64ISAR2_EL1_BC() >= 1; }
+    bool FEAT_HCX() const { return ID_AA64MMFR1_EL1_HCX() >= 1; }
+    bool FEAT_HPDS() const { return ID_AA64MMFR1_EL1_HPDS() >= 1; }
+    bool FEAT_HPDS2() const { return ID_AA64MMFR1_EL1_HPDS() >= 2; }
+    bool FEAT_HPMN0() const { return ID_AA64DFR0_EL1_HPMN0() >= 1; }
+    bool FEAT_I8MM() const { return ID_AA64ZFR0_EL1_I8MM() >= 1; }
+    bool FEAT_IDST() const { return ID_AA64MMFR2_EL1_IDS() >= 1; }
+    bool FEAT_IESB() const { return ID_AA64MMFR2_EL1_IESB() >= 1; }
+    bool FEAT_LOR() const { return ID_AA64MMFR1_EL1_LO() >= 1; }
     bool FEAT_LSE() const { return ID_AA64ISAR0_EL1_Atomic() >= 2; }
+    bool FEAT_LSE2() const { return ID_AA64MMFR2_EL1_AT() >= 1; }
+    bool FEAT_LVA() const { return ID_AA64MMFR2_EL1_VARange() >= 1; }
+    bool FEAT_LSMAOC() const { return ID_AA64MMFR2_EL1_LSM() >= 1; }
     bool FEAT_MOPS() const { return ID_AA64ISAR2_EL1_MOPS() >= 1; }
     bool FEAT_MTE() const { return ID_AA64PFR1_EL1_MTE() >= 1; }
     bool FEAT_MTE2() const { return ID_AA64PFR1_EL1_MTE() >= 2; }
     bool FEAT_MTE3() const { return ID_AA64PFR1_EL1_MTE() >= 3; }
+    bool FEAT_MTPMU() const { return ID_AA64DFR0_EL1_MTPMU() >= 1; }
     bool FEAT_NMI() const { return ID_AA64PFR1_EL1_NMI() >= 1; }
+    bool FEAT_nTLBPA() const { return ID_AA64MMFR1_EL1_nTLBPA() >= 1; }
+    bool FEAT_NV() const { return ID_AA64MMFR2_EL1_NV() >= 1; }
+    bool FEAT_NV2() const { return ID_AA64MMFR2_EL1_NV() >= 2; }
     bool FEAT_PACIMP() const { return ID_AA64ISAR1_EL1_GPI() >= 1 || ID_AA64ISAR1_EL1_API() >= 1; }
     bool FEAT_PACQARMA3() const { return ID_AA64ISAR2_EL1_GPA3() >= 1 || ID_AA64ISAR2_EL1_APA3() >= 1; }
     bool FEAT_PACQARMA5() const { return ID_AA64ISAR1_EL1_GPA() >= 1 || ID_AA64ISAR1_EL1_APA() >= 1; }
+    bool FEAT_PAN() const { return ID_AA64MMFR1_EL1_PAN() >= 1; }
+    bool FEAT_PAN2() const { return ID_AA64MMFR1_EL1_PAN() >= 2; }
+    bool FEAT_PAN3() const { return ID_AA64MMFR1_EL1_PAN() >= 3; }
     bool FEAT_PAuth() const { return ID_AA64ISAR1_EL1_API() >= 1 || ID_AA64ISAR1_EL1_APA() >= 1 || ID_AA64ISAR2_EL1_APA3() >= 1; }
     bool FEAT_PAuth2() const { return ID_AA64ISAR1_EL1_API() >= 3 || ID_AA64ISAR1_EL1_APA() >= 3 || ID_AA64ISAR2_EL1_APA3() >= 3; }
+    bool FEAT_PMUv3() const { return ID_AA64DFR0_EL1_PMUVer() >= 1; }
+    bool FEAT_PMUv3p1() const { return ID_AA64DFR0_EL1_PMUVer() >= 4; }
+    bool FEAT_PMUv3p4() const { return ID_AA64DFR0_EL1_PMUVer() >= 5; }
+    bool FEAT_PMUv3p5() const { return ID_AA64DFR0_EL1_PMUVer() >= 6; }
+    bool FEAT_PMUv3p7() const { return ID_AA64DFR0_EL1_PMUVer() >= 7; }
+    bool FEAT_PMUv3p8() const { return ID_AA64DFR0_EL1_PMUVer() >= 8; }
     bool FEAT_PMULL() const { return ID_AA64ISAR0_EL1_AES() >= 2; }
     bool FEAT_RAS() const { return ID_AA64PFR0_EL1_RAS() >= 1; }
     bool FEAT_RASv1p1() const { return ID_AA64PFR1_EL1_RAS_frac() >= 1; }
     bool FEAT_RDM() const { return ID_AA64ISAR0_EL1_RDM() >= 1; }
     bool FEAT_RME() const { return ID_AA64PFR0_EL1_RME() >= 1; }
     bool FEAT_RNG() const { return ID_AA64ISAR0_EL1_RNDR() >= 1; }
+    bool FEAT_S2FWB() const { return ID_AA64MMFR2_EL1_FWB() >= 1; }
     bool FEAT_SEL2() const { return ID_AA64PFR0_EL1_SEL2() >= 1; }
     bool FEAT_SHA1() const { return ID_AA64ISAR0_EL1_SHA1() >= 1; }
     bool FEAT_SHA256() const { return ID_AA64ISAR0_EL1_SHA2() >= 1; }
@@ -157,12 +278,36 @@ public:
     bool FEAT_SM3() const { return ID_AA64ISAR0_EL1_SM3() >= 1; }
     bool FEAT_SM4() const { return ID_AA64ISAR0_EL1_SM4() >= 1; }
     bool FEAT_SME() const { return ID_AA64PFR1_EL1_SME() >= 1; }
+    bool FEAT_SME_FA64() const { return ID_AA64SMFR0_EL1_FA64() >= 1; }
+    bool FEAT_SME_F64F64() const { return ID_AA64SMFR0_EL1_F64F64() >= 1; }
+    bool FEAT_SME_I16I64() const { return ID_AA64SMFR0_EL1_I16I64() >= 1; }
+    bool FEAT_SPE() const { return ID_AA64DFR0_EL1_PMSVer() >= 1; }
+    bool FEAT_SPEv1p1() const { return ID_AA64DFR0_EL1_PMSVer() >= 2; }
+    bool FEAT_SPEv1p2() const { return ID_AA64DFR0_EL1_PMSVer() >= 3; }
+    bool FEAT_SPEv1p3() const { return ID_AA64DFR0_EL1_PMSVer() >= 4; }
     bool FEAT_SPECRES() const { return ID_AA64ISAR1_EL1_SPECRES() >= 1; }
     bool FEAT_SSBS() const { return ID_AA64PFR1_EL1_SSBS() >= 1; }
     bool FEAT_SSBS2() const { return ID_AA64PFR1_EL1_SSBS() >= 2; }
     bool FEAT_SVE() const { return ID_AA64PFR0_EL1_SVE() >= 1; }
+    bool FEAT_SVE2() const { return ID_AA64ZFR0_EL1_SVEver() >= 1; }
+    bool FEAT_SVE_AES() const { return ID_AA64ZFR0_EL1_AES() >= 1; }
+    bool FEAT_SVE_BitPerm() const { return ID_AA64ZFR0_EL1_BitPerm() >= 1; }
+    bool FEAT_SVE_PMULL128() const { return ID_AA64ZFR0_EL1_AES() >= 2; }
+    bool FEAT_SVE_SHA3() const { return ID_AA64ZFR0_EL1_SHA3() >= 1; }
+    bool FEAT_SVE_SM4() const { return ID_AA64ZFR0_EL1_SM4() >= 1; }
+    bool FEAT_TIDCP1() const { return ID_AA64MMFR1_EL1_TIDCP1() >= 1; }
     bool FEAT_TLBIOS() const { return ID_AA64ISAR0_EL1_TLB() >= 1; }
     bool FEAT_TLBIRANGE() const { return ID_AA64ISAR0_EL1_TLB() >= 2; }
+    bool FEAT_TRBE() const { return ID_AA64DFR0_EL1_TraceBuffer() >= 1; }
+    bool FEAT_TRF() const { return ID_AA64DFR0_EL1_TraceFilt() >= 1; }
+    bool FEAT_TTCNP() const { return ID_AA64MMFR2_EL1_CnP() >= 1; }
+    bool FEAT_TTL() const { return ID_AA64MMFR2_EL1_TTL() >= 1; }
+    bool FEAT_TTST() const { return ID_AA64MMFR2_EL1_ST() >= 1; }
+    bool FEAT_TWED() const { return ID_AA64MMFR1_EL1_TWED() >= 1; }
+    bool FEAT_UAO() const { return ID_AA64MMFR2_EL1_UAO() >= 1; }
+    bool FEAT_VHE() const { return ID_AA64MMFR1_EL1_VH() >= 1; }
+    bool FEAT_VMID16() const { return ID_AA64MMFR1_EL1_VMIDBits() == 2; }
+    bool FEAT_XNX() const { return ID_AA64MMFR1_EL1_XNX() >= 1; }
 
     // Synthetic features of the processor.
 
@@ -192,5 +337,11 @@ private:
     csr_u64_t _aa64isar2;
     csr_u64_t _aa64pfr0;
     csr_u64_t _aa64pfr1;
+    csr_u64_t _aa64dfr0;
+    csr_u64_t _aa64mmfr0;
+    csr_u64_t _aa64mmfr1;
+    csr_u64_t _aa64mmfr2;
+    csr_u64_t _aa64smfr0;
+    csr_u64_t _aa64zfr0;
     csr_u64_t _tcr;
 };

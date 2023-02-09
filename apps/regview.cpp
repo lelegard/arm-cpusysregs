@@ -28,8 +28,82 @@ std::map<std::string, RegView::Register> RegView::AllRegistersByName;
 // A dummy empty description.
 const RegView::Register RegView::EmptyRegister {"", "", INVALID, 0, {}};
 
+
+//----------------------------------------------------------------------------
+// Check CPU features
+//----------------------------------------------------------------------------
+
+bool RegView::Register::isSupported(RegAccess& ra) const
+{
+    ArmFeatures feat(ra);
+    return (!(features & NEED_PAC) || feat.FEAT_PAuth()) &&
+           (!(features & NEED_PACGA) || feat.hasPACGA()) &&
+           (!(features & NEED_CSV2_2) || feat.FEAT_CSV2_2()) &&
+           (!(features & NEED_RNG) || feat.FEAT_RNG()) &&
+           (!(features & NEED_SVE) || feat.FEAT_SVE()) &&
+           (!(features & NEED_SME) || feat.FEAT_SME());
+}
+
+std::string RegView::Register::featuresList() const
+{
+    std::list<std::string> res;
+    if (features & RegView::READ) {
+        res.push_back("read");
+    }
+    if (features & RegView::WRITE) {
+        res.push_back("write");
+    }
+    if (features & RegView::NEED_PAC) {
+        res.push_back("need PAC");
+    }
+    if (features & RegView::NEED_PACGA) {
+        res.push_back("need PACGA");
+    }
+    if (features & RegView::NEED_CSV2_2) {
+        res.push_back("need CSV2_2");
+    }
+    if (features & RegView::NEED_RNG) {
+        res.push_back("need RNG");
+    }
+    if (features & RegView::NEED_SVE) {
+        res.push_back("need SVE");
+    }
+    if (features & RegView::NEED_SME) {
+        res.push_back("need SME");
+    }
+    return Join(res, ", ");
+}
+
+
+//----------------------------------------------------------------------------
 // Descriptions of all known registers.
+//----------------------------------------------------------------------------
+
 const std::list<RegView::Register> RegView::AllRegisters {
+    /* --------
+     * Template for copy/paste on new registers:
+    {
+        "", "D17.2.", CSR_REGID_, READ,
+        {
+            {"",    63, 60, {{0, "none"}, {1, ""}}},
+            {"",    59, 56, {{0, "none"}, {1, ""}}},
+            {"",    55, 52, {{0, "none"}, {1, ""}}},
+            {"",    51, 48, {{0, "none"}, {1, ""}}},
+            {"",    47, 44, {{0, "none"}, {1, ""}}},
+            {"",    43, 40, {{0, "none"}, {1, ""}}},
+            {"",    39, 36, {{0, "none"}, {1, ""}}},
+            {"",    35, 32, {{0, "none"}, {1, ""}}},
+            {"",    31, 28, {{0, "none"}, {1, ""}}},
+            {"",    27, 24, {{0, "none"}, {1, ""}}},
+            {"",    23, 20, {{0, "none"}, {1, ""}}},
+            {"",    19, 16, {{0, "none"}, {1, ""}}},
+            {"",    15, 12, {{0, "none"}, {1, ""}}},
+            {"",    11,  8, {{0, "none"}, {1, ""}}},
+            {"",     7,  4, {{0, "none"}, {1, ""}}},
+            {"",     3,  0, {{0, "none"}, {1, ""}}},
+        }
+    },
+    -------- */
     {
         "APDAKEY_EL1", "D17.2.15/16", CSR_REGID2_APDAKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
@@ -110,6 +184,33 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "ID_AA64AFR0_EL1", "D17.2.57", CSR_REGID_AA64AFR0, READ, {}
+    },
+    {
+        "ID_AA64AFR1_EL1", "D17.2.58", CSR_REGID_AA64AFR1, READ, {}
+    },
+    {
+        "ID_AA64DFR0_EL1", "D17.2.59", CSR_REGID_AA64DFR0, READ,
+        {
+            {"HPMN0",       63, 60, {{0, "none"}, {1, "HPMN0"}}},
+            {"BRBE",        55, 52, {{0, "none"}, {1, "BRBE"}, {2, "BRBEv1p1"}}},
+            {"MTPMU",       51, 48, {}},
+            {"TraceBuffer", 47, 44, {{0, "none"}, {1, "TRBE"}}},
+            {"TraceFilt",   43, 40, {{0, "none"}, {1, "TRBF"}}},
+            {"DoubleLock",  39, 36, {{0, "DoubleLock"}, {15, "none"}}},
+            {"PMSVer",      35, 32, {}},
+            {"CTX_CMPs",    31, 28, {}},
+            {"WRPs",        23, 20, {}},
+            {"BRPs",        15, 12, {}},
+            {"PMUVer",      11,  8, {}},
+            {"TraceVer",     7,  4, {}},
+            {"DebugVer",     3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64DFR1_EL1", "D17.2.60", CSR_REGID_AA64DFR1, READ, {}
+    },
+    {
         "ID_AA64ISAR0_EL1", "D17.2.61", CSR_REGID_AA64ISAR0, READ,
         {
             {"RNDR",   63, 60, {{0, "none"}, {1, "RNG"}}},
@@ -166,6 +267,66 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "ID_AA64MMFR0_EL1", "D17.2.64", CSR_REGID_AA64MMFR0, READ,
+        {
+            {"ECV",       63, 60, {{0, "none"}}},
+            {"FGT",       59, 56, {{0, "none"}}},
+            {"ExS",       47, 44, {{0, "none"}}},
+            {"TGran4_2",  43, 40, {{0, "none"}}},
+            {"TGran64_2", 39, 36, {{0, "none"}}},
+            {"TGran16_2", 35, 32, {{0, "none"}}},
+            {"TGran4",    31, 28, {{0, "none"}}},
+            {"TGran64",   27, 24, {{0, "none"}}},
+            {"TGran16",   23, 20, {{0, "none"}}},
+            {"BigEndEL0", 19, 16, {{0, "none"}, {1, "mixed"}}},
+            {"SNSMem",    15, 12, {{0, "none"}, {1, "distinct"}}},
+            {"BigEnd",    11,  8, {{0, "none"}, {1, "mixed"}}},
+            {"ASIDBits",   7,  4, {{0, "8 bits"}, {1, "16 bits"}}},
+            {"PARange",    3,  0, {{0, "32 bits, 4GB"}, {1, "36 bits, 64GB"}, {2, "40 bits, 1TB"}, {3, "42 bits, 4TB"},
+                                   {4, "44 bits, 16TB"}, {5, "48 bits, 256TB"}, {6, "52 bits, 4PBB"}}},
+        }
+    },
+    {
+        "ID_AA64MMFR1_EL1", "D17.2.65", CSR_REGID_AA64MMFR1, READ,
+        {
+            {"CMOW",     59, 56, {{0, "none"}, {1, "CMOW"}}},
+            {"TIDCP1",   55, 52, {{0, "none"}, {1, "TIDCP1"}}},
+            {"nTLBPA",   51, 48, {}},
+            {"AFP",      47, 44, {{0, "none"}, {1, "AFP"}}},
+            {"HCX",      43, 40, {{0, "none"}, {1, "HCX"}}},
+            {"ETS",      39, 36, {{0, "none"}, {1, "ETS"}}},
+            {"TWED",     35, 32, {{0, "none"}, {1, "TWED"}}},
+            {"XNX",      31, 28, {{0, "none"}, {1, "XNX"}}},
+            {"SpecSEI",  27, 24, {}},
+            {"PAN",      23, 20, {{0, "none"}, {1, "PAN"}, {2, "PAN2"}, {3, "PAN3"}}},
+            {"LO",       19, 16, {{0, "none"}, {1, "LOR"}}},
+            {"HPDS",     15, 12, {{0, "none"}, {1, "HPDS"}, {2, "HPDS2"}}},
+            {"VH",       11,  8, {{0, "none"}, {1, "VHE"}}},
+            {"VMIDBits",  7,  4, {{0, "8 bits"}, {2, "16 bits"}}},
+            {"HAFDBS",    3,  0, {{0, "none"}}},
+        }
+    },
+    {
+        "ID_AA64MMFR2_EL1", "D17.2.66", CSR_REGID_AA64MMFR2, READ,
+        {
+            {"E0PD",    63, 60, {{0, "none"}, {1, "E0PD"}}},
+            {"EVT",     59, 56, {{0, "none"}}},
+            {"BBM",     55, 52, {}},
+            {"TTL",     51, 48, {{0, "none"}, {1, "TTL"}}},
+            {"FWB",     43, 40, {{0, "none"}, {1, "S2FWB"}}},
+            {"IDS",     39, 36, {{0, "none"}, {1, "IDST"}}},
+            {"AT",      35, 32, {{0, "none"}, {1, "LSE2"}}},
+            {"ST",      31, 28, {}},
+            {"NV",      27, 24, {}},
+            {"CCIDX",   23, 20, {{0, "32-bit"}, {1, "64-bit"}}},
+            {"VARange", 19, 16, {{0, "48-bit VA"}, {1, "52-bit VA"}}},
+            {"IESB",    15, 12, {{0, "none"}, {1, "IESB"}}},
+            {"LSM",     11,  8, {{0, "none"}, {1, "LSMAOC"}}},
+            {"UAO",      7,  4, {{0, "none"}, {1, "UAO"}}},
+            {"CnP",      3,  0, {{0, "none"}, {1, "TTCNP"}}},
+        }
+    },
+    {
         "ID_AA64PFR0_EL1", "D17.2.67", CSR_REGID_AA64PFR0, READ,
         {
             {"CSV3",    63, 60, {{0, "undefined"}, {1, "safe"}}},
@@ -198,6 +359,33 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"MTE",       11,  8, {{0, "none"}, {1, "MTE"}, {2, "MTE2"}, {3, "MTE3"}}},
             {"SSBS",       7,  4, {{0, "none"}, {1, "SSBS"}, {2, "SSBS2"}}},
             {"BT",         3,  0, {{0, "none"}, {1, "BTI"}}},
+        }
+    },
+    {
+        "ID_AA64SMFR0_EL1", "D17.2.69", CSR_REGID_AA64SMFR0, READ | NEED_SME,
+        {
+            {"FA64",   63, 63, {{0, "none"}, {1, "SME_FA64"}}},
+            {"SMEver", 59, 56, {}},
+            {"I16I64", 55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
+            {"F64F64", 48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
+            {"I8I32",  39, 36, {}},
+            {"F16F32", 35, 35, {}},
+            {"B16F32", 34, 34, {}},
+            {"F32F32", 32, 32, {}},
+        }
+    },
+    {
+        "ID_AA64ZFR0_EL1", "D17.2.70", CSR_REGID_AA64ZFR0, READ | NEED_SVE,
+        {
+            {"F64MM",   59, 56, {{0, "none"}, {1, "F64MM"}}},
+            {"F32MM",   55, 52, {{0, "none"}, {1, "F32MM"}}},
+            {"I8MM",    47, 44, {{0, "none"}, {1, "I8MM"}}},
+            {"SM4",     43, 40, {{0, "none"}, {1, "SVE_SM4"}}},
+            {"SHA3",    35, 32, {{0, "none"}, {1, "SVE_SHA3"}}},
+            {"BF16",    23, 20, {{0, "none"}, {1, "BF16"}, {2, "EBF16"}}},
+            {"BitPerm", 19, 16, {{0, "none"}, {1, "SVE_BitPerm"}}},
+            {"AES",      7,  4, {{0, "none"}, {1, "SVE_AES"}, {2, "SVE_AES+SVE_AES"}}},
+            {"SVEver",   3,  0, {{0, "none"}, {1, "SVE2"}}},
         }
     },
     {
@@ -410,35 +598,6 @@ const std::list<RegView::Register> RegView::AllRegisters {
 
 
 //----------------------------------------------------------------------------
-// Register features field as a string
-//----------------------------------------------------------------------------
-
-std::string RegView::Register::featuresList() const
-{
-    std::list<std::string> res;
-    if (features & RegView::READ) {
-        res.push_back("read");
-    }
-    if (features & RegView::WRITE) {
-        res.push_back("write");
-    }
-    if (features & RegView::NEED_PAC) {
-        res.push_back("need PAC");
-    }
-    if (features & RegView::NEED_PACGA) {
-        res.push_back("need PACGA");
-    }
-    if (features & RegView::NEED_CSV2_2) {
-        res.push_back("need CSV2_2");
-    }
-    if (features & RegView::NEED_RNG) {
-        res.push_back("need RNG");
-    }
-    return Join(res, ", ");
-}
-
-
-//----------------------------------------------------------------------------
 // Initialize AllRegistersByIndex and AllRegistersByName.
 //----------------------------------------------------------------------------
 
@@ -545,15 +704,6 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
 //----------------------------------------------------------------------------
 // Check if the register is supported on this CPU.
 //----------------------------------------------------------------------------
-
-bool RegView::Register::isSupported(RegAccess& ra) const
-{
-    ArmFeatures feat(ra);
-    return (!(features & NEED_PAC) || feat.FEAT_PAuth()) &&
-           (!(features & NEED_PACGA) || feat.hasPACGA()) &&
-           (!(features & NEED_CSV2_2) || feat.FEAT_CSV2_2()) &&
-           (!(features & NEED_RNG) || feat.FEAT_RNG());
-}
 
 bool RegView::Register::canRead(RegAccess& ra) const
 {

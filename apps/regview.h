@@ -44,6 +44,8 @@ public:
         NEED_PACGA  = 0x0008,  // exist only with PACGA
         NEED_CSV2_2 = 0x0010,  // exist only with CSV2_2
         NEED_RNG    = 0x0020,  // exist only with RNG
+        NEED_SVE    = 0x0040,  // exist only with SVE
+        NEED_SME    = 0x0080,  // exist only with SME
     };
 
     // Description of one register with bitfields.

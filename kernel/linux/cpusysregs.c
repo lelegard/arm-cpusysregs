@@ -133,13 +133,13 @@ static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
 {
     // Get REGID from ioctl() command.
     csr_pair_t reg;
-    const int regid = csr_cmd_to_regid(cmd);
+    const int regid = csr_ioc_to_regid(cmd);
     const size_t size = csr_regid_is_pair(regid) ? sizeof(reg) : sizeof(reg.low);
     if (!csr_regid_is_valid(regid)) {
         return -EINVAL;
     }
 
-    // Redundant sanity check on data size and layout.
+    // Sanity check on data size and layout.
     if (size != _IOC_SIZE(cmd) || (char*)(&reg) != (char*)(&reg.low)) {
         return -EPROTO;
     }

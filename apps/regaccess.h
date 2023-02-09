@@ -41,14 +41,14 @@ public:
     void clearError() { _error = 0; }
     void printLastError(const std::string& label = std::string(), std::ostream& file = std::cerr) const;
 
-    // Read/write one CPU register, use a CSR_REGID_ symbol for index.
-    bool read(int index, csr_u64_t& reg);
-    bool write(int index, csr_u64_t reg);
+    // Read/write one CPU register.
+    bool read(int regid, csr_u64_t& reg);
+    bool write(int regid, csr_u64_t reg);
 
-    // Read a pair of CPU registers, use a CSR_REGID2_ symbol for index.
+    // Read a pair of CPU registers.
     // If the specified register is not a pair, use reg.low only.
-    bool read(int index, csr_pair_t& reg);
-    bool write(int index, const csr_pair_t& reg);
+    bool read(int regid, csr_pair_t& reg);
+    bool write(int regid, const csr_pair_t& reg);
 
 private:
     int         _fd;            // file descriptor to access the kernel module
