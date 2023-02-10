@@ -85,12 +85,12 @@ version 0487I.a.
 
 | Register         | Section       | Access  | Description
 | ---------------- | ------------- | ------- | -----------
-| APDAKey_EL1      | D17.2.15/.16  | R/W (*) | Pointer Authentication Key A for Data (Hi/Lo pair)
-| APDBKey_EL1      | D17.2.17/.18  | R/W (*) | Pointer Authentication Key B for Data (Hi/Lo pair)
-| APGAKey_EL1      | D17.2.19/.20  | R/W (*) | Pointer Authentication Generic Key (Hi/Lo pair)
-| APIAKey_EL1      | D17.2.21/.22  | R/W (*) | Pointer Authentication Key A for Instructions (Hi/Lo pair)
-| APIBKey_EL1      | D17.2.23/.24  | R/W (*) | Pointer Authentication Key B for Instructions (Hi/Lo pair)
-| HCR_EL2          | D17.2.48      | R       | Hypervisor Configuration Register
+| APDAKey_EL1      | D17.2.15/.16  | R/W [1] | Pointer Authentication Key A for Data (Hi/Lo pair)
+| APDBKey_EL1      | D17.2.17/.18  | R/W [1] | Pointer Authentication Key B for Data (Hi/Lo pair)
+| APGAKey_EL1      | D17.2.19/.20  | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
+| APIAKey_EL1      | D17.2.21/.22  | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
+| APIBKey_EL1      | D17.2.23/.24  | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| HCR_EL2          | D17.2.48      | R   [2] | Hypervisor Configuration Register
 | ID_AA64AFR0_EL1  | D17.2.57      | R       | AArch64 Auxiliary Feature Register 0
 | ID_AA64AFR1_EL1  | D17.2.58      | R       | AArch64 Auxiliary Feature Register 1
 | ID_AA64DFR0_EL1  | D17.2.59      | R       | AArch64 Debug Feature Register 0
@@ -110,7 +110,7 @@ version 0487I.a.
 | REVIDR_EL1       | D17.2.106     | R       | Revision ID Register
 | RNDR             | D17.2.111     | R       | Random Number
 | RNDRRS           | D17.2.112     | R       | Reseeded Random Number
-| SCR_EL3          | D17.2.117     | (**)    | Secure Configuration Register (EL3)
+| SCR_EL3          | D17.2.117     | -   [3] | Secure Configuration Register (EL3)
 | SCTLR_EL1        | D17.2.118     | R/W     | System Control Register (EL1)
 | SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
 | SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
@@ -119,13 +119,15 @@ version 0487I.a.
 | TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
 | TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register
 
-(*) The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
+[1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers
 can be accessed at EL3 only. This is explained in
 [this article](https://gist.github.com/lelegard/009cbdae78e5993ed9e02160b9130d7f).
 Accessing the PAC key registers at EL1 crashes macOS.
 
-(**) SCR_EL3 cannot by read/write at EL1. It is supported to format its possible values only.
+[2] HCR_EL2 is readable at EL1 on macOS. Access not allowed in a Linux VM and crashes the system.
+
+[3] SCR_EL3 cannot by read/write at EL1. It is supported to format its possible values only.
 
 ## References
 
