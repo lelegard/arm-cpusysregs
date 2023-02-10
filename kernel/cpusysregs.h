@@ -87,7 +87,8 @@ typedef struct {
 //----------------------------------------------------------------------------
 
 // These identifiers are strictly internal to this project. We cannot use the
-// Arm ids (CSR_SREG_) because we need ids which fit on one byte.
+// Arm ids (CSR_SREG_) because we need ids which fit in one byte (constraint
+// of ioctl() codes on Linux).
 //
 // Most registers are individually accessible on 64 bits, using csr_u64_t.
 // Some registers are accessible as pairs (CSR_REGID2_), using csr_pair_t.
@@ -98,16 +99,17 @@ typedef struct {
 //   add the corresponding CSR_SREG_name constant below and access the register
 //   by number instead of name.
 // - Update inlined functions csr_get_register() and csr_set_register() below.
-//   If the register exists only when a given COU features is supported, make
-//   sure to set the list of reguired features for the register.
+//   If the register exists only when a given CPU features is supported, make
+//   sure to set the list of required features for the register.
 // - Add the register in the ../README.md file.
 // - Add the description of the register in the ../apps/regview.cpp file.
-//   Also make sure to specify the required list of CPU feature.
+//   Also make sure to specify the required list of CPU features.
 
 #define _CSR_REGID_BASE   0x0000
 #define _CSR_REGID2_BASE  0x0100
 #define _CSR_REGID_MASK   0x00FF
 
+// Individual registers.
 #define CSR_REGID_AA64PFR0     (_CSR_REGID_BASE | 0x00)   // AArch64 Processor Feature registers 0 (read-only)
 #define CSR_REGID_AA64PFR1     (_CSR_REGID_BASE | 0x01)   // AArch64 Processor Feature registers 1 (read-only)
 #define CSR_REGID_AA64ISAR0    (_CSR_REGID_BASE | 0x02)   // AArch64 Instruction Set Attribute Register 0 (read-only)
@@ -145,20 +147,20 @@ typedef struct {
 #define CSR_REGID2_APGAKEY     (_CSR_REGID2_BASE | 0x04)  // Pointer Authentication Generic Key
 
 // Check if a register id is in a valid range.
-CSR_INLINE int csr_regid_is_valid(long regid)
+CSR_INLINE int csr_regid_is_valid(int regid)
 {
-    const long base = regid & ~_CSR_REGID_MASK;
+    const int base = regid & ~_CSR_REGID_MASK;
     return base == _CSR_REGID_BASE || base == _CSR_REGID2_BASE;
 }
 
 // Check if a register id is a single register.
-CSR_INLINE int csr_regid_is_single(long regid)
+CSR_INLINE int csr_regid_is_single(int regid)
 {
     return (regid & ~_CSR_REGID_MASK) == _CSR_REGID_BASE;
 }
 
 // Check if a register id is a pair of registers.
-CSR_INLINE int csr_regid_is_pair(long regid)
+CSR_INLINE int csr_regid_is_pair(int regid)
 {
     return (regid & ~_CSR_REGID_MASK) == _CSR_REGID2_BASE;
 }
@@ -184,7 +186,7 @@ CSR_INLINE int csr_regid_is_pair(long regid)
     #define CSR_IOC_SET_REG(regid)    _IOW(_CSR_IOC_MAGIC,  (regid)  - _CSR_REGID_BASE,  csr_u64_t)
     #define CSR_IOC_SET_REG2(regid2)  _IOW(_CSR_IOC_MAGIC2, (regid2) - _CSR_REGID2_BASE, csr_pair_t)
 
-    // Extract the register id from a ioctl() code.
+    // Extract the register id from an ioctl() code.
     CSR_INLINE int csr_ioc_to_regid(long cmd)
     {
         return (_IOC_TYPE(cmd) == _CSR_IOC_MAGIC2 ? _CSR_REGID2_BASE : _CSR_REGID_BASE) + _IOC_NR(cmd);
@@ -196,7 +198,7 @@ CSR_INLINE int csr_regid_is_pair(long regid)
     #define CSR_SOCKET_NAME CSR_MODULE_NAME
 
     // Socket options for system control cpusysregs.
-    // There are no get or set commands, as with ioctl(). There are socket option names.
+    // There is one socket option name per register.
     #define _CSR_SOCKOPT_BASE       0x00AC0000
     #define CSR_SOCKOPT_REG(regid)  (_CSR_SOCKOPT_BASE | (regid))
 
@@ -214,7 +216,7 @@ CSR_INLINE int csr_regid_is_pair(long regid)
 // Useful in the kernel only with accessing EL1 registers.
 //----------------------------------------------------------------------------
 //
-// The system registers are described in section D17 of the Arm Architecture Reference Manual.
+// The system registers are described in section D17.2 of the Arm Architecture Reference Manual.
 //
 // - To read a system register into a general-purpose register (GPR), use instruction MRS.
 //   Example: asm("mrs %0, id_aa64pfr0_el1" : "=r" (result));
@@ -240,7 +242,7 @@ CSR_INLINE int csr_regid_is_pair(long regid)
 //   [20-19] op0, [18-16] op1, [15-12] CRn, [11-8] CRm, [7-5] op2
 //
 // The following macro build the encoding of a system register for a MSR or MRS instruction.
-// See the description of each system register in section D17 to get its identifiers.
+// See the description of each system register in section D17.2 to get its identifiers.
 //
 #define CSR_SREG(op0, op1, crn, crm, op2) (((op0) << 19) | ((op1) << 16) | ((crn) << 12) | ((crm) << 8) | ((op2) << 5))
 
@@ -464,9 +466,7 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg2_num(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APDBKEY,   CSR_SREG_APDBKEYHI_EL1, CSR_SREG_APDBKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APGAKEY,   CSR_SREG_APGAKEYHI_EL1, CSR_SREG_APGAKEYLO_EL1, FEAT_PACGA);
-
-        default:
-            return 1;
+        default: return 1;
     }
 
 #undef _check
