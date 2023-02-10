@@ -38,14 +38,16 @@ public:
 
     // Define the properties and condition of existence of a register.
     enum {
-        READ        = 0x0001,  // readable register
-        WRITE       = 0x0002,  // writeable register
-        NEED_PAC    = 0x0004,  // exist only with PAC
-        NEED_PACGA  = 0x0008,  // exist only with PACGA
-        NEED_CSV2_2 = 0x0010,  // exist only with CSV2_2
-        NEED_RNG    = 0x0020,  // exist only with RNG
-        NEED_SVE    = 0x0040,  // exist only with SVE
-        NEED_SME    = 0x0080,  // exist only with SME
+        READ         = 0x0001,  // readable register
+        WRITE        = 0x0002,  // writeable register
+        NEED_PAC     = 0x0004,  // exist only with PAC
+        NEED_PACGA   = 0x0008,  // exist only with PACGA
+        NEED_CSV2_2  = 0x0010,  // exist only with CSV2_2
+        NEED_RNG     = 0x0020,  // exist only with RNG
+        NEED_SVE     = 0x0040,  // exist only with SVE
+        NEED_SME     = 0x0080,  // exist only with SME
+        NEED_ETE     = 0x0100,  // exist only with ETE
+        NEED_PMUv3p4 = 0x0200,  // exist only with PMUv3p4
     };
 
     // Description of one register with bitfields.

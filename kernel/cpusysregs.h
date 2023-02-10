@@ -81,6 +81,14 @@ typedef struct {
 // ID_AA64ISAR0_EL1 system register.
 #define csr_has_rng(isar0) ((isar0) & 0xF000000000000000llu)
 
+// This macro checks if ETE (Embedded Trace Extension) is supported, based on the value of the
+// ID_AA64DFR0_EL1 system register.
+#define csr_has_ete(dfr0) ((dfr0) & 0x00000000000000F0llu)
+
+// This macro checks if PMUv3p4 (Performance Monitor Extension v3.4) is supported, based on the value of the
+// ID_AA64DFR0_EL1 system register.
+#define csr_has_pmuv3p4(dfr0) (((dfr0 >> 8) & 0x0F) >= 5)
+
 
 //----------------------------------------------------------------------------
 // List of system registers which are handled by the kernel module.
@@ -138,6 +146,9 @@ typedef struct {
 #define CSR_REGID_AA64AFR1     (_CSR_REGID_BASE | 0x19)   // AArch64 Auxiliary Feature Register 1
 #define CSR_REGID_AA64DFR0     (_CSR_REGID_BASE | 0x1A)   // AArch64 Debug Feature Register 0
 #define CSR_REGID_AA64DFR1     (_CSR_REGID_BASE | 0x1B)   // AArch64 Debug Feature Register 1
+#define CSR_REGID_TRCDEVARCH   (_CSR_REGID_BASE | 0x1C)   // Trace Device Architecture Register
+#define CSR_REGID_PMMIR        (_CSR_REGID_BASE | 0x1D)   // Performance Monitors Machine Identification Register
+#define CSR_REGID_CTR          (_CSR_REGID_BASE | 0x1E)   // Cache Type Register
 
 // Registers which come in pair.
 #define CSR_REGID2_APIAKEY     (_CSR_REGID2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
@@ -250,22 +261,25 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 // The following macros define the encoding of some system registers the names of which
 // are not recognized with the default level of architecture.
 //
-#define CSR_SREG_ID_AA64SMFR0_EL1 CSR_SREG(3, 0,  0, 4, 5)
-#define CSR_SREG_ID_AA64ZFR0_EL1  CSR_SREG(3, 0,  0, 4, 4)
-#define CSR_SREG_APDAKEYHI_EL1    CSR_SREG(3, 0,  2, 2, 1)
-#define CSR_SREG_APDAKEYLO_EL1    CSR_SREG(3, 0,  2, 2, 0)
-#define CSR_SREG_APDBKEYHI_EL1    CSR_SREG(3, 0,  2, 2, 3)
-#define CSR_SREG_APDBKEYLO_EL1    CSR_SREG(3, 0,  2, 2, 2)
-#define CSR_SREG_APGAKEYHI_EL1    CSR_SREG(3, 0,  2, 3, 1)
-#define CSR_SREG_APGAKEYLO_EL1    CSR_SREG(3, 0,  2, 3, 0)
-#define CSR_SREG_APIAKEYHI_EL1    CSR_SREG(3, 0,  2, 1, 1)
-#define CSR_SREG_APIAKEYLO_EL1    CSR_SREG(3, 0,  2, 1, 0)
-#define CSR_SREG_APIBKEYHI_EL1    CSR_SREG(3, 0,  2, 1, 3)
-#define CSR_SREG_APIBKEYLO_EL1    CSR_SREG(3, 0,  2, 1, 2)
-#define CSR_SREG_RNDR             CSR_SREG(3, 3,  2, 4, 0)
-#define CSR_SREG_RNDRRS           CSR_SREG(3, 3,  2, 4, 1)
-#define CSR_SREG_SCXTNUM_EL0      CSR_SREG(3, 3, 13, 0, 7)
-#define CSR_SREG_SCXTNUM_EL1      CSR_SREG(3, 0, 13, 0, 7)
+//                                        (op0, op1, CRn, CRm, op2)
+#define CSR_SREG_ID_AA64SMFR0_EL1 CSR_SREG(  3,   0,   0,   4,   5)
+#define CSR_SREG_ID_AA64ZFR0_EL1  CSR_SREG(  3,   0,   0,   4,   4)
+#define CSR_SREG_APDAKEYHI_EL1    CSR_SREG(  3,   0,   2,   2,   1)
+#define CSR_SREG_APDAKEYLO_EL1    CSR_SREG(  3,   0,   2,   2,   0)
+#define CSR_SREG_APDBKEYHI_EL1    CSR_SREG(  3,   0,   2,   2,   3)
+#define CSR_SREG_APDBKEYLO_EL1    CSR_SREG(  3,   0,   2,   2,   2)
+#define CSR_SREG_APGAKEYHI_EL1    CSR_SREG(  3,   0,   2,   3,   1)
+#define CSR_SREG_APGAKEYLO_EL1    CSR_SREG(  3,   0,   2,   3,   0)
+#define CSR_SREG_APIAKEYHI_EL1    CSR_SREG(  3,   0,   2,   1,   1)
+#define CSR_SREG_APIAKEYLO_EL1    CSR_SREG(  3,   0,   2,   1,   0)
+#define CSR_SREG_APIBKEYHI_EL1    CSR_SREG(  3,   0,   2,   1,   3)
+#define CSR_SREG_APIBKEYLO_EL1    CSR_SREG(  3,   0,   2,   1,   2)
+#define CSR_SREG_RNDR             CSR_SREG(  3,   3,   2,   4,   0)
+#define CSR_SREG_RNDRRS           CSR_SREG(  3,   3,   2,   4,   1)
+#define CSR_SREG_SCXTNUM_EL0      CSR_SREG(  3,   3,  13,   0,   7)
+#define CSR_SREG_SCXTNUM_EL1      CSR_SREG(  3,   0,  13,   0,   7)
+#define CSR_SREG_TRCDEVARCH       CSR_SREG(  2,   1,   7,  15,   6)
+#define CSR_SREG_PMMIR_EL1        CSR_SREG(  3,   0,   9,  14,   6)
 
 //
 // Standard stringification macro (not so standard since we must define it again and again).
@@ -326,21 +340,24 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 #if defined(KERNEL)
 
 // Define a few CPU features which are required to access some registers.
-#define FEAT_PAC    0x0001
-#define FEAT_PACGA  0x0002
-#define FEAT_BTI    0x0004
-#define FEAT_RME    0x0008
-#define FEAT_CSV2_2 0x0010
-#define FEAT_RNG    0x0020
-#define FEAT_SVE    0x0040
-#define FEAT_SME    0x0080
+#define FEAT_PAC      0x0001
+#define FEAT_PACGA    0x0002
+#define FEAT_BTI      0x0004
+#define FEAT_RME      0x0008
+#define FEAT_CSV2_2   0x0010
+#define FEAT_RNG      0x0020
+#define FEAT_SVE      0x0040
+#define FEAT_SME      0x0080
+#define FEAT_ETE      0x0100
+#define FEAT_PMUv3p4  0x0200
 
 // Get the CPU features. Typically called once on module initialization.
 CSR_INLINE int csr_get_cpu_features(void)
 {
-    csr_u64_t pfr0, pfr1, isar0, isar1, isar2;
+    csr_u64_t pfr0, pfr1, dfr0, isar0, isar1, isar2;
     csr_mrs_str(pfr0,  "id_aa64pfr0_el1");
     csr_mrs_str(pfr1,  "id_aa64pfr1_el1");
+    csr_mrs_str(dfr0,  "id_aa64dfr0_el1");
     csr_mrs_str(isar0, "id_aa64isar0_el1");
     csr_mrs_str(isar1, "id_aa64isar1_el1");
     csr_mrs_str(isar2, "id_aa64isar2_el1");
@@ -351,7 +368,9 @@ CSR_INLINE int csr_get_cpu_features(void)
            (csr_has_csv2_2(pfr0) ? FEAT_CSV2_2 : 0) |
            (csr_has_rng(isar0) ? FEAT_RNG : 0) |
            (csr_has_sve(pfr0) ? FEAT_SVE : 0) |
-           (csr_has_sme(pfr1) ? FEAT_SME : 0);
+           (csr_has_sme(pfr1) ? FEAT_SME : 0) |
+           (csr_has_ete(dfr0) ? FEAT_ETE : 0) |
+           (csr_has_pmuv3p4(dfr0) ? FEAT_PMUv3p4 : 0);
 }
 
 // Set the value of a single register or pair of registers.
@@ -461,6 +480,9 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg_str(CSR_REGID_AA64AFR1,    "id_aa64afr1_el1", 0);
         _getreg_str(CSR_REGID_AA64DFR0,    "id_aa64dfr0_el1", 0);
         _getreg_str(CSR_REGID_AA64DFR1,    "id_aa64dfr1_el1", 0);
+        _getreg_num(CSR_REGID_TRCDEVARCH,  CSR_SREG_TRCDEVARCH, FEAT_ETE);
+        _getreg_num(CSR_REGID_PMMIR,       CSR_SREG_PMMIR_EL1, FEAT_PMUv3p4);
+        _getreg_str(CSR_REGID_CTR,         "ctr_el0", 0);
         _getreg2_num(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

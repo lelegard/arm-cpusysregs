@@ -90,6 +90,7 @@ version 0487I.a.
 | APGAKey_EL1      | D17.2.19/.20  | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
 | APIAKey_EL1      | D17.2.21/.22  | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
 | APIBKey_EL1      | D17.2.23/.24  | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| CTR_EL0          | D17.2.34      | R       | Cache Type Register
 | HCR_EL2          | D17.2.48      | R   [2] | Hypervisor Configuration Register
 | ID_AA64AFR0_EL1  | D17.2.57      | R       | AArch64 Auxiliary Feature Register 0
 | ID_AA64AFR1_EL1  | D17.2.58      | R       | AArch64 Auxiliary Feature Register 1
@@ -110,7 +111,7 @@ version 0487I.a.
 | REVIDR_EL1       | D17.2.106     | R       | Revision ID Register
 | RNDR             | D17.2.111     | R       | Random Number
 | RNDRRS           | D17.2.112     | R       | Reseeded Random Number
-| SCR_EL3          | D17.2.117     | -   [3] | Secure Configuration Register (EL3)
+| SCR_EL3          | D17.2.117     |     [3] | Secure Configuration Register (EL3)
 | SCTLR_EL1        | D17.2.118     | R/W     | System Control Register (EL1)
 | SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
 | SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
@@ -118,6 +119,8 @@ version 0487I.a.
 | TPIDR_EL0        | D17.2.139     | R/W     | EL0 Read/Write Software Thread ID Register
 | TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
 | TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register
+| TRCDEVARCH       | D17.4.23      | R       | Trace Device Architecture Register
+| PMMIR_EL1        | D17.5.12      | R       | Performance Monitors Machine Identification Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers

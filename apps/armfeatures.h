@@ -67,6 +67,8 @@ public:
     int ID_AA64ISAR2_EL1_MOPS() const { return (int)(_aa64isar2 >> 16) & 0x0F; }
     int ID_AA64ISAR2_EL1_APA3() const { return (int)(_aa64isar2 >> 12) & 0x0F; }
     int ID_AA64ISAR2_EL1_GPA3() const { return (int)(_aa64isar2 >> 8) & 0x0F; }
+    int ID_AA64ISAR2_EL1_RPRES() const { return (int)(_aa64isar2 >> 4) & 0x0F; }
+    int ID_AA64ISAR2_EL1_WFxT() const { return (int)(_aa64isar2) & 0x0F; }
 
     int ID_AA64PFR0_EL1_CSV3() const { return (int)(_aa64pfr0 >> 60) & 0x0F; }
     int ID_AA64PFR0_EL1_CSV2() const { return (int)(_aa64pfr0 >> 56) & 0x0F; }
@@ -175,6 +177,15 @@ public:
     int ID_AA64ZFR0_EL1_AES() const { return (int)(_aa64zfr0 >> 4) & 0x0F; }
     int ID_AA64ZFR0_EL1_SVEver() const { return (int)(_aa64zfr0) & 0x0F; }
 
+    int CTR_EL0_TminLine() const { return (int)(_ctr >> 32) & 0x3F; }
+    int CTR_EL0_DIC() const { return (int)(_ctr >> 29) & 0x01; }
+    int CTR_EL0_IDC() const { return (int)(_ctr >> 28) & 0x01; }
+    int CTR_EL0_CWG() const { return (int)(_ctr >> 24) & 0x0F; }
+    int CTR_EL0_ERG() const { return (int)(_ctr >> 20) & 0x0F; }
+    int CTR_EL0_DminLine() const { return (int)(_ctr >> 16) & 0x0F; }
+    int CTR_EL0_L1Ip() const { return (int)(_ctr >> 14) & 0x03; }
+    int CTR_EL0_IminLine() const { return (int)(_ctr) & 0x0F; }
+
     int TCR_EL1_TCMA1() const { return (int)(_tcr >> 58) & 0x01; }
     int TCR_EL1_TCMA0() const { return (int)(_tcr >> 57) & 0x01; }
     int TCR_EL1_TBID1() const { return (int)(_tcr >> 52) & 0x01; }
@@ -185,7 +196,19 @@ public:
     int TCR_EL1_T1SZ() const { return (int)(_tcr >> 16) & 0x3F; }
     int TCR_EL1_T0SZ() const { return (int)(_tcr) & 0x3F; }
 
+    int TRCDEVARCH_ARCHITECT() const { return (int)(_trcdevarch >> 21) & 0x07FF; }
+    int TRCDEVARCH_PRESENT() const { return (int)(_trcdevarch >> 20) & 0x01; }
+    int TRCDEVARCH_REVISION() const { return (int)(_trcdevarch >> 16) & 0x0F; }
+    int TRCDEVARCH_ARCHVER() const { return (int)(_trcdevarch >> 12) & 0x0F; }
+    int TRCDEVARCH_ARCHPART() const { return (int)(_trcdevarch) & 0x0FFF; }
+
+    int PMMIR_THWIDTH() const { return (int)(_pmmir >> 20) & 0x0F; }
+    int PMMIR_BUS_WIDTH() const { return (int)(_pmmir >> 16) & 0x0F; }
+    int PMMIR_BUS_SLOTS() const { return (int)(_pmmir >> 8) & 0x0FF; }
+    int PMMIR_SLOTS() const { return (int)(_pmmir) & 0x0FF; }
+
     // Processor features, using same names as Arm Architecture Reference Manual.
+    // Implemented level: Armv9-A (ref manual rev I.a)
 
     bool FEAT_AES() const { return ID_AA64ISAR0_EL1_AES() >= 1; }
     bool FEAT_AFP() const { return ID_AA64MMFR1_EL1_AFP() >= 1; }
@@ -198,25 +221,39 @@ public:
     bool FEAT_BTI() const { return ID_AA64PFR1_EL1_BT() >= 1; }
     bool FEAT_CCIDX() const { return ID_AA64MMFR2_EL1_CCIDX() >= 1; }
     bool FEAT_CMOW() const { return ID_AA64MMFR1_EL1_CMOW() >= 1; }
+    //   FEAT_CNTSC => see CNTID, I5.7.8, not a system register
     bool FEAT_CONSTPACFIELD() const { return ID_AA64ISAR2_EL1_PAC_frac() >= 1; }
+    bool FEAT_CRC32() const { return ID_AA64ISAR0_EL1_CRC32() >= 1; }
     bool FEAT_CSV2() const { return ID_AA64PFR0_EL1_CSV2() >= 1; }
     bool FEAT_CSV2_1p1() const { return ID_AA64PFR1_EL1_CSV2_frac() >= 1; }
     bool FEAT_CSV2_1p2() const { return ID_AA64PFR1_EL1_CSV2_frac() >= 2; }
     bool FEAT_CSV2_2() const { return ID_AA64PFR0_EL1_CSV2() >= 2; }
     bool FEAT_CSV2_3() const { return ID_AA64PFR0_EL1_CSV2() >= 3; }
     bool FEAT_CSV3() const { return ID_AA64PFR0_EL1_CSV3() >= 1; }
+    bool FEAT_Debugv8p2() const { return ID_AA64DFR0_EL1_DebugVer() >= 8; }
+    bool FEAT_Debugv8p4() const { return ID_AA64DFR0_EL1_DebugVer() >= 9; }
+    bool FEAT_Debugv8p8() const { return ID_AA64DFR0_EL1_DebugVer() >= 10; }
+    bool FEAT_DGH() const { return ID_AA64ISAR1_EL1_DGH() >= 1; }
     bool FEAT_DIT() const { return ID_AA64PFR0_EL1_DIT() >= 1; }
+    //   FEAT_DoPD => see EDDEVID, H9.2.20, external debug register
     bool FEAT_DotProd() const { return ID_AA64ISAR0_EL1_DP() >= 1; }
+    bool FEAT_DoubleFault() const { return ID_AA64PFR0_EL1_RAS() >= 2; }
     bool FEAT_DoubleLock() const { return ID_AA64DFR0_EL1_DoubleLock() != 15; }
+    bool FEAT_DPB() const { return ID_AA64ISAR1_EL1_DPB() >= 1; }
+    bool FEAT_DPB2() const { return ID_AA64ISAR1_EL1_DPB() >= 2; }
     bool FEAT_E0PD() const { return ID_AA64MMFR2_EL1_E0PD() >= 1; }
     bool FEAT_EBF16() const { return ID_AA64ISAR1_EL1_BF16() >= 2 || ID_AA64ZFR0_EL1_BF16() >= 2; }
     bool FEAT_ECV() const { return ID_AA64MMFR0_EL1_ECV() >= 1; }
     bool FEAT_EPAC() const { return ID_AA64ISAR1_EL1_API() >= 2 || ID_AA64ISAR1_EL1_APA() >= 2 || ID_AA64ISAR2_EL1_APA3() >= 2; }
+    bool FEAT_ETE() const { return ID_AA64DFR0_EL1_TraceVer() >= 1; }
+    bool FEAT_ETEv1p1() const { return TRCDEVARCH_REVISION() >= 1; }
+    bool FEAT_ETEv1p2() const { return TRCDEVARCH_REVISION() >= 2; }
     bool FEAT_ETS() const { return ID_AA64MMFR1_EL1_ETS() >= 1; }
     bool FEAT_EVT() const { return ID_AA64MMFR2_EL1_EVT() >= 1; }
     bool FEAT_ExS() const { return ID_AA64MMFR0_EL1_ExS() >= 1; }
     bool FEAT_F32MM() const { return ID_AA64ZFR0_EL1_F32MM() >= 1; }
     bool FEAT_F64MM() const { return ID_AA64ZFR0_EL1_F64MM() >= 1; }
+    bool FEAT_FCMA() const { return ID_AA64ISAR1_EL1_FCMA() >= 1; }
     bool FEAT_FGT() const { return ID_AA64MMFR0_EL1_FGT() >= 1; }
     bool FEAT_FHM() const { return ID_AA64ISAR0_EL1_FHM() >= 1; }
     bool FEAT_FlagM() const { return ID_AA64ISAR0_EL1_TS() >= 1; }
@@ -235,12 +272,21 @@ public:
     bool FEAT_I8MM() const { return ID_AA64ZFR0_EL1_I8MM() >= 1; }
     bool FEAT_IDST() const { return ID_AA64MMFR2_EL1_IDS() >= 1; }
     bool FEAT_IESB() const { return ID_AA64MMFR2_EL1_IESB() >= 1; }
+    bool FEAT_JSCVT() const { return ID_AA64ISAR1_EL1_JSCVT() >= 1; }
     bool FEAT_LOR() const { return ID_AA64MMFR1_EL1_LO() >= 1; }
+    bool FEAT_LPA() const { return ID_AA64MMFR0_EL1_PARange() >= 6; }
+    bool FEAT_LPA2() const { return ID_AA64MMFR0_EL1_TGran4_2() >= 3 || ID_AA64MMFR0_EL1_TGran16_2() >= 3; }
+    bool FEAT_LRCPC() const { return ID_AA64ISAR1_EL1_LRCPC() >= 1; }
+    bool FEAT_LRCPC2() const { return ID_AA64ISAR1_EL1_LRCPC() >= 2; }
+    bool FEAT_LS64() const { return ID_AA64ISAR1_EL1_LS64() >= 1; }
+    bool FEAT_LS64_V() const { return ID_AA64ISAR1_EL1_LS64() >= 2; }
+    bool FEAT_LS64_ACCDATA() const { return ID_AA64ISAR1_EL1_LS64() >= 3; }
     bool FEAT_LSE() const { return ID_AA64ISAR0_EL1_Atomic() >= 2; }
     bool FEAT_LSE2() const { return ID_AA64MMFR2_EL1_AT() >= 1; }
     bool FEAT_LVA() const { return ID_AA64MMFR2_EL1_VARange() >= 1; }
     bool FEAT_LSMAOC() const { return ID_AA64MMFR2_EL1_LSM() >= 1; }
     bool FEAT_MOPS() const { return ID_AA64ISAR2_EL1_MOPS() >= 1; }
+    bool FEAT_MPAM() const { return ID_AA64PFR0_EL1_MPAM() >= 1 || ID_AA64PFR1_EL1_MPAM_frac() >= 1; }
     bool FEAT_MTE() const { return ID_AA64PFR1_EL1_MTE() >= 1; }
     bool FEAT_MTE2() const { return ID_AA64PFR1_EL1_MTE() >= 2; }
     bool FEAT_MTE3() const { return ID_AA64PFR1_EL1_MTE() >= 3; }
@@ -257,19 +303,24 @@ public:
     bool FEAT_PAN3() const { return ID_AA64MMFR1_EL1_PAN() >= 3; }
     bool FEAT_PAuth() const { return ID_AA64ISAR1_EL1_API() >= 1 || ID_AA64ISAR1_EL1_APA() >= 1 || ID_AA64ISAR2_EL1_APA3() >= 1; }
     bool FEAT_PAuth2() const { return ID_AA64ISAR1_EL1_API() >= 3 || ID_AA64ISAR1_EL1_APA() >= 3 || ID_AA64ISAR2_EL1_APA3() >= 3; }
+    //   FEAT_PCSRv8p2 => see EDDEVID, H9.2.20, external debug register
     bool FEAT_PMUv3() const { return ID_AA64DFR0_EL1_PMUVer() >= 1; }
     bool FEAT_PMUv3p1() const { return ID_AA64DFR0_EL1_PMUVer() >= 4; }
     bool FEAT_PMUv3p4() const { return ID_AA64DFR0_EL1_PMUVer() >= 5; }
     bool FEAT_PMUv3p5() const { return ID_AA64DFR0_EL1_PMUVer() >= 6; }
     bool FEAT_PMUv3p7() const { return ID_AA64DFR0_EL1_PMUVer() >= 7; }
     bool FEAT_PMUv3p8() const { return ID_AA64DFR0_EL1_PMUVer() >= 8; }
+    bool FEAT_PMUv3_TH() const { return PMMIR_THWIDTH() >= 1; }
     bool FEAT_PMULL() const { return ID_AA64ISAR0_EL1_AES() >= 2; }
     bool FEAT_RAS() const { return ID_AA64PFR0_EL1_RAS() >= 1; }
     bool FEAT_RASv1p1() const { return ID_AA64PFR1_EL1_RAS_frac() >= 1; }
     bool FEAT_RDM() const { return ID_AA64ISAR0_EL1_RDM() >= 1; }
     bool FEAT_RME() const { return ID_AA64PFR0_EL1_RME() >= 1; }
     bool FEAT_RNG() const { return ID_AA64ISAR0_EL1_RNDR() >= 1; }
+    bool FEAT_RNG_TRAP() const { return ID_AA64PFR1_EL1_RNDR_trap() >= 1; }
+    bool FEAT_RPRES() const { return ID_AA64ISAR2_EL1_RPRES() >= 1; }
     bool FEAT_S2FWB() const { return ID_AA64MMFR2_EL1_FWB() >= 1; }
+    bool FEAT_SB() const { return ID_AA64ISAR1_EL1_SB() >= 1; }
     bool FEAT_SEL2() const { return ID_AA64PFR0_EL1_SEL2() >= 1; }
     bool FEAT_SHA1() const { return ID_AA64ISAR0_EL1_SHA1() >= 1; }
     bool FEAT_SHA256() const { return ID_AA64ISAR0_EL1_SHA2() >= 1; }
@@ -298,6 +349,7 @@ public:
     bool FEAT_TIDCP1() const { return ID_AA64MMFR1_EL1_TIDCP1() >= 1; }
     bool FEAT_TLBIOS() const { return ID_AA64ISAR0_EL1_TLB() >= 1; }
     bool FEAT_TLBIRANGE() const { return ID_AA64ISAR0_EL1_TLB() >= 2; }
+    bool FEAT_TME() const { return ID_AA64ISAR0_EL1_TME() >= 1; }
     bool FEAT_TRBE() const { return ID_AA64DFR0_EL1_TraceBuffer() >= 1; }
     bool FEAT_TRF() const { return ID_AA64DFR0_EL1_TraceFilt() >= 1; }
     bool FEAT_TTCNP() const { return ID_AA64MMFR2_EL1_CnP() >= 1; }
@@ -305,9 +357,12 @@ public:
     bool FEAT_TTST() const { return ID_AA64MMFR2_EL1_ST() >= 1; }
     bool FEAT_TWED() const { return ID_AA64MMFR1_EL1_TWED() >= 1; }
     bool FEAT_UAO() const { return ID_AA64MMFR2_EL1_UAO() >= 1; }
-    bool FEAT_VHE() const { return ID_AA64MMFR1_EL1_VH() >= 1; }
+    bool FEAT_VHE() const { return ID_AA64MMFR1_EL1_VH() >= 1 || ID_AA64DFR0_EL1_DebugVer() >= 7; }
     bool FEAT_VMID16() const { return ID_AA64MMFR1_EL1_VMIDBits() == 2; }
+    bool FEAT_VPIPT() const { return CTR_EL0_L1Ip() == 0; }
+    bool FEAT_WFxT() const { return ID_AA64ISAR2_EL1_WFxT() >= 2; }
     bool FEAT_XNX() const { return ID_AA64MMFR1_EL1_XNX() >= 1; }
+    bool FEAT_XS() const { return ID_AA64ISAR1_EL1_XS() >= 1; }
 
     // Synthetic features of the processor.
 
@@ -343,5 +398,8 @@ private:
     csr_u64_t _aa64mmfr2;
     csr_u64_t _aa64smfr0;
     csr_u64_t _aa64zfr0;
+    csr_u64_t _ctr;
     csr_u64_t _tcr;
+    csr_u64_t _trcdevarch;
+    csr_u64_t _pmmir;
 };

@@ -41,7 +41,9 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_CSV2_2) || feat.FEAT_CSV2_2()) &&
            (!(features & NEED_RNG) || feat.FEAT_RNG()) &&
            (!(features & NEED_SVE) || feat.FEAT_SVE()) &&
-           (!(features & NEED_SME) || feat.FEAT_SME());
+           (!(features & NEED_SME) || feat.FEAT_SME()) &&
+           (!(features & NEED_ETE) || feat.FEAT_ETE()) &&
+           (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4());
 }
 
 std::string RegView::Register::featuresList() const
@@ -70,6 +72,12 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_SME) {
         res.push_back("need SME");
+    }
+    if (features & RegView::NEED_ETE) {
+        res.push_back("need ETE");
+    }
+    if (features & RegView::NEED_PMUv3p4) {
+        res.push_back("need PMU v3.4");
     }
     return Join(res, ", ");
 }
@@ -118,6 +126,19 @@ const std::list<RegView::Register> RegView::AllRegisters {
     },
     {
         "APIBKEY_EL1", "D17.2.23/24", CSR_REGID2_APIBKEY, READ_PAC | WRITE_PAC | NEED_PAC, {}
+    },
+    {
+        "CTR_EL0", "D17.2.34", CSR_REGID_CTR, READ,
+        {
+            {"TminLine", 37, 32, {}},
+            {"DIC",      29, 29, {}},
+            {"IDC",      28, 28, {}},
+            {"CWG",      27, 24, {}},
+            {"ERG",      23, 20, {}},
+            {"DminLine", 19, 16, {}},
+            {"L1Ip",     15, 14, {{0, "VPIPT"}, {1, "AIVIVT"}, {2, "VIPT"}, {3, "PIPT"}}},
+            {"IminLine",  3,  0, {}},
+        }
     },
     {
         "HCR_EL2", "D17.2.48", CSR_REGID_HCR, 0, {
@@ -593,6 +614,25 @@ const std::list<RegView::Register> RegView::AllRegisters {
     },
     {
         "TPIDR_EL1", "D17.2.140", CSR_REGID_TPIDR_EL1, READ | WRITE, {}
+    },
+    {
+        "TRCDEVARCH", "D17.4.23", CSR_REGID_TRCDEVARCH, READ | NEED_ETE,
+        {
+            {"ARCHITECT", 31, 21, {}},
+            {"PRESENT",   20, 20, {{0, "not present"}, {1, "present"}}},
+            {"REVISION",  19, 16, {{0, "ETEv1.0"}, {1, "ETEv1.1"}, {2, "ETEv1.2"}}},
+            {"ARCHVER",   15, 12, {{5, "ETEv1"}}},
+            {"ARCHPART",  11,  0, {{0xA13, "Arm PE trace architecture"}}},
+        }
+    },
+    {
+        "PMMIR_EL1", "D17.5.12", CSR_REGID_PMMIR, READ | NEED_PMUv3p4,
+        {
+            {"THWIDTH",   23, 20, {}},
+            {"BUS_WIDTH", 19, 16, {}},
+            {"BUS_SLOTS", 15,  8, {}},
+            {"SLOTS",      7,  0, {}},
+        }
     },
 };
 
