@@ -420,7 +420,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "RNDRRS", "D17.2.112", CSR_REGID_RNDRRS, READ | NEED_RNG, {}
     },
     {
-        "SCR_EL3", "D17.2.111", CSR_REGID_SCR, 0,
+        "SCR_EL3", "D17.2.117", CSR_REGID_SCR, 0,
         {
             {"NSE",      62, 62, {}},
             {"GPF",      48, 48, {{0, "none"}, {1, "exception"}}},

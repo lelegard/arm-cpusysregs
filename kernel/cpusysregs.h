@@ -84,11 +84,25 @@ typedef struct {
 
 //----------------------------------------------------------------------------
 // List of system registers which are handled by the kernel module.
+//----------------------------------------------------------------------------
+
 // These identifiers are strictly internal to this project. We cannot use the
 // Arm ids (CSR_SREG_) because we need ids which fit on one byte.
+//
 // Most registers are individually accessible on 64 bits, using csr_u64_t.
 // Some registers are accessible as pairs (CSR_REGID2_), using csr_pair_t.
-//----------------------------------------------------------------------------
+//
+// Maintenance notes: When adding new registers, also:
+// - If the register does not exist in "older" versions of the Arm Architecture,
+//   its name may not be recognized by the assembler (Linux only). In that case,
+//   add the corresponding CSR_SREG_name constant below and access the register
+//   by number instead of name.
+// - Update inlined functions csr_get_register() and csr_set_register() below.
+//   If the register exists only when a given COU features is supported, make
+//   sure to set the list of reguired features for the register.
+// - Add the register in the ../README.md file.
+// - Add the description of the register in the ../apps/regview.cpp file.
+//   Also make sure to specify the required list of CPU feature.
 
 #define _CSR_REGID_BASE   0x0000
 #define _CSR_REGID2_BASE  0x0100
