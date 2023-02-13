@@ -87,7 +87,7 @@ typedef struct {
 
 // This macro checks if PMUv3p4 (Performance Monitor Extension v3.4) is supported, based on the value of the
 // ID_AA64DFR0_EL1 system register.
-#define csr_has_pmuv3p4(dfr0) (((dfr0 >> 8) & 0x0F) >= 5)
+#define csr_has_pmuv3p4(dfr0) (((dfr0 >> 8) & 0x0F) >= 5 && ((dfr0 >> 8) & 0x0F) < 15)
 
 
 //----------------------------------------------------------------------------

@@ -73,4 +73,4 @@ show:
 	log show --info --last 2m | grep cpusysregs || true
 	kmutil showloaded 2>&1 | grep -vi 'No variant specified, falling back to release' | grep $(KEXTNAME) || true
 clean:
-	rm -rf *.o $(KEXTBIN) $(KEXTBUNDLE)
+	rm -rf *.o *.s $(KEXTBIN) $(KEXTBUNDLE)

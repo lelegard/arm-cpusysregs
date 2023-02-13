@@ -8,6 +8,7 @@
 //
 //----------------------------------------------------------------------------
 
+#include "restrictions.h"
 #include "armfeatures.h"
 
 
@@ -63,10 +64,14 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_AA64MMFR2, _aa64mmfr2) &&
         (!csr_has_sme(_aa64pfr1) || reg.read(CSR_REGID_AA64SMFR0, _aa64smfr0)) &&
         (!csr_has_sve(_aa64pfr0) || reg.read(CSR_REGID_AA64ZFR0, _aa64zfr0)) &&
-        reg.read(CSR_REGID_CTR, _ctr) &&
         reg.read(CSR_REGID_TCR, _tcr) &&
-        (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch)) &&
+        reg.read(CSR_REGID_CTR, _ctr) &&
+        (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch));
+
+#if !defined(CSR_SKIP_PMMIR)
+    _loaded = _loaded &&
         (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR, _pmmir));
+#endif
 
     return _loaded;
 }

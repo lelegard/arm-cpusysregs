@@ -308,12 +308,12 @@ public:
     bool FEAT_PAuth() const { return ID_AA64ISAR1_EL1_API() >= 1 || ID_AA64ISAR1_EL1_APA() >= 1 || ID_AA64ISAR2_EL1_APA3() >= 1; }
     bool FEAT_PAuth2() const { return ID_AA64ISAR1_EL1_API() >= 3 || ID_AA64ISAR1_EL1_APA() >= 3 || ID_AA64ISAR2_EL1_APA3() >= 3; }
     //   FEAT_PCSRv8p2 => see EDDEVID, H9.2.20, external debug register
-    bool FEAT_PMUv3() const { return ID_AA64DFR0_EL1_PMUVer() >= 1; }
-    bool FEAT_PMUv3p1() const { return ID_AA64DFR0_EL1_PMUVer() >= 4; }
-    bool FEAT_PMUv3p4() const { return ID_AA64DFR0_EL1_PMUVer() >= 5; }
-    bool FEAT_PMUv3p5() const { return ID_AA64DFR0_EL1_PMUVer() >= 6; }
-    bool FEAT_PMUv3p7() const { return ID_AA64DFR0_EL1_PMUVer() >= 7; }
-    bool FEAT_PMUv3p8() const { return ID_AA64DFR0_EL1_PMUVer() >= 8; }
+    bool FEAT_PMUv3() const { return ID_AA64DFR0_EL1_PMUVer() >= 1 && ID_AA64DFR0_EL1_PMUVer() < 15; }
+    bool FEAT_PMUv3p1() const { return ID_AA64DFR0_EL1_PMUVer() >= 4 && ID_AA64DFR0_EL1_PMUVer() < 15; }
+    bool FEAT_PMUv3p4() const { return ID_AA64DFR0_EL1_PMUVer() >= 5 && ID_AA64DFR0_EL1_PMUVer() < 15; }
+    bool FEAT_PMUv3p5() const { return ID_AA64DFR0_EL1_PMUVer() >= 6 && ID_AA64DFR0_EL1_PMUVer() < 15; }
+    bool FEAT_PMUv3p7() const { return ID_AA64DFR0_EL1_PMUVer() >= 7 && ID_AA64DFR0_EL1_PMUVer() < 15; }
+    bool FEAT_PMUv3p8() const { return ID_AA64DFR0_EL1_PMUVer() >= 8 && ID_AA64DFR0_EL1_PMUVer() < 15; }
     bool FEAT_PMUv3_TH() const { return PMMIR_THWIDTH() >= 1; }
     bool FEAT_PMULL() const { return ID_AA64ISAR0_EL1_AES() >= 2; }
     bool FEAT_RAS() const { return ID_AA64PFR0_EL1_RAS() >= 1; }
