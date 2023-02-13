@@ -1,7 +1,9 @@
 # Executable files in apps directory
 demo-pac
+demo-userfeatures
 sysregs
 linux-hwcaps
+mac-sysctl
 
 # Generated header files
 _*.h

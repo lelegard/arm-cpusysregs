@@ -114,5 +114,5 @@ void ArmFeatures::loadDirect()
 
 const std::list<ArmFeatures::Feature> ArmFeatures::AllFeatures {
     // Automatically generated file:
-    #include "_features.h"
+    #include "_armfeatures.h"
 };

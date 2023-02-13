@@ -29,10 +29,16 @@ default: $(EXECS)
 $(EXECS): $(LIB_FILE)
 demo-pac.o: CXXFLAGS += -march=armv8.3-a
 
-armfeatures.d: _features.h
-_features.h: armfeatures.h
+armfeatures.d: _armfeatures.h
+_armfeatures.h: armfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&ArmFeatures::FEAT_\1},/' | \
+	    sort -d -f >$@
+
+userfeatures.d: _userfeatures.h
+_userfeatures.h: userfeatures.h
+	grep '^ *bool FEAT_' $^ | \
+	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&UserFeatures::FEAT_\1},/' | \
 	    sort -d -f >$@
 
 linux-hwcaps.d: _hwcaps.h
@@ -42,6 +48,10 @@ _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
 	 grep '^#define[[:space:]]* HWCAP2_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP2_\([^ \t]*\).*$$/    {"\1", AT_HWCAP2, HWCAP2_\1},/') | \
 	 sort -u -d -f >$@
+
+mac-sysctl.d: _sysctl.h
+_sysctl.h:
+	sysctl hw | grep arm | sed -e 's/^\(.*\)\.\([^\.]*\):.*$$/    {"\2", "\1.\2"},/' | sort -u -d -f >$@
 
 $(LIB_FILE): $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $@ $^
