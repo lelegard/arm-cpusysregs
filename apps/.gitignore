@@ -1,6 +1,7 @@
 # Executable files in apps directory
 demo-pac
 sysregs
+linux-hwcaps
 
 # Generated header files
 _*.h

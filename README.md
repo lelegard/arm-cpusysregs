@@ -54,7 +54,7 @@ sizes and interpretation.
 ~~~
 Syntax: sysregs [options]
 
-  -r name : read the content of the named register
+  -r name       : read the content of the named register
   -w name value : write the specified hexadecimal value in the named register
   -d name value : display the specified value in the named register format
 
@@ -65,6 +65,7 @@ Syntax: sysregs [options]
   -l : list the names of all supported Arm64 system registers
   -p : summary of supported PAC features
   -s : summary of CPU features
+  -S : same as -s but read registers at EL0 (maybe partial, may fail)
   -v : verbose, display register analysis and fields
 ~~~
 

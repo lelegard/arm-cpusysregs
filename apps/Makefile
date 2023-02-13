@@ -8,13 +8,16 @@
 #
 #----------------------------------------------------------------------------
 
+# EXCLUDE is either "linux" or "mac", other systems to exclude.
+EXCLUDE := $(subst Linux,mac,$(subst Darwin,linux,$(shell uname -s)))
+
 CPPFLAGS += -I../kernel
 CXXFLAGS += -O2 -std=c++17 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Werror
 LDLIBS   += -lstdc++
 ARFLAGS   = rc
 
-SOURCES   := $(wildcard *.cpp)
-HEADERS   := $(wildcard *.h)
+SOURCES   := $(filter-out $(EXCLUDE)-%.cpp,$(wildcard *.cpp))
+HEADERS   := $(filter-out $(EXCLUDE)-%.h,$(wildcard *.h))
 EXECS     := $(filter-out $(basename $(HEADERS)),$(basename $(SOURCES)))
 ALL_OBJS  := $(patsubst %.cpp,%.o,$(SOURCES))
 EXEC_OBJS := $(addsuffix .o,$(EXECS))
@@ -31,6 +34,14 @@ _features.h: armfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&ArmFeatures::FEAT_\1},/' | \
 	    sort -d -f >$@
+
+linux-hwcaps.d: _hwcaps.h
+_hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
+	(grep '^#define[[:space:]]* HWCAP_' $^ | \
+	    sed -e 's/^#define[[:space:]]* HWCAP_\([^ \t]*\).*$$/    {"\1", AT_HWCAP, HWCAP_\1},/'; \
+	 grep '^#define[[:space:]]* HWCAP2_' $^ | \
+	    sed -e 's/^#define[[:space:]]* HWCAP2_\([^ \t]*\).*$$/    {"\1", AT_HWCAP2, HWCAP2_\1},/') | \
+	 sort -u -d -f >$@
 
 $(LIB_FILE): $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $@ $^

@@ -27,6 +27,10 @@ public:
     bool load(RegAccess&);
     bool isLoaded() const { return _loaded; }
 
+    // Load features using direct access to system registers in userland.
+    // Works on Linux thanks to mrs emulation.
+    void loadDirect();
+
     // Individual fields in the system registers.
 
     int ID_AA64ISAR0_EL1_RNDR() const { return (int)(_aa64isar0 >> 60) & 0x0F; }

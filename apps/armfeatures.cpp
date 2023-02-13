@@ -71,6 +71,37 @@ bool ArmFeatures::load(RegAccess& reg)
     return _loaded;
 }
 
+//----------------------------------------------------------------------------
+// Load features using direct access to system registers in userland.
+// Works on Linux thanks to mrs emulation. Trap on other systems.
+//----------------------------------------------------------------------------
+
+void ArmFeatures::loadDirect()
+{
+    // Linux kernel emulates access to system registers of the following ranges:
+    // Op0=3, Op1=0, CRn=0, CRm=0,2,3,4,5,6,7
+    // Excluded registers: TCR_EL1, TRCDEVARCH, PMMIR_EL1
+    _aa64smfr0 = _aa64zfr0 = _tcr = _trcdevarch = _pmmir = 0;
+
+    csr_mrs_str(_aa64isar0, "id_aa64isar0_el1");
+    csr_mrs_str(_aa64isar1, "id_aa64isar1_el1");
+    csr_mrs_str(_aa64isar2, "id_aa64isar2_el1");
+    csr_mrs_str(_aa64pfr0,  "id_aa64pfr0_el1");
+    csr_mrs_str(_aa64pfr1,  "id_aa64pfr1_el1");
+    csr_mrs_str(_aa64dfr0,  "id_aa64dfr0_el1");
+    csr_mrs_str(_aa64mmfr0, "id_aa64mmfr0_el1");
+    csr_mrs_str(_aa64mmfr1, "id_aa64mmfr1_el1");
+    csr_mrs_str(_aa64mmfr2, "id_aa64mmfr2_el1");
+    csr_mrs_str(_ctr,       "ctr_el0");
+    if (csr_has_sme(_aa64pfr1)) {
+        csr_mrs_num(_aa64smfr0, CSR_SREG_ID_AA64SMFR0_EL1);
+    }
+    if (csr_has_sve(_aa64pfr0)) {
+        csr_mrs_num(_aa64zfr0, CSR_SREG_ID_AA64ZFR0_EL1);
+    }
+    _loaded = true;
+}
+
 
 //----------------------------------------------------------------------------
 // Descriptions of all features.

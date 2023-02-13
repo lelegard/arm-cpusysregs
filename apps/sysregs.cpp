@@ -41,6 +41,7 @@ public:
     bool force;
     bool list_registers;
     bool cpu_summary;
+    bool direct_load;
     bool pac_summary;
     bool verbose;
 
@@ -65,6 +66,7 @@ void Options::usage() const
               << "  -p : summary of supported PAC features" << std::endl
               << "  -r name : read the content of the named register" << std::endl
               << "  -s : summary of CPU features" << std::endl
+              << "  -S : same as -s but read registers at EL0 (maybe partial, may fail)" << std::endl
               << "  -w name hex-value : write the value in the named register" << std::endl
               << "  -v : verbose, display register analysis and fields" << std::endl
               << std::endl;
@@ -89,6 +91,7 @@ Options::Options(int argc, char* argv[]) :
     force(false),
     list_registers(false),
     cpu_summary(false),
+    direct_load(false),
     pac_summary(false),
     verbose(false)
 {
@@ -129,6 +132,9 @@ Options::Options(int argc, char* argv[]) :
         }
         else if (arg == "-s") {
             cpu_summary = true;
+        }
+        else if (arg == "-S") {
+            cpu_summary = direct_load = true;
         }
         else if (arg == "-v") {
             verbose = true;
@@ -332,15 +338,23 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
 
 void FeaturesSummary(const Options& opt, std::ostream& out)
 {
+    ArmFeatures features;
+    if (opt.direct_load) {
+        // Read system registers at EL0 (direct MRS instructions).
+        features.loadDirect();
+    }
+    else {
+        // Read system registers at EL1 (call the kernel module).
+        RegAccess regaccess(true, true);
+        features.load(regaccess);
+    }
+
     size_t name_width = 0;
     for (const auto& feat : ArmFeatures::AllFeatures) {
         name_width = std::max(name_width, feat.name.length());
     }
-
-    RegAccess regaccess(true, true);
-    ArmFeatures features(regaccess);
     for (const auto& feat : ArmFeatures::AllFeatures) {
-        out << Pad (feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
+        out << Pad(feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
     }
 }
 
