@@ -29,13 +29,19 @@ default: $(EXECS)
 $(EXECS): $(LIB_FILE)
 demo-pac.o: CXXFLAGS += -march=armv8.3-a
 
-armfeatures.d: _armfeatures.h
+$(LIB_FILE): $(LIB_OBJS)
+	$(AR) $(ARFLAGS) $@ $^
+clean:
+	rm -f *.o *.a *.d _*.h $(EXECS)
+
+# A few headers are automatically generated from list of features.
+sysregs.d: _armfeatures.h
 _armfeatures.h: armfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&ArmFeatures::FEAT_\1},/' | \
 	    sort -d -f >$@
 
-userfeatures.d: _userfeatures.h
+demo-userfeatures.d: _userfeatures.h
 _userfeatures.h: userfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&UserFeatures::FEAT_\1},/' | \
@@ -52,11 +58,6 @@ _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
 mac-sysctl.d: _sysctl.h
 _sysctl.h:
 	sysctl hw | grep arm | sed -e 's/^\(.*\)\.\([^\.]*\):.*$$/    {"\2", "\1.\2"},/' | sort -u -d -f >$@
-
-$(LIB_FILE): $(LIB_OBJS)
-	$(AR) $(ARFLAGS) $@ $^
-clean:
-	rm -f *.o *.a *.d _*.h $(EXECS)
 
 # Regenerate implicit dependencies.
 ifneq ($(if $(MAKECMDGOALS),$(filter-out clean,$(MAKECMDGOALS)),true),)

@@ -8,24 +8,17 @@
 //
 //----------------------------------------------------------------------------
 
-#include "restrictions.h"
 #include "regview.h"
 #include "armfeatures.h"
 #include "strutils.h"
 
-// Refrain from accessing certain registers by default
-#if defined(CSR_SKIP_PAC_KEYS)
+// Accessing the PAC key registers in macOS kernel crashes the system.
+#if defined(__APPLE__)
     #define READ_PAC  0
     #define WRITE_PAC 0
 #else
     #define READ_PAC  RegView::READ
     #define WRITE_PAC RegView::WRITE
-#endif
-
-#if defined(CSR_SKIP_PMMIR)
-    #define READ_PMMIR 0
-#else
-    #define READ_PMMIR RegView::READ
 #endif
 
 // Map view of AllRegisters, indexed by CMD_REG_ values and names.
@@ -633,7 +626,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "PMMIR_EL1", "D17.5.12", CSR_REGID_PMMIR, READ_PMMIR | NEED_PMUv3p4,
+        "PMMIR_EL1", "D17.5.12", CSR_REGID_PMMIR, READ | NEED_PMUv3p4,
         {
             {"THWIDTH",   23, 20, {}},
             {"BUS_WIDTH", 19, 16, {}},

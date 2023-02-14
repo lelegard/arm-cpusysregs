@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
+
 // List of hw.optional.arm sysctl.
 struct Param {
     std::string name;
@@ -27,6 +28,7 @@ const std::vector<Param> AllParams {
     // Automatically generated file:
     #include "_sysctl.h"
 };
+
 
 // Program entry point
 int main(int argc, char* argv[])

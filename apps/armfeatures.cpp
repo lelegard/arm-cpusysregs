@@ -8,7 +8,6 @@
 //
 //----------------------------------------------------------------------------
 
-#include "restrictions.h"
 #include "armfeatures.h"
 
 
@@ -106,13 +105,3 @@ void ArmFeatures::loadDirect()
     }
     _loaded = true;
 }
-
-
-//----------------------------------------------------------------------------
-// Descriptions of all features.
-//----------------------------------------------------------------------------
-
-const std::list<ArmFeatures::Feature> ArmFeatures::AllFeatures {
-    // Automatically generated file:
-    #include "_armfeatures.h"
-};

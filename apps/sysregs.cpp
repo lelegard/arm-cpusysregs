@@ -17,6 +17,8 @@
 #include <iostream>
 #include <cstddef>
 #include <cstdlib>
+#include <string>
+#include <list>
 
 
 //----------------------------------------------------------------------------
@@ -333,6 +335,23 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
 
 
 //----------------------------------------------------------------------------
+// Descriptions of all Arm features.
+//----------------------------------------------------------------------------
+
+class Feature
+{
+public:
+    std::string name;                  // Feature name
+    bool (ArmFeatures::*get)() const;  // Method to get that feature
+};
+
+const std::list<Feature> AllArmFeatures {
+    // Automatically generated file:
+    #include "_armfeatures.h"
+};
+
+
+//----------------------------------------------------------------------------
 // Display a summary of CPU features.
 //----------------------------------------------------------------------------
 
@@ -350,10 +369,10 @@ void FeaturesSummary(const Options& opt, std::ostream& out)
     }
 
     size_t name_width = 0;
-    for (const auto& feat : ArmFeatures::AllFeatures) {
+    for (const auto& feat : AllArmFeatures) {
         name_width = std::max(name_width, feat.name.length());
     }
-    for (const auto& feat : ArmFeatures::AllFeatures) {
+    for (const auto& feat : AllArmFeatures) {
         out << Pad(feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
     }
 }

@@ -6,13 +6,13 @@
 //
 // A class describing the features of an Arm64 processor as seen from
 // userland, without accessing the kernel module, Linux and macOS.
+// This module is independent from the rest of this project.
 //
 //----------------------------------------------------------------------------
 
 #pragma once
-#include "regaccess.h"
-#include <string>
-#include <list>
+#include <functional>
+#include <cstdint>
 
 //
 // A class describing the features of an Arm64 processor as seen from
@@ -21,6 +21,9 @@
 class UserFeatures
 {
 public:
+    // Constructor.
+    UserFeatures();
+
     // Processor features, using same names as Arm Architecture Reference Manual.
     bool FEAT_AES();
     bool FEAT_BF16();
@@ -37,7 +40,6 @@ public:
     bool FEAT_FHM();
     bool FEAT_FlagM();
     bool FEAT_FlagM2();
-    bool FEAT_FP();
     bool FEAT_FP16();
     bool FEAT_FPAC();
     bool FEAT_FRINTTS();
@@ -59,23 +61,15 @@ public:
     bool FEAT_SPECRES();
     bool FEAT_SSBS();
 
-    // Description of a feature.
-    class Feature
-    {
-    public:
-        std::string name;             // Feature name
-        bool (UserFeatures::*get)();  // Method to get that feature
-    };
-
-    // Descriptions of all features.
-    static const std::list<Feature> AllFeatures;
-
 private:
+    // Each feature is loaded once.
     struct InitBool {
         bool loaded;
         bool value;
         InitBool() : loaded(false), value(false) {}
     };
+
+    // List of features.
     InitBool _aes;
     InitBool _bf16;
     InitBool _bti;
@@ -91,7 +85,6 @@ private:
     InitBool _fhm;
     InitBool _flagm;
     InitBool _flagm2;
-    InitBool _fp;
     InitBool _fp16;
     InitBool _fpac;
     InitBool _frintts;
@@ -112,4 +105,22 @@ private:
     InitBool _sha3;
     InitBool _specres;
     InitBool _ssbs;
+
+    // On Linux, some selected registers are available at EL0.
+    // Some Arm features are only available there.
+#if defined(__linux__)
+    bool     _reg_loaded;
+    uint64_t _isar0;
+    uint64_t _isar1;
+    uint64_t _isar2;
+    uint64_t _pfr0;
+    uint64_t _mmfr2;
+#endif
+
+    // Initialize a feature.
+#if defined(__linux__)
+    bool feature(InitBool& feat, unsigned long type, unsigned long flag, std::function<bool()> eval);
+#elif defined(__APPLE__)
+    bool feature(InitBool& feat, const char* name);
+#endif
 };

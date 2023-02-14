@@ -10,8 +10,6 @@
 
 #pragma once
 #include "regaccess.h"
-#include <string>
-#include <list>
 
 //
 // A class describing the features of an Arm64 processor.
@@ -28,7 +26,8 @@ public:
     bool isLoaded() const { return _loaded; }
 
     // Load features using direct access to system registers in userland.
-    // Works on Linux thanks to mrs emulation.
+    // Linux: Mostly works thanks to mrs emulation. However, some fields are incorrectly reported.
+    // macOS: Illegal instruction exception.
     void loadDirect();
 
     // Individual fields in the system registers.
@@ -263,7 +262,7 @@ public:
     bool FEAT_FlagM() const { return ID_AA64ISAR0_EL1_TS() >= 1; }
     bool FEAT_FlagM2() const { return ID_AA64ISAR0_EL1_TS() >= 2; }
     bool FEAT_FP() const { return ID_AA64PFR0_EL1_FP() < 15; }
-    bool FEAT_FP16() const { return ID_AA64PFR0_EL1_FP() >= 2 && ID_AA64PFR0_EL1_FP() < 15; }
+    bool FEAT_FP16() const { return ID_AA64PFR0_EL1_FP() >= 1 && ID_AA64PFR0_EL1_FP() < 15; }
     bool FEAT_FPAC() const { return ID_AA64ISAR1_EL1_API() >= 4 || ID_AA64ISAR1_EL1_APA() >= 4 || ID_AA64ISAR2_EL1_APA3() >= 4; }
     bool FEAT_FPACCOMBINE() const { return ID_AA64ISAR1_EL1_API() >= 5 || ID_AA64ISAR1_EL1_APA() >= 5 || ID_AA64ISAR2_EL1_APA3() >= 5; }
     bool FEAT_FRINTTS() const { return ID_AA64ISAR1_EL1_FRINTTS() >= 1; }
@@ -377,17 +376,6 @@ public:
     bool addressTaggingEnabled() const { return FEAT_MTE() && TCR_EL1_TBI0(); }
     bool AddressTaggingEnabled0() const { return FEAT_MTE() && TCR_EL1_TBI0(); } // lower VA range
     bool AddressTaggingEnabled1() const { return FEAT_MTE() && TCR_EL1_TBI1(); } // upper VA range
-
-    // Description of a feature.
-    class Feature
-    {
-    public:
-        std::string name;                  // Feature name
-        bool (ArmFeatures::*get)() const;  // Method to get that feature
-    };
-
-    // Descriptions of all features.
-    static const std::list<Feature> AllFeatures;
 
 private:
     bool      _loaded;
