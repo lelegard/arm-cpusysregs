@@ -15,3 +15,9 @@ features using `getauxval()` from userland.
 
 On macOS, `mac-sysctl` demonstrates how to determine a subset of the Arm
 features using `sysctl()` from userland.
+
+The program `demo-userfeatures` demonstrates the usage of the C++ class
+`UserFeatures` which returns the most important Arm features in a portable way,
+independently of the rest of this project. The class can be reused in any project.
+It works well on macOS. On Linux, however, some less used features are correctly
+incorrectly reported by the kernel (incomplete MRS emulation).
