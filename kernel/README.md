@@ -17,3 +17,7 @@ are slightly different on Linux and macOS.
 
 In the `apps` directory, the C++ class named `RegAccess` (files `regaccess.h` and `.cpp`)
 encapsulates these differences to provide a higher-level of abstraction.
+
+The script `extract-sreg-definitions.sh` automatically extracts and formats the `CSR_SREG_xxx`
+definitions of all Arm system registers, as used in `cpusysregs.h`, from a PDF file of the
+Arm Architecture Reference Manual. It is kept here for reference only.

@@ -1,5 +1,6 @@
 # Temporary files.
 .#*
+*.tmp
 
 # Prerequisites
 *.d
