@@ -13,6 +13,7 @@
 
 #include "regaccess.h"
 #include "regview.h"
+#include "qarma64.h"
 #include "armfeatures.h"
 #include "strutils.h"
 
@@ -49,12 +50,15 @@ int main(int argc, char* argv[])
     }
 
     // Display input data.
+    int qarma_rounds = 0;
     std::cout << "Algorithm: ";
     if (features.FEAT_PACQARMA5()) {
         std::cout << "QARMA5";
+        qarma_rounds = 5;
     }
     else if (features.FEAT_PACQARMA3()) {
         std::cout << "QARMA3";
+        qarma_rounds = 3;
     }
     else if (features.FEAT_PACIMP()) {
         std::cout << "implementation-defined";
@@ -81,5 +85,16 @@ int main(int argc, char* argv[])
     csr_u64_t result = 0x1111111111111111;
     asm("pacga %[res], %[val], %[mod]" : [res] "+r" (result) : [val] "r" (value), [mod] "r" (modifier));
     std::cout << "PACGA:     " << ToHexa(result) << std::endl;
+
+    // Check it on software qarma.
+    if (qarma_rounds > 0) {
+        Qarma64 qarma(qarma_rounds);
+        csr_u64_t soft = qarma.encrypt(value, modifier, key.high, key.low);
+        std::cout << "QARMA" << qarma_rounds << ":    " << ToHexa(soft);
+        if (result != (soft & 0xFFFFFFFF00000000)) {
+            std::cout << "  FAIL";
+        }
+        std::cout << std::endl;
+    }
     return EXIT_SUCCESS;
 }
