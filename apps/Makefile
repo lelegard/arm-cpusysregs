@@ -27,7 +27,7 @@ LIB_FILE  := libcpusysregs.a
 default: $(EXECS)
 
 $(EXECS): $(LIB_FILE)
-demo-pac.o: CXXFLAGS += -march=armv8.3-a
+pacga.o demo-pac.o: CXXFLAGS += -march=armv8.3-a
 
 $(LIB_FILE): $(LIB_OBJS)
 	$(AR) $(ARFLAGS) $@ $^
