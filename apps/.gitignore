@@ -1,10 +1,11 @@
 # Executable files in apps directory
-pacga
 demo-pac
 demo-userfeatures
-sysregs
 linux-hwcaps
 mac-sysctl
+pacga
+sysregs
+test-qarma64
 
 # Generated header files
 _*.h
