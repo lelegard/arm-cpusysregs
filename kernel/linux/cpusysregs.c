@@ -131,44 +131,64 @@ static char* csr_devnode(struct device* dev, umode_t* mode)
 
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long param)
 {
-    // Get REGID from ioctl() command.
-    csr_pair_t reg;
-    const int regid = csr_ioc_to_regid(cmd);
-    const size_t size = csr_regid_is_pair(regid) ? sizeof(reg) : sizeof(reg.low);
-    if (!csr_regid_is_valid(regid)) {
-        return -EINVAL;
-    }
-
-    // Sanity check on data size and layout.
-    if (size != _IOC_SIZE(cmd) || (char*)(&reg) != (char*)(&reg.low)) {
-        return -EPROTO;
-    }
-
-    // Get or set operation.
-    switch (_IOC_DIR(cmd)) {
-        case _IOC_READ:
-            // Get register value.
-            if (csr_get_register(regid, &reg, cpu_features)) {
-                return -EINVAL;
-            }
-            else if (copy_to_user((void*)param, &reg, size)) {
-                return -EFAULT;
-            }
-            else {
-                return 0;
-            }
-        case _IOC_WRITE:
-            // Set register value.
-            if (copy_from_user(&reg, (void*)param, size)) {
-                return -EFAULT;
-            }
-            else if (csr_set_register(regid, &reg, cpu_features)) {
-                return -EINVAL;
-            }
-            else {
-                return 0;
-            }
-        default:
+    // Check if this an instruction to execute.
+    const int instr = csr_ioc_to_instr(cmd);
+    if (instr != CSR_INSTR_INVALID) {
+        // Execute that specific instruction.
+        csr_instr_t args;
+        if (copy_from_user(&args, (void*)param, sizeof(args))) {
+            return -EFAULT;
+        }
+        else if (csr_exec_instr(instr, &args)) {
             return -EINVAL;
+        }
+        else if (copy_to_user((void*)param, &args, sizeof(args))) {
+            return -EFAULT;
+        }
+        else {
+            return 0;
+        }
+    }
+    else {
+        // This must be a register to read/write. Get REGID from ioctl() command.
+        csr_pair_t reg;
+        const int regid = csr_ioc_to_regid(cmd);
+        const size_t size = csr_regid_is_pair(regid) ? sizeof(reg) : sizeof(reg.low);
+        if (!csr_regid_is_valid(regid)) {
+            return -EINVAL;
+        }
+
+        // Sanity check on data size and layout.
+        if (size != _IOC_SIZE(cmd) || (char*)(&reg) != (char*)(&reg.low)) {
+            return -EPROTO;
+        }
+
+        // Get or set operation.
+        switch (_IOC_DIR(cmd)) {
+            case _IOC_READ:
+                // Get register value.
+                if (csr_get_register(regid, &reg, cpu_features)) {
+                    return -EINVAL;
+                }
+                else if (copy_to_user((void*)param, &reg, size)) {
+                    return -EFAULT;
+                }
+                else {
+                    return 0;
+                }
+            case _IOC_WRITE:
+                // Set register value.
+                if (copy_from_user(&reg, (void*)param, size)) {
+                    return -EFAULT;
+                }
+                else if (csr_set_register(regid, &reg, cpu_features)) {
+                    return -EINVAL;
+                }
+                else {
+                    return 0;
+                }
+            default:
+                return -EINVAL;
+        }
     }
 }

@@ -179,7 +179,7 @@ bool RegAccess::write(int regid, csr_u64_t reg)
     }
 #elif defined(__APPLE__)
     if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
-        return setError(errno, "getsockopt(SET_REG)");
+        return setError(errno, "setsockopt(SET_REG)");
     }
 #endif
     return true;
@@ -199,7 +199,26 @@ bool RegAccess::write(int regid, const csr_pair_t& reg)
     }
 #elif defined(__APPLE__)
     if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
-        return setError(errno, "getsockopt(SET_REG2)");
+        return setError(errno, "setsockopt(SET_REG2)");
+    }
+#endif
+    return true;
+}
+
+
+//----------------------------------------------------------------------------
+// Execute a PACxx or AUTxx in kernel mode.
+//----------------------------------------------------------------------------
+
+bool RegAccess::executeInstr(int instr, csr_instr_t& args)
+{
+#if defined(__linux__)
+    if (::ioctl(_fd, CSR_IOC_INSTR(instr), &args) < 0) {
+        return setError(errno, "ioctl(INSTR)");
+    }
+#elif defined(__APPLE__)
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_INSTR(instr), &instr, sizeof(instr)) < 0)  {
+        return setError(errno, "getsockopt(INSTR)");
     }
 #endif
     return true;

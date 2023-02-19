@@ -157,6 +157,9 @@ typedef struct {
 #define CSR_REGID2_APDBKEY     (_CSR_REGID2_BASE | 0x03)  // Pointer Authentication Key B for Data
 #define CSR_REGID2_APGAKEY     (_CSR_REGID2_BASE | 0x04)  // Pointer Authentication Generic Key
 
+// Placeholder for invalid register id.
+#define CSR_REGID_INVALID (~0)
+
 // Check if a register id is in a valid range.
 CSR_INLINE int csr_regid_is_valid(int regid)
 {
@@ -178,6 +181,34 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 
 
 //----------------------------------------------------------------------------
+// Pointer authentication commands.
+// The PACxx and AUTxx instructions can be delegated into the kernel module.
+// The purpose is to exhibit potential differences between user and kernel.
+//----------------------------------------------------------------------------
+
+// Codes of instructions to execute in kernel mode.
+// These values must fit in one byte to be included in an ioctl() command code.
+#define CSR_INSTR_PACIA  0x00
+#define CSR_INSTR_PACIB  0x01
+#define CSR_INSTR_PACDA  0x02
+#define CSR_INSTR_PACDB  0x03
+#define CSR_INSTR_PACGA  0x04
+#define CSR_INSTR_AUTIA  0x05
+#define CSR_INSTR_AUTIB  0x06
+#define CSR_INSTR_AUTDA  0x07
+#define CSR_INSTR_AUTDB  0x08
+
+// Placeholder for invalid instruction code.
+#define CSR_INSTR_INVALID (~0)
+
+// Parameters for an instruction in kernel mode.
+typedef struct {
+    csr_u64_t value;     // value to sign or authenticate, read/write
+    csr_u64_t modifier;  // modifier, read-only
+} csr_instr_t;
+
+
+//----------------------------------------------------------------------------
 // Kernel module commands.
 // Linux: Use ioctl() on /dev/cpusysregs.
 // macOS: Use getsockopt() and setsockopt() on system control cpusysregs.
@@ -190,17 +221,36 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 
     // ioctl() codes for /dev/cpusysregs.
     // Each code shall be unique since all commands go through ioctl().
-    #define _CSR_IOC_MAGIC            0x10
-    #define _CSR_IOC_MAGIC2           0x20
-    #define CSR_IOC_GET_REG(regid)    _IOR(_CSR_IOC_MAGIC,  (regid)  - _CSR_REGID_BASE,  csr_u64_t)
-    #define CSR_IOC_GET_REG2(regid2)  _IOR(_CSR_IOC_MAGIC2, (regid2) - _CSR_REGID2_BASE, csr_pair_t)
-    #define CSR_IOC_SET_REG(regid)    _IOW(_CSR_IOC_MAGIC,  (regid)  - _CSR_REGID_BASE,  csr_u64_t)
-    #define CSR_IOC_SET_REG2(regid2)  _IOW(_CSR_IOC_MAGIC2, (regid2) - _CSR_REGID2_BASE, csr_pair_t)
+    #define _CSR_IOC_REG              0x10
+    #define _CSR_IOC_REG2             0x20
+    #define _CSR_IOC_INSTR            0x30
+    #define CSR_IOC_GET_REG(regid)    _IOR(_CSR_IOC_REG,  (regid)  - _CSR_REGID_BASE,  csr_u64_t)
+    #define CSR_IOC_GET_REG2(regid2)  _IOR(_CSR_IOC_REG2, (regid2) - _CSR_REGID2_BASE, csr_pair_t)
+    #define CSR_IOC_SET_REG(regid)    _IOW(_CSR_IOC_REG,  (regid)  - _CSR_REGID_BASE,  csr_u64_t)
+    #define CSR_IOC_SET_REG2(regid2)  _IOW(_CSR_IOC_REG2, (regid2) - _CSR_REGID2_BASE, csr_pair_t)
+    #define CSR_IOC_INSTR(instr)      _IOWR(_CSR_IOC_INSTR, (instr), csr_instr_t)
 
     // Extract the register id from an ioctl() code.
+    // Return CSR_REGID_INVALID if not a set/get register command.
     CSR_INLINE int csr_ioc_to_regid(long cmd)
     {
-        return (_IOC_TYPE(cmd) == _CSR_IOC_MAGIC2 ? _CSR_REGID2_BASE : _CSR_REGID_BASE) + _IOC_NR(cmd);
+        const long type = _IOC_TYPE(cmd);
+        if (type == _CSR_IOC_REG) {
+            return _CSR_REGID_BASE + _IOC_NR(cmd);
+        }
+        else if (type == _CSR_IOC_REG2) {
+            return _CSR_REGID2_BASE + _IOC_NR(cmd);
+        }
+        else {
+            return CSR_REGID_INVALID;
+        }
+    }
+
+    // Extract the instruction code from an ioctl() code.
+    // Return CSR_INSTR_INVALID if not an instruction command.
+    CSR_INLINE int csr_ioc_to_instr(long cmd)
+    {
+        return _IOC_TYPE(cmd) == _CSR_IOC_INSTR ? _IOC_NR(cmd) : CSR_INSTR_INVALID;
     }
 
 #elif defined(__APPLE__)
@@ -210,13 +260,24 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 
     // Socket options for system control cpusysregs.
     // There is one socket option name per register.
-    #define _CSR_SOCKOPT_BASE       0x00AC0000
-    #define CSR_SOCKOPT_REG(regid)  (_CSR_SOCKOPT_BASE | (regid))
+    #define _CSR_SOCKOPT_MASK         0x0000FFFF
+    #define _CSR_SOCKOPT_REG          0x00AC0000
+    #define _CSR_SOCKOPT_INSTR        0x00AD0000
+    #define CSR_SOCKOPT_REG(regid)    (_CSR_SOCKOPT_REG | (regid))
+    #define CSR_SOCKOPT_INSTR(instr)  (_CSR_SOCKOPT_INSTR | (instr))
 
     // Extract the register id from a socket option.
+    // Return CSR_REGID_INVALID if not a set/get register command.
     CSR_INLINE int csr_sockopt_to_regid(int opt)
     {
-        return opt & ~_CSR_SOCKOPT_BASE;
+        return (opt & ~_CSR_SOCKOPT_MASK) == _CSR_SOCKOPT_REG ? (opt & _CSR_SOCKOPT_MASK) : CSR_REGID_INVALID;
+    }
+
+    // Extract the instruction code from a socket option.
+    // Return CSR_INSTR_INVALID if not an instruction command.
+    CSR_INLINE int csr_sockopt_to_instr(long cmd)
+    {
+        return (opt & ~_CSR_SOCKOPT_MASK) == _CSR_SOCKOPT_INSTR ? (opt & _CSR_SOCKOPT_MASK) : CSR_INSTR_INVALID;
     }
 
 #endif
@@ -700,6 +761,32 @@ CSR_INLINE int csr_regid_is_pair(int regid)
 #define csr_mrs_num(result,sreg) \
     asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
 
+//
+// Macros to generate PACxx and AUTxx instructions.
+// This method works at all levels of architecture, including when PAuth is not
+// supported by the assembler. Since these instructions are in the HINT range,
+// executing them before Armv8.3 is a NOP.
+//
+#define csr_pacia(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_pacib(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_pacda(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac10800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_pacdb(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac10c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_pacga(result,data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
+#define csr_autia(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac11000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_autib(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac11400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_autda(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+#define csr_autdb(data,mod) \
+    asm(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+
+
 
 //----------------------------------------------------------------------------
 // This code in used in the kernel only (Linux or macOS).
@@ -866,6 +953,43 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
 #undef _getreg_str
 #undef _getreg2_num
 #undef _getreg2_str
+}
+
+// Execute a PACxx or AUTxx instruction.
+// Return values: 0=success, 1=unknown instruction.
+CSR_INLINE int csr_exec_instr(int instr, csr_instr_t* args)
+{
+    switch (instr) {
+        case CSR_INSTR_PACIA:
+            csr_pacia(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_PACIB:
+            csr_pacib(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_PACDA:
+            csr_pacda(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_PACDB:
+            csr_pacdb(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_PACGA:
+            csr_pacga(args->value, args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_AUTIA:
+            csr_autia(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_AUTIB:
+            csr_autib(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_AUTDA:
+            csr_autda(args->value, args->modifier);
+            return 0;
+        case CSR_INSTR_AUTDB:
+            csr_autdb(args->value, args->modifier);
+            return 0;
+        default:
+            return 1;
+    }
 }
 
 #endif // KERNEL

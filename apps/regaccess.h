@@ -50,6 +50,9 @@ public:
     bool read(int regid, csr_pair_t& reg);
     bool write(int regid, const csr_pair_t& reg);
 
+    // Execute a PACxx or AUTxx in kernel mode.
+    bool executeInstr(int instr, csr_instr_t& args);
+
 private:
     int         _fd;            // file descriptor to access the kernel module
     bool        _print_errors;  // automatic error reporting

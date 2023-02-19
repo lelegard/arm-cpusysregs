@@ -81,10 +81,17 @@ int main(int argc, char* argv[])
         
     }
 
-    // Compute PACGA.
+    // Compute PACGA in user mode.
     csr_u64_t result = 0x1111111111111111;
-    asm("pacga %[res], %[val], %[mod]" : [res] "+r" (result) : [val] "r" (value), [mod] "r" (modifier));
-    std::cout << "PACGA:     " << ToHexa(result) << std::endl;
+    csr_pacga(result, value, modifier);
+    std::cout << "PACGA (u): " << ToHexa(result) << std::endl;
+
+    // Compute PACGA in kernel mode.
+    csr_instr_t args;
+    args.value = value;
+    args.modifier = modifier;
+    regaccess.executeInstr(CSR_INSTR_PACGA, args);
+    std::cout << "PACGA (k): " << ToHexa(args.value) << std::endl;
 
     // Check it on software qarma.
     if (qarma_rounds > 0) {
