@@ -24,6 +24,6 @@ features using `sysctl()` from userland.
 
 The program `demo-userfeatures` demonstrates the usage of the C++ class
 `UserFeatures` which returns the most important Arm features in a portable way,
-independently of the rest of this project. The class can be reused in any project.
-It works well on macOS. On Linux, however, some less used features are correctly
-incorrectly reported by the kernel (incomplete MRS emulation).
+independently of the rest of this project, without the help of a kernel module.
+The class can be reused in any project. It works well on macOS. On Linux, however,
+some less used features are incorrectly reported by the kernel (incomplete MRS emulation).
