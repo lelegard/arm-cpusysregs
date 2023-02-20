@@ -70,13 +70,13 @@ std::string ArmFeatures::pacAlgo() const
 }
 
 // Get the number of QARMA rounds on this platform. Return 5 for QARMA5, 3 for QARMA3, 0 if none supported.
-bool ArmFeatures::pacQARMA() const
+int ArmFeatures::pacQARMA() const
 {
     if (FEAT_PACQARMA5()) {
         return 5;
     }
     else if (FEAT_PACQARMA3()) {
-        return 5;
+        return 3;
     }
     else {
         return 0;

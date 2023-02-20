@@ -61,7 +61,7 @@ void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& ke
 // Test using the generic key.
 //----------------------------------------------------------------------------
 
-void TestGA(RegAccess& regaccess, const std::string& title, csr_u64_t value, csr_u64_t modifier)
+void TestGA(RegAccess& regaccess, const std::string& title, const csr_pair_t& key, csr_u64_t value, csr_u64_t modifier)
 {
     csr_instr_t args;
     args.value = value;
@@ -69,10 +69,18 @@ void TestGA(RegAccess& regaccess, const std::string& title, csr_u64_t value, csr
 
     csr_u64_t result = 0x1111111111111111;
     csr_pacga(result, value, modifier);
-    std::cout << Pad(title + " (user)", WIDTH) << " " << ToHexa(value) << " -> " << ToHexa(result) << std::endl;
+    std::cout << Pad(title + " (user)", WIDTH) << " " << ToHexa(result) << std::endl;
 
     regaccess.executeInstr(CSR_INSTR_PACGA, args);
-    std::cout << Pad(title + " (kernel)", WIDTH) << " " << ToHexa(value) << " -> " << ToHexa(args.value) << std::endl;
+    std::cout << Pad(title + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+
+    ArmFeatures features(regaccess);
+    const int qarma_rounds = features.pacQARMA();
+    if (qarma_rounds > 0) {
+        Qarma64 qarma(qarma_rounds);
+        std::cout << Pad(Format("QARMA%d (soft)", qarma_rounds), WIDTH) << " "
+                  << ToHexa(qarma.encrypt(value, modifier, key.high, key.low)) << std::endl;
+    }
 }
 
 
@@ -81,7 +89,8 @@ void TestGA(RegAccess& regaccess, const std::string& title, csr_u64_t value, csr
 //----------------------------------------------------------------------------
 
 void TestKey(RegAccess& regaccess, const std::string& keyname, int regid, int pac_instr, int aut_instr,
-             std::function<void(csr_u64_t&,csr_u64_t)> pac, std::function<void(csr_u64_t&,csr_u64_t)> aut)
+             std::function<void(csr_u64_t&,csr_u64_t)> pac,
+             std::function<void(csr_u64_t&,csr_u64_t)> aut)
 {
     std::cout << std::endl << "---- Testing key " << keyname << std::endl << std::endl;
 
@@ -109,10 +118,10 @@ void TestKey(RegAccess& regaccess, const std::string& keyname, int regid, int pa
     std::cout << Pad("After AUT" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
 
     ArmFeatures features(regaccess);
-    const int qarma = features.pacQARMA();
-    if (qarma > 0) {
-        Qarma64 qarma(qarma);
-        std::cout << Pad(Format("QARMA%d (soft)", qarma), WIDTH) << " "
+    const int qarma_rounds = features.pacQARMA();
+    if (qarma_rounds > 0) {
+        Qarma64 qarma(qarma_rounds);
+        std::cout << Pad(Format("QARMA%d (soft)", qarma_rounds), WIDTH) << " "
                   << ToHexa(qarma.encrypt(data, modifier, key.high, key.low)) << std::endl;
     }
 
@@ -148,22 +157,24 @@ int main(int argc, char* argv[])
             [](csr_u64_t& data, csr_u64_t mod) { csr_autdb(data, mod); });
 
     std::cout << std::endl << "---- Testing key GA" << std::endl << std::endl;
+    const csr_u64_t value = 0xFEDCBA9876543210;
+    const csr_u64_t modifier = 7;
 
-    csr_u64_t modifier = 7;
     csr_pair_t key0;
     GetKey(regaccess, "Initial GA key", key0, CSR_REGID2_APGAKEY);
-    TestGA(regaccess, "PACGA", 0xFEDCBA9876543210, modifier);
+    std::cout << Pad("Input value", WIDTH) << " " << ToHexa(value) << std::endl;
+    TestGA(regaccess, "PACGA", key0, value, modifier);
 
     const csr_pair_t key1 {0xDEADBEEFBADC0FFE, 0x0123456789ABCDEF};
     SetKey(regaccess, "Update GA key", key1, CSR_REGID2_APGAKEY);
 
     csr_pair_t key2;
     GetKey(regaccess, "Updated GA key", key2, CSR_REGID2_APGAKEY);
-    TestGA(regaccess, "PACGA", 0xFEDCBA9876543210, modifier);
+    TestGA(regaccess, "PACGA", key2, value, modifier);
 
     SetKey(regaccess, "Restore GA key", key0, CSR_REGID2_APGAKEY);
     GetKey(regaccess, "Restored GA key", key2, CSR_REGID2_APGAKEY);
-    TestGA(regaccess, "PACGA", 0xFEDCBA9876543210, modifier);
+    TestGA(regaccess, "PACGA", key2, value, modifier);
 
     std::cout << std::endl;
     return EXIT_SUCCESS;

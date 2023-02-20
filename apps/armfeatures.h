@@ -374,7 +374,7 @@ public:
     std::string pacAlgo() const;
 
     // Get the number of QARMA rounds on this platform. Return 5 for QARMA5, 3 for QARMA3, 0 if none supported.
-    bool pacQARMA() const;
+    int pacQARMA() const;
 
     // Check if address tagging is enabled. Variant when two VA ranges are used.
     bool addressTaggingEnabled() const { return FEAT_MTE() && TCR_EL1_TBI0(); }
