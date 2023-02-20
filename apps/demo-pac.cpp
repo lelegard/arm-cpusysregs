@@ -53,6 +53,11 @@ void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& ke
     }
 }
 
+
+//----------------------------------------------------------------------------
+// Test using the generic key.
+//----------------------------------------------------------------------------
+
 void TestGA(RegAccess& regaccess, const std::string& title, csr_u64_t value, csr_u64_t modifier)
 {
     csr_instr_t args;
@@ -69,6 +74,45 @@ void TestGA(RegAccess& regaccess, const std::string& title, csr_u64_t value, csr
 
 
 //----------------------------------------------------------------------------
+// Test using one of the 4 specialized keys.
+//----------------------------------------------------------------------------
+
+void TestKey(RegAccess& regaccess, const std::string& keyname, int regid, int pac_instr, int aut_instr,
+             std::function<void(csr_u64_t&,csr_u64_t)> pac, std::function<void(csr_u64_t&,csr_u64_t)> aut)
+{
+    std::cout << std::endl << "---- Testing key " << keyname << std::endl << std::endl;
+
+    csr_pair_t key;
+    GetKey(regaccess, "Initial " + keyname + " key", key, regid);
+
+    const csr_u64_t data = 0x123456789A;
+    const csr_u64_t modifier = 47;
+
+    csr_u64_t data1 = data;
+    std::cout << Pad("Before PAC" + keyname + " (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
+    pac(data1, modifier);
+    std::cout << Pad("After PAC" + keyname + " (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
+    csr_u64_t corrupted = data1 ^ 1;
+
+    aut(data1, modifier);
+    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(data) << std::endl;
+
+    std::cout << Pad("Corrupted", WIDTH) << " " << ToHexa(corrupted) << std::endl;
+    aut(corrupted, modifier);
+    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
+
+    csr_instr_t args;
+    args.value = data;
+    args.modifier = modifier;
+    std::cout << Pad("Before PAC" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+    regaccess.executeInstr(pac_instr, args);
+    std::cout << Pad("After PAC" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+    regaccess.executeInstr(aut_instr, args);
+    std::cout << Pad("After AUT" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+}
+
+
+//----------------------------------------------------------------------------
 // Program entry point
 //----------------------------------------------------------------------------
 
@@ -77,7 +121,23 @@ int main(int argc, char* argv[])
     // Open the pseudo-device for the kernel module.
     RegAccess regaccess(true, true);
 
-    std::cout << std::endl << "---- Generic key" << std::endl << std::endl;
+    TestKey(regaccess, "IA", CSR_REGID2_APIAKEY, CSR_INSTR_PACIA, CSR_INSTR_AUTIA,
+            [](csr_u64_t& data, csr_u64_t mod) { csr_pacia(data, mod); },
+            [](csr_u64_t& data, csr_u64_t mod) { csr_autia(data, mod); });
+
+    TestKey(regaccess, "IB", CSR_REGID2_APIBKEY, CSR_INSTR_PACIB, CSR_INSTR_AUTIB,
+            [](csr_u64_t& data, csr_u64_t mod) { csr_pacib(data, mod); },
+            [](csr_u64_t& data, csr_u64_t mod) { csr_autib(data, mod); });
+
+    TestKey(regaccess, "DA", CSR_REGID2_APDAKEY, CSR_INSTR_PACDA, CSR_INSTR_AUTDA,
+            [](csr_u64_t& data, csr_u64_t mod) { csr_pacda(data, mod); },
+            [](csr_u64_t& data, csr_u64_t mod) { csr_autda(data, mod); });
+
+    TestKey(regaccess, "DB", CSR_REGID2_APDBKEY, CSR_INSTR_PACDB, CSR_INSTR_AUTDB,
+            [](csr_u64_t& data, csr_u64_t mod) { csr_pacdb(data, mod); },
+            [](csr_u64_t& data, csr_u64_t mod) { csr_autdb(data, mod); });
+
+    std::cout << std::endl << "---- Testing key GA" << std::endl << std::endl;
 
     csr_u64_t modifier = 7;
     csr_pair_t key0;
@@ -95,35 +155,6 @@ int main(int argc, char* argv[])
     GetKey(regaccess, "Restored GA key", key2, CSR_REGID2_APGAKEY);
     TestGA(regaccess, "PACGA", 0xFEDCBA9876543210, modifier);
 
-    std::cout << std::endl << "---- Data pointer key B" << std::endl << std::endl;
-
-    GetKey(regaccess, "Initial DB key", key0, CSR_REGID2_APDBKEY);
-
-    modifier = 47;
-    const csr_u64_t data = 0x123456789A;
-
-    csr_u64_t data1 = data;
-    std::cout << Pad("Before PACDB (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
-    csr_pacdb(data1, modifier);    
-    std::cout << Pad("After PACDB (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
-    csr_u64_t corrupted = data1 ^ 1;
-
-    csr_autdb(data1, modifier);
-    std::cout << Pad("After AUTDB (user)", WIDTH) << " " << ToHexa(data) << std::endl;
-
-    std::cout << Pad("Corrupted", WIDTH) << " " << ToHexa(corrupted) << std::endl;
-    csr_autdb(corrupted, modifier);
-    std::cout << Pad("After AUTDB (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
-
-    csr_instr_t args;
-    args.value = data;
-    args.modifier = modifier;
-    std::cout << Pad("Before PACDB (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
-    regaccess.executeInstr(CSR_INSTR_PACDB, args);
-    std::cout << Pad("After PACDB (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
-    regaccess.executeInstr(CSR_INSTR_AUTDB, args);
-    std::cout << Pad("After AUTDB (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
-    
     std::cout << std::endl;
     return EXIT_SUCCESS;
 }

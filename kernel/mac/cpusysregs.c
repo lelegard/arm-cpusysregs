@@ -137,30 +137,44 @@ static errno_t csr_disconnect(kern_ctl_ref kctlref, u_int32_t unit, void* unitin
 
 static errno_t csr_getopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, int opt, void* data, size_t* len)
 {
-    const int regid = csr_sockopt_to_regid(opt);
-    const size_t size = csr_regid_is_pair(regid) ? sizeof(csr_pair_t) : sizeof(csr_u64_t);
-
-    if (!csr_regid_is_valid(regid)) {
-        return EINVAL;
-    }
-    else if (len == NULL) {
+    // Length parameter cannot be absent.
+    if (len == NULL) {
         return EFAULT;
     }
-    else if (*len < size) {
-        return EINVAL;
-    }
-    else if (offsetof(csr_pair_t, low) != 0) { // sanity check for csr_get_register()
-        return EPROTO;
-    }
 
-    // If data is NULL, simply return the expected size.
-    *len = size;
-    if (data != NULL && csr_get_register(regid, (csr_pair_t*)data, cpu_features)) {
-        return ENOTSUP;
+    // Check if this an instruction to execute and get the result.
+    const int instr = csr_sockopt_to_instr(opt);
+    if (instr != CSR_INSTR_INVALID) {
+        // Execute that specific instruction. If data is NULL, simply return the expected size.
+        if (*len < sizeof(csr_instr_t)) {
+            return EINVAL;
+        }
+        *len = sizeof(csr_instr_t);
+        if (data != NULL && csr_exec_instr(instr, (csr_instr_t*)data)) {
+            return ENOTSUP;
+        }
     }
     else {
-        return 0;
+        // This must be a register to read/write. Get REGID from soket option.
+        const int regid = csr_sockopt_to_regid(opt);
+        const size_t size = csr_regid_is_pair(regid) ? sizeof(csr_pair_t) : sizeof(csr_u64_t);
+        if (!csr_regid_is_valid(regid)) {
+            return EINVAL;
+        }
+        if (*len < size) {
+            return EINVAL;
+        }
+        if (offsetof(csr_pair_t, low) != 0) { // sanity check for csr_get_register()
+            return EPROTO;
+        }
+        // If data is NULL, simply return the expected size.
+        *len = size;
+        if (data != NULL && csr_get_register(regid, (csr_pair_t*)data, cpu_features)) {
+            return ENOTSUP;
+        }
     }
+
+    return 0;
 }
 
 
@@ -176,19 +190,18 @@ static errno_t csr_setopt(kern_ctl_ref kctlref, u_int32_t unit, void* unitinfo, 
     if (!csr_regid_is_valid(regid)) {
         return EINVAL;
     }
-    else if (data == NULL) {
+    if (data == NULL) {
         return EFAULT;
     }
-    else if (len < size) {
+    if (len < size) {
         return EINVAL;
     }
-    else if (offsetof(csr_pair_t, low) != 0) { // sanity check for csr_set_register()
+    if (offsetof(csr_pair_t, low) != 0) { // sanity check for csr_set_register()
         return EPROTO;
     }
-    else if (csr_set_register(regid, (const csr_pair_t*)data, cpu_features)) {
+    if (csr_set_register(regid, (const csr_pair_t*)data, cpu_features)) {
         return ENOTSUP;
     }
-    else {
-        return 0;
-    }
+
+    return 0;
 }

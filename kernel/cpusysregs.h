@@ -275,7 +275,7 @@ typedef struct {
 
     // Extract the instruction code from a socket option.
     // Return CSR_INSTR_INVALID if not an instruction command.
-    CSR_INLINE int csr_sockopt_to_instr(long cmd)
+    CSR_INLINE int csr_sockopt_to_instr(int opt)
     {
         return (opt & ~_CSR_SOCKOPT_MASK) == _CSR_SOCKOPT_INSTR ? (opt & _CSR_SOCKOPT_MASK) : CSR_INSTR_INVALID;
     }

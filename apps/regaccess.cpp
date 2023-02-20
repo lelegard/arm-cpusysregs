@@ -217,7 +217,8 @@ bool RegAccess::executeInstr(int instr, csr_instr_t& args)
         return setError(errno, "ioctl(INSTR)");
     }
 #elif defined(__APPLE__)
-    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_INSTR(instr), &instr, sizeof(instr)) < 0)  {
+    ::socklen_t len = sizeof(args);
+    if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_INSTR(instr), &args, &len) < 0)  {
         return setError(errno, "getsockopt(INSTR)");
     }
 #endif

@@ -11,8 +11,12 @@
 # EXCLUDE is either "linux" or "mac", other systems to exclude.
 EXCLUDE := $(subst Linux,mac,$(subst Darwin,linux,$(shell uname -s)))
 
+# Force arm64e architecture when enabled on the current system.
+ARCHFLAGS := $(if $(shell (uname -m | grep arm64e) || ((csrutil status | grep disabled) && (nvram -p | grep '^boot-args.*-arm64e_preview_abi'))),-arch arm64e)
+
 CPPFLAGS += -I../kernel
-CXXFLAGS += -O2 -std=c++17 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Werror
+CXXFLAGS += $(ARCHFLAGS) -O2 -std=c++17 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Werror
+LDFLAGS  += $(ARCHFLAGS)
 LDLIBS   += -lstdc++
 ARFLAGS   = rc
 
