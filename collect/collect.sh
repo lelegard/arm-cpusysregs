@@ -14,7 +14,7 @@ make unload
 [[ $SYSTEM == Linux ]] && make install
 make load
 
-# Generate test-files.
+# Generate result files.
 echo "Creating cpusysregs-* files"
 (
     uname -a

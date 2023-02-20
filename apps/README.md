@@ -4,11 +4,12 @@
 
 `sysregs` is a generic tool to read and write the system registers.
 
-## Linux-only applications
+## Demo applications
 
-These applications read or write the PAC key registers and should be used on Linux only.
-On macOS, the PAC key registers are protected from kernel access and using these programs
-crash the system.
+These applications attempt to read or write the PAC key registers and
+should be used on Linux only. On macOS, the PAC key registers are protected
+from kernel access and the demo can only run with the current PAC keys,
+without reading or modifying them.
 
 - `demo-pac` demonstrates some usages of the pointer authentication features. 
 - `pacga` computes PAC values using specified keys and values.
