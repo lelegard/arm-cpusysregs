@@ -10,7 +10,7 @@
 
 # EXCLUDE is either "linux" or "mac", other systems to exclude.
 SYSTEM  := $(subst Linux,linux,$(subst Darwin,mac,$(shell uname -s)))
-EXCLUDE := $(subst linux,mac,$(subst mac,linux,$(SYSTEM)))
+EXCLUDE := $(filter-out $(SYSTEM),linux mac)
 
 # Force arm64e architecture when enabled on the current system.
 ifeq ($(SYSTEM),mac)
