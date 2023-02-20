@@ -367,10 +367,14 @@ public:
     bool FEAT_XNX() const { return ID_AA64MMFR1_EL1_XNX() >= 1; }
     bool FEAT_XS() const { return ID_AA64ISAR1_EL1_XS() >= 1; }
 
-    // Synthetic features of the processor.
-
     // Supports PACGA in addition to PACIx and PACDx.
-    bool hasPACGA() const { return ID_AA64ISAR1_EL1_GPI() >= 1 || ID_AA64ISAR1_EL1_GPA() >= 1 || ID_AA64ISAR2_EL1_GPA3() >= 1; }
+    bool hasPACGA() const;
+
+    // Get the name of the PAC generation algorithm.
+    std::string pacAlgo() const;
+
+    // Get the number of QARMA rounds on this platform. Return 5 for QARMA5, 3 for QARMA3, 0 if none supported.
+    bool pacQARMA() const;
 
     // Check if address tagging is enabled. Variant when two VA ranges are used.
     bool addressTaggingEnabled() const { return FEAT_MTE() && TCR_EL1_TBI0(); }

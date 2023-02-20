@@ -50,23 +50,7 @@ int main(int argc, char* argv[])
     }
 
     // Display input data.
-    int qarma_rounds = 0;
-    std::cout << "Algorithm: ";
-    if (features.FEAT_PACQARMA5()) {
-        std::cout << "QARMA5";
-        qarma_rounds = 5;
-    }
-    else if (features.FEAT_PACQARMA3()) {
-        std::cout << "QARMA3";
-        qarma_rounds = 3;
-    }
-    else if (features.FEAT_PACIMP()) {
-        std::cout << "implementation-defined";
-    }
-    else {
-        std::cout << "unknown";
-    }
-    std::cout << std::endl
+    std::cout << "Algorithm: " << features.pacAlgo() << std::endl
               << "Key:       " << ToHexa(key) << std::endl
               << "Modifier:  " << ToHexa(modifier) << std::endl
               << "Value:     " << ToHexa(value) << std::endl;
@@ -94,6 +78,7 @@ int main(int argc, char* argv[])
     std::cout << "PACGA (k): " << ToHexa(args.value) << std::endl;
 
     // Check it on software qarma.
+    const int qarma_rounds = features.pacQARMA();
     if (qarma_rounds > 0) {
         Qarma64 qarma(qarma_rounds);
         csr_u64_t soft = qarma.encrypt(value, modifier, key.high, key.low);

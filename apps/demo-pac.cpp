@@ -14,9 +14,11 @@
 //----------------------------------------------------------------------------
 
 #include "cpusysregs.h"
+#include "armfeatures.h"
 #include "strutils.h"
 #include "regaccess.h"
 #include "regview.h"
+#include "qarma64.h"
 
 #include <functional>
 #include <iostream>
@@ -90,26 +92,33 @@ void TestKey(RegAccess& regaccess, const std::string& keyname, int regid, int pa
     const csr_u64_t modifier = 47;
 
     csr_u64_t data1 = data;
-    std::cout << Pad("Before PAC" + keyname + " (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
+    std::cout << Pad("Before PAC" + keyname, WIDTH) << " " << ToHexa(data1) << std::endl;
     pac(data1, modifier);
     std::cout << Pad("After PAC" + keyname + " (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
-    csr_u64_t corrupted = data1 ^ 1;
 
+    csr_u64_t corrupted = data1 ^ 1;
     aut(data1, modifier);
     std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(data) << std::endl;
-
-    std::cout << Pad("Corrupted", WIDTH) << " " << ToHexa(corrupted) << std::endl;
-    aut(corrupted, modifier);
-    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
 
     csr_instr_t args;
     args.value = data;
     args.modifier = modifier;
-    std::cout << Pad("Before PAC" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
     regaccess.executeInstr(pac_instr, args);
     std::cout << Pad("After PAC" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
     regaccess.executeInstr(aut_instr, args);
     std::cout << Pad("After AUT" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+
+    ArmFeatures features(regaccess);
+    const int qarma = features.pacQARMA();
+    if (qarma > 0) {
+        Qarma64 qarma(qarma);
+        std::cout << Pad(Format("QARMA%d (soft)", qarma), WIDTH) << " "
+                  << ToHexa(qarma.encrypt(data, modifier, key.high, key.low)) << std::endl;
+    }
+
+    std::cout << Pad("Corrupted (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
+    aut(corrupted, modifier);
+    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
 }
 
 

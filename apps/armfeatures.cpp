@@ -43,6 +43,48 @@ ArmFeatures::ArmFeatures(RegAccess& reg) :
 
 
 //----------------------------------------------------------------------------
+// Synthetic features of the processor.
+//----------------------------------------------------------------------------
+
+// Supports PACGA in addition to PACIx and PACDx.
+bool ArmFeatures::hasPACGA() const
+{
+    return ID_AA64ISAR1_EL1_GPI() >= 1 || ID_AA64ISAR1_EL1_GPA() >= 1 || ID_AA64ISAR2_EL1_GPA3() >= 1;
+}
+
+// Get the name of the PAC generation algorithm.
+std::string ArmFeatures::pacAlgo() const
+{
+    if (FEAT_PACQARMA5()) {
+        return "QARMA5";
+    }
+    else if (FEAT_PACQARMA3()) {
+        return "QARMA3";
+    }
+    else if (FEAT_PACIMP()) {
+        return "implementation-defined";
+    }
+    else {
+        return "none";
+    }
+}
+
+// Get the number of QARMA rounds on this platform. Return 5 for QARMA5, 3 for QARMA3, 0 if none supported.
+bool ArmFeatures::pacQARMA() const
+{
+    if (FEAT_PACQARMA5()) {
+        return 5;
+    }
+    else if (FEAT_PACQARMA3()) {
+        return 5;
+    }
+    else {
+        return 0;
+    }
+}
+
+
+//----------------------------------------------------------------------------
 // Load features from the system registers.
 //----------------------------------------------------------------------------
 
