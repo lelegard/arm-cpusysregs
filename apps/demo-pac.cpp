@@ -18,6 +18,7 @@
 #include "regaccess.h"
 #include "regview.h"
 
+#include <functional>
 #include <iostream>
 #include <cstddef>
 #include <cstdlib>
