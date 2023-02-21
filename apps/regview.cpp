@@ -371,6 +371,12 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64PFR1_EL1", "D17.2.68", CSR_REGID_AA64PFR1, READ,
         {
+            {"PFAR",      63, 60, {{0, "none"}, {1, "PFAR"}}},
+            {"DF2",       59, 56, {{0, "none"}, {1, "DoubleFault2"}}},
+            {"MTEX",      55, 52, {}},
+            {"THE",       51, 48, {{0, "none"}, {1, "THE"}}},
+            {"GCS",       47, 44, {{0, "none"}, {1, "GCS"}}},
+            {"MTE_frac",  43, 40, {}},
             {"NMI",       39, 36, {{0, "none"}, {1, "NMI"}}},
             {"CSV2_frac", 35, 32, {{0, "none"}, {1, "CSV2_1p1"}, {2, "CSV2_1p2"}}},
             {"RNDR_trap", 31, 28, {{0, "none"}, {1, "RNG_TRAP"}}},
@@ -550,6 +556,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "TCR_EL1", "D17.2.131", CSR_REGID_TCR, READ,
         {
+            {"MTX1",   61, 61, {{0, "none"}, {1, "logical address tag"}}},
+            {"MTX0",   60, 60, {{0, "none"}, {1, "logical address tag"}}},
             {"DS",     59, 59, {{0, "48-bit addresses"}, {1, "52-bit addresses"}}},
             {"TCMA1",  58, 58, {{0, "none"}, {1, "unchecked"}}},
             {"TCMA0",  57, 57, {{0, "none"}, {1, "unchecked"}}},
@@ -614,6 +622,22 @@ const std::list<RegView::Register> RegView::AllRegisters {
     },
     {
         "TPIDR_EL1", "D17.2.140", CSR_REGID_TPIDR_EL1, READ | WRITE, {}
+    },
+    {
+        "TTBR0_EL1", "D17.2.144", CSR_REGID_TTBR0_EL1, READ,
+        {
+            {"ASID",  63, 48, {}},
+            {"BADDR", 47,  1, {}},
+            {"CnP",    0,  0, {{0, "differ"}, {1, "common"}}},
+        }
+    },
+    {
+        "TTBR1_EL1", "D17.2.147", CSR_REGID_TTBR1_EL1, READ,
+        {
+            {"ASID",  63, 48, {}},
+            {"BADDR", 47,  1, {}},
+            {"CnP",    0,  0, {{0, "differ"}, {1, "common"}}},
+        }
     },
     {
         "TRCDEVARCH", "D17.4.23", CSR_REGID_TRCDEVARCH, READ | NEED_ETE,

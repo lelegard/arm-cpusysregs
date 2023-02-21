@@ -149,6 +149,8 @@ typedef struct {
 #define CSR_REGID_TRCDEVARCH   (_CSR_REGID_BASE | 0x1C)   // Trace Device Architecture Register
 #define CSR_REGID_PMMIR        (_CSR_REGID_BASE | 0x1D)   // Performance Monitors Machine Identification Register
 #define CSR_REGID_CTR          (_CSR_REGID_BASE | 0x1E)   // Cache Type Register
+#define CSR_REGID_TTBR0_EL1    (_CSR_REGID_BASE | 0x1F)   // Translation Table Base Register 0 (EL1)
+#define CSR_REGID_TTBR1_EL1    (_CSR_REGID_BASE | 0x20)   // Translation Table Base Register 1 (EL1)
 
 // Registers which come in pair.
 #define CSR_REGID2_APIAKEY     (_CSR_REGID2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
@@ -940,6 +942,8 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg_num(CSR_REGID_TRCDEVARCH,  CSR_SREG_TRCDEVARCH, FEAT_ETE);
         _getreg_num(CSR_REGID_PMMIR,       CSR_SREG_PMMIR_EL1, FEAT_PMUv3p4);
         _getreg_str(CSR_REGID_CTR,         "ctr_el0", 0);
+        _getreg_str(CSR_REGID_TTBR0_EL1,   "ttbr0_el1", 0);
+        _getreg_str(CSR_REGID_TTBR1_EL1,   "ttbr1_el1", 0);
         _getreg2_num(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2_num(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

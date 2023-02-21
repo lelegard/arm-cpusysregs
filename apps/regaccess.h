@@ -30,7 +30,7 @@ public:
     // Check if the kernel module was successfully open.
     bool isOpen() const { return _fd >= 0; }
 
-    // Forbid copy (keep only one instance per file descriptor.
+    // Forbid copy (keep only one instance per file descriptor).
     RegAccess(RegAccess&&) = delete;
     RegAccess(const RegAccess&) = delete;
     RegAccess& operator=(RegAccess&&) = delete;

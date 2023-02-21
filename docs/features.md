@@ -53,7 +53,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_DoPD                | Armv8.3  |           |   | Debug over Powerdown
 | FEAT_DotProd             | Armv8.2  | Armv8.4   | X | Advanced SIMD Int8 dot product instructions
 | FEAT_DoubleFault         |          | Armv8.4   | X | Double Fault Extension
-| FEAT_DoubleFault2        |          |           |   | Error exception routing extensions.
+| FEAT_DoubleFault2        |          |           | X | Error exception routing extensions.
 | FEAT_DoubleLock          | Armv8.0  | not DoPD  | X | Double Lock
 | FEAT_DPB                 |          | Armv8.2   | X | DC CVAP instruction
 | FEAT_DPB2                | Armv8.2  | Armv8.5   | X | DC CVADP instruction
@@ -90,7 +90,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_FPAC                | Armv8.3  |           | X | Faulting on pointer authentication instructions
 | FEAT_FPACCOMBINE         | Armv8.3  |           | X | Faulting on combined pointer authentication instructions
 | FEAT_FRINTTS             |          | Armv8.5   | X | FRINT32Z, FRINT32X, FRINT64Z, and FRINT64X instructions
-| FEAT_GCS                 |          |           |   | Guarded Control Stack Extension
+| FEAT_GCS                 |          |           | X | Guarded Control Stack Extension
 | FEAT_GICv3               |          |           |   | Generic Interrupt Controller version 3
 | FEAT_GICv3_NMI           |          |           |   | Non-maskable Interrupts
 | FEAT_GICv3_TDIR          |          |           |   | Trapping Non-secure EL1 writes to ICV_DIR
@@ -134,7 +134,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_MTE                 | Armv8.5  |           | X | Instruction-only Memory Tagging Extension
 | FEAT_MTE2                | Armv8.5  |           | X | Full Memory Tagging Extension
 | FEAT_MTE3                | Armv8.5  |           | X | MTE Asymmetric Fault Handling
-| FEAT_MTE4                |          |           |   | Support for memory tag checking
+| FEAT_MTE4                |          |           | X | Support for memory tag checking
 | FEAT_MTE_ASYM_FAULT      |          |           |   | Asymmetric Tag Check Fault handling
 | FEAT_MTE_ASYNC           |          |           |   | Asynchronous Tag Check Fault handling
 | FEAT_MTE_CANONICAL_TAGS  |          |           |   | Support for Canonical tag checking
@@ -158,6 +158,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_PCSRv8              | Armv8.0  |           |   | PC Sample-base Profiling extension (not EL3 and EL2)
 | FEAT_PCSRv8p2            | Armv8.2  |           |   | PC Sample-based profiling version 8.2
 | FEAT_PCSRv8p9            |          |           |   | PCSR disable control
+| FEAT_PFAR                |          |           | X | Physical fault address registers
 | FEAT_PIE                 |          |           |   | Permission model enhancements
 | FEAT_PMULL               | Armv8.0  |           | X | Advanced SIMD PMULL instructions
 | FEAT_PMUv3               |          |           | X | PMU extension version 3
@@ -228,7 +229,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_SYSINSTR128         |          |           |   | 128-bit System instructions
 | FEAT_SYSREG128           |          |           |   | 128-bit System registers
 | FEAT_TCR2                |          |           |   | Extension to TCR_ELx
-| FEAT_THE                 |          |           |   | Translation Hardening Extension
+| FEAT_THE                 |          |           | X | Translation Hardening Extension
 | FEAT_TIDCP1              |          | Armv8.8   | X | EL0 use of IMPLEMENTATION DEFINED functionality
 | FEAT_TLBIOS              |          | Armv8.4   | X | TLB invalidate outer-shared instructions
 | FEAT_TLBIRANGE           |          | Armv8.4   | X | TLB range invalidate range instructions

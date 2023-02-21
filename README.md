@@ -121,6 +121,8 @@ version 0487I.a.
 | TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
 | TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register
 | TRCDEVARCH       | D17.4.23      | R       | Trace Device Architecture Register
+| TTBR0_EL1        | D17.2.144     | R       | Translation Table Base Register 0 (EL1)
+| TTBR1_EL1        | D17.2.147     | R       | Translation Table Base Register 1 (EL1)
 | PMMIR_EL1        | D17.5.12      | R       | Performance Monitors Machine Identification Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
