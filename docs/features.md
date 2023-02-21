@@ -13,7 +13,7 @@ Reference page: [Feature names in A-profile architecture](https://developer.arm.
 | FEAT_AES                 | <2020 | Armv8.0  |           | X | Advanced SIMD AES instructions
 | FEAT_AFP                 | 2020  |          | Armv8.7   | X | Alternate floating-point behavior
 | FEAT_AIE                 | 2022  |          |           |   | Memory Attribute Index Enhancement
-| FEAT_AMUv1               | <2020 |          |           | X | Activity Monitors Extension
+| FEAT_AMUv1               | <2020 | Armv8.4  |           | X | Activity Monitors Extension
 | FEAT_AMUv1p1             | <2020 | Armv8.6  |           | X | Activity Monitors Extension version 1.1
 | FEAT_ANERR               | 2022  |          |           |   | RASv2 Additional Error syndrome reporting, for Normal memory
 | FEAT_ASMv8p2             |       |          | Armv8.2   |   | BDC and REV64 alias instructions
@@ -21,7 +21,7 @@ Reference page: [Feature names in A-profile architecture](https://developer.arm.
 | FEAT_BBM                 | <2020 |          | Armv8.4   | X | Translation table break before make levels
 | FEAT_BF16                | <2020 | Armv8.2  | Armv8.6   | X | AARch64 BFloat16 instructions
 | FEAT_BRBE                | 2020  | Armv9.2  |           | X | Branch Record Buffer Extensions
-| FEAT_BRBEv1p1            | 2021  |          |           | X | Branch Record Buffer Extensions version 1.1
+| FEAT_BRBEv1p1            | 2021  | Armv9.3  |           | X | Branch Record Buffer Extensions version 1.1
 | FEAT_BTI                 | <2020 | Armv8.5  |           | X | Branch target identification
 | FEAT_CCIDX               | <2020 | Armv8.3  |           | X | Extended cache index
 | FEAT_CHK                 | 2022  |          |           |   | Detect when Guarded Control Stacks are implemented
@@ -61,7 +61,7 @@ Reference page: [Feature names in A-profile architecture](https://developer.arm.
 | FEAT_EPAC                | <2020 | Armv8.3  |           | X | Enhanced Pointer authentication
 | FEAT_ETE                 | <2020 | Armv9.0  |           | X | Embedded Trace Extension
 | FEAT_ETEv1p1             | <2020 | Armv9.1  |           | X | Embedded Trace Extension, version 1.1
-| FEAT_ETEv1p2             | <2020 | Armv9.2  |           |   | Embedded Trace Extension, version 1.2
+| FEAT_ETEv1p2             | <2020 | Armv9.2  |           | X | Embedded Trace Extension, version 1.2
 | FEAT_ETEv1p3             | 2022  |          |           |   | ETE support for v9.3
 | FEAT_ETMv4               | <2020 |          |           |   | Embedded Trace Macrocell version4
 | FEAT_ETMv4p1             | <2020 |          |           |   | Embedded Trace Macrocell version 4.1
