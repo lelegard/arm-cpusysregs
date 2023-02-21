@@ -206,7 +206,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_SME_F64F64          | Armv9.2  |           | X | Additional instructions for the SME Extension
 | FEAT_SME_FA64            | Armv9.2  |           | X | Additional instructions for the SME Extension
 | FEAT_SME_I16I64          | Armv9.2  |           | X | Additional instructions for the SME Extension
-| FEAT_SPE                 |          |           | X | Statistical Profiling Extension
+| FEAT_SPE                 | Armv8.2  |           | X | Statistical Profiling Extension
 | FEAT_SPECRES             | Armv8.0  | Armv8.5   | X | Speculation restriction instructions
 | FEAT_SPECRES2            |          |           |   | Adds new Clear Other Speculative Predictions instruction
 | FEAT_SPE_FDS             |          |           |   | SPE filtering by data source
@@ -240,7 +240,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_TTCNP               |          | Armv8.2   | X | Common not private translations
 | FEAT_TTL                 |          | Armv8.4   | X | Translation Table Level
 | FEAT_TTST                | Armv8.4  | Armv8.4   | X | Small translation tables
-| FEAT_TWED                |          |           | X | Delayed trapping of WFE
+| FEAT_TWED                | Armv8.6  |           | X | Delayed trapping of WFE
 | FEAT_UAO                 |          | Armv8.2   | X | Unprivileged Access Override control
 | FEAT_VHE                 |          | Armv8.1   | X | Virtualization Host Extensions
 | FEAT_VMID16              | Armv8.1  |           | X | 16-bit VMID
