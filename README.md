@@ -104,8 +104,10 @@ version 0487I.a.
 | ID_AA64MMFR1_EL1 | D17.2.65      | R       | AArch64 Memory Model Feature Register 1
 | ID_AA64MMFR2_EL1 | D17.2.66      | R       | AArch64 Memory Model Feature Register 2
 | ID_AA64MMFR3_EL1 | N/A           | R       | AArch64 Memory Model Feature Register 3
+| ID_AA64MMFR4_EL1 | N/A           | R       | AArch64 Memory Model Feature Register 4
 | ID_AA64PFR0_EL1  | D17.2.67      | R       | AArch64 Processor Feature Register 0
 | ID_AA64PFR1_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 1
+| ID_AA64PFR2_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 2
 | ID_AA64SMFR0_EL1 | D17.2.69      | R       | SME Feature ID register 0
 | ID_AA64ZFR0_EL1  | D17.2.70      | R       | SVE Feature ID register 0
 | MIDR_EL1         | D17.2.100     | R       | Main ID Register

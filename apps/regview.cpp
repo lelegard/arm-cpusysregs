@@ -380,6 +380,9 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "ID_AA64MMFR4_EL1", "N/A", CSR_REGID_AA64MMFR4, READ, {}
+    },
+    {
         "ID_AA64PFR0_EL1", "D17.2.67", CSR_REGID_AA64PFR0, READ,
         {
             {"CSV3",    63, 60, {{0, "undefined"}, {1, "safe"}}},
@@ -419,6 +422,9 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"SSBS",       7,  4, {{0, "none"}, {1, "SSBS"}, {2, "SSBS2"}}},
             {"BT",         3,  0, {{0, "none"}, {1, "BTI"}}},
         }
+    },
+    {
+        "ID_AA64PFR2_EL1", "N/A", CSR_REGID_AA64PFR2, READ, {}
     },
     {
         "ID_AA64SMFR0_EL1", "D17.2.69", CSR_REGID_AA64SMFR0, READ | NEED_SME,

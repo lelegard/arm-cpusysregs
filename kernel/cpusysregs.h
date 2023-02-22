@@ -157,6 +157,8 @@ typedef struct {
 #define CSR_REGID_TTBR1_EL1    (_CSR_REGID_BASE | 0x20)   // Translation Table Base Register 1 (EL1)
 #define CSR_REGID_TCR2         (_CSR_REGID_BASE | 0x21)   // Extended Translation Control Register
 #define CSR_REGID_AA64MMFR3    (_CSR_REGID_BASE | 0x22)   // AArch64 Memory Model Feature Register 3
+#define CSR_REGID_AA64MMFR4    (_CSR_REGID_BASE | 0x23)   // AArch64 Memory Model Feature Register 4
+#define CSR_REGID_AA64PFR2     (_CSR_REGID_BASE | 0x24)   // AArch64 Processor Feature registers 2
 
 // Registers which come in pair.
 #define CSR_REGID2_APIAKEY     (_CSR_REGID2_BASE | 0x00)  // Pointer Authentication Key A for Instruction
@@ -929,6 +931,7 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
     switch (regid) {
         _getreg_str(CSR_REGID_AA64PFR0,    "id_aa64pfr0_el1", 0);
         _getreg_str(CSR_REGID_AA64PFR1,    "id_aa64pfr1_el1", 0);
+        _getreg_num(CSR_REGID_AA64PFR2,    CSR_SREG_ID_AA64PFR2_EL1, 0);
         _getreg_str(CSR_REGID_AA64ISAR0,   "id_aa64isar0_el1", 0);
         _getreg_str(CSR_REGID_AA64ISAR1,   "id_aa64isar1_el1", 0);
         _getreg_str(CSR_REGID_AA64ISAR2,   "id_aa64isar2_el1", 0);
@@ -951,6 +954,7 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg_str(CSR_REGID_AA64MMFR1,   "id_aa64mmfr1_el1", 0);
         _getreg_str(CSR_REGID_AA64MMFR2,   "id_aa64mmfr2_el1", 0);
         _getreg_num(CSR_REGID_AA64MMFR3,   CSR_SREG_ID_AA64MMFR3_EL1, 0);
+        _getreg_num(CSR_REGID_AA64MMFR4,   CSR_SREG_ID_AA64MMFR4_EL1, 0);
         _getreg_num(CSR_REGID_AA64ZFR0,    CSR_SREG_ID_AA64ZFR0_EL1, FEAT_SVE);
         _getreg_num(CSR_REGID_AA64SMFR0,   CSR_SREG_ID_AA64SMFR0_EL1, FEAT_SME);
         _getreg_str(CSR_REGID_AA64AFR0,    "id_aa64afr0_el1", 0);
