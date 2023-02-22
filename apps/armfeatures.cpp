@@ -22,6 +22,7 @@ ArmFeatures::ArmFeatures() :
     _aa64isar2(0),
     _aa64pfr0(0),
     _aa64pfr1(0),
+    _aa64pfr2(0),
     _aa64dfr0(0),
     _aa64mmfr0(0),
     _aa64mmfr1(0),
@@ -101,6 +102,7 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_AA64ISAR2, _aa64isar2) &&
         reg.read(CSR_REGID_AA64PFR0, _aa64pfr0) &&
         reg.read(CSR_REGID_AA64PFR1, _aa64pfr1) &&
+        reg.read(CSR_REGID_AA64PFR2, _aa64pfr2) &&
         reg.read(CSR_REGID_AA64DFR0, _aa64dfr0) &&
         reg.read(CSR_REGID_AA64MMFR0, _aa64mmfr0) &&
         reg.read(CSR_REGID_AA64MMFR1, _aa64mmfr1) &&
@@ -138,6 +140,7 @@ void ArmFeatures::loadDirect()
     csr_mrs_str(_aa64isar2, "id_aa64isar2_el1");
     csr_mrs_str(_aa64pfr0,  "id_aa64pfr0_el1");
     csr_mrs_str(_aa64pfr1,  "id_aa64pfr1_el1");
+    csr_mrs_num(_aa64pfr2,  CSR_SREG_ID_AA64PFR2_EL1);
     csr_mrs_str(_aa64dfr0,  "id_aa64dfr0_el1");
     csr_mrs_str(_aa64mmfr0, "id_aa64mmfr0_el1");
     csr_mrs_str(_aa64mmfr1, "id_aa64mmfr1_el1");

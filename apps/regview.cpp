@@ -380,7 +380,10 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64MMFR4_EL1", "N/A", CSR_REGID_AA64MMFR4, READ, {}
+        "ID_AA64MMFR4_EL1", "N/A", CSR_REGID_AA64MMFR4, READ,
+        {
+            {"EIESB",  7,  4, {}},
+        }
     },
     {
         "ID_AA64PFR0_EL1", "D17.2.67", CSR_REGID_AA64PFR0, READ,
@@ -424,7 +427,12 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64PFR2_EL1", "N/A", CSR_REGID_AA64PFR2, READ, {}
+        "ID_AA64PFR2_EL1", "N/A", CSR_REGID_AA64PFR2, READ,
+        {
+            {"MTEFAR",       11,  8, {{0, "none"}, {1, "MTE4"}}},
+            {"MTESTOREONLY",  7,  4, {{0, "none"}, {1, "MTE_STORE_ONLY"}}},
+            {"MTEPERM",       3,  0, {{0, "none"}, {1, "MTE_PERM"}}},
+        }
     },
     {
         "ID_AA64SMFR0_EL1", "D17.2.69", CSR_REGID_AA64SMFR0, READ | NEED_SME,
