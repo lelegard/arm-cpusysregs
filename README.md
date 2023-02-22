@@ -103,6 +103,7 @@ version 0487I.a.
 | ID_AA64MMFR0_EL1 | D17.2.64      | R       | AArch64 Memory Model Feature Register 0
 | ID_AA64MMFR1_EL1 | D17.2.65      | R       | AArch64 Memory Model Feature Register 1
 | ID_AA64MMFR2_EL1 | D17.2.66      | R       | AArch64 Memory Model Feature Register 2
+| ID_AA64MMFR3_EL1 | N/A           | R       | AArch64 Memory Model Feature Register 3
 | ID_AA64PFR0_EL1  | D17.2.67      | R       | AArch64 Processor Feature Register 0
 | ID_AA64PFR1_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 1
 | ID_AA64SMFR0_EL1 | D17.2.69      | R       | SME Feature ID register 0
@@ -117,6 +118,7 @@ version 0487I.a.
 | SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
 | SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
 | TCR_EL1          | D17.2.131     | R       | Translation Control Register (EL1)
+| TCR2_EL1         | N/A           | R       | Extended Translation Control Register (EL1)
 | TPIDR_EL0        | D17.2.139     | R/W     | EL0 Read/Write Software Thread ID Register
 | TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
 | TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register

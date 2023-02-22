@@ -26,10 +26,12 @@ ArmFeatures::ArmFeatures() :
     _aa64mmfr0(0),
     _aa64mmfr1(0),
     _aa64mmfr2(0),
+    _aa64mmfr3(0),
     _aa64smfr0(0),
     _aa64zfr0(0),
     _ctr(0),
     _tcr(0),
+    _tcr2(0),
     _trcdevarch(0),
     _pmmir(0)
 {
@@ -91,7 +93,7 @@ int ArmFeatures::pacQARMA() const
 bool ArmFeatures::load(RegAccess& reg)
 {
     // These registers may not exist on this CPU.
-    _aa64smfr0 = _aa64zfr0 = _trcdevarch = _pmmir = 0;
+    _aa64smfr0 = _aa64zfr0 = _trcdevarch = _pmmir = _tcr2 = 0;
 
     _loaded =
         reg.read(CSR_REGID_AA64ISAR0, _aa64isar0) &&
@@ -103,9 +105,11 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_AA64MMFR0, _aa64mmfr0) &&
         reg.read(CSR_REGID_AA64MMFR1, _aa64mmfr1) &&
         reg.read(CSR_REGID_AA64MMFR2, _aa64mmfr2) &&
+        reg.read(CSR_REGID_AA64MMFR3, _aa64mmfr3) &&
         (!csr_has_sme(_aa64pfr1) || reg.read(CSR_REGID_AA64SMFR0, _aa64smfr0)) &&
         (!csr_has_sve(_aa64pfr0) || reg.read(CSR_REGID_AA64ZFR0, _aa64zfr0)) &&
         reg.read(CSR_REGID_TCR, _tcr) &&
+        (!csr_has_tcr2(_aa64mmfr3) || reg.read(CSR_REGID_TCR2, _tcr2)) &&
         reg.read(CSR_REGID_CTR, _ctr) &&
         (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch));
 
@@ -126,8 +130,8 @@ void ArmFeatures::loadDirect()
 {
     // Linux kernel emulates access to system registers of the following ranges:
     // Op0=3, Op1=0, CRn=0, CRm=0,2,3,4,5,6,7
-    // Excluded registers: TCR_EL1, TRCDEVARCH, PMMIR_EL1
-    _aa64smfr0 = _aa64zfr0 = _tcr = _trcdevarch = _pmmir = 0;
+    // Excluded registers: TCR_EL1, TCR2_EL1, TRCDEVARCH, PMMIR_EL1
+    _aa64smfr0 = _aa64zfr0 = _tcr = _tcr2 = _trcdevarch = _pmmir = 0;
 
     csr_mrs_str(_aa64isar0, "id_aa64isar0_el1");
     csr_mrs_str(_aa64isar1, "id_aa64isar1_el1");
@@ -138,6 +142,7 @@ void ArmFeatures::loadDirect()
     csr_mrs_str(_aa64mmfr0, "id_aa64mmfr0_el1");
     csr_mrs_str(_aa64mmfr1, "id_aa64mmfr1_el1");
     csr_mrs_str(_aa64mmfr2, "id_aa64mmfr2_el1");
+    csr_mrs_num(_aa64mmfr3, CSR_SREG_ID_AA64MMFR3_EL1);
     csr_mrs_str(_ctr,       "ctr_el0");
     if (csr_has_sme(_aa64pfr1)) {
         csr_mrs_num(_aa64smfr0, CSR_SREG_ID_AA64SMFR0_EL1);

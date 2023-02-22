@@ -12,14 +12,14 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_AA32HPD             | Armv8.2  |           |   | AArch32 Hierarchical permission disables
 | FEAT_AA32I8MM            | Armv8.2  |           |   | AArch32 Int8 Matrix Multiplication
 | FEAT_ABLE                |          |           |   | Address Breakpoint Linking extension
-| FEAT_ADERR               |          |           |   | RASv2 Additional Error syndrome reporting, for Device memory
+| FEAT_ADERR               |          |           | X | RASv2 Additional Error syndrome reporting, for Device memory
 | FEAT_AdvSIMD             |          |           |   | Advanced SIMD Extension
 | FEAT_AES                 | Armv8.0  |           | X | Advanced SIMD AES instructions
 | FEAT_AFP                 |          | Armv8.7   | X | Alternate floating-point behavior
-| FEAT_AIE                 |          |           |   | Memory Attribute Index Enhancement
+| FEAT_AIE                 |          |           | X | Memory Attribute Index Enhancement
 | FEAT_AMUv1               | Armv8.4  |           | X | Activity Monitors Extension
 | FEAT_AMUv1p1             | Armv8.6  |           | X | Activity Monitors Extension version 1.1
-| FEAT_ANERR               |          |           |   | RASv2 Additional Error syndrome reporting, for Normal memory
+| FEAT_ANERR               |          |           | X | RASv2 Additional Error syndrome reporting, for Normal memory
 | FEAT_ASMv8p2             |          | Armv8.2   |   | BDC and REV64 alias instructions
 | FEAT_B16B16              |          |           |   | Non-widening BFloat16 to BFloat16 arithmetic for SVE2.1 and SME2.1
 | FEAT_BBM                 |          | Armv8.4   | X | Translation table break before make levels
@@ -29,13 +29,13 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_BTI                 | Armv8.5  |           | X | Branch target identification
 | FEAT_CCIDX               | Armv8.3  |           | X | Extended cache index
 | FEAT_CHK                 |          |           |   | Detect when Guarded Control Stacks are implemented
-| FEAT_CLRBHB              |          |           |   | A new instruction CLRBHB is added in HINT space
+| FEAT_CLRBHB              |          |           | X | A new instruction CLRBHB is added in HINT space
 | FEAT_CMOW                |          | Armv8.8   | X | Control for cache maintenance permission
 | FEAT_CNTSC               | Armv8.4  |           |   | Generic Counter Scaling
 | FEAT_CONSTPACFIELD       | Armv8.3  |           | X | PAC Algorithm enhancement
 | FEAT_CP15SDISABLE2       | Armv8.0  |           |   | CP15DISABLE2
 | FEAT_CRC32               | Armv8.0  | Armv8.1   | X | CRC32 instructions
-| FEAT_CSSC                |          |           |   | Common Short Sequence Compression scalar integer instructions
+| FEAT_CSSC                |          |           | X | Common Short Sequence Compression scalar integer instructions
 | FEAT_CSV2                | Armv8.0  | Armv8.5   | X | Cache Speculation Variant 2
 | FEAT_CSV2_1p1            | Armv8.0  |           | X | Cache Speculation Variant 2 version 1.1
 | FEAT_CSV2_1p2            | Armv8.0  |           | X | Cache Speculation Variant 2 version 1.2
@@ -60,7 +60,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_E0PD                |          | Armv8.5   | X | Preventing EL0 access to halves of address maps
 | FEAT_EBEP                |          |           |   | Exception-based event profiling
 | FEAT_EBF16               | Armv9.2  |           | X | Additional instructions for the SME Extension
-| FEAT_ECBHB               |          |           |   | Imposes restrictions on branch hisory speculation around exceptions
+| FEAT_ECBHB               |          |           | X | Imposes restrictions on branch hisory speculation around exceptions
 | FEAT_ECV                 |          | Armv8.6   | X | Enhanced counter virtualization
 | FEAT_EPAC                | Armv8.3  |           | X | Enhanced Pointer authentication
 | FEAT_ETE                 | Armv9.0  |           | X | Embedded Trace Extension
@@ -126,7 +126,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_LSMAOC              | Armv8.2  |           | X | Load/Store instruction multiple atomicity and ordering controls
 | FEAT_LVA                 | Armv8.2  |           | X | Large VA support
 | FEAT_LVA3                |          |           |   | 56-bit VA
-| FEAT_MEC                 |          |           |   | Memory Encryption Contexts
+| FEAT_MEC                 |          |           | X | Memory Encryption Contexts
 | FEAT_MOPS                |          | Armv8.8   | X | Standardization of memory operations
 | FEAT_MPAM                |          |           | X | Memory Partitioning and Monitoring
 | FEAT_MPAMv0p1            |          |           |   | Memory Partitioning and Monitoring version 0.1
@@ -175,7 +175,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_PMUv3_SS            |          |           |   | PMU snapshot
 | FEAT_PMUv3_TH            | Armv8.8  |           | X | Event counting threshold
 | FEAT_POE                 |          |           |   | Permission model enhancements
-| FEAT_PRFMSLC             |          |           |   | Prefetching enhancements
+| FEAT_PRFMSLC             |          |           | X | Prefetching enhancements
 | FEAT_RAS                 |          |           | X | Reliability, Availability, and Serviceability (RAS) Extension
 | FEAT_RASv1p1             | Armv8.2  | Armv8.4   | X | Reliability, Availability, and Serviceability (RAS) Extension version 1.1
 | FEAT_RASv2               |          |           |   | Reliability, Availability, and Serviceability (RAS) Extension version 2
@@ -184,14 +184,14 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_RNG                 | Armv8.5  |           | X | Random number generator
 | FEAT_RNG_TRAP            | Armv8.5  |           | X | Trapping support for RNDR and RNDRRS
 | FEAT_RPRES               | Armv8.7  |           | X | Increased precision of Reciprocal Estimate and Reciprocal Square Root Estimate
-| FEAT_RPRFM               |          |           |   | RPRFM range prefetch hint instruction
-| FEAT_S1PIE               |          |           |   | Permission model enhancements
-| FEAT_S1POE               |          |           |   | Permission model enhancements
+| FEAT_RPRFM               |          |           | X | RPRFM range prefetch hint instruction
+| FEAT_S1PIE               |          |           | X | Permission model enhancements
+| FEAT_S1POE               |          |           | X | Permission model enhancements
 | FEAT_S2FWB               |          | Armv8.4   | X | Stage 2 forced write-back
-| FEAT_S2PIE               |          |           |   | Permission model enhancements
-| FEAT_S2POE               |          |           |   | Permission model enhancements
+| FEAT_S2PIE               |          |           | X | Permission model enhancements
+| FEAT_S2POE               |          |           | X | Permission model enhancements
 | FEAT_SB                  | Armv8.0  | Armv8.5   | X | Speculation barrier
-| FEAT_SCTLR2              |          |           |   | Extension to SCTLR_ELx
+| FEAT_SCTLR2              |          |           | X | Extension to SCTLR_ELx
 | FEAT_SEBEP               |          |           |   | Synchronous Exception-based event profiling
 | FEAT_SEL2                |          | Armv8.4   | X | Secure EL2
 | FEAT_SHA1                | Armv8.0  |           | X | Advanced SIMD SHA1 instructions
@@ -226,9 +226,9 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_SVE_PMULL128        | Armv9.0  |           | X | SVE PMULL instructions
 | FEAT_SVE_SHA3            | Armv9.0  |           | X | SVE SHA-3 instructions
 | FEAT_SVE_SM4             | Armv9.0  |           | X | SVE SM4 instructions
-| FEAT_SYSINSTR128         |          |           |   | 128-bit System instructions
-| FEAT_SYSREG128           |          |           |   | 128-bit System registers
-| FEAT_TCR2                |          |           |   | Extension to TCR_ELx
+| FEAT_SYSINSTR128         |          |           | X | 128-bit System instructions
+| FEAT_SYSREG128           |          |           | X | 128-bit System registers
+| FEAT_TCR2                |          |           | X | Extension to TCR_ELx
 | FEAT_THE                 |          |           | X | Translation Hardening Extension
 | FEAT_TIDCP1              |          | Armv8.8   | X | EL0 use of IMPLEMENTATION DEFINED functionality
 | FEAT_TLBIOS              |          | Armv8.4   | X | TLB invalidate outer-shared instructions

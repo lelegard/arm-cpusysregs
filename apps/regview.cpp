@@ -43,7 +43,8 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_SVE) || feat.FEAT_SVE()) &&
            (!(features & NEED_SME) || feat.FEAT_SME()) &&
            (!(features & NEED_ETE) || feat.FEAT_ETE()) &&
-           (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4());
+           (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4()) &&
+           (!(features & NEED_TCR2) || feat.FEAT_TCR2());
 }
 
 std::string RegView::Register::featuresList() const
@@ -78,6 +79,9 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_PMUv3p4) {
         res.push_back("need PMU v3.4");
+    }
+    if (features & RegView::NEED_TCR2) {
+        res.push_back("need TCR2");
     }
     return Join(res, ", ");
 }
@@ -277,14 +281,21 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64ISAR2_EL1", "D17.2.63", CSR_REGID_AA64ISAR2, READ,
         {
-            {"PAC_frac", 27, 24, {{0, "none"}, {1, "ConstPACField"}}},
-            {"BC",       23, 20, {{0, "none"}, {1, "HBC"}}},
-            {"MOPS",     19, 16, {{0, "none"}, {1, "MOPS"}}},
-            {"APA3",     15, 12, {{0, "none"}, {1, "QARMA3 PAuth"}, {2, "QARMA3 PAuth+EPAC"}, {3, "QARMA3 PAuth+EPAC+PAuth2"},
-                                  {4, "QARMA3 PAuth+EPAC+PAuth2+FPAC"}, {5, "QARMA3 PAuth+EPAC+PAuth2+FPAC+FPACCOMBINE"}}},
-            {"GPA3",     11,  8, {{0, "none"}, {1, "PACQARMA3"}}},
-            {"RPRES",     7,  4, {{0, "none"}, {1, "RPRES"}}},
-            {"WFxT",      3,  0, {{0, "none"}, {1, "WFxT"}}},
+            {"CSSC",         55, 52, {{0, "none"}, {1, "CSSC"}}},
+            {"RPRFM",        51, 48, {{0, "none"}, {1, "RPRFM"}}},
+            {"PRFMSLC",      43, 40, {{0, "none"}, {1, "PRFMSLC"}}},
+            {"SYSINSTR_128", 39, 36, {{0, "none"}, {1, "SYSINSTR_128"}}},
+            {"SYSREG_128",   35, 32, {{0, "none"}, {1, "SYSREG_128"}}},
+            {"CLRBHB",       31, 28, {{0, "none"}, {1, "CLRBHB"}}},
+            {"PAC_frac",     27, 24, {{0, "none"}, {1, "ConstPACField"}}},
+            {"BC",           23, 20, {{0, "none"}, {1, "HBC"}}},
+            {"MOPS",         19, 16, {{0, "none"}, {1, "MOPS"}}},
+            {"APA3",         15, 12, {{0, "none"}, {1, "QARMA3 PAuth"}, {2, "QARMA3 PAuth+EPAC"},
+                                      {3, "QARMA3 PAuth+EPAC+PAuth2"}, {4, "QARMA3 PAuth+EPAC+PAuth2+FPAC"},
+                                      {5, "QARMA3 PAuth+EPAC+PAuth2+FPAC+FPACCOMBINE"}}},
+            {"GPA3",         11,  8, {{0, "none"}, {1, "PACQARMA3"}}},
+            {"RPRES",         7,  4, {{0, "none"}, {1, "RPRES"}}},
+            {"WFxT",          3,  0, {{0, "none"}, {1, "WFxT"}}},
         }
     },
     {
@@ -310,6 +321,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64MMFR1_EL1", "D17.2.65", CSR_REGID_AA64MMFR1, READ,
         {
+            {"ECBHB",    63, 60, {{0, "none"}, {1, "ECBHB"}}},
             {"CMOW",     59, 56, {{0, "none"}, {1, "CMOW"}}},
             {"TIDCP1",   55, 52, {{0, "none"}, {1, "TIDCP1"}}},
             {"nTLBPA",   51, 48, {}},
@@ -345,6 +357,26 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"LSM",     11,  8, {{0, "none"}, {1, "LSMAOC"}}},
             {"UAO",      7,  4, {{0, "none"}, {1, "UAO"}}},
             {"CnP",      3,  0, {{0, "none"}, {1, "TTCNP"}}},
+        }
+    },
+    {
+        "ID_AA64MMFR3_EL1", "N/A", CSR_REGID_AA64MMFR3, READ,
+        {
+            {"Spec_FPACC", 63, 60, {}},
+            {"ADERR",      59, 56, {}},
+            {"SDERR",      55, 52, {}},
+            {"ANERR",      47, 44, {}},
+            {"SNERR",      43, 40, {}},
+            {"D128_2",     39, 36, {}},
+            {"D128",       35, 32, {}},
+            {"MEC",        31, 28, {}},
+            {"AIE",        27, 24, {}},
+            {"S2POE",      23, 20, {}},
+            {"S1POE",      19, 16, {}},
+            {"S2PIE",      15, 12, {}},
+            {"S1PIE",      11,  8, {}},
+            {"SCTLRX",      7,  4, {}},
+            {"TCRX",        3,  0, {}},
         }
     },
     {
@@ -449,40 +481,53 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "SCR_EL3", "D17.2.117", CSR_REGID_SCR, 0,
         {
-            {"NSE",      62, 62, {}},
-            {"GPF",      48, 48, {{0, "none"}, {1, "exception"}}},
-            {"EnTP2",    41, 41, {{0, "trap"}, {1, "none"}}},
-            {"TRNDR",    40, 40, {{0, "none"}, {1, "trap"}}},
-            {"HXEn",     38, 38, {{0, "trap"}, {1, "none"}}},
-            {"ADEn",     37, 37, {{0, "trap"}, {1, "none"}}},
-            {"EnAS0",    36, 36, {{0, "trap"}, {1, "none"}}},
-            {"AMVOFFEN", 35, 35, {{0, "trap"}, {1, "none"}}},
-            {"TME",      34, 34, {{0, "undefined"}, {1, "none"}}},
-            {"TWEDEL",   33, 30, {}},
-            {"TWEDEn",   29, 29, {{0, "imp"}, {1, "twedel"}}},
-            {"ECVEn",    28, 28, {{0, "trap"}, {1, "none"}}},
-            {"FGTEn",    27, 27, {{0, "trap"}, {1, "none"}}},
-            {"ATA",      26, 26, {{0, "trap"}, {1, "none"}}},
-            {"EnSCXT",   25, 25, {{0, "trap"}, {1, "none"}}},
-            {"FIEN",     21, 21, {{0, "trap"}, {1, "none"}}},
-            {"NMEA",     20, 20, {}},
-            {"EASE",     19, 19, {{0, "exception"}, {1, "interrupt"}}},
-            {"EEL2",     18, 18, {{0, "disabled"}, {1, "enabled"}}},
-            {"API",      17, 17, {{0, "trap"}, {1, "none"}}},
-            {"APK",      16, 16, {{0, "trap"}, {1, "none"}}},
-            {"TERR",     15, 15, {{0, "none"}, {1, "trap"}}},
-            {"TLOR",     14, 14, {{0, "none"}, {1, "trap"}}},
-            {"TWE",      13, 13, {{0, "none"}, {1, "trap"}}},
-            {"TWI",      12, 12, {{0, "none"}, {1, "trap"}}},
-            {"ST",       11, 11, {{0, "trap"}, {1, "none"}}},
-            {"RW",       10, 10, {{0, "aarch32"}, {1, "aarch64"}}},
-            {"SIF",       9,  9, {{0, "permitted"}, {1, "not permitted"}}},
-            {"HCE",       8,  8, {{0, "undefined"}, {1, "enabled"}}},
-            {"SMD",       7,  7, {{0, "enabled"}, {1, "undefined"}}},
-            {"EA",        3,  3, {{0, "none"}, {1, "el3"}}},
-            {"FIQ",       2,  2, {{0, "none"}, {1, "el3"}}},
-            {"IRQ",       1,  1, {{0, "none"}, {1, "el3"}}},
-            {"NS",        0,  0, {}},
+            {"NSE",       62, 62, {}},
+            {"FGTEn2",    59, 59, {{0, "trap"}, {1, "none"}}},
+            {"EnIDCP128", 55, 55, {}},
+            {"PFAREn",    53, 53, {}},
+            {"TWERR",     52, 52, {}},
+            {"TMEA",      51, 51, {}},
+            {"MECEn",     49, 49, {}},
+            {"GPF",       48, 48, {{0, "none"}, {1, "exception"}}},
+            {"D128En",    47, 47, {}},
+            {"AIEn",      46, 46, {}},
+            {"PIEn",      45, 45, {}},
+            {"SCTLR2En",  44, 44, {}},
+            {"TCR2En",    43, 43, {}},
+            {"RCWMASKEn", 42, 42, {}},
+            {"EnTP2",     41, 41, {{0, "trap"}, {1, "none"}}},
+            {"TRNDR",     40, 40, {{0, "none"}, {1, "trap"}}},
+            {"GCSEn",     39, 39, {}},
+            {"HXEn",      38, 38, {{0, "trap"}, {1, "none"}}},
+            {"ADEn",      37, 37, {{0, "trap"}, {1, "none"}}},
+            {"EnAS0",     36, 36, {{0, "trap"}, {1, "none"}}},
+            {"AMVOFFEN",  35, 35, {{0, "trap"}, {1, "none"}}},
+            {"TME",       34, 34, {{0, "undefined"}, {1, "none"}}},
+            {"TWEDEL",    33, 30, {}},
+            {"TWEDEn",    29, 29, {{0, "imp"}, {1, "twedel"}}},
+            {"ECVEn",     28, 28, {{0, "trap"}, {1, "none"}}},
+            {"FGTEn",     27, 27, {{0, "trap"}, {1, "none"}}},
+            {"ATA",       26, 26, {{0, "trap"}, {1, "none"}}},
+            {"EnSCXT",    25, 25, {{0, "trap"}, {1, "none"}}},
+            {"FIEN",      21, 21, {{0, "trap"}, {1, "none"}}},
+            {"NMEA",      20, 20, {}},
+            {"EASE",      19, 19, {{0, "exception"}, {1, "interrupt"}}},
+            {"EEL2",      18, 18, {{0, "disabled"}, {1, "enabled"}}},
+            {"API",       17, 17, {{0, "trap"}, {1, "none"}}},
+            {"APK",       16, 16, {{0, "trap"}, {1, "none"}}},
+            {"TERR",      15, 15, {{0, "none"}, {1, "trap"}}},
+            {"TLOR",      14, 14, {{0, "none"}, {1, "trap"}}},
+            {"TWE",       13, 13, {{0, "none"}, {1, "trap"}}},
+            {"TWI",       12, 12, {{0, "none"}, {1, "trap"}}},
+            {"ST",        11, 11, {{0, "trap"}, {1, "none"}}},
+            {"RW",        10, 10, {{0, "aarch32"}, {1, "aarch64"}}},
+            {"SIF",        9,  9, {{0, "permitted"}, {1, "not permitted"}}},
+            {"HCE",        8,  8, {{0, "undefined"}, {1, "enabled"}}},
+            {"SMD",        7,  7, {{0, "enabled"}, {1, "undefined"}}},
+            {"EA",         3,  3, {{0, "none"}, {1, "el3"}}},
+            {"FIQ",        2,  2, {{0, "none"}, {1, "el3"}}},
+            {"IRQ",        1,  1, {{0, "none"}, {1, "el3"}}},
+            {"NS",         0,  0, {}},
         }
     },
     {
@@ -612,6 +657,21 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"EPD0",    7,  7, {{0, "Translation table walks using TTBR0_EL1"},
                                 {1, "TLB miss using TTBR0_EL1 generates a Translation fault"}}},
             {"T0SZ",    5,  0, {}},
+        }
+    },
+    {
+        "TCR2_EL1", "N/A", CSR_REGID_TCR2, READ | NEED_TCR2,
+        {
+            {"DisCH1", 15, 15, {}},
+            {"DisCH0", 14, 14, {}},
+            {"HAFT",   11, 11, {}},
+            {"PTTWI",  10, 10, {}},
+            {"D128",    5,  5, {}},
+            {"AIE",     4,  4, {}},
+            {"POE",     3,  3, {}},
+            {"E0POE",   2,  2, {}},
+            {"PIE",     1,  1, {}},
+            {"PnCH",    0,  0, {}},
         }
     },
     {

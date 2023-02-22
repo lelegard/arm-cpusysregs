@@ -39,7 +39,13 @@ public:
     // Returns the effective MTX (memory tagging extension) in the AArch64 stage 1 translation regime for EL0/EL1.
     bool EffectiveMTX(uint64_t address, bool is_instr);
 
+    // ==== aarch64/functions/pac/addpac/AddPAC
+    // Some intermediate functions, used to implement AddPAC(), also useful outside.
+    // See AddPAC() pseudo code in Arm manual for details.
+    int pacTopBit(uint64_t address, bool is_instr);
+    int pacSelBit(uint64_t address, bool is_instr);
+    int pacBottomBit(uint64_t address, bool is_instr);
+
 private:
-    RegAccess&  _regs;
-    ArmFeatures _features;
+    ArmFeatures _feat;
 };
