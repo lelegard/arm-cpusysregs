@@ -13,9 +13,22 @@
 
 
 // Constructor.
-ArmPseudoCode::ArmPseudoCode(RegAccess& regs) :
-    _feat(regs)
+ArmPseudoCode::ArmPseudoCode(ArmFeatures& feat) :
+    _feat(feat)
 {
+}
+
+// TGxGranuleBits()
+// ================
+// Retrieve the address size, in bits, of a granule
+int ArmPseudoCode::TGxGranuleBits(TGx tgx)
+{
+    switch (tgx) {
+        case TGx_4KB:  return 12;
+        case TGx_16KB: return 14;
+        case TGx_64KB: return 16;
+        default:       return 0;
+    }
 }
 
 // ==== shared/functions/memory/EffectiveTBI
@@ -81,7 +94,11 @@ int ArmPseudoCode::pacSelBit(uint64_t address, bool is_instr)
 }
 int ArmPseudoCode::pacBottomBit(uint64_t address, bool is_instr)
 {
+    // Reference: ISA_A64_xml_A_profile-2022-12.pdf
+    // CalculateBottomPACBit() page 4871
+    // AArch64.PACEffectiveTxSZ() page 4871
     // AArch64.S1TTWParamsEL10() page 5076
+    // walkparams: need 
 
     return -1; //@@@@@
 }

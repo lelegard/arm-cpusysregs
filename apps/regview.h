@@ -49,6 +49,7 @@ public:
         NEED_ETE     = 0x0100,  // exist only with ETE
         NEED_PMUv3p4 = 0x0200,  // exist only with PMUv3p4
         NEED_TCR2    = 0x0400,  // exist only with TCR2
+        NEED_AIE     = 0x0800,  // exist only with AIE
     };
 
     // Description of one register with bitfields.

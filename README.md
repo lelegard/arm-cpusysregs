@@ -110,6 +110,8 @@ version 0487I.a.
 | ID_AA64PFR2_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 2
 | ID_AA64SMFR0_EL1 | D17.2.69      | R       | SME Feature ID register 0
 | ID_AA64ZFR0_EL1  | D17.2.70      | R       | SVE Feature ID register 0
+| MAIR_EL1         | D17.2.97      | R       | Memory Attribute Indirection Register (EL1)
+| MAIR2_EL1        | N/A           | R       | Extended Memory Attribute Indirection Register (EL1)
 | MIDR_EL1         | D17.2.100     | R       | Main ID Register
 | MPIDR_EL1        | D17.2.101     | R       | Multiprocessor Affinity Register
 | REVIDR_EL1       | D17.2.106     | R       | Revision ID Register

@@ -44,7 +44,8 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_SME) || feat.FEAT_SME()) &&
            (!(features & NEED_ETE) || feat.FEAT_ETE()) &&
            (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4()) &&
-           (!(features & NEED_TCR2) || feat.FEAT_TCR2());
+           (!(features & NEED_TCR2) || feat.FEAT_TCR2()) &&
+           (!(features & NEED_AIE) || feat.FEAT_AIE());
 }
 
 std::string RegView::Register::featuresList() const
@@ -82,6 +83,9 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_TCR2) {
         res.push_back("need TCR2");
+    }
+    if (features & RegView::NEED_AIE) {
+        res.push_back("need AIE");
     }
     return Join(res, ", ");
 }
@@ -459,6 +463,32 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"BitPerm", 19, 16, {{0, "none"}, {1, "SVE_BitPerm"}}},
             {"AES",      7,  4, {{0, "none"}, {1, "SVE_AES"}, {2, "SVE_AES+SVE_AES"}}},
             {"SVEver",   3,  0, {{0, "none"}, {1, "SVE2"}}},
+        }
+    },
+    {
+        "MAIR_EL1", "D17.2.97", CSR_REGID_MAIR, READ,
+        {
+            {"Attr7", 63, 56, {}},
+            {"Attr6", 55, 48, {}},
+            {"Attr5", 47, 40, {}},
+            {"Attr4", 39, 32, {}},
+            {"Attr3", 31, 24, {}},
+            {"Attr2", 23, 16, {}},
+            {"Attr1", 15,  8, {}},
+            {"Attr0",  7,  0, {}},
+        }
+    },
+    {
+        "MAIR2_EL1", "N/A", CSR_REGID_MAIR2, READ | NEED_AIE,
+        {
+            {"Attr7", 63, 56, {}},
+            {"Attr6", 55, 48, {}},
+            {"Attr5", 47, 40, {}},
+            {"Attr4", 39, 32, {}},
+            {"Attr3", 31, 24, {}},
+            {"Attr2", 23, 16, {}},
+            {"Attr1", 15,  8, {}},
+            {"Attr0",  7,  0, {}},
         }
     },
     {
