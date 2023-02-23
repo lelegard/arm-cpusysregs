@@ -114,11 +114,14 @@ version 0487I.a.
 | MAIR2_EL1        | N/A           | R       | Extended Memory Attribute Indirection Register (EL1)
 | MIDR_EL1         | D17.2.100     | R       | Main ID Register
 | MPIDR_EL1        | D17.2.101     | R       | Multiprocessor Affinity Register
+| PIR_EL1          | N/A           | R       | Permission Indirection Register 1 (EL1)
+| PIRE0_EL1        | N/A           | R       | Permission Indirection Register 0 (EL1)
 | REVIDR_EL1       | D17.2.106     | R       | Revision ID Register
 | RNDR             | D17.2.111     | R       | Random Number
 | RNDRRS           | D17.2.112     | R       | Reseeded Random Number
 | SCR_EL3          | D17.2.117     |     [3] | Secure Configuration Register (EL3)
 | SCTLR_EL1        | D17.2.118     | R/W     | System Control Register (EL1)
+| SCTLR2_EL1       | N/A           | R/W     | System Control Register 2 (EL1)
 | SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
 | SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
 | TCR_EL1          | D17.2.131     | R       | Translation Control Register (EL1)

@@ -99,7 +99,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_GICv4p1             |          |           |   | Generic Interrupt Controller version 4.1
 | FEAT_GTG                 |          |           |   | Guest translation granule size
 | FEAT_HAFDBS              | Armv8.1  |           | X | Hardware updates to access flag and dirty state in translation tables
-| FEAT_HAFT                |          |           |   | Hardware managed Access Flag for Table descriptors
+| FEAT_HAFT                |          |           | X | Hardware managed Access Flag for Table descriptors
 | FEAT_HBC                 |          | Armv8.8   | X | Hinted conditional branches
 | FEAT_HCX                 |          | Armv8.7   | X | Support for the HCRX_EL2 register
 | FEAT_HPDS                |          | Armv8.1   | X | Hierarchical permission disables in translation tables
@@ -125,7 +125,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_LSE2                | Armv8.2  | Armv8.4   | X | Large System Extensions version 2
 | FEAT_LSMAOC              | Armv8.2  |           | X | Load/Store instruction multiple atomicity and ordering controls
 | FEAT_LVA                 | Armv8.2  |           | X | Large VA support
-| FEAT_LVA3                |          |           |   | 56-bit VA
+| FEAT_LVA3                |          |           | X | 56-bit VA
 | FEAT_MEC                 |          |           | X | Memory Encryption Contexts
 | FEAT_MOPS                |          | Armv8.8   | X | Standardization of memory operations
 | FEAT_MPAM                |          |           | X | Memory Partitioning and Monitoring

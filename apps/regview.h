@@ -38,18 +38,20 @@ public:
 
     // Define the properties and condition of existence of a register.
     enum {
-        READ         = 0x0001,  // readable register
-        WRITE        = 0x0002,  // writeable register
-        NEED_PAC     = 0x0004,  // exist only with PAC
-        NEED_PACGA   = 0x0008,  // exist only with PACGA
-        NEED_CSV2_2  = 0x0010,  // exist only with CSV2_2
-        NEED_RNG     = 0x0020,  // exist only with RNG
-        NEED_SVE     = 0x0040,  // exist only with SVE
-        NEED_SME     = 0x0080,  // exist only with SME
-        NEED_ETE     = 0x0100,  // exist only with ETE
-        NEED_PMUv3p4 = 0x0200,  // exist only with PMUv3p4
-        NEED_TCR2    = 0x0400,  // exist only with TCR2
-        NEED_AIE     = 0x0800,  // exist only with AIE
+        READ         = 0x00000001,  // readable register
+        WRITE        = 0x00000002,  // writeable register
+        NEED_PAC     = 0x00000004,  // exist only with PAC
+        NEED_PACGA   = 0x00000008,  // exist only with PACGA
+        NEED_CSV2_2  = 0x00000010,  // exist only with CSV2_2
+        NEED_RNG     = 0x00000020,  // exist only with RNG
+        NEED_SVE     = 0x00000040,  // exist only with SVE
+        NEED_SME     = 0x00000080,  // exist only with SME
+        NEED_ETE     = 0x00000100,  // exist only with ETE
+        NEED_PMUv3p4 = 0x00000200,  // exist only with PMUv3p4
+        NEED_TCR2    = 0x00000400,  // exist only with TCR2
+        NEED_SCTLR2  = 0x00000800,  // exist only with SCTLR2
+        NEED_AIE     = 0x00001000,  // exist only with AIE
+        NEED_S1PIE   = 0x00002000,  // exist only with S1PIE
     };
 
     // Description of one register with bitfields.

@@ -13,6 +13,7 @@
 #include "regaccess.h"
 #include "regview.h"
 #include "armfeatures.h"
+#include "armpseudocode.h"
 
 #include <iostream>
 #include <cstddef>
@@ -296,6 +297,27 @@ void ReadAllRegisters(const Options& opt, std::ostream& out)
 // Display a summary of PAC features.
 //----------------------------------------------------------------------------
 
+void PACLayout(ArmPseudoCode& code, std::ostream& out, bool upper, bool is_instr)
+{
+    const csr_u64_t address = upper ? ~0ull : 0;
+    const int top = code.pacTopBit(address, is_instr);
+    const int sel = code.pacSelBit(address, is_instr);
+    const int bottom = code.pacBottomBit(address, is_instr);
+    const bool inside = bottom <= 55 && 55 <= top;
+    const bool split = bottom < 55 && 55 < top;
+    const int pac_size = std::max(0, top - bottom + (inside ? 0 : 1));
+
+    out << "  " << (is_instr ? "Instr" : "Data ") << " (" << (upper ? "upper" : "lower")
+        << "): PAC size: " << pac_size << " bits, bit range: ";
+    if (split) {
+        out << top << ":56,54:" << bottom;
+    }
+    else {
+        out << (top == 55 ? 54 : top) << ":" << (bottom == 55 ? 56 : bottom);
+    }
+    out << " (top: " << top << ", sel: " << sel << ", bottom: " << bottom << ")" << std::endl;
+}
+
 void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
 {
     RegAccess regaccess(true, true);
@@ -316,19 +338,16 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
         << ", QARMA5: " << YesNo(feat.FEAT_PACQARMA5())
         << ", implementation-defined: " << YesNo(feat.FEAT_PACIMP())
         << std::endl
-        << "Memory tagging: " << YesNo(feat.addressTaggingEnabled());
-    if (feat.addressTaggingEnabled()) {
-        out << ", TBI (top byte ignore) 0: " << feat.TCR_EL1_TBI0() << ", TBI 1: " << feat.TCR_EL1_TBI1();
-    }
-    out << std::endl;
+        << "Memory tagging: " << YesNo(feat.addressTaggingEnabled()) << std::endl;
     if (feat.FEAT_PAuth()) {
-        const int bottom_PAC_bit = 64 - feat.TCR_EL1_T0SZ();
-        if (feat.addressTaggingEnabled()) {
-            out << "PAC field: size: " << (55 - bottom_PAC_bit) << " bits, bit range: 54:" << bottom_PAC_bit << std::endl;
-        }
-        else {
-            out << "PAC field: size: " << (63 - bottom_PAC_bit) << " bits, bit range: 63:56,54:" << bottom_PAC_bit << std::endl;
-        }
+        ArmPseudoCode code(regaccess);
+        out << "Detailed PAC layout:" << std::endl
+            << "  TCR_EL1: TBI0: " << feat.TCR_EL1_TBI0() << ", TBID0: " << feat.TCR_EL1_TBID0()
+            << ", TBI1: " << feat.TCR_EL1_TBI1() << ", TBID1: " << feat.TCR_EL1_TBID1() << std::endl;
+        PACLayout(code, out, false, false);
+        PACLayout(code, out, true, false);
+        PACLayout(code, out, false, true);
+        PACLayout(code, out, true, true);
     }
     out << std::endl;
 }

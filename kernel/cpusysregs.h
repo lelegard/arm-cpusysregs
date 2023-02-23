@@ -93,9 +93,17 @@ typedef struct {
 // ID_AA64MMFR3_EL1 system register.
 #define csr_has_tcr2(mmfr3) ((mmfr3) & 0x000000000000000Fllu)
 
+// This macro checks if SCTLR2 registers are supported, based on the value of the
+// ID_AA64MMFR3_EL1 system register.
+#define csr_has_sctlr2(mmfr3) ((mmfr3) & 0x00000000000000F0llu)
+
 // This macro checks if AIE (Memory Attribute Index Enhancement) is supported, based on the value of the
 // ID_AA64MMFR3_EL1 system register.
 #define csr_has_aie(mmfr3) ((mmfr3) & 0x000000000F000000llu)
+
+// This macro checks if S1PIE (Permission model enhancements) is supported, based on the value of the
+// ID_AA64MMFR3_EL1 system register.
+#define csr_has_s1pie(mmfr3) ((mmfr3) & 0x0000000000000F00llu)
 
 
 //----------------------------------------------------------------------------
@@ -141,7 +149,8 @@ enum {
     CSR_REGID_SCXTNUM_EL0,  // EL0 Read/Write Software Context Number
     CSR_REGID_SCXTNUM_EL1,  // EL1 Read/Write Software Context Number
     CSR_REGID_SCTLR,        // System Control Register
-    CSR_REGID_HCR,          // System Control Register (EL2)
+    CSR_REGID_SCTLR2,       // System Control Register 2
+    CSR_REGID_HCR,          // Hypervisor Configuration Register (EL2)
     CSR_REGID_RNDR,         // Random Number
     CSR_REGID_RNDRRS,       // Reseeded Random Number
     CSR_REGID_SCR,          // Secure Configuration Register (EL3)
@@ -163,6 +172,8 @@ enum {
     CSR_REGID_TTBR1_EL1,    // Translation Table Base Register 1 (EL1)
     CSR_REGID_MAIR,         // Memory Attribute Indirection Register (EL1)
     CSR_REGID_MAIR2,        // Memory Attribute Indirection Register (EL1)
+    CSR_REGID_PIR,          // Permission Indirection Register 1 (EL1)
+    CSR_REGID_PIRE0,        // Permission Indirection Register 0 (EL1)
     // -------------------  // End of individual registers
     _CSR_REGID_END,
     // -------------------  // Registers which come in pair
@@ -458,6 +469,13 @@ typedef struct {
 #define CSR_SREG_MVFR1_EL1          CSR_SREG(0b11, 0b000, 0b0000, 0b0011, 0b001)
 #define CSR_SREG_MVFR2_EL1          CSR_SREG(0b11, 0b000, 0b0000, 0b0011, 0b010)
 #define CSR_SREG_PAR_EL1            CSR_SREG(0b11, 0b000, 0b0111, 0b0100, 0b000)
+#define CSR_SREG_PIR_EL1            CSR_SREG(0b11, 0b000, 0b1010, 0b0010, 0b011)
+#define CSR_SREG_PIR_EL12           CSR_SREG(0b11, 0b101, 0b1010, 0b0010, 0b011)
+#define CSR_SREG_PIR_EL2            CSR_SREG(0b11, 0b100, 0b1010, 0b0010, 0b011)
+#define CSR_SREG_PIR_EL3            CSR_SREG(0b11, 0b110, 0b1010, 0b0010, 0b011)
+#define CSR_SREG_PIRE0_EL1          CSR_SREG(0b11, 0b000, 0b1010, 0b0010, 0b010)
+#define CSR_SREG_PIRE0_EL12         CSR_SREG(0b11, 0b101, 0b1010, 0b0010, 0b010)
+#define CSR_SREG_PIRE0_EL2          CSR_SREG(0b11, 0b100, 0b1010, 0b0010, 0b010)
 #define CSR_SREG_REVIDR_EL1         CSR_SREG(0b11, 0b000, 0b0000, 0b0000, 0b110)
 #define CSR_SREG_RGSR_EL1           CSR_SREG(0b11, 0b000, 0b0001, 0b0000, 0b101)
 #define CSR_SREG_RMR_EL1            CSR_SREG(0b11, 0b000, 0b1100, 0b0000, 0b010)
@@ -473,6 +491,10 @@ typedef struct {
 #define CSR_SREG_SCTLR_EL12         CSR_SREG(0b11, 0b101, 0b0001, 0b0000, 0b000)
 #define CSR_SREG_SCTLR_EL2          CSR_SREG(0b11, 0b100, 0b0001, 0b0000, 0b000)
 #define CSR_SREG_SCTLR_EL3          CSR_SREG(0b11, 0b110, 0b0001, 0b0000, 0b000)
+#define CSR_SREG_SCTLR2_EL1         CSR_SREG(0b11, 0b000, 0b0001, 0b0000, 0b011)
+#define CSR_SREG_SCTLR2_EL12        CSR_SREG(0b11, 0b101, 0b0001, 0b0000, 0b011)
+#define CSR_SREG_SCTLR2_EL2         CSR_SREG(0b11, 0b100, 0b0001, 0b0000, 0b011)
+#define CSR_SREG_SCTLR2_EL3         CSR_SREG(0b11, 0b110, 0b0001, 0b0000, 0b011)
 #define CSR_SREG_SCXTNUM_EL0        CSR_SREG(0b11, 0b011, 0b1101, 0b0000, 0b111)
 #define CSR_SREG_SCXTNUM_EL1        CSR_SREG(0b11, 0b000, 0b1101, 0b0000, 0b111)
 #define CSR_SREG_SCXTNUM_EL12       CSR_SREG(0b11, 0b101, 0b1101, 0b0000, 0b111)
@@ -818,18 +840,20 @@ typedef struct {
 #if defined(KERNEL)
 
 // Define a few CPU features which are required to access some registers.
-#define FEAT_PAC      0x0001
-#define FEAT_PACGA    0x0002
-#define FEAT_BTI      0x0004
-#define FEAT_RME      0x0008
-#define FEAT_CSV2_2   0x0010
-#define FEAT_RNG      0x0020
-#define FEAT_SVE      0x0040
-#define FEAT_SME      0x0080
-#define FEAT_ETE      0x0100
-#define FEAT_PMUv3p4  0x0200
-#define FEAT_TCR2     0x0400
-#define FEAT_AIE      0x0800
+#define FEAT_PAC      0x00000001
+#define FEAT_PACGA    0x00000002
+#define FEAT_BTI      0x00000004
+#define FEAT_RME      0x00000008
+#define FEAT_CSV2_2   0x00000010
+#define FEAT_RNG      0x00000020
+#define FEAT_SVE      0x00000040
+#define FEAT_SME      0x00000080
+#define FEAT_ETE      0x00000100
+#define FEAT_PMUv3p4  0x00000200
+#define FEAT_TCR2     0x00000400
+#define FEAT_SCTLR2   0x00000800
+#define FEAT_AIE      0x00001000
+#define FEAT_S1PIE    0x00002000
 
 // Get the CPU features. Typically called once on module initialization.
 CSR_INLINE int csr_get_cpu_features(void)
@@ -853,7 +877,9 @@ CSR_INLINE int csr_get_cpu_features(void)
            (csr_has_ete(dfr0) ? FEAT_ETE : 0) |
            (csr_has_pmuv3p4(dfr0) ? FEAT_PMUv3p4 : 0) |
            (csr_has_tcr2(mmfr3) ? FEAT_TCR2 : 0) |
-           (csr_has_aie(mmfr3) ? FEAT_AIE : 0);
+           (csr_has_sctlr2(mmfr3) ? FEAT_SCTLR2 : 0) |
+           (csr_has_aie(mmfr3) ? FEAT_AIE : 0) |
+           (csr_has_s1pie(mmfr3) ? FEAT_S1PIE : 0);
 }
 
 // Set the value of a single register or pair of registers.
@@ -878,6 +904,7 @@ CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_feat
         _setreg(CSR_REGID_TPIDR_EL0,   CSR_SREG_TPIDR_EL0, 0);
         _setreg(CSR_REGID_TPIDR_EL1,   CSR_SREG_TPIDR_EL1, 0);
         _setreg(CSR_REGID_SCTLR,       CSR_SREG_SCTLR_EL1, 0);
+        _setreg(CSR_REGID_SCTLR2,      CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
         _setreg(CSR_REGID_SCXTNUM_EL0, CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
         _setreg(CSR_REGID_SCXTNUM_EL1, CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
         _setreg2(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
@@ -928,6 +955,7 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_SCXTNUM_EL0, CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
         _getreg(CSR_REGID_SCXTNUM_EL1, CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
         _getreg(CSR_REGID_SCTLR,       CSR_SREG_SCTLR_EL1, 0);
+        _getreg(CSR_REGID_SCTLR2,      CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
         _getreg(CSR_REGID_HCR,         CSR_SREG_HCR_EL2, 0);
         _getreg(CSR_REGID_RNDR,        CSR_SREG_RNDR, FEAT_RNG);
         _getreg(CSR_REGID_RNDRRS,      CSR_SREG_RNDRRS, FEAT_RNG);
@@ -950,6 +978,8 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_TTBR1_EL1,   CSR_SREG_TTBR1_EL1, 0);
         _getreg(CSR_REGID_MAIR,        CSR_SREG_MAIR_EL1, 0);
         _getreg(CSR_REGID_MAIR2,       CSR_SREG_MAIR2_EL1, FEAT_AIE);
+        _getreg(CSR_REGID_PIR,         CSR_SREG_PIR_EL1, FEAT_S1PIE);
+        _getreg(CSR_REGID_PIRE0,       CSR_SREG_PIRE0_EL1, FEAT_S1PIE);
         _getreg2(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

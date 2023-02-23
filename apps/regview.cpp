@@ -45,7 +45,9 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_ETE) || feat.FEAT_ETE()) &&
            (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4()) &&
            (!(features & NEED_TCR2) || feat.FEAT_TCR2()) &&
-           (!(features & NEED_AIE) || feat.FEAT_AIE());
+           (!(features & NEED_SCTLR2) || feat.FEAT_SCTLR2()) &&
+           (!(features & NEED_AIE) || feat.FEAT_AIE()) &&
+           (!(features & NEED_S1PIE) || feat.FEAT_S1PIE());
 }
 
 std::string RegView::Register::featuresList() const
@@ -81,11 +83,14 @@ std::string RegView::Register::featuresList() const
     if (features & RegView::NEED_PMUv3p4) {
         res.push_back("need PMU v3.4");
     }
-    if (features & RegView::NEED_TCR2) {
-        res.push_back("need TCR2");
+    if (features & RegView::NEED_SCTLR2) {
+        res.push_back("need SCTLR2");
     }
     if (features & RegView::NEED_AIE) {
         res.push_back("need AIE");
+    }
+    if (features & RegView::NEED_S1PIE) {
+        res.push_back("need S1PIE");
     }
     return Join(res, ", ");
 }
@@ -514,6 +519,48 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "PIR_EL1", "N/A", CSR_REGID_PIR, READ | NEED_S1PIE,
+        {
+            {"Perm15", 63, 60, {}},
+            {"Perm14", 59, 56, {}},
+            {"Perm13", 55, 52, {}},
+            {"Perm12", 51, 48, {}},
+            {"Perm11", 47, 44, {}},
+            {"Perm10", 43, 40, {}},
+            {"Perm9",  39, 36, {}},
+            {"Perm8",  35, 32, {}},
+            {"Perm7",  31, 28, {}},
+            {"Perm6",  27, 24, {}},
+            {"Perm5",  23, 20, {}},
+            {"Perm4",  19, 16, {}},
+            {"Perm3",  15, 12, {}},
+            {"Perm2",  11,  8, {}},
+            {"Perm1",   7,  4, {}},
+            {"Perm0",   3,  0, {}},
+        }
+    },
+    {
+        "PIRE0_EL1", "N/A", CSR_REGID_PIRE0, READ | NEED_S1PIE,
+        {
+            {"Perm15", 63, 60, {}},
+            {"Perm14", 59, 56, {}},
+            {"Perm13", 55, 52, {}},
+            {"Perm12", 51, 48, {}},
+            {"Perm11", 47, 44, {}},
+            {"Perm10", 43, 40, {}},
+            {"Perm9",  39, 36, {}},
+            {"Perm8",  35, 32, {}},
+            {"Perm7",  31, 28, {}},
+            {"Perm6",  27, 24, {}},
+            {"Perm5",  23, 20, {}},
+            {"Perm4",  19, 16, {}},
+            {"Perm3",  15, 12, {}},
+            {"Perm2",  11,  8, {}},
+            {"Perm1",   7,  4, {}},
+            {"Perm0",   3,  0, {}},
+        }
+    },
+    {
         "REVIDR_EL1", "D17.2.106", CSR_REGID_REVIDR, READ, {}
     },
     {
@@ -581,6 +628,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"SPINTMASK", 62, 62, {{0, "none"}, {1, "SPINTMASK"}}},
             {"NMI",       61, 61, {{0, "none"}, {1, "NMI"}}},
             {"EnTP2",     60, 60, {{0, "none"}, {1, "EnTP2"}}},
+            {"TCSO",      59, 59, {{0, "none"}, {1, "unchecked"}}},
+            {"TCSO0",     58, 58, {{0, "none"}, {1, "unchecked"}}},
             {"EPAN",      57, 57, {{0, "none"}, {1, "EPAN"}}},
             {"EnALS",     56, 56, {{0, "none"}, {1, "EnALS"}}},
             {"EnAS0",     55, 55, {{0, "none"}, {1, "EnAS0"}}},
@@ -634,6 +683,16 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"C",          2,  2, {{0, "none"}, {1, "C"}}},
             {"A",          1,  1, {{0, "none"}, {1, "A"}}},
             {"M",          0,  0, {{0, "none"}, {1, "M"}}},
+        }
+    },
+    {
+        "SCTLR2_EL1", "N/A", CSR_REGID_SCTLR2, READ | WRITE | NEED_SCTLR2,
+        {
+            {"EnIDCP128",  6,  6, {}},
+            {"EASE",       5,  5, {}},
+            {"EnANERR",    4,  4, {}},
+            {"EnADERR",    3,  3, {}},
+            {"NMEA",       2,  2, {}},
         }
     },
     {

@@ -224,14 +224,35 @@ public:
 
     int TCR_EL1_MTX1() const { return (int)(_tcr >> 61) & 0x01; }
     int TCR_EL1_MTX0() const { return (int)(_tcr >> 60) & 0x01; }
+    int TCR_EL1_DS() const { return (int)(_tcr >> 59) & 0x01; }
     int TCR_EL1_TCMA1() const { return (int)(_tcr >> 58) & 0x01; }
     int TCR_EL1_TCMA0() const { return (int)(_tcr >> 57) & 0x01; }
+    int TCR_EL1_E0PD1() const { return (int)(_tcr >> 56) & 0x01; }
+    int TCR_EL1_E0PD0() const { return (int)(_tcr >> 55) & 0x01; }
+    int TCR_EL1_NFD1() const { return (int)(_tcr >> 54) & 0x01; }
+    int TCR_EL1_NFD0() const { return (int)(_tcr >> 53) & 0x01; }
     int TCR_EL1_TBID1() const { return (int)(_tcr >> 52) & 0x01; }
     int TCR_EL1_TBID0() const { return (int)(_tcr >> 51) & 0x01; }
+    int TCR_EL1_HPD1() const { return (int)(_tcr >> 42) & 0x01; }
+    int TCR_EL1_HPD0() const { return (int)(_tcr >> 41) & 0x01; }
+    int TCR_EL1_HD() const { return (int)(_tcr >> 40) & 0x01; }
+    int TCR_EL1_HA() const { return (int)(_tcr >> 39) & 0x01; }
     int TCR_EL1_TBI1() const { return (int)(_tcr >> 38) & 0x01; }
     int TCR_EL1_TBI0() const { return (int)(_tcr >> 37) & 0x01; }
     int TCR_EL1_AS() const { return (int)(_tcr >> 36) & 0x01; }
+    int TCR_EL1_IPS() const { return (int)(_tcr >> 32) & 0x07; }
+    int TCR_EL1_TG1() const { return (int)(_tcr >> 30) & 0x03; }
+    int TCR_EL1_SH1() const { return (int)(_tcr >> 28) & 0x03; }
+    int TCR_EL1_ORGN1() const { return (int)(_tcr >> 26) & 0x03; }
+    int TCR_EL1_IRGN1() const { return (int)(_tcr >> 24) & 0x03; }
+    int TCR_EL1_EPD1() const { return (int)(_tcr >> 23) & 0x01; }
+    int TCR_EL1_A1() const { return (int)(_tcr >> 22) & 0x01; }
     int TCR_EL1_T1SZ() const { return (int)(_tcr >> 16) & 0x3F; }
+    int TCR_EL1_TG0() const { return (int)(_tcr >> 14) & 0x03; }
+    int TCR_EL1_SH0() const { return (int)(_tcr >> 12) & 0x03; }
+    int TCR_EL1_ORGN0() const { return (int)(_tcr >> 10) & 0x03; }
+    int TCR_EL1_IRGN0() const { return (int)(_tcr >> 8) & 0x03; }
+    int TCR_EL1_EPD0() const { return (int)(_tcr >> 7) & 0x01; }
     int TCR_EL1_T0SZ() const { return (int)(_tcr) & 0x3F; }
 
     int TCR2_EL1_DisCH1() const { return (int)(_tcr2 >> 15) & 0x01; }
@@ -319,6 +340,7 @@ public:
     bool FEAT_FRINTTS() const { return ID_AA64ISAR1_EL1_FRINTTS() >= 1; }
     bool FEAT_GCS() const { return ID_AA64PFR1_EL1_GCS() >= 1; }
     bool FEAT_HAFDBS() const { return ID_AA64MMFR1_EL1_HAFDBS() >= 1; }
+    bool FEAT_HAFT() const { return ID_AA64MMFR1_EL1_HAFDBS() >= 3; }
     bool FEAT_HBC() const { return ID_AA64ISAR2_EL1_BC() >= 1; }
     bool FEAT_HCX() const { return ID_AA64MMFR1_EL1_HCX() >= 1; }
     bool FEAT_HPDS() const { return ID_AA64MMFR1_EL1_HPDS() >= 1; }
@@ -339,6 +361,7 @@ public:
     bool FEAT_LSE() const { return ID_AA64ISAR0_EL1_Atomic() >= 2; }
     bool FEAT_LSE2() const { return ID_AA64MMFR2_EL1_AT() >= 1; }
     bool FEAT_LVA() const { return ID_AA64MMFR2_EL1_VARange() >= 1; }
+    bool FEAT_LVA3() const { return ID_AA64MMFR2_EL1_VARange() >= 2; }
     bool FEAT_LSMAOC() const { return ID_AA64MMFR2_EL1_LSM() >= 1; }
     bool FEAT_MEC() const { return ID_AA64MMFR3_EL1_MEC() >= 1; }
     bool FEAT_MOPS() const { return ID_AA64ISAR2_EL1_MOPS() >= 1; }
