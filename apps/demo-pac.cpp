@@ -27,16 +27,19 @@
 
 #define WIDTH 25
 
+// Profile of a lambda function which executes one PACxx or AUTxx instruction.
+typedef std::function<void(csr_u64_t& data, csr_u64_t modifier)> pac_func_t;
+
 
 //----------------------------------------------------------------------------
 // Manipulate the PAC keys.
 //----------------------------------------------------------------------------
 
-void GetKey(RegAccess& regaccess, const std::string& title, csr_pair_t& key, int key_index)
+void GetKey(RegAccess& regaccess, const std::string& title, csr_pair_t& key, int regid)
 {
-    const auto& desc(RegView::getRegister(key_index));
+    const auto& desc(RegView::getRegister(regid));
     if (desc.features & RegView::READ) {
-        regaccess.read(key_index, key);
+        regaccess.read(regid, key);
         std::cout << Pad(title, WIDTH) << " " << ToHexa(key) << std::endl;
     }
     else {
@@ -44,12 +47,12 @@ void GetKey(RegAccess& regaccess, const std::string& title, csr_pair_t& key, int
     }
 }
 
-void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& key, int key_index)
+void SetKey(RegAccess& regaccess, const std::string& title, const csr_pair_t& key, int regid)
 {
-    const auto& desc(RegView::getRegister(key_index));
+    const auto& desc(RegView::getRegister(regid));
     if (desc.features & RegView::WRITE) {
         std::cout << Pad(title, WIDTH) << " " << ToHexa(key) << std::endl;
-        regaccess.write(key_index, key);
+        regaccess.write(regid, key);
     }
     else {
         std::cout << Pad(title, WIDTH) << " Cannot write " << desc.name << " on this CPU" << std::endl;
@@ -88,51 +91,61 @@ void TestGA(RegAccess& regaccess, const std::string& title, const csr_pair_t& ke
 // Test using one of the 4 specialized keys.
 //----------------------------------------------------------------------------
 
-void TestKey(RegAccess& regaccess, const std::string& keyname, int regid, int pac_instr, int aut_instr,
-             std::function<void(csr_u64_t&,csr_u64_t)> pac,
-             std::function<void(csr_u64_t&,csr_u64_t)> aut)
+std::string Status(csr_u64_t value, csr_u64_t expected)
 {
-    std::cout << std::endl << "---- Testing key " << keyname << std::endl << std::endl;
+    return ToHexa(value) + (value == expected ? " (passed)" : " (failed)");
+}
+
+void TestKeyOneValue(RegAccess& regaccess, const std::string& keyname, int regid, csr_u64_t value, csr_u64_t modifier,
+                     int pac_instr, int aut_instr, pac_func_t pac_func, pac_func_t aut_func)
+{
+    const bool upper = value & 0x8000000000000000;
+    std::cout << std::endl << "---- Testing key " << keyname
+              << " (" << (upper ? "upper" : "lower") << " addresses)" << std::endl << std::endl;
 
     csr_pair_t key;
     GetKey(regaccess, "Initial " + keyname + " key", key, regid);
 
-    const csr_u64_t data = 0x123456789A;
-    const csr_u64_t modifier = 47;
-
-    csr_u64_t data1 = data;
+    csr_u64_t data1 = value;
     std::cout << Pad("Before PAC" + keyname, WIDTH) << " " << ToHexa(data1) << std::endl;
-    pac(data1, modifier);
+    pac_func(data1, modifier);
     std::cout << Pad("After PAC" + keyname + " (user)", WIDTH) << " " << ToHexa(data1) << std::endl;
 
     csr_u64_t corrupted = data1 ^ 1;
-    aut(data1, modifier);
-    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(data) << std::endl;
+    aut_func(data1, modifier);
+    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << Status(data1, value) << std::endl;
 
     csr_instr_t args;
-    args.value = data;
+    args.value = value;
     args.modifier = modifier;
     regaccess.executeInstr(pac_instr, args);
     std::cout << Pad("After PAC" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
     regaccess.executeInstr(aut_instr, args);
-    std::cout << Pad("After AUT" + keyname + " (kernel)", WIDTH) << " " << ToHexa(args.value) << std::endl;
+    std::cout << Pad("After AUT" + keyname + " (kernel)", WIDTH) << " " << Status(args.value, value) << std::endl;
 
     ArmFeatures features(regaccess);
     const int qarma_rounds = features.pacQARMA();
     if (qarma_rounds > 0) {
         Qarma64 qarma(qarma_rounds);
         std::cout << Pad(Format("QARMA%d (soft)", qarma_rounds), WIDTH) << " "
-                  << ToHexa(qarma.encrypt(data, modifier, key.high, key.low)) << std::endl;
+                  << ToHexa(qarma.encrypt(value, modifier, key.high, key.low)) << std::endl;
     }
 
     std::cout << Pad("Corrupted (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
-    aut(corrupted, modifier);
-    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
+    aut_func(corrupted, modifier);
+    std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << Status(corrupted, value) << std::endl;
+}
+
+void TestKey(RegAccess& regaccess, const std::string& keyname, int regid,
+             int pac_instr, int aut_instr, pac_func_t pac_func, pac_func_t aut_func)
+{
+    TestKeyOneValue(regaccess, keyname, regid, 0x000000123456789A, 47, pac_instr, aut_instr, pac_func, aut_func);
+    TestKeyOneValue(regaccess, keyname, regid, 0xFFFFFF123456789A, 47, pac_instr, aut_instr, pac_func, aut_func);
 }
 
 
 //----------------------------------------------------------------------------
-// Program entry point
+// Program entry point.
 //----------------------------------------------------------------------------
 
 int main(int argc, char* argv[])

@@ -1,0 +1,398 @@
+
+CTR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0100 0100 0100 1000 0000 0000 0100
+
+  Arch. Ref. Manual section D17.2.34
+  TminLine: 0x00 (0)
+  DIC:      0x0 (0)
+  IDC:      0x0 (0)
+  CWG:      0x4 (4)
+  ERG:      0x4 (4)
+  DminLine: 0x4 (4)
+  L1Ip:     0x2 (VIPT)
+  IminLine: 0x4 (4)
+
+ID_AA64AFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.57
+  Value: 00000000-00000000
+
+ID_AA64AFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.58
+  Value: 00000000-00000000
+
+ID_AA64DFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0011 0000 0101 1111 0000 1001
+
+  Arch. Ref. Manual section D17.2.59
+  HPMN0:       0x0 (none)
+  BRBE:        0x0 (none)
+  MTPMU:       0x0 (0)
+  TraceBuffer: 0x0 (none)
+  TraceFilt:   0x0 (none)
+  DoubleLock:  0x0 (DoubleLock)
+  PMSVer:      0x0 (0)
+  CTX_CMPs:    0x1 (1)
+  WRPs:        0x3 (3)
+  BRPs:        0x5 (5)
+  PMUVer:      0xF (15)
+  TraceVer:    0x0 (0)
+  DebugVer:    0x9 (9)
+
+ID_AA64DFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.60
+  Value: 00000000-00000000
+
+ID_AA64ISAR0_EL1: 0000 0010 0010 0001 0001 0000 0000 0001 - 0001 0000 0010 0001 0010 0001 0010 0000
+
+  Arch. Ref. Manual section D17.2.61
+  RNDR:   0x0 (none)
+  TLB:    0x2 (TLBIOS+TLBIRANGE)
+  TS:     0x2 (FlagM2)
+  FHM:    0x1 (FHM)
+  DP:     0x1 (DotProd)
+  SM4:    0x0 (none)
+  SM3:    0x0 (none)
+  SHA3:   0x1 (SHA3)
+  RDM:    0x1 (RDM)
+  TME:    0x0 (none)
+  Atomic: 0x2 (LSE)
+  CRC32:  0x1 (CRC32)
+  SHA2:   0x2 (SHA256+SHA512)
+  SHA1:   0x1 (SHA1)
+  AES:    0x2 (AES+PMULL)
+
+ID_AA64ISAR1_EL1: 0000 0000 0000 0000 0000 0001 0001 0001 - 0001 0000 0010 0001 0001 0010 0000 0010
+
+  Arch. Ref. Manual section D17.2.62
+  LS64:    0x0 (none)
+  XS:      0x0 (none)
+  I8MM:    0x0 (none)
+  DGH:     0x0 (none)
+  BF16:    0x0 (none)
+  SPECRES: 0x1 (SHA256v1)
+  SB:      0x1 (SB)
+  FRINTTS: 0x1 (FRINTTS)
+  GPI:     0x1 (PACIMP)
+  GPA:     0x0 (none)
+  LRCPC:   0x2 (LRCPC2)
+  FCMA:    0x1 (FCMA)
+  JSCVT:   0x1 (JSCVT)
+  API:     0x2 (IMP PAuth+EPAC)
+  APA:     0x0 (none)
+  DPB:     0x2 (DPB2)
+
+ID_AA64ISAR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.63
+  CSSC:         0x0 (none)
+  RPRFM:        0x0 (none)
+  PRFMSLC:      0x0 (none)
+  SYSINSTR_128: 0x0 (none)
+  SYSREG_128:   0x0 (none)
+  CLRBHB:       0x0 (none)
+  PAC_frac:     0x0 (none)
+  BC:           0x0 (none)
+  MOPS:         0x0 (none)
+  APA3:         0x0 (none)
+  GPA3:         0x0 (none)
+  RPRES:        0x0 (none)
+  WFxT:         0x0 (none)
+
+ID_AA64MMFR0_EL1: 0000 0000 0000 0000 0001 0010 0001 0010 - 0000 1111 0001 0000 0000 0000 0000 0001
+
+  Arch. Ref. Manual section D17.2.64
+  ECV:       0x0 (none)
+  FGT:       0x0 (none)
+  ExS:       0x1 (reserved)
+  TGran4_2:  0x2 (reserved)
+  TGran64_2: 0x1 (reserved)
+  TGran16_2: 0x2 (reserved)
+  TGran4:    0x0 (none)
+  TGran64:   0xF (reserved)
+  TGran16:   0x1 (reserved)
+  BigEndEL0: 0x0 (none)
+  SNSMem:    0x0 (none)
+  BigEnd:    0x0 (none)
+  ASIDBits:  0x0 (8 bits)
+  PARange:   0x1 (36 bits, 64GB)
+
+ID_AA64MMFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0001 0010 0001 0010 0001 0000 0000
+
+  Arch. Ref. Manual section D17.2.65
+  ECBHB:    0x0 (none)
+  CMOW:     0x0 (none)
+  TIDCP1:   0x0 (none)
+  nTLBPA:   0x0 (0)
+  AFP:      0x0 (none)
+  HCX:      0x0 (none)
+  ETS:      0x0 (none)
+  TWED:     0x0 (none)
+  XNX:      0x1 (XNX)
+  SpecSEI:  0x1 (1)
+  PAN:      0x2 (PAN2)
+  LO:       0x1 (LOR)
+  HPDS:     0x2 (HPDS2)
+  VH:       0x1 (VHE)
+  VMIDBits: 0x0 (8 bits)
+  HAFDBS:   0x0 (none)
+
+ID_AA64MMFR2_EL1: 0001 0010 0000 0001 0001 0001 0001 0001 - 0000 0000 0000 0000 0001 0000 0001 0001
+
+  Arch. Ref. Manual section D17.2.66
+  E0PD:    0x1 (E0PD)
+  EVT:     0x2 (reserved)
+  BBM:     0x0 (0)
+  TTL:     0x1 (TTL)
+  FWB:     0x1 (S2FWB)
+  IDS:     0x1 (IDST)
+  AT:      0x1 (LSE2)
+  ST:      0x0 (0)
+  NV:      0x0 (0)
+  CCIDX:   0x0 (32-bit)
+  VARange: 0x0 (48-bit VA)
+  IESB:    0x1 (IESB)
+  LSM:     0x0 (none)
+  UAO:     0x1 (UAO)
+  CnP:     0x1 (TTCNP)
+
+ID_AA64MMFR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section N/A
+  Spec_FPACC: 0x0 (0)
+  ADERR:      0x0 (0)
+  SDERR:      0x0 (0)
+  ANERR:      0x0 (0)
+  SNERR:      0x0 (0)
+  D128_2:     0x0 (0)
+  D128:       0x0 (0)
+  MEC:        0x0 (0)
+  AIE:        0x0 (0)
+  S2POE:      0x0 (0)
+  S1POE:      0x0 (0)
+  S2PIE:      0x0 (0)
+  S1PIE:      0x0 (0)
+  SCTLRX:     0x0 (0)
+  TCRX:       0x0 (0)
+
+ID_AA64MMFR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section N/A
+  EIESB: 0x0 (0)
+
+ID_AA64PFR0_EL1: 0001 0001 0000 0001 0000 0000 0000 0000 - 0001 0000 0001 0001 0000 0001 0001 0001
+
+  Arch. Ref. Manual section D17.2.67
+  CSV3:    0x1 (safe)
+  CSV2:    0x1 (CSV2)
+  RME:     0x0 (none)
+  DIT:     0x1 (DIT)
+  AMU:     0x0 (none)
+  MPAM:    0x0 (v0)
+  SEL2:    0x0 (none)
+  SVE:     0x0 (none)
+  RAS:     0x1 (RAS)
+  GIC:     0x0 (none)
+  AdvSIMD: 0x1 (basic+FP16)
+  FP:      0x1 (FP+FP16)
+  EL3:     0x0 (none)
+  EL2:     0x1 (AArch64-only)
+  EL2:     0x1 (AArch64-only)
+  EL0:     0x1 (AArch64-only)
+
+ID_AA64PFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0010 0000
+
+  Arch. Ref. Manual section D17.2.68
+  PFAR:      0x0 (none)
+  DF2:       0x0 (none)
+  MTEX:      0x0 (0)
+  THE:       0x0 (none)
+  GCS:       0x0 (none)
+  MTE_frac:  0x0 (0)
+  NMI:       0x0 (none)
+  CSV2_frac: 0x0 (none)
+  RNDR_trap: 0x0 (none)
+  SME:       0x0 (none)
+  MPAM_frac: 0x0 (v.0)
+  RAS_frac:  0x0 (none)
+  MTE:       0x0 (none)
+  SSBS:      0x2 (SSBS2)
+  BT:        0x0 (none)
+
+ID_AA64PFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section N/A
+  MTEFAR:       0x0 (none)
+  MTESTOREONLY: 0x0 (none)
+  MTEPERM:      0x0 (none)
+
+MAIR_EL1: 0000 1100 0000 1000 0000 0100 0100 1111 - 0000 0000 1011 1011 0100 0100 1111 1111
+
+  Arch. Ref. Manual section D17.2.97
+  Attr7: 0x0C (12)
+  Attr6: 0x08 (8)
+  Attr5: 0x04 (4)
+  Attr4: 0x4F (79)
+  Attr3: 0x00 (0)
+  Attr2: 0xBB (187)
+  Attr1: 0x44 (68)
+  Attr0: 0xFF (255)
+
+MIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0110 0001 0001 1111 0000 0010 0011 0001
+
+  Arch. Ref. Manual section D17.2.100
+  Implementer:  0x61 (Apple)
+  Variant:      0x1 (1)
+  Architecture: 0xF (By features)
+  PartNum:      0x023 (35)
+  Revision:     0x1 (1)
+
+MPIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0000 0000 0001 0000 0001 0000 0010
+
+  Arch. Ref. Manual section D17.2.101
+  Aff3: 0x00 (0)
+  U:    0x0 (Multiprocessor)
+  MT:   0x0 (Independent perf.)
+  Aff2: 0x01 (1)
+  Aff1: 0x01 (1)
+  Aff0: 0x02 (2)
+
+REVIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.106
+  Value: 00000000-00000000
+
+SCTLR_EL1: 0000 0000 0000 0000 0001 0000 0000 0000 - 1111 1100 0001 0100 0111 0001 1001 1101
+
+  Arch. Ref. Manual section D17.2.118
+  TIDCP:     0x0 (none)
+  SPINTMASK: 0x0 (none)
+  NMI:       0x0 (none)
+  EnTP2:     0x0 (none)
+  TCSO:      0x0 (none)
+  TCSO0:     0x0 (none)
+  EPAN:      0x0 (none)
+  EnALS:     0x0 (none)
+  EnAS0:     0x0 (none)
+  EnASR:     0x0 (none)
+  TME:       0x0 (none)
+  TME0:      0x0 (none)
+  TMT:       0x0 (none)
+  TMT0:      0x0 (none)
+  TWEDEL:    0x0 (none)
+  TWEDEn:    0x0 (none)
+  DSSBS:     0x1 (DSSBS)
+  ATA:       0x0 (none)
+  ATA0:      0x0 (none)
+  TCF:       0x0 (none)
+  TCF0:      0x0 (none)
+  ITFSB:     0x0 (none)
+  BT1:       0x0 (BTI at EL1: PACIxSP is compatible with BTYPE:11)
+  BT0:       0x0 (BTI at EL0: PACIxSP is compatible with BTYPE:11)
+  MSCEn:     0x0 (none)
+  CMOW:      0x0 (none)
+  EnIA:      0x1 (PACIA key enabled)
+  EnIB:      0x1 (PACIB key enabled)
+  LSMAOE:    0x1 (LSMAOE)
+  nTLSMD:    0x1 (nTLSMD)
+  EnDA:      0x1 (PACDA key enabled)
+  UCI:       0x1 (UCI)
+  EE:        0x0 (TT EL1 is little endian)
+  E0E:       0x0 (EL0 data access is little endian)
+  SPAN:      0x0 (none)
+  EIS:       0x0 (none)
+  IESB:      0x0 (none)
+  TSCTX:     0x1 (TSCTX)
+  WXN:       0x0 (none)
+  nTWE:      0x1 (nTWE)
+  nTWI:      0x0 (none)
+  UCT:       0x0 (none)
+  DZE:       0x1 (DZE)
+  EnDB:      0x1 (PACDB key enabled)
+  I:         0x1 (I)
+  EOS:       0x0 (none)
+  EnRCTX:    0x0 (none)
+  UMA:       0x0 (none)
+  SED:       0x1 (SED)
+  ITD:       0x1 (ITD)
+  nAA:       0x0 (none)
+  CP15BEN:   0x0 (none)
+  SA0:       0x1 (SA0)
+  SA:        0x1 (SA)
+  C:         0x1 (C)
+  A:         0x0 (none)
+  M:         0x1 (M)
+
+TCR_EL1: 0000 0001 0000 1000 0000 0000 0010 0010 - 0110 0101 0001 0001 1010 0101 0001 0001
+
+  Arch. Ref. Manual section D17.2.131
+  MTX1:   0x0 (none)
+  MTX0:   0x0 (none)
+  DS:     0x0 (48-bit addresses)
+  TCMA1:  0x0 (none)
+  TCMA0:  0x0 (none)
+  E0PD1:  0x1 (fault)
+  E0PD0:  0x0 (none)
+  NFD1:   0x0 (none)
+  NFD0:   0x0 (none)
+  TBID1:  0x0 (instr+data)
+  TBID0:  0x1 (data)
+  HWU162: 0x0 (bit62-reserved)
+  HWU161: 0x0 (bit61-reserved)
+  HWU160: 0x0 (bit60-reserved)
+  HWU159: 0x0 (bit59-reserved)
+  HWU062: 0x0 (bit62-reserved)
+  HWU061: 0x0 (bit61-reserved)
+  HWU060: 0x0 (bit60-reserved)
+  HWU059: 0x0 (bit59-reserved)
+  HPD1:   0x0 (enabled)
+  HPD0:   0x0 (enabled)
+  HD:     0x0 (disabled)
+  HA:     0x0 (disabled)
+  TBI1:   0x0 (used)
+  TBI0:   0x1 (ignored)
+  AS:     0x0 (ignored)
+  IPS:    0x2 (40 bits, 1 TB)
+  TG1:    0x1 (16 kB)
+  SH1:    0x2 (Outer shareable)
+  ORGN1:  0x1 (Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable)
+  IRGN1:  0x1 (Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable)
+  EPD1:   0x0 (Translation table walks using TTBR1_EL1)
+  A1:     0x0 (TTBR0_EL1.ASID defines the ASID)
+  T1SZ:   0x11 (17)
+  TG0:    0x2 (16 kB)
+  SH0:    0x2 (Outer shareable)
+  ORGN0:  0x1 (Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable)
+  IRGN0:  0x1 (Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable)
+  EPD0:   0x0 (Translation table walks using TTBR0_EL1)
+  T0SZ:   0x11 (17)
+
+TPIDRRO_EL0: 0000 0000 0000 0000 0000 0000 0000 0001 - 1110 1011 0100 0100 1000 0010 0010 0000
+
+  Arch. Ref. Manual section D17.2.143
+  Value: 00000001-EB448220
+
+TPIDR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0110
+
+  Arch. Ref. Manual section D17.2.139
+  Value: 00000000-00000006
+
+TPIDR_EL1: 1111 1111 1111 1111 1111 1110 0001 1011 - 0010 1111 0011 0010 1111 0000 0001 0000
+
+  Arch. Ref. Manual section D17.2.140
+  Value: FFFFFE1B-2F32F010
+
+TTBR0_EL1: 0000 0000 1001 0001 0000 0000 0000 1000 - 1001 0001 1111 1101 0100 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.144
+  ASID:  0x0091 (145)
+  BADDR: 0x000448FEA000 (18404515840)
+  CnP:   0x0 (differ)
+
+TTBR1_EL1: 0000 0000 0000 0000 0000 0000 0000 1000 - 0000 0100 0001 1111 1000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.147
+  ASID:  0x0000 (0)
+  BADDR: 0x0004020FC000 (17214455808)
+  CnP:   0x0 (differ)
+

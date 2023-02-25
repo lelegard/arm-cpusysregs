@@ -342,8 +342,13 @@ void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
     if (feat.FEAT_PAuth()) {
         ArmPseudoCode code(regaccess);
         out << "Detailed PAC layout:" << std::endl
-            << "  TCR_EL1: TBI0: " << feat.TCR_EL1_TBI0() << ", TBID0: " << feat.TCR_EL1_TBID0()
-            << ", TBI1: " << feat.TCR_EL1_TBI1() << ", TBID1: " << feat.TCR_EL1_TBID1() << std::endl;
+            << "  TCR_EL1: TBI0=" << feat.TCR_EL1_TBI0()
+            << ", TBID0=" << feat.TCR_EL1_TBID0()
+            << ", T0SZ=" << feat.TCR_EL1_T0SZ()
+            << ", TBI1=" << feat.TCR_EL1_TBI1()
+            << ", TBID1=" << feat.TCR_EL1_TBID1()
+            << ", T1SZ=" << feat.TCR_EL1_T1SZ()
+            << std::endl;
         PACLayout(code, out, false, false);
         PACLayout(code, out, true, false);
         PACLayout(code, out, false, true);
