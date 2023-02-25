@@ -1,0 +1,12 @@
+
+Summary: PAC: yes, PACGA: yes
+PAuth: yes, PAuth2: no, EPAC: yes, FPAC: no, FPACCOMBINE: no, CONSTPACFIELD: no
+Algorithms: QARMA3: no, QARMA5: no, implementation-defined: yes
+Memory tagging: no
+Detailed PAC layout:
+  TCR_EL1: TBI0=1, TBID0=0, T0SZ=16, TBI1=1, TBID1=1, T1SZ=16
+  Data  (lower): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
+  Data  (upper): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
+  Instr (lower): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
+  Instr (upper): PAC size: 15 bits, bit range: 63:56,54:48 (top: 63, sel: 55, bottom: 48)
+
