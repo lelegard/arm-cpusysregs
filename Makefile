@@ -14,6 +14,7 @@ MAKEFLAGS += --no-print-directory
 default:
 	$(MAKE) -C kernel/$(SYSTEM)
 	$(MAKE) -C apps
+	$(MAKE) -C docs
 
 clean:
 	$(MAKE) $@ -C kernel/$(SYSTEM)
