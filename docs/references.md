@@ -15,3 +15,5 @@
 
 - [Pointer Authentication implementation](https://github.com/apple/llvm-project/blob/apple/main/clang/docs/PointerAuthentication.rst) (Apple LLVM project)
 - [Pointer Authentication on ARMv8.3 - Design and Analysis of the New Software Security Instructions](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/pointer-auth-v7.pdf) (Qualcomm)
+- [The QARMA-64 algorithm](https://eprint.iacr.org/2016/444.pdf) (used in pointer authentication codes)
+- [QARMA-64 reference implementation](https://github.com/Phantom1003/QARMA64) (shared by Phantom1003 on GitHub)
