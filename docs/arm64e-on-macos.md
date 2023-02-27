@@ -69,7 +69,7 @@ Surprisingly, the M1 chip does not support BTI while the Arm architecture refere
 
 Not having BTI in the M1 is a surprise because Apple is deeply concerned with security, hardware security, and implements a very efficient usage of PAC.
 
-The M2, however, implements BTI and a few other Armv8.5-A features which were missing in the M1. See the appendix at the end of this note for a comparative table of the features of the M1 and the M2.
+The M2, however, implements BTI and a few other Armv8.5-A features which were missing in the M1. See [the list of Arm features in the Apple M1 and M2 chips](apple-m1-features.md) for a comparison of the two chips.
 
 Nevertheless, the two chips M1 and M2 implement the Pointer Authentication Code (PAC) feature, which is the main improvement of the `arm64e` platform.
 
@@ -655,4 +655,4 @@ Assuming that Apple clang is improved to use 7 instructions instead of 9 for the
 Why this extra complexity in the Apple `arm64e` ABI?
 
 - There is some benefit in using the object instance address as modifier for the vtable address. It mitigates some potential polymorphic attack. If we steal the vtable address of an object O1 of class C1 and overwrite the start of an object O2 of class C2 with that solen vtable address, then object O2 will behave as if it was of class C1 instead of C2. This could be a security risk which is not mitigated by the Arm recommended method.
-- In terms of security of the pointer authentication, I currently do not see any benefit in using tweaked modifiers. In each invocation of the application, the PAC keys are renewed as well as the addresses which are used as modifiers (thanks to ASLR). Since the tweak values are hard-coded in the code, they do not add more security. But I probably missed something...
+- The benefit of adding tweaks in the modifier is explained in [this document from the Apple LLVM project](https://github.com/apple/llvm-project/blob/apple/main/clang/docs/PointerAuthentication.rst). They call this a "discriminator". The discriminator is a constant value which is derived from the fully qualified name of the class (for the pointer to the vtable) or the method (for pointers inside the vtable).
