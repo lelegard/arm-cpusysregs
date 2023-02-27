@@ -10,12 +10,14 @@
 
 At a given level of Arm architecture, several features are mandatory or optional. A CPU core may or may not implement them. In the Arm architecture reference manual, they are usually named `FEAT_xxx`.
 
-Using system registers (usually accessible at EL1 only), it is possible to check the presence of each feature. Consequently, the exact list of features is known to the kernel only. Userland applications read these registers and cannot determine the exact list of features.
+Using system registers (usually accessible at EL1 only), it is possible to check the presence of each feature. Consequently, the exact list of features is known to the kernel only. Userland applications cannot read these registers and cannot determine the exact list of features.
 
-Depending on the operating system, it is possible to query a limited subset of them from userland using various commands or system calls. The program `demo-userfeatures` in this project demonstrates this.
+Depending on the operating system, it is possible to query a limited subset of the supported Arm features from userland using various commands or system calls:
 
 - On Linux: use `cat /proc/cpuinfo` on the command line or the `getauxval()` library function.
 - On macOS: use `sysctl`, either the command line tool or the system call of the same name.
+
+The C++ class `UserFeatures` and the program `demo-userfeatures` in this project demonstrate this.
 
 To get the complete list of features from userland, we need a specialized kernel module (Linux) or kernel extension (macOS) to read all relevant system registers, such as done in this project. The command line `sysregs` calls the kernel module to fetch all relevant information and displays them.
 
@@ -84,7 +86,7 @@ FEAT_FPACCOMBINE .. no     FEAT_RASv1p1 ...... no     FEAT_XNX .......... yes
 FEAT_FRINTTS ...... yes    FEAT_RDM .......... yes    FEAT_XS ........... no
 ~~~
 
-### Features comparison between the M1 and the M2
+## Features comparison between the M1 and the M2
 
 The following table compares the features of the M1 and M2 based on the output of the command `sysctl hw.optional.arm`. Since the lists of features are not exactly the same, the two chips must use distinct types of cores.
 
