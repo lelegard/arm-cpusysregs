@@ -26,12 +26,13 @@ The name `arm64e` was recently introduced by Apple. This platform ABI is current
   * [Accessing the PAC key registers](#accessing-the-pac-key-registers)
   * [Using PAC in a virtual machine on top of a macOS host](#using-pac-in-a-virtual-machine-on-top-of-a-macos-host)
   * [Running arm64 applications on an arm64e system](#running-arm64-applications-on-an-arm64e-system)
-  * [Pointer Authentication Code format](#pointer-authentication-code-format)
-* [Appendices](#appendices)
-  * [Code generation differences between arm64 and arm64e](#code-generation-differences-between-arm64-and-arm64e)
-  * [Complete list of Arm features in the Apple M1](#complete-list-of-arm-features-in-the-apple-m1)
-  * [Features comparison between the M1 and the M2](#features-comparison-between-the-m1-and-the-m2)
-  * [References](#references)
+
+**Additional information in this project:**
+
+* [Reference documentation on the Arm64 architecture](references.md)
+* [List of Arm features for A-Profile](features.md)
+* [Arm features in the Apple M1 and M2 chips](apple-m1-features.md)
+* [Pointer Authentication Code format](pac-format.md)
 
 ## What is `arm64e` architecture, compared to `arm64` ?
 
@@ -507,59 +508,7 @@ Only in the last case, when an `arm64e` application is run, the PAC instructions
 
 **Speculation:** When the macOS kernel schedules an `arm64` application on a core, it probably calls the EL3 monitor to reconfigure the SCTLR_EL3 register to disable the PAC instructions. In practice, each time a process is scheduled on a core, the EL3 monitor shall be called, either to configure the PAC key registers (`arm64e` application) or to disable the PAC instructions (`arm64` applications).
 
-### Pointer Authentication Code format
-
-When PAC is enabled, the pointer authentication code is inserted in the upper bits of the address. The size and position of the PAC may vary, depending on the CPU configuration.
-
-On the macOS host (M1 chip), the command `sysregs -p` (from the above-mentioned project `arm-cpusysregs`) displays this:
-
-~~~
-Summary: PAC: yes, PACGA: yes
-PAuth: yes, PAuth2: no, EPAC: yes, FPAC: no, FPACCOMBINE: no, CONSTPACFIELD: no
-Algorithms: QARMA3: no, QARMA5: no, implementation-defined: yes
-Memory tagging: no
-PAC field: size: 16 bits, bit range: 63:56,54:47
-~~~
-
-The PAC code is 16 bits long but non-contiguous. The bit 55 is always reserved to differentiate the lower and upper ranges of virtual addresses (if two ranges are supported). The lower 47 bits form the actual virtual address.
-
-On the M1 chip, the Memory Tagging Extension (MTE) is not implemented. On Arm cores with MTE enabled, the top byte (bits 63:56) is reserved to the memory tag. In that case, the PAC code would be reduced to 8 bits, in the range 54:47.
-
-Now, let's try the same command on a Linux virtual machine running on top of the macOS host.
-
-~~~
-Summary: PAC: yes, PACGA: yes
-PAuth: yes, PAuth2: no, EPAC: yes, FPAC: no, FPACCOMBINE: no, CONSTPACFIELD: no
-Algorithms: QARMA3: no, QARMA5: no, implementation-defined: yes
-Memory tagging: no
-PAC field: size: 15 bits, bit range: 63:56,54:48
-~~~
-
-For some reason, the PAC code is reduced to 15 bits. The actual virtual address use the lower 48 bits. I do not know the reason for this difference.
-
-There is an even more surprising difference between macOS and Linux. In the Linux case, the CPU is configured to use bits 63:56 and 54:48. However, in practice, only the bits 54:48 are altered. The upper byte (bits 63:56) is always set to zero. We may speculate that this is an artefact of the virtualization, the PAC instructions being trapped at EL2 and handled by the hypervisor. I currently see no good reason for limiting the PAC code to 7 bits, considering that the CPU does not support memory tagging.
-
-Let's demonstrate this with our previous `pacia` sample program. We run the program 10 times in order to test 10 different PAC keys. We only keep the authenticated pointer value. The generated values are:
-
-~~~
-macOS host:             Linux VM:
-A16C800012345678        0031000012345678
-6F39000012345678        007B000012345678
-8179000012345678        007D000012345678
-9F7A000012345678        0078000012345678
-6545800012345678        0021000012345678
-AB5C000012345678        001F000012345678
-913A000012345678        003F000012345678
-4705800012345678        0079000012345678
-AF6B800012345678        0046000012345678
-5E12800012345678        0067000012345678
-~~~
-
-In all cases, we see that the bit 55 remains unused. MacOS uses 16 bits (63:56,54:47) for the PAC while Linux only uses 7 bits (54:48) even though its CPU claims to use 15 bits (63:56,54:48).
-
-## Appendices
-
-### Code generation differences between `arm64` and `arm64e`
+# Code generation differences between `arm64` and `arm64e`
 
 This section demonstrates the differences between the `arm64` ABI with option `-mbranch-protection=pac-ret` as used on Linux and the Apple `arm64e` ABI.
 
@@ -697,118 +646,3 @@ Why this extra complexity in the Apple `arm64e` ABI?
 
 - There is some benefit in using the object instance address as modifier for the vtable address. It mitigates some potential polymorphic attack. If we steal the vtable address of an object O1 of class C1 and overwrite the start of an object O2 of class C2 with that solen vtable address, then object O2 will behave as if it was of class C1 instead of C2. This could be a security risk which is not mitigated by the Arm recommended method.
 - In terms of security of the pointer authentication, I currently do not see any benefit in using tweaked modifiers. In each invocation of the application, the PAC keys are renewed as well as the addresses which are used as modifiers (thanks to ASLR). Since the tweak values are hard-coded in the code, they do not add more security. But I probably missed something...
-
-### Complete list of Arm features in the Apple M1
-
-At a given level of Arm architecture, several features are mandatory or optional. A CPU core may or may not implement them. In the Arm architecture reference manual, they are usually named `FEAT_xxx`.
-
-Using system registers (usually accessible at EL1 only), it is possible to check the presence of each feature. Consequently, the exact list of features is known to the kernel only. It is possible to query a limited subset of them from userland using `sysctl`, either the command line tool or the system call of the same name. To get the complete list of features, we need a specialized macOS kernel extension to read all relevant system registers, such as the [arm-cpusysregs](https://github.com/lelegard/arm-cpusysregs) project.
-
-The following table lists all Arm features which are implemented - or not - in the Apple M1, based on the command `sysregs -s` (coming with the `arm-cpusysregs` project).
-
-~~~
-FEAT_AES .......... yes     FEAT_FRINTTS ...... yes     FEAT_RASv1p1 ...... no
-FEAT_AFP .......... no      FEAT_HAFDBS ....... no      FEAT_RDM .......... yes
-FEAT_AMUv1 ........ no      FEAT_HBC .......... no      FEAT_RME .......... no
-FEAT_AMUv1p1 ...... no      FEAT_HCX .......... no      FEAT_RNG .......... no
-FEAT_BBM .......... no      FEAT_HPDS ......... yes     FEAT_RNG_TRAP ..... no
-FEAT_BF16 ......... no      FEAT_HPDS2 ........ yes     FEAT_RPRES ........ no
-FEAT_BRBE ......... no      FEAT_HPMN0 ........ no      FEAT_S2FWB ........ yes
-FEAT_BRBEv1p1 ..... no      FEAT_I8MM ......... no      FEAT_SB ........... yes
-FEAT_BTI .......... no      FEAT_IDST ......... yes     FEAT_SEL2 ......... no
-FEAT_CCIDX ........ no      FEAT_IESB ......... yes     FEAT_SHA1 ......... yes
-FEAT_CMOW ......... no      FEAT_JSCVT ........ yes     FEAT_SHA256 ....... yes
-FEAT_CONSTPACFIELD  no      FEAT_LOR .......... yes     FEAT_SHA3 ......... yes
-FEAT_CRC32 ........ yes     FEAT_LPA .......... no      FEAT_SHA512 ....... yes
-FEAT_CSV2 ......... yes     FEAT_LPA2 ......... no      FEAT_SM3 .......... no
-FEAT_CSV2_1p1 ..... no      FEAT_LRCPC ........ yes     FEAT_SM4 .......... no
-FEAT_CSV2_1p2 ..... no      FEAT_LRCPC2 ....... yes     FEAT_SME .......... no
-FEAT_CSV2_2 ....... no      FEAT_LS64 ......... no      FEAT_SME_F64F64 ... no
-FEAT_CSV2_3 ....... no      FEAT_LS64_ACCDATA . no      FEAT_SME_FA64 ..... no
-FEAT_CSV3 ......... yes     FEAT_LS64_V ....... no      FEAT_SME_I16I64 ... no
-FEAT_Debugv8p2 .... yes     FEAT_LSE .......... yes     FEAT_SPE .......... no
-FEAT_Debugv8p4 .... yes     FEAT_LSE2 ......... yes     FEAT_SPECRES ...... yes
-FEAT_Debugv8p8 .... no      FEAT_LSMAOC ....... no      FEAT_SPEv1p1 ...... no
-FEAT_DGH .......... no      FEAT_LVA .......... no      FEAT_SPEv1p2 ...... no
-FEAT_DIT .......... yes     FEAT_MOPS ......... no      FEAT_SPEv1p3 ...... no
-FEAT_DotProd ...... yes     FEAT_MPAM ......... no      FEAT_SSBS ......... yes
-FEAT_DoubleFault .. no      FEAT_MTE .......... no      FEAT_SSBS2 ........ yes
-FEAT_DoubleLock ... yes     FEAT_MTE2 ......... no      FEAT_SVE .......... no
-FEAT_DPB .......... yes     FEAT_MTE3 ......... no      FEAT_SVE2 ......... no
-FEAT_DPB2 ......... yes     FEAT_MTPMU ........ no      FEAT_SVE_AES ...... no
-FEAT_E0PD ......... yes     FEAT_NMI .......... no      FEAT_SVE_BitPerm .. no
-FEAT_EBF16 ........ no      FEAT_nTLBPA ....... no      FEAT_SVE_PMULL128 . no
-FEAT_ECV .......... no      FEAT_NV ........... no      FEAT_SVE_SHA3 ..... no
-FEAT_EPAC ......... yes     FEAT_NV2 .......... no      FEAT_SVE_SM4 ...... no
-FEAT_ETE .......... no      FEAT_PACIMP ....... yes     FEAT_TIDCP1 ....... no
-FEAT_ETEv1p1 ...... no      FEAT_PACQARMA3 .... no      FEAT_TLBIOS ....... yes
-FEAT_ETEv1p2 ...... no      FEAT_PACQARMA5 .... no      FEAT_TLBIRANGE .... yes
-FEAT_ETS .......... no      FEAT_PAN .......... yes     FEAT_TME .......... no
-FEAT_EVT .......... yes     FEAT_PAN2 ......... yes     FEAT_TRBE ......... no
-FEAT_ExS .......... yes     FEAT_PAN3 ......... no      FEAT_TRF .......... no
-FEAT_F32MM ........ no      FEAT_PAuth ........ yes     FEAT_TTCNP ........ yes
-FEAT_F64MM ........ no      FEAT_PAuth2 ....... no      FEAT_TTL .......... yes
-FEAT_FCMA ......... yes     FEAT_PMULL ........ yes     FEAT_TTST ......... no
-FEAT_FGT .......... no      FEAT_PMUv3 ........ no      FEAT_TWED ......... no
-FEAT_FHM .......... yes     FEAT_PMUv3p1 ...... no      FEAT_UAO .......... yes
-FEAT_FlagM ........ yes     FEAT_PMUv3p4 ...... no      FEAT_VHE .......... yes
-FEAT_FlagM2 ....... yes     FEAT_PMUv3p5 ...... no      FEAT_VMID16 ....... no
-FEAT_FP ........... yes     FEAT_PMUv3p7 ...... no      FEAT_VPIPT ........ no
-FEAT_FP16 ......... no      FEAT_PMUv3p8 ...... no      FEAT_WFxT ......... no
-FEAT_FPAC ......... no      FEAT_PMUv3_TH ..... no      FEAT_XNX .......... yes
-FEAT_FPACCOMBINE .. no      FEAT_RAS .......... yes     FEAT_XS ........... no
-~~~
-
-### Features comparison between the M1 and the M2
-
-The following table compares the features of the M1 and M2 based on the output of the command `sysctl hw.optional.arm`. Since the lists of features are not exactly the same, the two chips must use distinct types of cores.
-
-Specifically, we can notice that the M2 implements all missing security features from the M1: BTI, PAuth2, FPAC.
-
-| Feature      | Apple M1 | Apple M2
-| :----------- | :------: | :------:
-| FEAT_AES     | X        | X
-| FEAT_BF16    | -        | X
-| FEAT_BTI     | -        | X
-| FEAT_CSV2    | X        | X
-| FEAT_CSV3    | X        | X
-| FEAT_DIT     | X        | X
-| FEAT_DPB2    | X        | X
-| FEAT_DPB     | X        | X
-| FEAT_DotProd | X        | X
-| FEAT_ECV     | X        | X
-| FEAT_FCMA    | X        | X
-| FEAT_FHM     | X        | X
-| FEAT_FP16    | X        | X
-| FEAT_FPAC    | -        | X
-| FEAT_FRINTTS | X        | X
-| FEAT_FlagM2  | X        | X
-| FEAT_FlagM   | X        | X
-| FEAT_I8MM    | -        | X
-| FEAT_JSCVT   | X        | X
-| FEAT_LRCPC2  | X        | X
-| FEAT_LRCPC   | X        | X
-| FEAT_LSE2    | X        | X
-| FEAT_LSE     | X        | X
-| FEAT_PAuth2  | -        | X
-| FEAT_PAuth   | X        | X
-| FEAT_PMULL   | X        | X
-| FEAT_RDM     | X        | X
-| FEAT_SB      | X        | X
-| FEAT_SHA1    | X        | X
-| FEAT_SHA256  | X        | X
-| FEAT_SHA3    | X        | X
-| FEAT_SHA512  | X        | X
-| FEAT_SPECRES | -        | -
-| FEAT_SSBS    | X        | X
-| FP_SyncExceptions | X   | X
-
-### References
-
-- [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
-  nearly 12,000 pages.
-- [Pointer Authentication documentation by Apple LLVM project](https://github.com/apple/llvm-project/blob/apple/main/clang/docs/PointerAuthentication.rst) on GitHub.
-- [Pointer Authentication on ARMv8.3 - Design and Analysis of the New Software Security Instructions](https://www.qualcomm.com/content/dam/qcomm-martech/dm-assets/documents/pointer-auth-v7.pdf) by Qualcomm.
-- [Project arm-cpusysregs](https://github.com/lelegard/arm-cpusysregs), manipulation of some Arm special system registers.
-- [LLVM clang bug report](https://github.com/llvm/llvm-project/issues/60239), incorrect generated code with options `-arch arm64e -mbranch-protection=pac-bti`, don't use them together.
-- [Apple LLVM clang bug report](https://github.com/apple/llvm-project/issues/6307), request to reduce call sequences of C++ virtual functions from 9 to 7 instructions in `arm64e` mode.
