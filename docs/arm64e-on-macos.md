@@ -26,6 +26,10 @@ The name `arm64e` was recently introduced by Apple. This platform ABI is current
   * [Accessing the PAC key registers](#accessing-the-pac-key-registers)
   * [Using PAC in a virtual machine on top of a macOS host](#using-pac-in-a-virtual-machine-on-top-of-a-macos-host)
   * [Running arm64 applications on an arm64e system](#running-arm64-applications-on-an-arm64e-system)
+* [Code generation differences between arm64 and arm64e](#code-generation-differences-between-arm64-and-arm64e)
+  * [C\+\+ vtables](#c-vtables)
+  * [Generated code on Linux](#generated-code-on-linux)
+  * [Generated code on macOS with arm64e platform](#generated-code-on-macos-with-arm64e-platform)
 
 **Additional information in this project:**
 
@@ -508,13 +512,15 @@ Only in the last case, when an `arm64e` application is run, the PAC instructions
 
 **Speculation:** When the macOS kernel schedules an `arm64` application on a core, it probably calls the EL3 monitor to reconfigure the SCTLR_EL3 register to disable the PAC instructions. In practice, each time a process is scheduled on a core, the EL3 monitor shall be called, either to configure the PAC key registers (`arm64e` application) or to disable the PAC instructions (`arm64` applications).
 
-# Code generation differences between `arm64` and `arm64e`
+## Code generation differences between `arm64` and `arm64e`
 
 This section demonstrates the differences between the `arm64` ABI with option `-mbranch-protection=pac-ret` as used on Linux and the Apple `arm64e` ABI.
 
 In the Linux case, the added security only protects the function call return addresses on stack. This protection mitigates all basic ROP chains (Return-Oriented Programming), usually starting from a stack overflow.
 
 However, this method does not protect against JOP attacks (Jump-Oriented Programming), starting from general buffer overflows on the heap. In the latter case, the corrupted addresses are in data structures, not necessarity on the stack. Object-oriented programming languages use a lot of structures containing pointers to code. In C++, this is called a "vtable". There is one per class (when the class contains virtual methods).
+
+### C++ vtables
 
 Hacking the C++ vtables has now become popular in malware injection. This is why we need to prevent these attacks. The Arm PAC technology is capable of this. However, this is not used in the `arm64` ABI with option `-mbranch-protection=pac-ret`. On the other hand, the Apple `arm64e` ABI does. Let's see how.
 
@@ -548,6 +554,8 @@ O ----->|+0:    V       |------->|+0:   F     |--------> C::f() code
         +---------------+
 ~~~
 
+### Generated code on Linux
+
 On Linux Ubuntu 22.10 for arm64, we use gcc version 12.2.0 or clang version 15.0.2-1. The following commands display the generated code (with demangled names):
 
 ~~~
@@ -575,6 +583,8 @@ retaa                ; [*] authenticate the return address in x30 before jumping
 The two lines which are marked with `[*]` result from the option `-mbranch-protection=pac-ret`.
 
 Thanks to option `-march=armv8.5-a`, the return sequence has been optimized as one single `retaa` instruction. Without this option, in order to remain compatible with previous versions of the Arm architecture, the sequence uses two instructions: `autiasp` for the authentication alone, followed by a standard `ret`.
+
+### Generated code on macOS with `arm64e` platform
 
 On macOS 13.2, we use Apple clang version 14.0.0 and the command becomes:
 
