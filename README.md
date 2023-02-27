@@ -36,6 +36,8 @@ side effects, including:
   crashes the system since the return pointer of the kernel functions are authenticated with a
   different key as used by the previous PACIA (believe me, I tried...)
 
+See the file [docs/references.md](docs/references.md) for a list of reference documentations.
+
 ## Build instructions
 
 - `make` : Build the kernel module and the applications.
@@ -143,9 +145,3 @@ Accessing the PAC key registers at EL1 crashes macOS.
 [2] HCR_EL2 is readable at EL1 on macOS. Access not allowed in a Linux VM and crashes the system.
 
 [3] SCR_EL3 cannot by read/write at EL1. It is supported to format its possible values only.
-
-## References
-
-- [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
-  nearly 12,000 pages...
-- [Apple architectures arm64 and arm64e on macOS](https://gist.github.com/lelegard/009cbdae78e5993ed9e02160b9130d7f).
