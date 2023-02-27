@@ -428,7 +428,7 @@ Additionally, even in `arm64e` mode, the PAC hardware is configured in a way whi
 
 The "signature" part of the authenticated pointers is generated from a "key". There are several PAC key registers (named APIAKey_EL1, APIBKey_EL1, APDAKey_EL1, APDBKeyEL1, APGAKey_EL1). Usually, the kernel of the operating system selects random PAC keys when a process is created and writes these keys into the PAC key registers each time the process is scheduled. As indicated in their names, the PAC key registers are accessible at EL1 (kernel).
 
-I have demonstrated this in this [small educational project](https://github.com/lelegard/arm-cpusysregs) named `arm-cpusysregs` which allows an application to manipulate some system registers which are normally accessible to the kernel only. To do this, a special kernel module was developed in this project with Linux and macOS variants.
+This is demonstrated in this project which allows an application to manipulate some system registers which are normally accessible to the kernel only. To do this, a special kernel module was developed with Linux and macOS variants.
 
 On Linux, we can change the value of the PAC keys inside a process and observe the impact on the PAC instructions. We can conclude that our special kernel module was allowed to read and write the PAC key registers.
 
@@ -438,7 +438,7 @@ However, on macOS, the same sample code crashes the system. Why? Again, another 
 
 For the sake of completeness, there is another way to trap (to EL2) on access to the PAC key registers, using the bit APK in the register HCR_EL2, the Hypervisor Configuration Register. However, this register is clearly designed to support the virtualization. When running on the macOS host system, it appears that HCR_EL2 is still readable from EL1 on the M1, and we see that HCR_EL2.APK = 1, meaning "no trap on accessing the PAC key registers".
 
-This way of accessing the PAC key registers is more secure than in Linux where the EL1 kernel is allowed to fully configure the PAC. Using macOS, the kernel is not even trusted. This is clever because, if an attacker takes control of a Linux kernel, it can completely control or disable the PAC. This is not possible on macOS. In practice, "taking control of the kernel to hack the PAC keys" is exactly what my `arm-cpusysregs` project does. It succeeds on Linux and fails on macOS. On a security scale, macOS wins.
+This way of accessing the PAC key registers is more secure than in Linux where the EL1 kernel is allowed to fully configure the PAC. Using macOS, the kernel is not even trusted. This is clever because, if an attacker takes control of a Linux kernel, it can completely control or disable the PAC. This is not possible on macOS. In practice, "taking control of the kernel to hack the PAC keys" is exactly what this project does. It succeeds on Linux and fails on macOS. On a security scale, macOS wins.
 
 ### Using PAC in a virtual machine on top of a macOS host
 
