@@ -63,7 +63,7 @@ In the Arm architecture, the PAC and BTI techniques can be smoothly integrated i
 
 ### What is the real version of Arm architecture in the M1 ?
 
-The first peculiarity concerns the level of Arm architecture and the corresponding features. The supported Arm features can be inspected using the command `sysctl hw.optional.arm`.
+The first peculiarity concerns the level of Arm architecture and the corresponding features. On macOS, some of the supported Arm features can be inspected using the command `sysctl hw.optional.arm`.
 
 Surprisingly, the M1 chip does not support BTI while the Arm architecture reference manual describes this as a mandatory feature at version 8.5-A. On the other hand, the M1 supports other Arm features such as FlagM2 and FRINTTS which are documented by Arm as new and mandatory in version 8.5-A also, just like BTI. Therefore, the M1 implements new features which were introduced by Arm in version 8.5-A, _without supporting other mandatory features of this version_ (namely BTI). Formally, this means that the M1 does not implement any valid version of the Arm architecture.
 
@@ -77,17 +77,19 @@ Nevertheless, the two chips M1 and M2 implement the Pointer Authentication Code 
 
 To enable PAC, the gcc and clang compilers support the option `-mbranch-protection=pac-ret`. As the name suggests, Pointer Authentication is used on function return addresses only. This feature is consequently internal to each function, internal to each compilation unit. This means that modules which were compiled with and without this option can be linked into the same executable and remain interoperable.
 
-However, this is a suboptimal usage of PAC. There are many other additional usages of PAC, such as protecting data structures addresses or pointers to functions inside data structures (the most obvious usage is the C++ vtables). However, since these data structures are inherently shared between distinct compilation units, possibly compiled with different options, they would no longer be interoperable.
+However, this usage of PAC is suboptimal. There are many other additional usages of PAC, such as protecting data structures addresses or pointers to functions inside data structures (the most obvious usage is the C++ vtables). However, since these data structures are inherently shared between distinct compilation units, possibly compiled with different options, they would no longer be interoperable.
 
 This is where Apple invented `arm64e`...
 
-Defining a new ABI allows to use the full power of PAC, on data structure, C++ vtables, etc. As explained above, this breaks the interoperability between modules with different compilation options. This means that _all_ modules of an application or library shall be compiled with consistent options. In practice, this defines a new platform, named `arm64e`.
+Defining a new ABI allows to use the full power of PAC, on data structure, C++ vtables, etc. As explained above, this breaks the interoperability between modules with different compilation options. This means that _all_ modules of an application or library shall be compiled with consistent options. In practice, this defines a new platform ABI, named `arm64e`.
 
 Compiling a module with `-arch arm64e` marks the object code with that platform name. Building an application or library for `arm64e` requires that all compilation units were built for `arm64e`. This is why defining a new platform ABI is the solution to get the full power of PAC.
 
 Mixing `arm64` and `arm64e` is only possible under strict conditions which are explained later in this note.
 
-At the very end of this note, there is a complete demonstration on how the code generation for `arm64e` extends the protection to JOP attacks, in addition to ROP attacks. Currently, it does not seem that this extended protection can be used on Linux, neither using gcc nor clang.
+At the end of this note, there is a complete demonstration on how the code generation for `arm64e` extends the protection to JOP attacks, in addition to ROP attacks. Currently, it does not seem that this extended protection can be used on Linux, neither using gcc nor clang.
+
+**Important note:** The option `-mbranch-protection=pac-ret` is a generic option for gcc and clang on all Arm64 platforms, Linux or macOS. On the other hand, `-arch arm64e` is specific to macOS and is available in the Apple version of clang only. Each of these two options defines its own way of generating PAC code. These two methods are _incompatible_ and shall not be used together. As of this writing, the Apple clang compiler does not prevent the simultaneous usage of the two options. Using them at the same time generates non-functional code which crashes at run time. A [bug report](https://github.com/llvm/llvm-project/issues/60239) has been filed for that.
 
 ## Default PAC configuration on macOS 13 (Ventura)
 
@@ -119,7 +121,7 @@ int main(int argc, char* argv[])
 }
 ~~~
 
-The PACIA instruction should add a Pointer Authentication Code (PAC) into the most significant bits of the value 0000000012345678, using "modifier" 2 (a seed). The AUTIA instruction should restore the previous value.
+The PACIA instruction should add a Pointer Authentication Code (PAC) into the most significant bits of the value 0x0000000012345678, using "modifier" 2 (a seed). The AUTIA instruction should restore the previous value.
 
 However, if we build the application normally (in `arm64` mode), we can see that the PACIA instruction does nothing:
 
@@ -143,7 +145,7 @@ Digging into the Arm architecture reference manual, there is a special control r
 
 However, this register is highly protected and accessible at EL3 only. For the record, EL means "Exception Level", EL0 is the user mode, EL1 the kernel mode, EL2 the hypervisor mode and EL3 the monitor mode. In most embedded systems, the EL3 monitor is part of the "Arm Trusted Firmware", provided by Arm.
 
-**Speculation:** It is consequently quite probable that Apple developed their own EL3 monitor with specific features to control the way the PAC instructions behave, depending on the software target platform. When macOS boots in `arm64` mode, the EL3 monitor probably configures SCTLR_EL3 to disable the PAC features before booting outer levels.
+**Speculation:** Apple probably developed their own EL3 monitor with specific features to control the way the PAC instructions behave, depending on the software target platform. When macOS boots in `arm64` mode, the EL3 monitor probably configures SCTLR_EL3 to disable the PAC features before booting outer levels.
 
 ### Trying the `arm64e` target platform
 
@@ -243,7 +245,7 @@ $ ./pacia
 
 We can notice that the PACIA instruction now works as expected. The 17 most significant bits of the 64-bit value are altered with a PAC. Using AUTIA on the same value, using the same "modifier", the previous value is correctly restored.
 
-Looking carefully, we notice that 17 bits are altered, not 16. This will be explained later.
+Looking carefully, we notice that 17 bits are altered, not 16. This is explained in details in another note of this project, about [Pointer Authentication Code format](pac-format.md).
 
 Also note that the PAC value changes at each execution. This is due to the kernel assigning a different value for the PAC key in each process. Thus, if an attacker is able to learn the updated value for a pointer using a test, this value won't be valid in any other occurrence of the same program.
 
@@ -422,7 +424,7 @@ leave main, arch is arm64e
 
 We have already demonstrated that macOS can enable or disable the pointer authentication in the PAC instructions, probably using a configuration of the special system register SCTLR_EL3 from a dedicated EL3 monitor.
 
-Additionally, even in `arm64e` mode, the PAC hardware is configured in a way which is different from other platforms such as Linux (in a much more secure way).
+Additionally, even in `arm64e` mode, the PAC hardware is configured in a way which is different from other platforms such as Linux (in a more secure way).
 
 ### Accessing the PAC key registers
 
@@ -434,7 +436,7 @@ On Linux, we can change the value of the PAC keys inside a process and observe t
 
 However, on macOS, the same sample code crashes the system. Why? Again, another EL3 register named SCR_EL3, the Secure Configuration Register, can be configured to prevent access to the PAC key registers. In fact, it does not completely forbid access to these registers. Instead, accessing a PAC key register generates a trap at EL3.
 
-**Speculation:** It is probable that the Apple EL3 monitor includes specific traps in their EL3 monitor. When the macOS kernel schedules a process, it probably calls the EL3 monitor to configure the PAC keys registers on behalf of the kernel. The details of this process are unknown.
+**Speculation:** The Apple EL3 monitor probably includes specific traps for PAC key register access. When the macOS kernel schedules a process, it probably calls the EL3 monitor to configure the PAC keys registers on behalf of the kernel. The details of this process are unknown.
 
 For the sake of completeness, there is another way to trap (to EL2) on access to the PAC key registers, using the bit APK in the register HCR_EL2, the Hypervisor Configuration Register. However, this register is clearly designed to support the virtualization. When running on the macOS host system, it appears that HCR_EL2 is still readable from EL1 on the M1, and we see that HCR_EL2.APK = 1, meaning "no trap on accessing the PAC key registers".
 
@@ -444,10 +446,10 @@ This way of accessing the PAC key registers is more secure than in Linux where t
 
 When a Linux virtual machine is run on the macOS host, Pointer Authentication returns to a simpler mechanism when used inside the virtual machine.
 
-- The PAC instructions work as expected, even when the macOS host booted in `arm64` mode. These instructiosn are inoperative in the macOS host OS but work fine in the Linux guest OS (almost fine, see more details later).
+- The PAC instructions work as expected, even when the macOS host booted in `arm64` mode. These instructiosn are inoperative in the macOS host OS but work as expected in the Linux guest OS.
 - The Linux kernel can fully control the PAC registers at EL1.
 
-**Speculation:** I assume that the EL2 hypervisor emulates the PAC mechanism. HCR_EL2, the Hypervisor Configuration Register, contains two bits, API and APK, which can be configured as follow:
+**Speculation:** The EL2 hypervisor probably emulates the PAC mechanism. HCR_EL2, the Hypervisor Configuration Register, contains two bits, API and APK, which can be configured as follow:
 
 - HCR_EL2.API = 0 : any PAC instruction is trapped at EL2.
 - HCR_EL2.APK = 0 : any access to the PAC registers is trapped at EL2.
@@ -456,7 +458,7 @@ Using this configuration, the EL2 hypervisor is able to take full control of the
 
 ### Running `arm64` applications on an `arm64e` system
 
-Using the `pacia.c` small program, we have demonstrated that the PAC instructions are fully functional in an `arm64e` running on an `arm64e` system.
+Using the `pacia` small program, we have demonstrated that the PAC instructions are fully functional in an `arm64e` running on an `arm64e` system.
 
 Using the small `libtest` library, we have also demonstrated how to mix `arm64` applications with `arm64e` libraries. What is the behavior of the PAC instructions in that context?
 
@@ -524,7 +526,7 @@ However, this method does not protect against JOP attacks (Jump-Oriented Program
 
 Hacking the C++ vtables has now become popular in malware injection. This is why we need to prevent these attacks. The Arm PAC technology is capable of this. However, this is not used in the `arm64` ABI with option `-mbranch-protection=pac-ret`. On the other hand, the Apple `arm64e` ABI does. Let's see how.
 
-Consider this sample code to call a C++ virtual method:
+Consider this sample `test.cpp` code to call a C++ virtual method:
 
 ~~~
 class C
@@ -592,7 +594,7 @@ On macOS 13.2, we use Apple clang version 14.0.0 and the command becomes:
 $ clang -O2 -arch arm64e test.cpp -S -o - | c++filt
 ~~~
 
-The generated code for the `test()` function is the following. The stack protection is the same, except that it uses the PAC key IB instead of IA, which does not make any difference in terms of security.
+The generated code for the `test()` function is shown below. The stack protection is the same as on Linux, except that it uses the PAC key IB instead of IA, which does not make any difference in terms of security. However, unlike the Linux code, we can also see how the C++ vtable is protected.
 
 In practice, we will see that 3 different PAC keys are used on macOS for 3 different types of protection. On Linux, only the last protection is used.
 
@@ -656,3 +658,11 @@ Why this extra complexity in the Apple `arm64e` ABI?
 
 - There is some benefit in using the object instance address as modifier for the vtable address. It mitigates some potential polymorphic attack. If we steal the vtable address of an object O1 of class C1 and overwrite the start of an object O2 of class C2 with that solen vtable address, then object O2 will behave as if it was of class C1 instead of C2. This could be a security risk which is not mitigated by the Arm recommended method.
 - The benefit of adding tweaks in the modifier is explained in [this document from the Apple LLVM project](https://github.com/apple/llvm-project/blob/apple/main/clang/docs/PointerAuthentication.rst). They call this a "discriminator". The discriminator is a constant value which is derived from the fully qualified name of the class (for the pointer to the vtable) or the method (for pointers inside the vtable).
+
+## Conclusion
+
+The Pointer Authentication Code (PAC) Arm features are extremely powerful to mitigate current malware injection techniques, ROP and JOP. However, PAC must be used and properly used. The current mainstream versions of gcc and clang do not use PAC by default. Moreover, when they use it, they do not use the full power of PAC and only address the basic ROP attacks (smashing the return pointer on stack).
+
+The Apple `arm64e` ABI, on the other hand, is carefully designed to use PAC in most possible situations. This platform ABI is currently used by default on iOS (iPhone and iPad) but not yet on macOS. We look forward to have `arm64e` enabled by default on macOS.
+
+We also look forward to see a similar ABI with gcc and clang. This will be a new ABI, breaking the compatibility with previous ones. However, this is not the first time gcc will introduce a new level of ABI. The link constraints have been solved using dedicated `GLIBCXX_` symbols or similar tricks.
