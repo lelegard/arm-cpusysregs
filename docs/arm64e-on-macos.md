@@ -30,6 +30,7 @@ The name `arm64e` was recently introduced by Apple. This platform ABI is current
   * [C\+\+ vtables](#c-vtables)
   * [Generated code on Linux](#generated-code-on-linux)
   * [Generated code on macOS with arm64e platform](#generated-code-on-macos-with-arm64e-platform)
+* [Conclusion](#conclusion)
 
 **Additional information in this project:**
 
