@@ -16,6 +16,11 @@ This note explains the format of the "signature" which is inserted in pointers u
     * [Stack diversity](#stack-diversity)
     * [Address diversity and discriminator](#address-diversity-and-discriminator)
 * [Examples and demo](#examples-and-demo)
+  * [Common to all operating systems](#common-to-all-operating-systems)
+  * [Specific to Linux](#specific-to-linux)
+  * [Specific to macOS](#specific-to-macos)
+  * [Specific to Arm\-designed cores](#specific-to-arm-designed-cores)
+  * [Specific to Apple M1 chip](#specific-to-apple-m1-chip)
 * [Comparisons of platforms](#comparisons-of-platforms)
 
 ## PAC location
@@ -179,33 +184,40 @@ The program `demo-pac` from this project demonstrates the computation of pointer
 
 The results of three successive executions of this program on each platform are available in the [collect](../collect) directory.
 
-Here are some observations from these results:
+The following subsections are some observations from these results. The next section contains a full comparison of results per platform.
 
-- Common to all operating systems:
-  - The PAC values are different for the same input values each time the program is executed. Conclusion: the kernel of all operating systems provides new PAC keys for new processes.
-  - The PAC values are different when using PACIA, PACIB, PACDA, PACDB. Conclusion: the PAC keys have different values in each process.
-  - We verified that AUTxx matches the corresponding PACxx. We also verified that corrupting a signed pointer results in an invalid address after AUTxx. With cores implementing the FPAC feature, this AUTxx instruction should raise an exception. This cannot be verified for now.
-  - The bit 55 of all addresses is preserved, in all cases.
-- Specific to Linux:
-  - The meaningful virtual address part of a pointer uses 48 bits, leaving 16 bits for PAC, MTE and selector bit.
-  - Most PAC values use 7 bits, except for instruction pointers on upper addresses where the PAC use 15 bits.
-  - Executing a PACxx instruction in user mode (EL0) and kernel mode (EL1) on the same input value gives the same result, except with PACIA. Conclusion: only the IA key is different between user and kernel. Each time an application switches from user mode to kernel mode or vice versa, the value of the PACIA key is changed. All other PAC keys remain unchanged.
-    - This is consistent with another observation: if we change the value of the PACIA key using the kernel module of this project, the system crashes. All other PAC keys can be safely changed. In standard Ubuntu distributions for arm64, the kernel is now compiled with option `-mbranch-protection=pac-ret`, meaning that the call return addresses on stack are signed with the PACIA key. Changing this key while in kernel mode crashes on return.
-    - As a final consequence, we may say that the kernel uses only one PAC key and updates it each time we enter kernel mode, leaving all other PACK keys unchanged.
-- Specific to macOS:
-  - The PAC key registers cannot be read or written in kernel mode (EL1). Trying to do so using the kernel extension of this project crashes the system. Access to this registers is probably configured at EL3 to trap at EL3.
-  - The meaningful virtual address part of a pointer uses 47 bits, leaving 17 bits for PAC, MTE and selector bit (compared to 48 and 16 bits, respectively, on Linux).
-  - Most PAC values use 16 bits, except for data pointers on lower addresses where the PAC use 8 bits.
-  - Unexpected note on the selector bit: in the case of pointer to instructions on macOS, the command `sysregs -p` displays that the selector bit is 63 instead of 55. However, we can see that the PAC computation on pointers to instructions sometimes change the bit 63 while it always preserves the bit 55. Maybe this is an interpretation error on the nature of the selector bit or in the implementation in `sysregs`.
-  - Executing any PACxx instruction in user mode (EL0) and kernel mode (EL1) on the same input value give distinct results. Conclusion: the 5 PAC keys are different between user and kernel. Each time an application switches from user mode to kernel mode or vice versa, the values of all PAC keys are changed.
-    - As previously observed, this means than switching from EL0 to EL1 implies a detour through EL3 to reprogram the PAC key registers. And again when switching back from EL1 to EL0.
-    - Note a difference with Linux here. On macOS using the "arm64e" platform, the generated code uses three PAC keys, IA, IB, DA, but not DB and GA. Since the kernel is compiled for "arm64e", it uses these three PAC registers. However, unlike the Linux kernel, the macOS kernel choses to change all PAC keys when switching to kernel mode, even those it doesn't use.
-- Specific to Arm-designed cores:
-  - The computed PAC values match the QARMA5 software computation. This was expected but still nice to verify.
-- Specific to Apple M1 chip:
-  - The PAC computation uses an implementation-defined algorithm and it is not possible to anticipate a PAC value, even when the context is fully known. Whether this is a good or bad thing is left to the reader...
+### Common to all operating systems
 
-The next section contains a full comparison of results per platform.
+- The PAC values are different for the same input values each time the program is executed. Conclusion: the kernel of all operating systems provides new PAC keys for new processes.
+- The PAC values are different when using PACIA, PACIB, PACDA, PACDB. Conclusion: the PAC keys have different values in each process.
+- We verified that AUTxx matches the corresponding PACxx. We also verified that corrupting a signed pointer results in an invalid address after AUTxx. With cores implementing the FPAC feature, this AUTxx instruction should raise an exception. This cannot be verified for now.
+- The bit 55 of all addresses is preserved, in all cases.
+
+### Specific to Linux
+
+- The meaningful virtual address part of a pointer uses 48 bits, leaving 16 bits for PAC, MTE and selector bit.
+- Most PAC values use 7 bits, except for instruction pointers on upper addresses where the PAC use 15 bits.
+- Executing a PACxx instruction in user mode (EL0) and kernel mode (EL1) on the same input value gives the same result, except with PACIA. Conclusion: only the IA key is different between user and kernel. Each time an application switches from user mode to kernel mode or vice versa, the value of the PACIA key is changed. All other PAC keys remain unchanged.
+  - This is consistent with another observation: if we change the value of the PACIA key using the kernel module of this project, the system crashes. All other PAC keys can be safely changed. In standard Ubuntu distributions for arm64, the kernel is now compiled with option `-mbranch-protection=pac-ret`, meaning that the call return addresses on stack are signed with the PACIA key. Changing this key while in kernel mode crashes on return.
+  - As a final consequence, we may say that the kernel uses only one PAC key and updates it each time we enter kernel mode, leaving all other PACK keys unchanged.
+
+### Specific to macOS
+
+- The PAC key registers cannot be read or written in kernel mode (EL1). Trying to do so using the kernel extension of this project crashes the system. Access to this registers is probably configured at EL3 to trap at EL3.
+- The meaningful virtual address part of a pointer uses 47 bits, leaving 17 bits for PAC, MTE and selector bit (compared to 48 and 16 bits, respectively, on Linux).
+- Most PAC values use 16 bits, except for data pointers on lower addresses where the PAC use 8 bits.
+- Unexpected note on the selector bit: in the case of pointer to instructions on macOS, the command `sysregs -p` displays that the selector bit is 63 instead of 55. However, we can see that the PAC computation on pointers to instructions sometimes change the bit 63 while it always preserves the bit 55. Maybe this is an interpretation error on the nature of the selector bit or in the implementation in `sysregs`.
+- Executing any PACxx instruction in user mode (EL0) and kernel mode (EL1) on the same input value give distinct results. Conclusion: the 5 PAC keys are different between user and kernel. Each time an application switches from user mode to kernel mode or vice versa, the values of all PAC keys are changed.
+  - As previously observed, this means than switching from EL0 to EL1 implies a detour through EL3 to reprogram the PAC key registers. And again when switching back from EL1 to EL0.
+  - Note a difference with Linux here. On macOS using the "arm64e" platform, the generated code uses three PAC keys, IA, IB, DA, but not DB and GA. Since the kernel is compiled for "arm64e", it uses these three PAC registers. However, unlike the Linux kernel, the macOS kernel choses to change all PAC keys when switching to kernel mode, even those it doesn't use.
+
+### Specific to Arm-designed cores
+
+- The computed PAC values match the QARMA5 software computation. This was expected but still nice to verify.
+
+### Specific to Apple M1 chip
+
+- The PAC computation uses an implementation-defined algorithm and it is not possible to anticipate a PAC value, even when the context is fully known. Whether this is a good or bad thing is left to the reader...
 
 ## Comparisons of platforms
 
