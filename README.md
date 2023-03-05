@@ -138,7 +138,7 @@ version 0487I.a.
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers
-can be accessed at EL3 only. This is explained in file [docs/arm64e-on-macos.md](docs/arm64e-on-macos.md)
+can be accessed at EL3 only. This is explained in file [docs/arm64e-on-macos.md](docs/arm64e-on-macos.md).
 Accessing the PAC key registers at EL1 crashes macOS.
 
 [2] HCR_EL2 is readable at EL1 on macOS. Access not allowed in a Linux VM and crashes the system.
