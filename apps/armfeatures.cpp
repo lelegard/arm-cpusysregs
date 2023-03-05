@@ -44,6 +44,14 @@ ArmFeatures::ArmFeatures(RegAccess& reg) :
     load(reg);
 }
 
+void ArmFeatures::clear()
+{
+    _loaded = false;
+    _aa64isar0 = _aa64isar1 = _aa64isar2 = _aa64pfr0 = _aa64pfr1 = _aa64pfr2 = _aa64dfr0 = 0;
+    _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64smfr0 = _aa64zfr0 = 0;
+    _ctr = _tcr = _tcr2 = _trcdevarch = _pmmir = 0;
+}
+
 
 //----------------------------------------------------------------------------
 // Synthetic features of the processor.
@@ -93,10 +101,8 @@ int ArmFeatures::pacQARMA() const
 
 bool ArmFeatures::load(RegAccess& reg)
 {
-    // These registers may not exist on this CPU.
-    _aa64smfr0 = _aa64zfr0 = _trcdevarch = _pmmir = _tcr2 = 0;
-
-    _loaded =
+    clear();
+    return _loaded =
         reg.read(CSR_REGID_AA64ISAR0, _aa64isar0) &&
         reg.read(CSR_REGID_AA64ISAR1, _aa64isar1) &&
         reg.read(CSR_REGID_AA64ISAR2, _aa64isar2) &&
@@ -113,14 +119,8 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_TCR, _tcr) &&
         (!csr_has_tcr2(_aa64mmfr3) || reg.read(CSR_REGID_TCR2, _tcr2)) &&
         reg.read(CSR_REGID_CTR, _ctr) &&
-        (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch));
-
-#if !defined(CSR_SKIP_PMMIR)
-    _loaded = _loaded &&
+        (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch)) &&
         (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR, _pmmir));
-#endif
-
-    return _loaded;
 }
 
 //----------------------------------------------------------------------------
@@ -130,10 +130,11 @@ bool ArmFeatures::load(RegAccess& reg)
 
 void ArmFeatures::loadDirect()
 {
+    clear();
+
     // Linux kernel emulates access to system registers of the following ranges:
     // Op0=3, Op1=0, CRn=0, CRm=0,2,3,4,5,6,7
     // Excluded registers: TCR_EL1, TCR2_EL1, TRCDEVARCH, PMMIR_EL1
-    _aa64smfr0 = _aa64zfr0 = _tcr = _tcr2 = _trcdevarch = _pmmir = 0;
 
     csr_mrs_str(_aa64isar0, "id_aa64isar0_el1");
     csr_mrs_str(_aa64isar1, "id_aa64isar1_el1");

@@ -25,6 +25,9 @@ public:
     bool load(RegAccess&);
     bool isLoaded() const { return _loaded; }
 
+    // Clear contents of all loaded registers.
+    void clear();
+
     // Load features using direct access to system registers in userland.
     // Linux: Mostly works thanks to mrs emulation. However, some fields are incorrectly reported.
     // macOS: Illegal instruction exception.
