@@ -39,7 +39,7 @@ for file in *.md; do
                 intoc=true
                 echo "$line"
                 echo ""
-                gh-md-tocgh-md-toc --hide-header --hide-footer --start-depth=1 $file
+                gh-md-toc --hide-header --hide-footer --start-depth=1 $file
             elif ! $intoc; then
                 echo "$line"
             fi

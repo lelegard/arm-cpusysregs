@@ -223,44 +223,47 @@ The following subsections are some observations from these results. The next sec
 
 The following table compares various forms of PAC computations on several platforms.
 
-| Platform             | macOS host (M1) | Linux VM (M1)   |
-| -------------------- | --------------- | --------------- |
-| OS                   | macOS           | Linux           |
-| Virtualization       | Host            | VM              |
-| Chip                 | Apple M1        | Apple M1        |
-| CPU cores            | Apple Firestorm | Apple Firestorm |
-| PAC algorithm        | private         | private         |
-| MTE tagging          | no              | no              |
-|                      |                 |                 |
-| **PAC size**         |                 |                 |
-| data, lower          | 8 bits          | 7 bits          |
-| data, upper          | 16 bits         | 7 bits          |
-| instruction, lower   | 16 bits         | 7 bits          |
-| instruction, upper   | 16 bits         | 15 bits         |
-|                      |                 |                 |
-| **PAC position**     |                 |                 |
-| data, lower          | 54:47           | 54:48           |
-| data, upper          | 63:56,54:47     | 54:48           |
-| instruction, lower   | 63:56,54:47     | 54:48           |
-| instruction, upper   | 63:56,54:47     | 63:56,54:48     |
-|                      |                 |                 |
-| **PAC selector bit** |                 |                 |
-| data, lower          | bit 55          | bit 55          |
-| data, upper          | bit 55          | bit 55          |
-| instruction, lower   | bit 63          | bit 55          |
-| instruction, upper   | bit 63          | bit 55          |
-|                      |                 |                 |
-| **EL0/EL1 PAC keys** |                 |                 |
-| DA                   | distinct keys   | same key        |
-| DB                   | distinct keys   | same key        |
-| IA                   | distinct keys   | distinct keys   |
-| IB                   | distinct keys   | same key        |
-| Generic (PACGA)      | distinct keys   | same key        |
-|                      |                 |                 |
-| **TCR_EL1 register** |                 |                 |
-| TBI0                 | 1               | 1               |
-| TBID0                | 1               | 0               |
-| T0SZ                 | 17              | 16              |
-| TBI1                 | 0               | 1               |
-| TBID1                | 0               | 1               |
-| T1SZ                 | 17              | 16              |
+| Platform             | macOS host (M1) | Linux VM (M1)   | Linux VM (G3)   |
+| -------------------- | --------------- | --------------- | --------------- |
+| OS                   | macOS           | Linux           | Linux           |
+| OS kernel version    | 13.2.1          | 5.19.0-31       | 5.15.0-1030-aws |
+| Virtualization       | Host            | VM              | VM              |
+| Processor chip       | Apple M1        | Apple M1        | AWS Graviton 3  |
+| CPU cores            | Apple Firestorm | Apple Firestorm | Arm Neoverse V1 |
+| PAC algorithm        | private         | private         | QARMA5          |
+| PAuth / PAuth2       | yes / no        | yes / no        | yes / yes       |
+| EPAC / FPAC          | yes / no        | yes / no        | yes / no        |
+| MTE tagging          | no              | no              | no              |
+|                      |                 |                 |                 |
+| **PAC size**         |                 |                 |                 |
+| data, lower          | 8 bits          | 7 bits          | 7 bits          |
+| data, upper          | 16 bits         | 7 bits          | 7 bits          |
+| instruction, lower   | 16 bits         | 7 bits          | 7 bits          |
+| instruction, upper   | 16 bits         | 15 bits         | 15 bits         |
+|                      |                 |                 |                 |
+| **PAC position**     |                 |                 |                 |
+| data, lower          | 54:47           | 54:48           | 54:48           |
+| data, upper          | 63:56,54:47     | 54:48           | 54:48           |
+| instruction, lower   | 63:56,54:47     | 54:48           | 54:48           |
+| instruction, upper   | 63:56,54:47     | 63:56,54:48     | 63:56,54:48     |
+|                      |                 |                 |                 |
+| **PAC selector bit** |                 |                 |                 |
+| data, lower          | bit 55          | bit 55          | bit 55          |
+| data, upper          | bit 55          | bit 55          | bit 55          |
+| instruction, lower   | bit 63          | bit 55          | bit 55          |
+| instruction, upper   | bit 63          | bit 55          | bit 55          |
+|                      |                 |                 |                 |
+| **EL0/EL1 PAC keys** |                 |                 |                 |
+| DA                   | distinct keys   | same key        | same key        |
+| DB                   | distinct keys   | same key        | same key        |
+| IA                   | distinct keys   | distinct keys   | distinct keys   |
+| IB                   | distinct keys   | same key        | same key        |
+| Generic (PACGA)      | distinct keys   | same key        | same key        |
+|                      |                 |                 |                 |
+| **TCR_EL1 register** |                 |                 |                 |
+| TBI0                 | 1               | 1               | 1               |
+| TBID0                | 1               | 0               | 0               |
+| T0SZ                 | 17              | 16              | 16              |
+| TBI1                 | 0               | 1               | 1               |
+| TBID1                | 0               | 1               | 1               |
+| T1SZ                 | 17              | 16              | 16              |
