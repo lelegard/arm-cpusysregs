@@ -22,10 +22,8 @@ if [[ -z $GH_MD_TOC && $(uname -s) == Darwin ]]; then
     GH_MD_TOC=$(which gh-md-toc 2>/dev/null)
 fi
 if [[ -z $GH_MD_TOC ]]; then
-    mkdir -p $HOME/tmp
-    GH_MD_TOC=$HOME/tmp/gh-md-toc
-    curl https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc -o $GH_MD_TOC
-    chmod 755 $GH_MD_TOC
+    echo "$0: command gh-md-toc not found, tables of contents not updated in markdown files"
+    exit 0
 fi
 
 # Process all markdown files.
@@ -41,7 +39,7 @@ for file in *.md; do
                 intoc=true
                 echo "$line"
                 echo ""
-                $GH_MD_TOC --hide-header --hide-footer --start-depth=1 $file
+                gh-md-tocgh-md-toc --hide-header --hide-footer --start-depth=1 $file
             elif ! $intoc; then
                 echo "$line"
             fi
