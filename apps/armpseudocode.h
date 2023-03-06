@@ -31,6 +31,12 @@ public:
     ArmPseudoCode& operator=(ArmPseudoCode&&) = delete;
     ArmPseudoCode& operator=(const ArmPseudoCode&) = delete;
 
+    // Build a mask with bits top..bottom set, others are zero.
+    static csr_u64_t Bits(int top, int bottom)
+    {
+        return (~0ull >> (63 - top)) & ~(~0ull >> (64 - bottom));
+    }
+
     // TGx
     // ===
     // Translation granules sizes
@@ -121,11 +127,13 @@ public:
     // Gather stage 1 translation table walk parameters for EL1&0 regime (with EL2 enabled or disabled)
     void AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange varange);
 
-    // ==== shared/functions/memory/EffectiveTBI
+    // EffectiveTBI()
+    // ==============
     // Returns the effective TBI (top-byte ignore) in the AArch64 stage 1 translation regime for EL0/EL1.
     bool EffectiveTBI(csr_u64_t address, bool is_instr);
 
-    // ==== shared/functions/memory/EffectiveMTX
+    // EffectiveMTX()
+    // ==============
     // Returns the effective MTX (memory tagging extension) in the AArch64 stage 1 translation regime for EL0/EL1.
     bool EffectiveMTX(csr_u64_t address, bool is_instr);
 
@@ -144,12 +152,58 @@ public:
     // Compute the effective value for TxSZ used to determine the placement of the PAC field
     int AArch64_PACEffectiveTxSZ(const S1TTWParams& walkparams);
 
-    // ==== aarch64/functions/pac/addpac/AddPAC
+    // ComputePAC()
+    // ============
+    csr_u64_t ComputePAC(csr_u64_t data, csr_u64_t modifier, csr_u64_t key0, csr_u64_t key1, bool isgeneric);
+
+    // UsePACIMP()
+    // ===========
+    // Checks whether IMPLEMENTATION DEFINED cryptographic algorithm to be used for PAC calculation.
+    bool UsePACIMP(bool isgeneric);
+
+    // UsePACQARMA3()
+    // ==============
+    // Checks whether QARMA3 cryptographic algorithm to be used for PAC calculation.
+    bool UsePACQARMA3(bool isgeneric);
+
+    // UsePACQARMA5()
+    // ==============
+    // Checks whether QARMA5 cryptographic algorithm to be used for PAC calculation.
+    bool UsePACQARMA5(bool isgeneric);
+
+    // ComputePACIMPDEF()
+    // ==================
+    // Compute IMPLEMENTATION DEFINED cryptographic algorithm to be used for PAC calculation.
+    csr_u64_t ComputePACIMPDEF(csr_u64_t data, csr_u64_t modifier, csr_u64_t key0, csr_u64_t key1);
+
+    // ComputePACQARMA()
+    // =================
+    // Compute QARMA3 or QARMA5 cryptographic algorithm for PAC calculation
+    csr_u64_t ComputePACQARMA(csr_u64_t data, csr_u64_t modifier, csr_u64_t key0, csr_u64_t key1, bool isqarma3);
+
+    // AddPAC()
+    // ========
+    // Calculates the pointer authentication code for a 64-bit quantity and then
+    // inserts that into pointer authentication code field of that 64-bit quantity.
+    csr_u64_t AddPAC(csr_u64_t ptr, csr_u64_t modifier, const csr_pair_t& K, bool data);
+
+    // AddPACGA()
+    // ==========
+    // Returns a 64-bit value where the lower 32 bits are 0, and the upper 32 bits contain
+    // a 32-bit pointer authentication code which is derived using a cryptographic
+    // algorithm as a combination of x, y and the APGAKey_EL1.
+    csr_u64_t AddPACGA(csr_u64_t x, csr_u64_t y);
+    csr_u64_t AddPACGA(csr_u64_t x, csr_u64_t y, const csr_pair_t& key);
+
     // Some intermediate functions, used to implement AddPAC(), also useful outside.
     // See AddPAC() pseudo code in Arm manual for details.
     int pacTopBit(csr_u64_t address, bool is_instr);
     int pacSelBit(csr_u64_t address, bool is_instr);
     int pacBottomBit(csr_u64_t address, bool is_instr);
+
+    // Size in bits and mask for PAC.
+    int pacSize(csr_u64_t address, bool is_instr);
+    csr_u64_t pacMask(csr_u64_t address, bool is_instr);
 
 private:
     RegAccess&  _regs;

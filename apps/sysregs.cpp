@@ -303,12 +303,9 @@ void PACLayout(ArmPseudoCode& code, std::ostream& out, bool upper, bool is_instr
     const int top = code.pacTopBit(address, is_instr);
     const int sel = code.pacSelBit(address, is_instr);
     const int bottom = code.pacBottomBit(address, is_instr);
-    const bool inside = bottom <= 55 && 55 <= top;
-    const bool split = bottom < 55 && 55 < top;
-    const int pac_size = std::max(0, top - bottom + (inside ? 0 : 1));
 
     std::string layout;
-    if (split) {
+    if (bottom < 55 && 55 < top) {
         layout = Format("%d:56,54:%d", top, bottom);
     }
     else {
@@ -317,7 +314,7 @@ void PACLayout(ArmPseudoCode& code, std::ostream& out, bool upper, bool is_instr
 
     out << Format("  %-5s (%s): PAC size: %2d bits, bit range: %11s (top: %2d, sel: %2d, bottom: %2d)",
                   is_instr ? "Instr" : "Data", upper ? "upper" : "lower",
-                  pac_size, layout.c_str(), top, sel, bottom)
+                  code.pacSize(address, is_instr), layout.c_str(), top, sel, bottom)
         << std::endl;
 }
 
