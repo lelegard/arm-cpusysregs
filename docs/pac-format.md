@@ -60,7 +60,7 @@ The command `sysregs -p` from this project emulates the Arm pseudo-code for the 
 
 On an Apple M1 chip (MacBook laptop), the command `sysregs -p` displays this in the macOS host system:
 ~~~
-  Data  (lower): PAC size: 8 bits, bit range: 54:47 (top: 55, sel: 55, bottom: 47)
+  Data  (lower): PAC size:  8 bits, bit range:       54:47 (top: 55, sel: 55, bottom: 47)
   Data  (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 55, bottom: 47)
   Instr (lower): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
   Instr (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
@@ -68,9 +68,9 @@ On an Apple M1 chip (MacBook laptop), the command `sysregs -p` displays this in 
 
 On the same machine with an Apple M1 chip, the same command displays this in a Linux virtual machine:
 ~~~
-  Data  (lower): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
-  Data  (upper): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
-  Instr (lower): PAC size: 7 bits, bit range: 54:48 (top: 55, sel: 55, bottom: 48)
+  Data  (lower): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
+  Data  (upper): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
+  Instr (lower): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
   Instr (upper): PAC size: 15 bits, bit range: 63:56,54:48 (top: 63, sel: 55, bottom: 48)
 ~~~
 

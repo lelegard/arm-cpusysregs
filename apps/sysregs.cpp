@@ -307,15 +307,18 @@ void PACLayout(ArmPseudoCode& code, std::ostream& out, bool upper, bool is_instr
     const bool split = bottom < 55 && 55 < top;
     const int pac_size = std::max(0, top - bottom + (inside ? 0 : 1));
 
-    out << "  " << (is_instr ? "Instr" : "Data ") << " (" << (upper ? "upper" : "lower")
-        << "): PAC size: " << pac_size << " bits, bit range: ";
+    std::string layout;
     if (split) {
-        out << top << ":56,54:" << bottom;
+        layout = Format("%d:56,54:%d", top, bottom);
     }
     else {
-        out << (top == 55 ? 54 : top) << ":" << (bottom == 55 ? 56 : bottom);
+        layout = Format("%d:%d", top == 55 ? 54 : top, bottom == 55 ? 56 : bottom);
     }
-    out << " (top: " << top << ", sel: " << sel << ", bottom: " << bottom << ")" << std::endl;
+
+    out << Format("  %-5s (%s): PAC size: %2d bits, bit range: %11s (top: %2d, sel: %2d, bottom: %2d)",
+                  is_instr ? "Instr" : "Data", upper ? "upper" : "lower",
+                  pac_size, layout.c_str(), top, sel, bottom)
+        << std::endl;
 }
 
 void PointerAuthenticationSummary(const Options& opt, std::ostream& out)
