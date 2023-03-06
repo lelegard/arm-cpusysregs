@@ -1,5 +1,4 @@
-
-Linux ip-xxx 5.15.0-1030-aws #34-Ubuntu SMP Mon Jan 23 20:14:51 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux
+Linux 5.15.0-1030-aws #34-Ubuntu SMP Mon Jan 23 20:14:51 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux
 gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
 Copyright (C) 2021 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO

@@ -17,9 +17,7 @@ make load
 # Generate result files.
 echo "Creating cpusysregs-* files"
 (
-    echo
-    # Anonymize IP address if nost name is "ip-address"
-    uname -a | sed -e 's/ ip[-.][0-9][0-9]*[-.][0-9][0-9]*[-.][0-9][0-9]*[-.][0-9][0-9]* / ip-xxx /'
+    uname -m -p -r -s -v  # same "uname -a" without host name (anonymized)
     [[ $SYSTEM == Linux ]] && gcc --version
     [[ $SYSTEM == Darwin ]] && clang --version
 ) >$DESTDIR/cpusysregs-system.txt
