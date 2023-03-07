@@ -89,6 +89,10 @@ typedef struct {
 // ID_AA64DFR0_EL1 system register.
 #define csr_has_pmuv3p4(dfr0) (((dfr0 >> 8) & 0x0F) >= 5 && ((dfr0 >> 8) & 0x0F) < 15)
 
+// This macro checks if SPE (Statistical Profiling Extension) is supported, based on the value of the
+// ID_AA64DFR0_EL1 system register.
+#define csr_has_spe(dfr0) (((dfr0 >> 32) & 0x0F) >= 1)
+
 // This macro checks if TCR2 registers are supported, based on the value of the
 // ID_AA64MMFR3_EL1 system register.
 #define csr_has_tcr2(mmfr3) ((mmfr3) & 0x000000000000000Fllu)
@@ -118,10 +122,6 @@ typedef struct {
 // Some registers are accessible as pairs (CSR_REGID2_), using csr_pair_t.
 //
 // Maintenance notes: When adding new registers, also:
-// - If the register does not exist in "older" versions of the Arm Architecture,
-//   its name may not be recognized by the assembler (Linux only). In that case,
-//   add the corresponding CSR_SREG_name constant below and access the register
-//   by number instead of name.
 // - Update inlined functions csr_get_register() and csr_set_register() below.
 //   If the register exists only when a given CPU features is supported, make
 //   sure to set the list of required features for the register.
@@ -174,6 +174,23 @@ enum {
     CSR_REGID_MAIR2,        // Memory Attribute Indirection Register (EL1)
     CSR_REGID_PIR,          // Permission Indirection Register 1 (EL1)
     CSR_REGID_PIRE0,        // Permission Indirection Register 0 (EL1)
+    CSR_REGID_ISAR0,        // AArch32 Instruction Set Attribute Register 0
+    CSR_REGID_ISAR1,        // AArch32 Instruction Set Attribute Register 1
+    CSR_REGID_ISAR2,        // AArch32 Instruction Set Attribute Register 2
+    CSR_REGID_ISAR3,        // AArch32 Instruction Set Attribute Register 3
+    CSR_REGID_ISAR4,        // AArch32 Instruction Set Attribute Register 4
+    CSR_REGID_ISAR5,        // AArch32 Instruction Set Attribute Register 5
+    CSR_REGID_ISAR6,        // AArch32 Instruction Set Attribute Register 6
+    CSR_REGID_MMFR0,        // AArch32 Memory Model Feature Register 0
+    CSR_REGID_MMFR1,        // AArch32 Memory Model Feature Register 1
+    CSR_REGID_MMFR2,        // AArch32 Memory Model Feature Register 2
+    CSR_REGID_MMFR3,        // AArch32 Memory Model Feature Register 3
+    CSR_REGID_MMFR4,        // AArch32 Memory Model Feature Register 4
+    CSR_REGID_MMFR5,        // AArch32 Memory Model Feature Register 5
+    CSR_REGID_PFR0,         // AArch32 Processor Feature Register 0
+    CSR_REGID_PFR1,         // AArch32 Processor Feature Register 1
+    CSR_REGID_PFR2,         // AArch32 Processor Feature Register 2
+    CSR_REGID_PMSIDR,       // Sampling Profiling ID Register
     // -------------------  // End of individual registers
     _CSR_REGID_END,
     // -------------------  // Registers which come in pair
@@ -854,6 +871,7 @@ typedef struct {
 #define FEAT_SCTLR2   0x00000800
 #define FEAT_AIE      0x00001000
 #define FEAT_S1PIE    0x00002000
+#define FEAT_SPE      0x00004000
 
 // Get the CPU features. Typically called once on module initialization.
 CSR_INLINE int csr_get_cpu_features(void)
@@ -879,7 +897,8 @@ CSR_INLINE int csr_get_cpu_features(void)
            (csr_has_tcr2(mmfr3) ? FEAT_TCR2 : 0) |
            (csr_has_sctlr2(mmfr3) ? FEAT_SCTLR2 : 0) |
            (csr_has_aie(mmfr3) ? FEAT_AIE : 0) |
-           (csr_has_s1pie(mmfr3) ? FEAT_S1PIE : 0);
+           (csr_has_s1pie(mmfr3) ? FEAT_S1PIE : 0) |
+           (csr_has_spe(dfr0) ? FEAT_SPE : 0);
 }
 
 // Set the value of a single register or pair of registers.
@@ -980,6 +999,23 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_MAIR2,       CSR_SREG_MAIR2_EL1, FEAT_AIE);
         _getreg(CSR_REGID_PIR,         CSR_SREG_PIR_EL1, FEAT_S1PIE);
         _getreg(CSR_REGID_PIRE0,       CSR_SREG_PIRE0_EL1, FEAT_S1PIE);
+        _getreg(CSR_REGID_ISAR0,       CSR_SREG_ID_ISAR0_EL1, 0);
+        _getreg(CSR_REGID_ISAR1,       CSR_SREG_ID_ISAR1_EL1, 0);
+        _getreg(CSR_REGID_ISAR2,       CSR_SREG_ID_ISAR2_EL1, 0);
+        _getreg(CSR_REGID_ISAR3,       CSR_SREG_ID_ISAR3_EL1, 0);
+        _getreg(CSR_REGID_ISAR4,       CSR_SREG_ID_ISAR4_EL1, 0);
+        _getreg(CSR_REGID_ISAR5,       CSR_SREG_ID_ISAR5_EL1, 0);
+        _getreg(CSR_REGID_ISAR6,       CSR_SREG_ID_ISAR6_EL1, 0);
+        _getreg(CSR_REGID_MMFR0,       CSR_SREG_ID_MMFR0_EL1, 0);
+        _getreg(CSR_REGID_MMFR1,       CSR_SREG_ID_MMFR1_EL1, 0);
+        _getreg(CSR_REGID_MMFR2,       CSR_SREG_ID_MMFR2_EL1, 0);
+        _getreg(CSR_REGID_MMFR3,       CSR_SREG_ID_MMFR3_EL1, 0);
+        _getreg(CSR_REGID_MMFR4,       CSR_SREG_ID_MMFR4_EL1, 0);
+        _getreg(CSR_REGID_MMFR5,       CSR_SREG_ID_MMFR5_EL1, 0);
+        _getreg(CSR_REGID_PFR0,        CSR_SREG_ID_PFR0_EL1, 0);
+        _getreg(CSR_REGID_PFR1,        CSR_SREG_ID_PFR1_EL1, 0);
+        _getreg(CSR_REGID_PFR2,        CSR_SREG_ID_PFR2_EL1, 0);
+        _getreg(CSR_REGID_PMSIDR,      CSR_SREG_PMSIDR_EL1, FEAT_SPE);
         _getreg2(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

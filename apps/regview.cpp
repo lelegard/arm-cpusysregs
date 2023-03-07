@@ -47,7 +47,8 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_TCR2) || feat.FEAT_TCR2()) &&
            (!(features & NEED_SCTLR2) || feat.FEAT_SCTLR2()) &&
            (!(features & NEED_AIE) || feat.FEAT_AIE()) &&
-           (!(features & NEED_S1PIE) || feat.FEAT_S1PIE());
+           (!(features & NEED_S1PIE) || feat.FEAT_S1PIE()) &&
+           (!(features & NEED_SPE) || feat.FEAT_SPE());
 }
 
 std::string RegView::Register::featuresList() const
@@ -91,6 +92,9 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_S1PIE) {
         res.push_back("need S1PIE");
+    }
+    if (features & RegView::NEED_SPE) {
+        res.push_back("need SPE");
     }
     return Join(res, ", ");
 }
@@ -227,6 +231,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "ID_AA64DFR0_EL1", "D17.2.59", CSR_REGID_AA64DFR0, READ,
         {
             {"HPMN0",       63, 60, {{0, "none"}, {1, "HPMN0"}}},
+            {"ExtTrcBuff",  59, 56, {}},
             {"BRBE",        55, 52, {{0, "none"}, {1, "BRBE"}, {2, "BRBEv1p1"}}},
             {"MTPMU",       51, 48, {}},
             {"TraceBuffer", 47, 44, {{0, "none"}, {1, "TRBE"}}},
@@ -234,7 +239,9 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"DoubleLock",  39, 36, {{0, "DoubleLock"}, {15, "none"}}},
             {"PMSVer",      35, 32, {}},
             {"CTX_CMPs",    31, 28, {}},
+            {"SEBEP",       27, 24, {}},
             {"WRPs",        23, 20, {}},
+            {"PMSS",        19, 16, {}},
             {"BRPs",        15, 12, {}},
             {"PMUVer",      11,  8, {}},
             {"TraceVer",     7,  4, {}},
@@ -242,7 +249,19 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "ID_AA64DFR1_EL1", "D17.2.60", CSR_REGID_AA64DFR1, READ, {}
+        "ID_AA64DFR1_EL1", "D17.2.60", CSR_REGID_AA64DFR1, READ,
+        {
+            {"ABL_CMPs", 63, 56, {}},
+            {"EBEP",     51, 48, {}},
+            {"ITE",      47, 44, {}},
+            {"ABLE",     43, 40, {}},
+            {"PMICNTR",  39, 36, {}},
+            {"SPMU",     35, 32, {}},
+            {"CTX_CMPs", 31, 24, {}},
+            {"WRPs",     23, 16, {}},
+            {"BRPs",     15,  8, {}},
+            {"SYSPMUID",  7,  0, {}},
+        }
     },
     {
         "ID_AA64ISAR0_EL1", "D17.2.61", CSR_REGID_AA64ISAR0, READ,
@@ -411,7 +430,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"FP",      19, 16, {{0, "FP"}, {1, "FP+FP16"}, {15, "none"}}},
             {"EL3",     15, 12, {{0, "none"}, {1, "AArch64-only"}, {2, "AArch64+32"}}},
             {"EL2",     11,  8, {{0, "none"}, {1, "AArch64-only"}, {2, "AArch64+32"}}},
-            {"EL2",      7,  4, {{1, "AArch64-only"}, {2, "AArch64+32"}}},
+            {"EL1",      7,  4, {{1, "AArch64-only"}, {2, "AArch64+32"}}},
             {"EL0",      3,  0, {{1, "AArch64-only"}, {2, "AArch64+32"}}},
         }
     },
@@ -446,14 +465,18 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64SMFR0_EL1", "D17.2.69", CSR_REGID_AA64SMFR0, READ | NEED_SME,
         {
-            {"FA64",   63, 63, {{0, "none"}, {1, "SME_FA64"}}},
-            {"SMEver", 59, 56, {}},
-            {"I16I64", 55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
-            {"F64F64", 48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
-            {"I8I32",  39, 36, {}},
-            {"F16F32", 35, 35, {}},
-            {"B16F32", 34, 34, {}},
-            {"F32F32", 32, 32, {}},
+            {"FA64",    63, 63, {{0, "none"}, {1, "SME_FA64"}}},
+            {"SMEver",  59, 56, {}},
+            {"I16I64",  55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
+            {"F64F64",  48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
+            {"I16I32",  47, 44, {}},
+            {"B16B16",  43, 43, {}},
+            {"F16F16",  42, 42, {}},
+            {"I8I32",   39, 36, {}},
+            {"F16F32",  35, 35, {}},
+            {"B16F32",  34, 34, {}},
+            {"BI32I32", 33, 33, {}},
+            {"F32F32",  32, 32, {}},
         }
     },
     {
@@ -468,6 +491,200 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"BitPerm", 19, 16, {{0, "none"}, {1, "SVE_BitPerm"}}},
             {"AES",      7,  4, {{0, "none"}, {1, "SVE_AES"}, {2, "SVE_AES+SVE_AES"}}},
             {"SVEver",   3,  0, {{0, "none"}, {1, "SVE2"}}},
+        }
+    },
+    {
+        "ID_ISAR0_EL1", "D17.2.74", CSR_REGID_ISAR0, READ,
+        {
+            {"Divide",    27, 24, {}},
+            {"Debug",     23, 20, {}},
+            {"Coproc",    19, 16, {}},
+            {"CmpBranch", 15, 12, {}},
+            {"BitField",  11,  8, {}},
+            {"BitCount",   7,  4, {}},
+            {"Swap",       3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR1_EL1", "D17.2.75", CSR_REGID_ISAR1, READ,
+        {
+            {"Jazelle",   31, 28, {}},
+            {"Interwork", 27, 24, {}},
+            {"Immediate", 23, 20, {}},
+            {"IfThen",    19, 16, {}},
+            {"Extend",    15, 12, {}},
+            {"Except_AR", 11,  8, {}},
+            {"Except",     7,  4, {}},
+            {"Endian",     3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR2_EL1", "D17.2.76", CSR_REGID_ISAR2, READ,
+        {
+            {"Reversal",       31, 28, {}},
+            {"PSR_AR",         27, 24, {}},
+            {"MultU",          23, 20, {}},
+            {"MultS",          19, 16, {}},
+            {"Mult",           15, 12, {}},
+            {"MultiAccessInt", 11,  8, {}},
+            {"MemHint",         7,  4, {}},
+            {"LoadStore",       3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR3_EL1", "D17.2.77", CSR_REGID_ISAR3, READ,
+        {
+            {"T32EE",     31, 28, {}},
+            {"TrueNOP",   27, 24, {}},
+            {"T32Copy",   23, 20, {}},
+            {"TabBranch", 19, 16, {}},
+            {"SynchPrim", 15, 12, {}},
+            {"SVC",       11,  8, {}},
+            {"SIMD",       7,  4, {}},
+            {"Saturate",   3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR4_EL1", "D17.2.78", CSR_REGID_ISAR4, READ,
+        {
+            {"SWP_frac",       31, 28, {}},
+            {"PSR_M",          27, 24, {}},
+            {"SynchPrim_frac", 23, 20, {}},
+            {"Barrier",        19, 16, {}},
+            {"SMC",            15, 12, {}},
+            {"Writeback",      11,  8, {}},
+            {"WithShifts",      7,  4, {}},
+            {"Unpriv",          3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR5_EL1", "D17.2.79", CSR_REGID_ISAR5, READ,
+        {
+            {"VCMA",  31, 28, {}},
+            {"RDM",   27, 24, {}},
+            {"CRC32", 19, 16, {}},
+            {"SHA2",  15, 12, {}},
+            {"SHA1",  11,  8, {}},
+            {"AES",    7,  4, {}},
+            {"SEVL",   3,  0, {}},
+        }
+    },
+    {
+        "ID_ISAR6_EL1", "D17.2.80", CSR_REGID_ISAR6, READ,
+        {
+            {"I8MM",    27, 24, {}},
+            {"BF16",    23, 20, {}},
+            {"SPECRES", 19, 16, {}},
+            {"SB",      15, 12, {}},
+            {"FHM",     11,  8, {}},
+            {"DP",       7,  4, {}},
+            {"JSCVT",    3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR0_EL1", "D17.2.81", CSR_REGID_MMFR0, READ,
+        {
+            {"InnerShr", 31, 28, {}},
+            {"FCSE",     27, 24, {}},
+            {"AuxReg",   23, 20, {}},
+            {"TCM",      19, 16, {}},
+            {"ShareLvl", 15, 12, {}},
+            {"OuterShr", 11,  8, {}},
+            {"PMSA",      7,  4, {}},
+            {"VMSA",      3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR1_EL1", "D17.2.82", CSR_REGID_MMFR1, READ,
+        {
+            {"BPred",    31, 28, {}},
+            {"L1TstCln", 27, 24, {}},
+            {"L1Uni",    23, 20, {}},
+            {"L1Hvd",    19, 16, {}},
+            {"L1UniSW",  15, 12, {}},
+            {"L1HvdSW",  11,  8, {}},
+            {"L1UniVA",   7,  4, {}},
+            {"L1HvdVA",   3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR2_EL1", "D17.2.83", CSR_REGID_MMFR2, READ,
+        {
+            {"HWAccFlg", 31, 28, {}},
+            {"WFIStall", 27, 24, {}},
+            {"MemBarr",  23, 20, {}},
+            {"UniTLB",   19, 16, {}},
+            {"HvdTLB",   15, 12, {}},
+            {"L1HvdRng", 11,  8, {}},
+            {"L1HvdBG",   7,  4, {}},
+            {"L1HvdFG",   3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR3_EL1", "D17.2.84", CSR_REGID_MMFR3, READ,
+        {
+            {"Supersec",  31, 28, {}},
+            {"CMemSz",    27, 24, {}},
+            {"CohWalk",   23, 20, {}},
+            {"PAN",       19, 16, {}},
+            {"MaintBcst", 15, 12, {}},
+            {"BPMaint",   11,  8, {}},
+            {"CMaintSW",   7,  4, {}},
+            {"CMaintVA",   3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR4_EL1", "D17.2.85", CSR_REGID_MMFR4, READ,
+        {
+            {"EVT",    31, 28, {}},
+            {"CCIDX",  27, 24, {}},
+            {"LSM",    23, 20, {}},
+            {"HPDS",   19, 16, {}},
+            {"CnP",    15, 12, {}},
+            {"XNX",    11,  8, {}},
+            {"AC2",     7,  4, {}},
+            {"SpecSEI", 3,  0, {}},
+        }
+    },
+    {
+        "ID_MMFR5_EL1", "D17.2.86", CSR_REGID_MMFR5, READ,
+        {
+            {"nTLBPA",  7,  4, {}},
+            {"ETS",  3,  0, {}},
+        }
+    },
+    {
+        "ID_PFR0_EL1", "D17.2.87", CSR_REGID_PFR0, READ,
+        {
+            {"RAS",    31, 28, {}},
+            {"DIT",    27, 24, {}},
+            {"AMU",    23, 20, {}},
+            {"CSV2",   19, 16, {}},
+            {"State3", 15, 12, {}},
+            {"State2", 11,  8, {}},
+            {"State1",  7,  4, {}},
+            {"State0",  3,  0, {}},
+        }
+    },
+    {
+        "ID_PFR1_EL1", "D17.2.88", CSR_REGID_PFR1, READ,
+        {
+            {"GIC",            31, 28, {}},
+            {"Virt_frac",      27, 24, {}},
+            {"Sec_frac",       23, 20, {}},
+            {"GenTimer",       19, 16, {}},
+            {"Virtualization", 15, 12, {}},
+            {"MProgMod",       11,  8, {}},
+            {"Security",        7,  4, {}},
+            {"ProgMod",         3,  0, {}},
+        }
+    },
+    {
+        "ID_PFR2_EL1", "D17.2.89", CSR_REGID_PFR2, READ,
+        {
+            {"RAS_frac", 11,  8, {}},
+            {"SSBS",      7,  4, {}},
+            {"CSV3",      3,  0, {}},
         }
     },
     {
@@ -815,10 +1032,32 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "PMMIR_EL1", "D17.5.12", CSR_REGID_PMMIR, READ | NEED_PMUv3p4,
         {
+            {"EDGE",      27, 24, {}},
             {"THWIDTH",   23, 20, {}},
             {"BUS_WIDTH", 19, 16, {}},
             {"BUS_SLOTS", 15,  8, {}},
             {"SLOTS",      7,  0, {}},
+        }
+    },
+    {
+        "PMSIDR_EL1", "D17.7.10", CSR_REGID_PMSIDR, READ | NEED_SPE,
+        {
+            {"CRR",       25, 25, {{0, "none"}, {1, "SPE_CRR"}}},
+            {"PBT",       24, 24, {{0, "none"}, {1, "SPEv1p2"}}},
+            {"Format",    23, 20, {}},
+            {"CountSize", 19, 16, {{2, "12-bit saturating"}, {3, "16-bit saturating"}}},
+            {"MaxSize",   15, 12, {{4, "16 bytes"}, {5, "32 bytes"}, {6, "64 bytes"}, {7, "128 bytes"},
+                                   {8, "256 bytes"}, {9, "512 bytes"}, {10, "1KB"}, {11, "2KB"}}},
+            {"Interval",  11,  8, {{0, "256"}, {2, "512"}, {3, "768"}, {4, "1024"},
+                                   {5, "1536"}, {6, "2048"}, {7, "3072"}, {8, "4096"}}},
+            {"FDS",        7,  7, {}},
+            {"FNE",        6,  6, {}},
+            {"ERnd",       5,  5, {}},
+            {"LDS",        4,  4, {}},
+            {"ArchInst",   3,  3, {}},
+            {"FL",         2,  2, {}},
+            {"FT",         1,  1, {}},
+            {"FE",         0,  0, {}},
         }
     },
 };

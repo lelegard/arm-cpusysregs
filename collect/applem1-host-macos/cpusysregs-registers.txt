@@ -25,6 +25,7 @@ ID_AA64DFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0011 0000 0
 
   Arch. Ref. Manual section D17.2.59
   HPMN0:       0x0 (none)
+  ExtTrcBuff:  0x0 (0)
   BRBE:        0x0 (none)
   MTPMU:       0x0 (0)
   TraceBuffer: 0x0 (none)
@@ -32,7 +33,9 @@ ID_AA64DFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0011 0000 0
   DoubleLock:  0x0 (DoubleLock)
   PMSVer:      0x0 (0)
   CTX_CMPs:    0x1 (1)
+  SEBEP:       0x0 (0)
   WRPs:        0x3 (3)
+  PMSS:        0x0 (0)
   BRPs:        0x5 (5)
   PMUVer:      0xF (15)
   TraceVer:    0x0 (0)
@@ -41,7 +44,16 @@ ID_AA64DFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0011 0000 0
 ID_AA64DFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
 
   Arch. Ref. Manual section D17.2.60
-  Value: 00000000-00000000
+  ABL_CMPs: 0x00 (0)
+  EBEP:     0x0 (0)
+  ITE:      0x0 (0)
+  ABLE:     0x0 (0)
+  PMICNTR:  0x0 (0)
+  SPMU:     0x0 (0)
+  CTX_CMPs: 0x00 (0)
+  WRPs:     0x00 (0)
+  BRPs:     0x00 (0)
+  SYSPMUID: 0x00 (0)
 
 ID_AA64ISAR0_EL1: 0000 0010 0010 0001 0001 0000 0000 0001 - 0001 0000 0010 0001 0010 0001 0010 0000
 
@@ -197,7 +209,7 @@ ID_AA64PFR0_EL1: 0001 0001 0000 0001 0000 0000 0000 0000 - 0001 0000 0001 0001 0
   FP:      0x1 (FP+FP16)
   EL3:     0x0 (none)
   EL2:     0x1 (AArch64-only)
-  EL2:     0x1 (AArch64-only)
+  EL1:     0x1 (AArch64-only)
   EL0:     0x1 (AArch64-only)
 
 ID_AA64PFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0010 0000
@@ -226,6 +238,184 @@ ID_AA64PFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0
   MTESTOREONLY: 0x0 (none)
   MTEPERM:      0x0 (none)
 
+ID_ISAR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.74
+  Divide:    0x0 (0)
+  Debug:     0x0 (0)
+  Coproc:    0x0 (0)
+  CmpBranch: 0x0 (0)
+  BitField:  0x0 (0)
+  BitCount:  0x0 (0)
+  Swap:      0x0 (0)
+
+ID_ISAR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.75
+  Jazelle:   0x0 (0)
+  Interwork: 0x0 (0)
+  Immediate: 0x0 (0)
+  IfThen:    0x0 (0)
+  Extend:    0x0 (0)
+  Except_AR: 0x0 (0)
+  Except:    0x0 (0)
+  Endian:    0x0 (0)
+
+ID_ISAR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.76
+  Reversal:       0x0 (0)
+  PSR_AR:         0x0 (0)
+  MultU:          0x0 (0)
+  MultS:          0x0 (0)
+  Mult:           0x0 (0)
+  MultiAccessInt: 0x0 (0)
+  MemHint:        0x0 (0)
+  LoadStore:      0x0 (0)
+
+ID_ISAR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.77
+  T32EE:     0x0 (0)
+  TrueNOP:   0x0 (0)
+  T32Copy:   0x0 (0)
+  TabBranch: 0x0 (0)
+  SynchPrim: 0x0 (0)
+  SVC:       0x0 (0)
+  SIMD:      0x0 (0)
+  Saturate:  0x0 (0)
+
+ID_ISAR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.78
+  SWP_frac:       0x0 (0)
+  PSR_M:          0x0 (0)
+  SynchPrim_frac: 0x0 (0)
+  Barrier:        0x0 (0)
+  SMC:            0x0 (0)
+  Writeback:      0x0 (0)
+  WithShifts:     0x0 (0)
+  Unpriv:         0x0 (0)
+
+ID_ISAR5_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.79
+  VCMA:  0x0 (0)
+  RDM:   0x0 (0)
+  CRC32: 0x0 (0)
+  SHA2:  0x0 (0)
+  SHA1:  0x0 (0)
+  AES:   0x0 (0)
+  SEVL:  0x0 (0)
+
+ID_ISAR6_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.80
+  I8MM:    0x0 (0)
+  BF16:    0x0 (0)
+  SPECRES: 0x0 (0)
+  SB:      0x0 (0)
+  FHM:     0x0 (0)
+  DP:      0x0 (0)
+  JSCVT:   0x0 (0)
+
+ID_MMFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.81
+  InnerShr: 0x0 (0)
+  FCSE:     0x0 (0)
+  AuxReg:   0x0 (0)
+  TCM:      0x0 (0)
+  ShareLvl: 0x0 (0)
+  OuterShr: 0x0 (0)
+  PMSA:     0x0 (0)
+  VMSA:     0x0 (0)
+
+ID_MMFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.82
+  BPred:    0x0 (0)
+  L1TstCln: 0x0 (0)
+  L1Uni:    0x0 (0)
+  L1Hvd:    0x0 (0)
+  L1UniSW:  0x0 (0)
+  L1HvdSW:  0x0 (0)
+  L1UniVA:  0x0 (0)
+  L1HvdVA:  0x0 (0)
+
+ID_MMFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.83
+  HWAccFlg: 0x0 (0)
+  WFIStall: 0x0 (0)
+  MemBarr:  0x0 (0)
+  UniTLB:   0x0 (0)
+  HvdTLB:   0x0 (0)
+  L1HvdRng: 0x0 (0)
+  L1HvdBG:  0x0 (0)
+  L1HvdFG:  0x0 (0)
+
+ID_MMFR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.84
+  Supersec:  0x0 (0)
+  CMemSz:    0x0 (0)
+  CohWalk:   0x0 (0)
+  PAN:       0x0 (0)
+  MaintBcst: 0x0 (0)
+  BPMaint:   0x0 (0)
+  CMaintSW:  0x0 (0)
+  CMaintVA:  0x0 (0)
+
+ID_MMFR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.85
+  EVT:     0x0 (0)
+  CCIDX:   0x0 (0)
+  LSM:     0x0 (0)
+  HPDS:    0x0 (0)
+  CnP:     0x0 (0)
+  XNX:     0x0 (0)
+  AC2:     0x0 (0)
+  SpecSEI: 0x0 (0)
+
+ID_MMFR5_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.86
+  nTLBPA: 0x0 (0)
+  ETS:    0x0 (0)
+
+ID_PFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.87
+  RAS:    0x0 (0)
+  DIT:    0x0 (0)
+  AMU:    0x0 (0)
+  CSV2:   0x0 (0)
+  State3: 0x0 (0)
+  State2: 0x0 (0)
+  State1: 0x0 (0)
+  State0: 0x0 (0)
+
+ID_PFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.88
+  GIC:            0x0 (0)
+  Virt_frac:      0x0 (0)
+  Sec_frac:       0x0 (0)
+  GenTimer:       0x0 (0)
+  Virtualization: 0x0 (0)
+  MProgMod:       0x0 (0)
+  Security:       0x0 (0)
+  ProgMod:        0x0 (0)
+
+ID_PFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Arch. Ref. Manual section D17.2.89
+  RAS_frac: 0x0 (0)
+  SSBS:     0x0 (0)
+  CSV3:     0x0 (0)
+
 MAIR_EL1: 0000 1100 0000 1000 0000 0100 0100 1111 - 0000 0000 1011 1011 0100 0100 1111 1111
 
   Arch. Ref. Manual section D17.2.97
@@ -247,7 +437,7 @@ MIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0110 0001 0001 1111 0000 001
   PartNum:      0x023 (35)
   Revision:     0x1 (1)
 
-MPIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0000 0000 0001 0000 0001 0000 0000
+MPIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0000 0000 0001 0000 0001 0000 0001
 
   Arch. Ref. Manual section D17.2.101
   Aff3: 0x00 (0)
@@ -255,7 +445,7 @@ MPIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0000 0000 0001 0000 00
   MT:   0x0 (Independent perf.)
   Aff2: 0x01 (1)
   Aff1: 0x01 (1)
-  Aff0: 0x00 (0)
+  Aff0: 0x01 (1)
 
 REVIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
 
@@ -367,32 +557,32 @@ TCR_EL1: 0000 0001 0000 1000 0000 0000 0010 0010 - 0110 0101 0001 0001 1010 0101
   EPD0:   0x0 (Translation table walks using TTBR0_EL1)
   T0SZ:   0x11 (17)
 
-TPIDRRO_EL0: 0000 0000 0000 0000 0000 0000 0000 0001 - 1110 1111 1101 1001 1100 0010 0010 0000
+TPIDRRO_EL0: 0000 0000 0000 0000 0000 0000 0000 0001 - 1111 1111 1010 0000 1100 0010 0010 0000
 
   Arch. Ref. Manual section D17.2.143
-  Value: 00000001-EFD9C220
+  Value: 00000001-FFA0C220
 
-TPIDR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0100
+TPIDR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0101
 
   Arch. Ref. Manual section D17.2.139
-  Value: 00000000-00000004
+  Value: 00000000-00000005
 
-TPIDR_EL1: 1111 1111 1111 1111 1111 1110 0010 0000 - 1000 1110 0100 1010 1111 0000 0001 0000
+TPIDR_EL1: 1111 1111 1111 1111 1111 1110 0010 0100 - 1100 1110 0100 1010 0100 0000 0100 0000
 
   Arch. Ref. Manual section D17.2.140
-  Value: FFFFFE20-8E4AF010
+  Value: FFFFFE24-CE4A4040
 
-TTBR0_EL1: 0000 0000 1000 1101 0000 0000 0000 1000 - 1100 0010 1101 1001 1100 0000 0000 0000
+TTBR0_EL1: 0000 0000 0110 1110 0000 0000 0000 1011 - 0010 1100 1110 1100 0100 0000 0000 0000
 
   Arch. Ref. Manual section D17.2.144
-  ASID:  0x008D (141)
-  BADDR: 0x0004616CE000 (18814394368)
+  ASID:  0x006E (110)
+  BADDR: 0x000596762000 (23999160320)
   CnP:   0x0 (differ)
 
-TTBR1_EL1: 0000 0000 0000 0000 0000 0000 0000 1000 - 0000 0100 0011 1001 1000 0000 0000 0000
+TTBR1_EL1: 0000 0000 0000 0000 0000 0000 0000 1000 - 0000 0100 1111 0100 0100 0000 0000 0000
 
   Arch. Ref. Manual section D17.2.147
   ASID:  0x0000 (0)
-  BADDR: 0x0004021CC000 (17215307776)
+  BADDR: 0x0004027A2000 (17221427200)
   CnP:   0x0 (differ)
 

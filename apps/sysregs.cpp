@@ -397,7 +397,7 @@ void FeaturesSummary(const Options& opt, std::ostream& out)
         name_width = std::max(name_width, feat.name.length());
     }
     for (const auto& feat : AllArmFeatures) {
-        out << Pad(feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
+        out << Pad(feat.name + " ", name_width + 2) << " " << YesNo((features.*feat.get)()) << std::endl;
     }
 }
 

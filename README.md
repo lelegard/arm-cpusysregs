@@ -112,6 +112,22 @@ version 0487I.a.
 | ID_AA64PFR2_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 2
 | ID_AA64SMFR0_EL1 | D17.2.69      | R       | SME Feature ID register 0
 | ID_AA64ZFR0_EL1  | D17.2.70      | R       | SVE Feature ID register 0
+| ID_ISAR0_EL1     | D17.2.74      | R       | AArch32 Instruction Set Attribute Register 0
+| ID_ISAR1_EL1     | D17.2.75      | R       | AArch32 Instruction Set Attribute Register 1
+| ID_ISAR2_EL1     | D17.2.76      | R       | AArch32 Instruction Set Attribute Register 2
+| ID_ISAR3_EL1     | D17.2.77      | R       | AArch32 Instruction Set Attribute Register 3
+| ID_ISAR4_EL1     | D17.2.78      | R       | AArch32 Instruction Set Attribute Register 4
+| ID_ISAR5_EL1     | D17.2.79      | R       | AArch32 Instruction Set Attribute Register 5
+| ID_ISAR6_EL1     | D17.2.80      | R       | AArch32 Instruction Set Attribute Register 6
+| ID_MMFR0_EL1     | D17.2.81      | R       | AArch32 Memory Model Feature Register 0
+| ID_MMFR1_EL1     | D17.2.82      | R       | AArch32 Memory Model Feature Register 1
+| ID_MMFR2_EL1     | D17.2.83      | R       | AArch32 Memory Model Feature Register 2
+| ID_MMFR3_EL1     | D17.2.84      | R       | AArch32 Memory Model Feature Register 3
+| ID_MMFR4_EL1     | D17.2.85      | R       | AArch32 Memory Model Feature Register 4
+| ID_MMFR5_EL1     | D17.2.86      | R       | AArch32 Memory Model Feature Register 5
+| ID_PFR0_EL1      | D17.2.87      | R       | AArch32 Processor Feature Register 0
+| ID_PFR1_EL1      | D17.2.88      | R       | AArch32 Processor Feature Register 1
+| ID_PFR2_EL1      | D17.2.89      | R       | AArch32 Processor Feature Register 2
 | MAIR_EL1         | D17.2.97      | R       | Memory Attribute Indirection Register (EL1)
 | MAIR2_EL1        | N/A           | R       | Extended Memory Attribute Indirection Register (EL1)
 | MIDR_EL1         | D17.2.100     | R       | Main ID Register
@@ -135,6 +151,7 @@ version 0487I.a.
 | TTBR0_EL1        | D17.2.144     | R       | Translation Table Base Register 0 (EL1)
 | TTBR1_EL1        | D17.2.147     | R       | Translation Table Base Register 1 (EL1)
 | PMMIR_EL1        | D17.5.12      | R       | Performance Monitors Machine Identification Register
+| PMSIDR_EL1       | D17.7.10      | R       | Sampling Profiling ID Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers

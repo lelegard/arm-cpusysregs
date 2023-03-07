@@ -52,6 +52,7 @@ public:
         NEED_SCTLR2  = 0x00000800,  // exist only with SCTLR2
         NEED_AIE     = 0x00001000,  // exist only with AIE
         NEED_S1PIE   = 0x00002000,  // exist only with S1PIE
+        NEED_SPE     = 0x00004000,  // exist only with SPE
     };
 
     // Description of one register with bitfields.

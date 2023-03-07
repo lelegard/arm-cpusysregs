@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     UserFeatures features;
     for (const auto& feat : AllUserFeatures) {
-        std::cout << Pad(feat.name + " ", name_width + 1) << " " << YesNo((features.*feat.get)()) << std::endl;
+        std::cout << Pad(feat.name + " ", name_width + 2) << " " << YesNo((features.*feat.get)()) << std::endl;
     }
 
     return EXIT_SUCCESS;
