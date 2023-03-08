@@ -24,6 +24,7 @@ CXXFLAGS += $(ARCHFLAGS) -O2 -std=c++17 -Wall -Wextra -Wno-unused-parameter -Wno
 LDFLAGS  += $(ARCHFLAGS)
 LDLIBS   += -lstdc++
 ARFLAGS   = rc
+SORT      = LC_ALL=C sort -d -f
 
 SOURCES   := $(filter-out $(EXCLUDE)-%.cpp,$(wildcard *.cpp))
 HEADERS   := $(filter-out $(EXCLUDE)-%.h,$(wildcard *.h))
@@ -47,13 +48,13 @@ sysregs.d: _armfeatures.h
 _armfeatures.h: armfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&ArmFeatures::FEAT_\1},/' | \
-	    sort -d -f >$@
+	    $(SORT) >$@
 
 demo-userfeatures.d: _userfeatures.h
 _userfeatures.h: userfeatures.h
 	grep '^ *bool FEAT_' $^ | \
 	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&UserFeatures::FEAT_\1},/' | \
-	    sort -d -f >$@
+	    $(SORT) >$@
 
 linux-hwcaps.d: _hwcaps.h
 _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
@@ -61,7 +62,7 @@ _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
 	    sed -e 's/^#define[[:space:]]* HWCAP_\([^ \t]*\).*$$/    {"\1", AT_HWCAP, HWCAP_\1},/'; \
 	 grep '^#define[[:space:]]* HWCAP2_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP2_\([^ \t]*\).*$$/    {"\1", AT_HWCAP2, HWCAP2_\1},/') | \
-	 sort -u -d -f >$@
+	 $(SORT) -u >$@
 
 mac-sysctl.d: _sysctl.h
 _sysctl.h:
