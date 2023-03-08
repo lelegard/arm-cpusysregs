@@ -1,4 +1,16 @@
+Kernel
+------
 Linux 5.19.0-35-generic #36-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb 3 18:36:47 UTC 2023 aarch64 aarch64
+
+Operating system
+----------------
+Distributor ID: Ubuntu
+Description:    Ubuntu 22.10
+Release:        22.10
+Codename:       kinetic
+
+Compiler
+--------
 gcc (Ubuntu 12.2.0-3ubuntu1) 12.2.0
 Copyright (C) 2022 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
