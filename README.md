@@ -1,40 +1,65 @@
 # Access Arm64 CPU system registers
 
-The Arm64 architecture defines a large quantity of special system registers.
-Many of them are inaccessible from userland. When a system register name ends in `_EL1`,
-it is accessible only at EL1 (kernel mode). Similarly, system registers in `_EL2` are
-accessible only in hypervisor mode and `_EL3` in monitor mode.
+The 64-bit Arm architecture (a.k.a. "arm64", "aarch64") defines a large quantity
+of special system registers. Many of them are inaccessible from userland. When a
+system register name ends in `_EL1`, it is accessible only at EL1 (kernel mode).
+Similarly, system registers in `_EL2` are accessible only in hypervisor mode and
+`_EL3` in monitor mode.
 
-Reading and writing system registers is done using the special instructions `MRS` and `MSR`,
-respectively. Trying to access a system register from an outer level results in an "illegal
-instruction" exception.
+This educational project provides a way to return the exact content of a few Arm64
+system registers to userland through a dedicated loadable kernel module, on Linux
+and macOS. Some application programs are provided to display an analysis of the
+contents of these registers.
 
-On Linux, there is a special feature in the kernel which allows a limited access to
-a few `_EL1` system registers from user mode. The kernel intercepts the `SIGILL` exception
-which results from the invalid access to a system register using an `MRS` instruction.
-If the requested system register is one of a few selected allowed registers, the kernel
-reads the system register and returns it to the process, as if the `MRS` instruction
-executed correctly.
+**Contents:**
+
+* [Accessing the system registers](#accessing-the-system-registers)
+* [Build instructions](#build-instructions)
+* [Usage instructions](#usage-instructions)
+* [Focus on Pointer Authentication Code (PAC)](#focus-on-pointer-authentication-code-pac)
+* [List of accessible registers](#list-of-accessible-registers)
+
+## Accessing the system registers
+
+Reading and writing system registers is done using the special instructions
+`MRS` and `MSR`, respectively. Each system register has a dedicated exception
+level, EL0 to EL3. Trying to access a system register from an outer level
+results in an "illegal instruction" exception.
+
+On Linux, there is a special feature in the kernel which allows a limited access
+to a few `_EL1` system registers from user mode (EL0). The kernel intercepts the
+`SIGILL` exception which results from the invalid access to a system register
+using an `MRS` instruction. If the requested system register is one of a few
+selected allowed registers, the kernel reads the system register and returns it
+to the process, as if the `MRS` instruction executed correctly.
+
 This is [explained in details here](https://www.kernel.org/doc/html/latest/arm64/cpu-feature-registers.html).
 As a general requirement, no sensitive security information is returned.
 In some cases, some parts of the register content are blacked out.
 
-However, this is a Linux-only feature and it is limited to a few registers, or a subpart of them.
-This means that we are never really sure of what the physical register was.
+This is a Linux-only feature and it is limited to a few registers, or a subpart of
+them. This means that we are never really sure of what the physical register was.
 
-This educational project provides a way to return the exact content of a few Arm64 registers
-to userland through a dedicated loadable kernel module, on Linux and macOS. Some application
-programs are provided to display an analysis of the contents of these registers.
+This project provides Linux and macOS kernel modules to read and write selected
+system registers from user applications.
 
-Warning: This project is for educational purpose only, for people wanting to increase their
-knowledge in the Arm64 architecture. Loading a custom kernel module may always have unexpected
-side effects, including:
+Warning: This project is for educational purpose only, for people wanting to
+increase their knowledge in the Arm64 architecture. Loading a custom kernel
+module may always have unexpected side effects, including:
 
-- Security effects: the content of the system registers could be used to gain information on
-  the system, including the pointer authentication keys.
-- Stability effects: modifying the PACIA key using a kernel which is built with pointer authentication
-  crashes the system since the return pointer of the kernel functions are authenticated with a
-  different key as used by the previous PACIA (believe me, I tried...)
+- Security effects: the content of the system registers could be used to gain
+  information on the system, including the pointer authentication keys.
+- Stability effects:
+  - Accessing Arm system registers is not only a matter of exception level.
+    The Arm architecture reference manual describes in details the pseudo-code
+    to access each register. There are many specific configuration options,
+    usually set by the hypervisor (EL2) or monitor (EL3) which filter or
+    protect access to the register. In specific configurations, accessing
+    a system register from the kernel may either work or crash the system.
+  - Modifying the PACIA key using a kernel which is built with pointer
+    authentication crashes the system since the return pointer of the kernel
+    functions are authenticated with a different key as used by the previous
+    PACIA (believe me, I tried...)
 
 See the file [docs/references.md](docs/references.md) for a list of reference documentations.
 
@@ -73,14 +98,32 @@ Syntax: sysregs [options]
 
 See more details in:
 
-- The `apps` subdirectory for command line tools.
-
+- The `apps` subdirectory for other command line tools.
 - The `kernel` subdirectory for programming guidelines.
+
+## Focus on Pointer Authentication Code (PAC)
+
+One of the motivations for this project was a better understanding of the
+Pointer Authentication Code (PAC) feature, as introduced in the Armv8.3-A
+architecture. PAC is one of the clever "defensive security" features which
+were designed by Arm (the other one is BTI, the Branch Target Indentification).
+
+Understanding PAC is harder than it may seem. There are many configuration
+options which depend on the operating system or the platform. Predicting the
+size, position and value of a PAC is not trivial. We need to read several
+memory management system registers and correctly interpret the complex Arm
+pseudo-code (or emulate it as done in this project). The command `sysregs -p`
+summarizes this.
+
+There are several documents in the [docs](docs) subdirectory containing the
+summary of observations about the PAC on different platforms. The subdirectory
+[collect](collect) contains informations which were collected on these
+platforms, Linux and macOS, using various Arm-based processor chips.
 
 ## List of accessible registers
 
-The reference list of registers which can be accessed by this project is given by the list of
-`CSR_REG_xxx` and `CSR_REG2_xxx` constants in file `kernel/cpusysregs.h`.
+The reference list of registers which can be accessed by this project is given by
+the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file `kernel/cpusysregs.h`.
 
 The following table lists them with the corresponding reference sections in the
 [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),

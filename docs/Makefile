@@ -1,2 +1,3 @@
+# Documentation directory: rebuid the table of contents of all markdown files.
 default:
-	./build-tocs.sh
+	../build-md-toc.sh *.md

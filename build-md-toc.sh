@@ -5,15 +5,17 @@
 # Copyright (c) 2023, Thierry Lelegard
 # BSD-2-Clause license, see the LICENSE file.
 #
-# Rebuild the table of contents in all markdown files in this directory.
+# Rebuild the table of contents in all specified markdown files.
 # If a markdown file contains a line which is exactly '**Contents:**',
 # a table of contents is automatically generated or updated immediately
 # following that line.
 #
 #----------------------------------------------------------------------------
 
-# Work on files in the same directory as the script.
-cd $(dirname $0)
+SCRIPT=$(basename $BASH_SOURCE)
+error() { echo >&2 "$SCRIPT: $*"; exit 1; }
+
+[[ $# -gt 0 ]] || error "usage: $SCRIPT file.md ..."
 
 # Search or install command "gh-md-toc"
 GH_MD_TOC=$(which gh-md-toc 2>/dev/null)
@@ -27,7 +29,7 @@ if [[ -z $GH_MD_TOC ]]; then
 fi
 
 # Process all markdown files.
-for file in *.md; do
+for file in "$@"; do
     # Process file which contains a line which is exactly '**Contents:**'.
     if grep -q '^\*\*Contents:\*\*$' $file; then
         intoc=false  # true when inside the previous TOC
