@@ -130,76 +130,76 @@ typedef struct {
 //   Also make sure to specify the required list of CPU features.
 
 enum {
-    CSR_REGID_INVALID,      // Placeholder for invalid register id
-    // -------------------  // Individual registers
-    CSR_REGID_AA64PFR0,     // AArch64 Processor Feature registers 0
-    CSR_REGID_AA64PFR1,     // AArch64 Processor Feature registers 1
-    CSR_REGID_AA64PFR2,     // AArch64 Processor Feature registers 2
-    CSR_REGID_AA64ISAR0,    // AArch64 Instruction Set Attribute Register 0
-    CSR_REGID_AA64ISAR1,    // AArch64 Instruction Set Attribute Register 1
-    CSR_REGID_AA64ISAR2,    // AArch64 Instruction Set Attribute Register 2
-    CSR_REGID_TCR,          // Translation Control Register
-    CSR_REGID_TCR2,         // Extended Translation Control Register
-    CSR_REGID_MIDR,         // Main ID Register (read-only)
-    CSR_REGID_MPIDR,        // Multiprocessor Affinity Register
-    CSR_REGID_REVIDR,       // Revision ID Register
-    CSR_REGID_TPIDRRO_EL0,  // EL0 Read-Only Software Thread ID Register (R/W at EL1)
-    CSR_REGID_TPIDR_EL0,    // EL0 Read/Write Software Thread ID Register
-    CSR_REGID_TPIDR_EL1,    // EL1 Software Thread ID Register
-    CSR_REGID_SCXTNUM_EL0,  // EL0 Read/Write Software Context Number
-    CSR_REGID_SCXTNUM_EL1,  // EL1 Read/Write Software Context Number
-    CSR_REGID_SCTLR,        // System Control Register
-    CSR_REGID_SCTLR2,       // System Control Register 2
-    CSR_REGID_HCR,          // Hypervisor Configuration Register (EL2)
-    CSR_REGID_RNDR,         // Random Number
-    CSR_REGID_RNDRRS,       // Reseeded Random Number
-    CSR_REGID_SCR,          // Secure Configuration Register (EL3)
-    CSR_REGID_AA64MMFR0,    // AArch64 Memory Model Feature Register 0
-    CSR_REGID_AA64MMFR1,    // AArch64 Memory Model Feature Register 1
-    CSR_REGID_AA64MMFR2,    // AArch64 Memory Model Feature Register 2
-    CSR_REGID_AA64MMFR3,    // AArch64 Memory Model Feature Register 3
-    CSR_REGID_AA64MMFR4,    // AArch64 Memory Model Feature Register 4
-    CSR_REGID_AA64ZFR0,     // SVE Feature ID register 0
-    CSR_REGID_AA64SMFR0,    // SME Feature ID register 0
-    CSR_REGID_AA64AFR0,     // AArch64 Auxiliary Feature Register 0
-    CSR_REGID_AA64AFR1,     // AArch64 Auxiliary Feature Register 1
-    CSR_REGID_AA64DFR0,     // AArch64 Debug Feature Register 0
-    CSR_REGID_AA64DFR1,     // AArch64 Debug Feature Register 1
-    CSR_REGID_TRCDEVARCH,   // Trace Device Architecture Register
-    CSR_REGID_PMMIR,        // Performance Monitors Machine Identification Register
-    CSR_REGID_CTR,          // Cache Type Register
-    CSR_REGID_TTBR0_EL1,    // Translation Table Base Register 0 (EL1)
-    CSR_REGID_TTBR1_EL1,    // Translation Table Base Register 1 (EL1)
-    CSR_REGID_MAIR,         // Memory Attribute Indirection Register (EL1)
-    CSR_REGID_MAIR2,        // Memory Attribute Indirection Register (EL1)
-    CSR_REGID_PIR,          // Permission Indirection Register 1 (EL1)
-    CSR_REGID_PIRE0,        // Permission Indirection Register 0 (EL1)
-    CSR_REGID_ISAR0,        // AArch32 Instruction Set Attribute Register 0
-    CSR_REGID_ISAR1,        // AArch32 Instruction Set Attribute Register 1
-    CSR_REGID_ISAR2,        // AArch32 Instruction Set Attribute Register 2
-    CSR_REGID_ISAR3,        // AArch32 Instruction Set Attribute Register 3
-    CSR_REGID_ISAR4,        // AArch32 Instruction Set Attribute Register 4
-    CSR_REGID_ISAR5,        // AArch32 Instruction Set Attribute Register 5
-    CSR_REGID_ISAR6,        // AArch32 Instruction Set Attribute Register 6
-    CSR_REGID_MMFR0,        // AArch32 Memory Model Feature Register 0
-    CSR_REGID_MMFR1,        // AArch32 Memory Model Feature Register 1
-    CSR_REGID_MMFR2,        // AArch32 Memory Model Feature Register 2
-    CSR_REGID_MMFR3,        // AArch32 Memory Model Feature Register 3
-    CSR_REGID_MMFR4,        // AArch32 Memory Model Feature Register 4
-    CSR_REGID_MMFR5,        // AArch32 Memory Model Feature Register 5
-    CSR_REGID_PFR0,         // AArch32 Processor Feature Register 0
-    CSR_REGID_PFR1,         // AArch32 Processor Feature Register 1
-    CSR_REGID_PFR2,         // AArch32 Processor Feature Register 2
-    CSR_REGID_PMSIDR,       // Sampling Profiling ID Register
-    // -------------------  // End of individual registers
+    CSR_REGID_INVALID,          // Placeholder for invalid register id
+    // ------------------------ // Individual registers
+    CSR_REGID_ID_AA64PFR0_EL1,  // AArch64 Processor Feature registers 0
+    CSR_REGID_ID_AA64PFR1_EL1,  // AArch64 Processor Feature registers 1
+    CSR_REGID_ID_AA64PFR2_EL1,  // AArch64 Processor Feature registers 2
+    CSR_REGID_ID_AA64ISAR0_EL1, // AArch64 Instruction Set Attribute Register 0
+    CSR_REGID_ID_AA64ISAR1_EL1, // AArch64 Instruction Set Attribute Register 1
+    CSR_REGID_ID_AA64ISAR2_EL1, // AArch64 Instruction Set Attribute Register 2
+    CSR_REGID_TCR_EL1,          // Translation Control Register
+    CSR_REGID_TCR2_EL1,         // Extended Translation Control Register
+    CSR_REGID_MIDR_EL1,         // Main ID Register (read-only)
+    CSR_REGID_MPIDR_EL1,        // Multiprocessor Affinity Register
+    CSR_REGID_REVIDR_EL1,       // Revision ID Register
+    CSR_REGID_TPIDRRO_EL0,      // EL0 Read-Only Software Thread ID Register (R/W at EL1)
+    CSR_REGID_TPIDR_EL0,        // EL0 Read/Write Software Thread ID Register
+    CSR_REGID_TPIDR_EL1,        // EL1 Software Thread ID Register
+    CSR_REGID_SCXTNUM_EL0,      // EL0 Read/Write Software Context Number
+    CSR_REGID_SCXTNUM_EL1,      // EL1 Read/Write Software Context Number
+    CSR_REGID_SCTLR_EL1,        // System Control Register
+    CSR_REGID_SCTLR2_EL1,       // System Control Register 2
+    CSR_REGID_HCR_EL2,          // Hypervisor Configuration Register (EL2)
+    CSR_REGID_RNDR,             // Random Number
+    CSR_REGID_RNDRRS,           // Reseeded Random Number
+    CSR_REGID_SCR_EL3,          // Secure Configuration Register (EL3)
+    CSR_REGID_ID_AA64MMFR0_EL1, // AArch64 Memory Model Feature Register 0
+    CSR_REGID_ID_AA64MMFR1_EL1, // AArch64 Memory Model Feature Register 1
+    CSR_REGID_ID_AA64MMFR2_EL1, // AArch64 Memory Model Feature Register 2
+    CSR_REGID_ID_AA64MMFR3_EL1, // AArch64 Memory Model Feature Register 3
+    CSR_REGID_ID_AA64MMFR4_EL1, // AArch64 Memory Model Feature Register 4
+    CSR_REGID_ID_AA64ZFR0_EL1,  // SVE Feature ID register 0
+    CSR_REGID_ID_AA64SMFR0_EL1, // SME Feature ID register 0
+    CSR_REGID_ID_AA64AFR0_EL1,  // AArch64 Auxiliary Feature Register 0
+    CSR_REGID_ID_AA64AFR1_EL1,  // AArch64 Auxiliary Feature Register 1
+    CSR_REGID_ID_AA64DFR0_EL1,  // AArch64 Debug Feature Register 0
+    CSR_REGID_ID_AA64DFR1_EL1,  // AArch64 Debug Feature Register 1
+    CSR_REGID_TRCDEVARCH,       // Trace Device Architecture Register
+    CSR_REGID_PMMIR_EL1,        // Performance Monitors Machine Identification Register
+    CSR_REGID_CTR_EL0,          // Cache Type Register
+    CSR_REGID_TTBR0_EL1,        // Translation Table Base Register 0 (EL1)
+    CSR_REGID_TTBR1_EL1,        // Translation Table Base Register 1 (EL1)
+    CSR_REGID_MAIR_EL1,         // Memory Attribute Indirection Register (EL1)
+    CSR_REGID_MAIR2_EL1,        // Memory Attribute Indirection Register (EL1)
+    CSR_REGID_PIR_EL1,          // Permission Indirection Register 1 (EL1)
+    CSR_REGID_PIRE0_EL1,        // Permission Indirection Register 0 (EL1)
+    CSR_REGID_ID_ISAR0_EL1,     // AArch32 Instruction Set Attribute Register 0
+    CSR_REGID_ID_ISAR1_EL1,     // AArch32 Instruction Set Attribute Register 1
+    CSR_REGID_ID_ISAR2_EL1,     // AArch32 Instruction Set Attribute Register 2
+    CSR_REGID_ID_ISAR3_EL1,     // AArch32 Instruction Set Attribute Register 3
+    CSR_REGID_ID_ISAR4_EL1,     // AArch32 Instruction Set Attribute Register 4
+    CSR_REGID_ID_ISAR5_EL1,     // AArch32 Instruction Set Attribute Register 5
+    CSR_REGID_ID_ISAR6_EL1,     // AArch32 Instruction Set Attribute Register 6
+    CSR_REGID_ID_MMFR0_EL1,     // AArch32 Memory Model Feature Register 0
+    CSR_REGID_ID_MMFR1_EL1,     // AArch32 Memory Model Feature Register 1
+    CSR_REGID_ID_MMFR2_EL1,     // AArch32 Memory Model Feature Register 2
+    CSR_REGID_ID_MMFR3_EL1,     // AArch32 Memory Model Feature Register 3
+    CSR_REGID_ID_MMFR4_EL1,     // AArch32 Memory Model Feature Register 4
+    CSR_REGID_ID_MMFR5_EL1,     // AArch32 Memory Model Feature Register 5
+    CSR_REGID_ID_PFR0_EL1,      // AArch32 Processor Feature Register 0
+    CSR_REGID_ID_PFR1_EL1,      // AArch32 Processor Feature Register 1
+    CSR_REGID_ID_PFR2_EL1,      // AArch32 Processor Feature Register 2
+    CSR_REGID_PMSIDR_EL1,       // Sampling Profiling ID Register
+    // -----------------------  // End of individual registers
     _CSR_REGID_END,
-    // -------------------  // Registers which come in pair
-    CSR_REGID2_APIAKEY,     // Pointer Authentication Key A for Instruction
-    CSR_REGID2_APIBKEY,     // Pointer Authentication Key B for Instruction
-    CSR_REGID2_APDAKEY,     // Pointer Authentication Key A for Data
-    CSR_REGID2_APDBKEY,     // Pointer Authentication Key B for Data
-    CSR_REGID2_APGAKEY,     // Pointer Authentication Generic Key
-    // -------------------  // End of registers which come in pair
+    // -----------------------  // Registers which come in pair
+    CSR_REGID2_APIAKEY_EL1,     // Pointer Authentication Key A for Instruction
+    CSR_REGID2_APIBKEY_EL1,     // Pointer Authentication Key B for Instruction
+    CSR_REGID2_APDAKEY_EL1,     // Pointer Authentication Key A for Data
+    CSR_REGID2_APDBKEY_EL1,     // Pointer Authentication Key B for Data
+    CSR_REGID2_APGAKEY_EL1,     // Pointer Authentication Generic Key
+    // -----------------------  // End of registers which come in pair
     _CSR_REGID2_END
 };
 
@@ -919,18 +919,18 @@ CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_feat
         return 0
 
     switch (regid) {
-        _setreg(CSR_REGID_TPIDRRO_EL0, CSR_SREG_TPIDRRO_EL0, 0);
-        _setreg(CSR_REGID_TPIDR_EL0,   CSR_SREG_TPIDR_EL0, 0);
-        _setreg(CSR_REGID_TPIDR_EL1,   CSR_SREG_TPIDR_EL1, 0);
-        _setreg(CSR_REGID_SCTLR,       CSR_SREG_SCTLR_EL1, 0);
-        _setreg(CSR_REGID_SCTLR2,      CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
-        _setreg(CSR_REGID_SCXTNUM_EL0, CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
-        _setreg(CSR_REGID_SCXTNUM_EL1, CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
-        _setreg2(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
-        _setreg2(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
-        _setreg2(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
-        _setreg2(CSR_REGID2_APDBKEY,   CSR_SREG_APDBKEYHI_EL1, CSR_SREG_APDBKEYLO_EL1, FEAT_PAC);
-        _setreg2(CSR_REGID2_APGAKEY,   CSR_SREG_APGAKEYHI_EL1, CSR_SREG_APGAKEYLO_EL1, FEAT_PACGA);
+        _setreg(CSR_REGID_TPIDRRO_EL0,   CSR_SREG_TPIDRRO_EL0, 0);
+        _setreg(CSR_REGID_TPIDR_EL0,     CSR_SREG_TPIDR_EL0, 0);
+        _setreg(CSR_REGID_TPIDR_EL1,     CSR_SREG_TPIDR_EL1, 0);
+        _setreg(CSR_REGID_SCTLR_EL1,     CSR_SREG_SCTLR_EL1, 0);
+        _setreg(CSR_REGID_SCTLR2_EL1,    CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
+        _setreg(CSR_REGID_SCXTNUM_EL0,   CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
+        _setreg(CSR_REGID_SCXTNUM_EL1,   CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
+        _setreg2(CSR_REGID2_APIAKEY_EL1, CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
+        _setreg2(CSR_REGID2_APIBKEY_EL1, CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
+        _setreg2(CSR_REGID2_APDAKEY_EL1, CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
+        _setreg2(CSR_REGID2_APDBKEY_EL1, CSR_SREG_APDBKEYHI_EL1, CSR_SREG_APDBKEYLO_EL1, FEAT_PAC);
+        _setreg2(CSR_REGID2_APGAKEY_EL1, CSR_SREG_APGAKEYHI_EL1, CSR_SREG_APGAKEYLO_EL1, FEAT_PACGA);
         default: return 1;
     }
 
@@ -957,70 +957,70 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         return 0
 
     switch (regid) {
-        _getreg(CSR_REGID_AA64PFR0,    CSR_SREG_ID_AA64PFR0_EL1, 0);
-        _getreg(CSR_REGID_AA64PFR1,    CSR_SREG_ID_AA64PFR1_EL1, 0);
-        _getreg(CSR_REGID_AA64PFR2,    CSR_SREG_ID_AA64PFR2_EL1, 0);
-        _getreg(CSR_REGID_AA64ISAR0,   CSR_SREG_ID_AA64ISAR0_EL1, 0);
-        _getreg(CSR_REGID_AA64ISAR1,   CSR_SREG_ID_AA64ISAR1_EL1, 0);
-        _getreg(CSR_REGID_AA64ISAR2,   CSR_SREG_ID_AA64ISAR2_EL1, 0);
-        _getreg(CSR_REGID_TCR,         CSR_SREG_TCR_EL1, 0);
-        _getreg(CSR_REGID_TCR2,        CSR_SREG_TCR2_EL1, FEAT_TCR2);
-        _getreg(CSR_REGID_MIDR,        CSR_SREG_MIDR_EL1, 0);
-        _getreg(CSR_REGID_MPIDR,       CSR_SREG_MPIDR_EL1, 0);
-        _getreg(CSR_REGID_REVIDR,      CSR_SREG_REVIDR_EL1, 0);
-        _getreg(CSR_REGID_TPIDRRO_EL0, CSR_SREG_TPIDRRO_EL0, 0);
-        _getreg(CSR_REGID_TPIDR_EL0,   CSR_SREG_TPIDR_EL0, 0);
-        _getreg(CSR_REGID_TPIDR_EL1,   CSR_SREG_TPIDR_EL1, 0);
-        _getreg(CSR_REGID_SCXTNUM_EL0, CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
-        _getreg(CSR_REGID_SCXTNUM_EL1, CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
-        _getreg(CSR_REGID_SCTLR,       CSR_SREG_SCTLR_EL1, 0);
-        _getreg(CSR_REGID_SCTLR2,      CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
-        _getreg(CSR_REGID_HCR,         CSR_SREG_HCR_EL2, 0);
-        _getreg(CSR_REGID_RNDR,        CSR_SREG_RNDR, FEAT_RNG);
-        _getreg(CSR_REGID_RNDRRS,      CSR_SREG_RNDRRS, FEAT_RNG);
-        _getreg(CSR_REGID_SCR,         CSR_SREG_SCR_EL3, 0);
-        _getreg(CSR_REGID_AA64MMFR0,   CSR_SREG_ID_AA64MMFR0_EL1, 0);
-        _getreg(CSR_REGID_AA64MMFR1,   CSR_SREG_ID_AA64MMFR1_EL1, 0);
-        _getreg(CSR_REGID_AA64MMFR2,   CSR_SREG_ID_AA64MMFR2_EL1, 0);
-        _getreg(CSR_REGID_AA64MMFR3,   CSR_SREG_ID_AA64MMFR3_EL1, 0);
-        _getreg(CSR_REGID_AA64MMFR4,   CSR_SREG_ID_AA64MMFR4_EL1, 0);
-        _getreg(CSR_REGID_AA64ZFR0,    CSR_SREG_ID_AA64ZFR0_EL1, FEAT_SVE);
-        _getreg(CSR_REGID_AA64SMFR0,   CSR_SREG_ID_AA64SMFR0_EL1, FEAT_SME);
-        _getreg(CSR_REGID_AA64AFR0,    CSR_SREG_ID_AA64AFR0_EL1, 0);
-        _getreg(CSR_REGID_AA64AFR1,    CSR_SREG_ID_AA64AFR1_EL1, 0);
-        _getreg(CSR_REGID_AA64DFR0,    CSR_SREG_ID_AA64DFR0_EL1, 0);
-        _getreg(CSR_REGID_AA64DFR1,    CSR_SREG_ID_AA64DFR1_EL1, 0);
-        _getreg(CSR_REGID_TRCDEVARCH,  CSR_SREG_TRCDEVARCH, FEAT_ETE);
-        _getreg(CSR_REGID_PMMIR,       CSR_SREG_PMMIR_EL1, FEAT_PMUv3p4);
-        _getreg(CSR_REGID_CTR,         CSR_SREG_CTR_EL0, 0);
-        _getreg(CSR_REGID_TTBR0_EL1,   CSR_SREG_TTBR0_EL1, 0);
-        _getreg(CSR_REGID_TTBR1_EL1,   CSR_SREG_TTBR1_EL1, 0);
-        _getreg(CSR_REGID_MAIR,        CSR_SREG_MAIR_EL1, 0);
-        _getreg(CSR_REGID_MAIR2,       CSR_SREG_MAIR2_EL1, FEAT_AIE);
-        _getreg(CSR_REGID_PIR,         CSR_SREG_PIR_EL1, FEAT_S1PIE);
-        _getreg(CSR_REGID_PIRE0,       CSR_SREG_PIRE0_EL1, FEAT_S1PIE);
-        _getreg(CSR_REGID_ISAR0,       CSR_SREG_ID_ISAR0_EL1, 0);
-        _getreg(CSR_REGID_ISAR1,       CSR_SREG_ID_ISAR1_EL1, 0);
-        _getreg(CSR_REGID_ISAR2,       CSR_SREG_ID_ISAR2_EL1, 0);
-        _getreg(CSR_REGID_ISAR3,       CSR_SREG_ID_ISAR3_EL1, 0);
-        _getreg(CSR_REGID_ISAR4,       CSR_SREG_ID_ISAR4_EL1, 0);
-        _getreg(CSR_REGID_ISAR5,       CSR_SREG_ID_ISAR5_EL1, 0);
-        _getreg(CSR_REGID_ISAR6,       CSR_SREG_ID_ISAR6_EL1, 0);
-        _getreg(CSR_REGID_MMFR0,       CSR_SREG_ID_MMFR0_EL1, 0);
-        _getreg(CSR_REGID_MMFR1,       CSR_SREG_ID_MMFR1_EL1, 0);
-        _getreg(CSR_REGID_MMFR2,       CSR_SREG_ID_MMFR2_EL1, 0);
-        _getreg(CSR_REGID_MMFR3,       CSR_SREG_ID_MMFR3_EL1, 0);
-        _getreg(CSR_REGID_MMFR4,       CSR_SREG_ID_MMFR4_EL1, 0);
-        _getreg(CSR_REGID_MMFR5,       CSR_SREG_ID_MMFR5_EL1, 0);
-        _getreg(CSR_REGID_PFR0,        CSR_SREG_ID_PFR0_EL1, 0);
-        _getreg(CSR_REGID_PFR1,        CSR_SREG_ID_PFR1_EL1, 0);
-        _getreg(CSR_REGID_PFR2,        CSR_SREG_ID_PFR2_EL1, 0);
-        _getreg(CSR_REGID_PMSIDR,      CSR_SREG_PMSIDR_EL1, FEAT_SPE);
-        _getreg2(CSR_REGID2_APIAKEY,   CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
-        _getreg2(CSR_REGID2_APIBKEY,   CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
-        _getreg2(CSR_REGID2_APDAKEY,   CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
-        _getreg2(CSR_REGID2_APDBKEY,   CSR_SREG_APDBKEYHI_EL1, CSR_SREG_APDBKEYLO_EL1, FEAT_PAC);
-        _getreg2(CSR_REGID2_APGAKEY,   CSR_SREG_APGAKEYHI_EL1, CSR_SREG_APGAKEYLO_EL1, FEAT_PACGA);
+        _getreg(CSR_REGID_ID_AA64PFR0_EL1,  CSR_SREG_ID_AA64PFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64PFR1_EL1,  CSR_SREG_ID_AA64PFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64PFR2_EL1,  CSR_SREG_ID_AA64PFR2_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64ISAR0_EL1, CSR_SREG_ID_AA64ISAR0_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64ISAR1_EL1, CSR_SREG_ID_AA64ISAR1_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64ISAR2_EL1, CSR_SREG_ID_AA64ISAR2_EL1, 0);
+        _getreg(CSR_REGID_TCR_EL1,          CSR_SREG_TCR_EL1, 0);
+        _getreg(CSR_REGID_TCR2_EL1,         CSR_SREG_TCR2_EL1, FEAT_TCR2);
+        _getreg(CSR_REGID_MIDR_EL1,         CSR_SREG_MIDR_EL1, 0);
+        _getreg(CSR_REGID_MPIDR_EL1,        CSR_SREG_MPIDR_EL1, 0);
+        _getreg(CSR_REGID_REVIDR_EL1,       CSR_SREG_REVIDR_EL1, 0);
+        _getreg(CSR_REGID_TPIDRRO_EL0,      CSR_SREG_TPIDRRO_EL0, 0);
+        _getreg(CSR_REGID_TPIDR_EL0,        CSR_SREG_TPIDR_EL0, 0);
+        _getreg(CSR_REGID_TPIDR_EL1,        CSR_SREG_TPIDR_EL1, 0);
+        _getreg(CSR_REGID_SCXTNUM_EL0,      CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
+        _getreg(CSR_REGID_SCXTNUM_EL1,      CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
+        _getreg(CSR_REGID_SCTLR_EL1,        CSR_SREG_SCTLR_EL1, 0);
+        _getreg(CSR_REGID_SCTLR2_EL1,       CSR_SREG_SCTLR2_EL1, FEAT_SCTLR2);
+        _getreg(CSR_REGID_HCR_EL2,          CSR_SREG_HCR_EL2, 0);
+        _getreg(CSR_REGID_RNDR,             CSR_SREG_RNDR, FEAT_RNG);
+        _getreg(CSR_REGID_RNDRRS,           CSR_SREG_RNDRRS, FEAT_RNG);
+        _getreg(CSR_REGID_SCR_EL3,          CSR_SREG_SCR_EL3, 0);
+        _getreg(CSR_REGID_ID_AA64MMFR0_EL1, CSR_SREG_ID_AA64MMFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64MMFR1_EL1, CSR_SREG_ID_AA64MMFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64MMFR2_EL1, CSR_SREG_ID_AA64MMFR2_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64MMFR3_EL1, CSR_SREG_ID_AA64MMFR3_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64MMFR4_EL1, CSR_SREG_ID_AA64MMFR4_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64ZFR0_EL1,  CSR_SREG_ID_AA64ZFR0_EL1, FEAT_SVE);
+        _getreg(CSR_REGID_ID_AA64SMFR0_EL1, CSR_SREG_ID_AA64SMFR0_EL1, FEAT_SME);
+        _getreg(CSR_REGID_ID_AA64AFR0_EL1,  CSR_SREG_ID_AA64AFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64AFR1_EL1,  CSR_SREG_ID_AA64AFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64DFR0_EL1,  CSR_SREG_ID_AA64DFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64DFR1_EL1,  CSR_SREG_ID_AA64DFR1_EL1, 0);
+        _getreg(CSR_REGID_TRCDEVARCH,       CSR_SREG_TRCDEVARCH, FEAT_ETE);
+        _getreg(CSR_REGID_PMMIR_EL1,        CSR_SREG_PMMIR_EL1, FEAT_PMUv3p4);
+        _getreg(CSR_REGID_CTR_EL0,          CSR_SREG_CTR_EL0, 0);
+        _getreg(CSR_REGID_TTBR0_EL1,        CSR_SREG_TTBR0_EL1, 0);
+        _getreg(CSR_REGID_TTBR1_EL1,        CSR_SREG_TTBR1_EL1, 0);
+        _getreg(CSR_REGID_MAIR_EL1,         CSR_SREG_MAIR_EL1, 0);
+        _getreg(CSR_REGID_MAIR2_EL1,        CSR_SREG_MAIR2_EL1, FEAT_AIE);
+        _getreg(CSR_REGID_PIR_EL1,          CSR_SREG_PIR_EL1, FEAT_S1PIE);
+        _getreg(CSR_REGID_PIRE0_EL1,        CSR_SREG_PIRE0_EL1, FEAT_S1PIE);
+        _getreg(CSR_REGID_ID_ISAR0_EL1,     CSR_SREG_ID_ISAR0_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR1_EL1,     CSR_SREG_ID_ISAR1_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR2_EL1,     CSR_SREG_ID_ISAR2_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR3_EL1,     CSR_SREG_ID_ISAR3_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR4_EL1,     CSR_SREG_ID_ISAR4_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR5_EL1,     CSR_SREG_ID_ISAR5_EL1, 0);
+        _getreg(CSR_REGID_ID_ISAR6_EL1,     CSR_SREG_ID_ISAR6_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR0_EL1,     CSR_SREG_ID_MMFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR1_EL1,     CSR_SREG_ID_MMFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR2_EL1,     CSR_SREG_ID_MMFR2_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR3_EL1,     CSR_SREG_ID_MMFR3_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR4_EL1,     CSR_SREG_ID_MMFR4_EL1, 0);
+        _getreg(CSR_REGID_ID_MMFR5_EL1,     CSR_SREG_ID_MMFR5_EL1, 0);
+        _getreg(CSR_REGID_ID_PFR0_EL1,      CSR_SREG_ID_PFR0_EL1, 0);
+        _getreg(CSR_REGID_ID_PFR1_EL1,      CSR_SREG_ID_PFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_PFR2_EL1,      CSR_SREG_ID_PFR2_EL1, 0);
+        _getreg(CSR_REGID_PMSIDR_EL1,       CSR_SREG_PMSIDR_EL1, FEAT_SPE);
+        _getreg2(CSR_REGID2_APIAKEY_EL1,    CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
+        _getreg2(CSR_REGID2_APIBKEY_EL1,    CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
+        _getreg2(CSR_REGID2_APDAKEY_EL1,    CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
+        _getreg2(CSR_REGID2_APDBKEY_EL1,    CSR_SREG_APDBKEYHI_EL1, CSR_SREG_APDBKEYLO_EL1, FEAT_PAC);
+        _getreg2(CSR_REGID2_APGAKEY_EL1,    CSR_SREG_APGAKEYHI_EL1, CSR_SREG_APGAKEYLO_EL1, FEAT_PACGA);
         default: return 1;
     }
 

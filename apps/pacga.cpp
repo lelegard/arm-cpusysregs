@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    const auto& desc(RegView::getRegister(CSR_REGID2_APGAKEY));
+    const auto& desc(RegView::getRegister(CSR_REGID2_APGAKEY_EL1));
     if ((desc.features & (RegView::READ | RegView::WRITE)) != (RegView::READ | RegView::WRITE)) {
         std::cerr << "PAC key registers are not accessible on this platform" << std::endl;
         return EXIT_FAILURE;
@@ -56,9 +56,9 @@ int main(int argc, char* argv[])
               << "Value:     " << ToHexa(value) << std::endl;
 
     // Set PACGA key, then verify it.
-    regaccess.write(CSR_REGID2_APGAKEY, key);
+    regaccess.write(CSR_REGID2_APGAKEY_EL1, key);
     csr_pair_t check;
-    regaccess.read(CSR_REGID2_APGAKEY, check);
+    regaccess.read(CSR_REGID2_APGAKEY_EL1, check);
     if (::memcmp(&check, &key, sizeof(key))) {
         std::cerr << "Key verification failed, APGAKEY register = " << ToHexa(check) << std::endl;
         return EXIT_FAILURE;

@@ -112,13 +112,13 @@ void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange var
         walkparams.mtx   = _feat.FEAT_MTE4() ? _feat.TCR_EL1_MTX1() : 0;
     }
     
-    _regs.read(CSR_REGID_MAIR, walkparams.mair);
+    _regs.read(CSR_REGID_MAIR_EL1, walkparams.mair);
     if (_feat.FEAT_AIE()) {
-        _regs.read(CSR_REGID_MAIR2, walkparams.mair2);
+        _regs.read(CSR_REGID_MAIR2_EL1, walkparams.mair2);
     }
 
     csr_u64_t sctlr = 0;
-    _regs.read(CSR_REGID_SCTLR, sctlr);
+    _regs.read(CSR_REGID_SCTLR_EL1, sctlr);
 
     walkparams.aie  = _feat.FEAT_AIE() && _feat.FEAT_TCR2() ? _feat.TCR2_EL1_AIE() : 0;
     walkparams.wxn  = (sctlr >> 19) & 0x01; // STLR_EL1.WXN
@@ -136,9 +136,9 @@ void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange var
     }
     walkparams.pie = _feat.FEAT_S1PIE() && _feat.FEAT_TCR2() ? _feat.TCR2_EL1_PIE() : 0;
     if (_feat.FEAT_S1PIE()) {
-        _regs.read(CSR_REGID_PIR, walkparams.pir);
+        _regs.read(CSR_REGID_PIR_EL1, walkparams.pir);
         if (!walkparams.nv1) {
-            _regs.read(CSR_REGID_PIRE0, walkparams.pire0);
+            _regs.read(CSR_REGID_PIRE0_EL1, walkparams.pire0);
         }
     }
     if (_feat.FEAT_PAN3()) {
@@ -400,7 +400,7 @@ csr_u64_t ArmPseudoCode::AddPAC(csr_u64_t ptr, csr_u64_t modifier, const csr_pai
 csr_u64_t ArmPseudoCode::AddPACGA(csr_u64_t x, csr_u64_t y)
 {
     csr_pair_t APGAKey_EL1;
-    _regs.read(CSR_REGID2_APGAKEY, APGAKey_EL1);
+    _regs.read(CSR_REGID2_APGAKEY_EL1, APGAKey_EL1);
     return AddPACGA(x, y, APGAKey_EL1);
 }
 csr_u64_t ArmPseudoCode::AddPACGA(csr_u64_t x, csr_u64_t y, const csr_pair_t& key)

@@ -138,7 +138,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
 
     // Compute PAC and AUT in user mode, depending on the key register id.
     switch (regid) {
-        case CSR_REGID2_APIAKEY:
+        case CSR_REGID2_APIAKEY_EL1:
             // Constants for future usages.
             keyname = "IA";
             is_instr = true;
@@ -153,7 +153,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
                 csr_autia(corrupted_aut, modifier);
             }
             break;
-        case CSR_REGID2_APIBKEY:
+        case CSR_REGID2_APIBKEY_EL1:
             // Constants for future usages.
             keyname = "IB";
             is_instr = true;
@@ -168,7 +168,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
                 csr_autib(corrupted_aut, modifier);
             }
             break;
-        case CSR_REGID2_APDAKEY:
+        case CSR_REGID2_APDAKEY_EL1:
             // Constants for future usages.
             keyname = "DA";
             is_instr = false;
@@ -183,7 +183,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
                 csr_autda(corrupted_aut, modifier);
             }
             break;
-        case CSR_REGID2_APDBKEY:
+        case CSR_REGID2_APDBKEY_EL1:
             // Constants for future usages.
             keyname = "DB";
             is_instr = false;
@@ -265,29 +265,29 @@ int main(int argc, char* argv[])
     // Open the pseudo-device for the kernel module.
     RegAccess regaccess(true, true);
 
-    TestKey(regaccess, CSR_REGID2_APIAKEY);
-    TestKey(regaccess, CSR_REGID2_APIBKEY);
-    TestKey(regaccess, CSR_REGID2_APDAKEY);
-    TestKey(regaccess, CSR_REGID2_APDBKEY);
+    TestKey(regaccess, CSR_REGID2_APIAKEY_EL1);
+    TestKey(regaccess, CSR_REGID2_APIBKEY_EL1);
+    TestKey(regaccess, CSR_REGID2_APDAKEY_EL1);
+    TestKey(regaccess, CSR_REGID2_APDBKEY_EL1);
 
     std::cout << std::endl << "---- Testing key GA" << std::endl << std::endl;
     const csr_u64_t value = 0xFEDCBA9876543210;
     const csr_u64_t modifier = 7;
 
     csr_pair_t key0;
-    GetKey(regaccess, "Initial GA key", key0, CSR_REGID2_APGAKEY);
+    GetKey(regaccess, "Initial GA key", key0, CSR_REGID2_APGAKEY_EL1);
     std::cout << Pad("Input value", WIDTH) << " " << ToHexa(value) << std::endl;
     TestGA(regaccess, "PACGA", key0, value, modifier);
 
     const csr_pair_t key1 {0xDEADBEEFBADC0FFE, 0x0123456789ABCDEF};
-    SetKey(regaccess, "Update GA key", key1, CSR_REGID2_APGAKEY);
+    SetKey(regaccess, "Update GA key", key1, CSR_REGID2_APGAKEY_EL1);
 
     csr_pair_t key2;
-    GetKey(regaccess, "Updated GA key", key2, CSR_REGID2_APGAKEY);
+    GetKey(regaccess, "Updated GA key", key2, CSR_REGID2_APGAKEY_EL1);
     TestGA(regaccess, "PACGA", key2, value, modifier);
 
-    SetKey(regaccess, "Restore GA key", key0, CSR_REGID2_APGAKEY);
-    GetKey(regaccess, "Restored GA key", key2, CSR_REGID2_APGAKEY);
+    SetKey(regaccess, "Restore GA key", key0, CSR_REGID2_APGAKEY_EL1);
+    GetKey(regaccess, "Restored GA key", key2, CSR_REGID2_APGAKEY_EL1);
     TestGA(regaccess, "PACGA", key2, value, modifier);
 
     std::cout << std::endl;

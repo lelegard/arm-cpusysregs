@@ -151,7 +151,7 @@ version 0487I.a.
 | TTBR0_EL1        | D17.2.144     | R       | Translation Table Base Register 0 (EL1)
 | TTBR1_EL1        | D17.2.147     | R       | Translation Table Base Register 1 (EL1)
 | PMMIR_EL1        | D17.5.12      | R       | Performance Monitors Machine Identification Register
-| PMSIDR_EL1       | D17.7.10      | R       | Sampling Profiling ID Register
+| PMSIDR_EL1       | D17.7.10      | R   [4] | Sampling Profiling ID Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers
@@ -161,3 +161,5 @@ Accessing the PAC key registers at EL1 crashes macOS.
 [2] HCR_EL2 is readable at EL1 on macOS. Access not allowed in a Linux VM and crashes the system.
 
 [3] SCR_EL3 cannot by read/write at EL1. It is supported to format its possible values only.
+
+[4] PMSIDR_EL1 cannot be read on Linux at EL1, even when FEAT_SPE is implemented.
