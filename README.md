@@ -43,25 +43,29 @@ them. This means that we are never really sure of what the physical register was
 This project provides Linux and macOS kernel modules to read and write selected
 system registers from user applications.
 
-Warning: This project is for educational purpose only, for people wanting to
+**Warning:** This project is for educational purpose only, for people wanting to
 increase their knowledge in the Arm64 architecture. Loading a custom kernel
 module may always have unexpected side effects, including:
 
 - Security effects: the content of the system registers could be used to gain
-  information on the system, including the pointer authentication keys.
+  information on the system, including the pointer authentication keys on Linux
+  (they are better protected on macOS).
 - Stability effects:
   - Accessing Arm system registers is not only a matter of exception level.
     The Arm architecture reference manual describes in details the pseudo-code
     to access each register. There are many specific configuration options,
     usually set by the hypervisor (EL2) or monitor (EL3) which filter or
-    protect access to the register. In specific configurations, accessing
-    a system register from the kernel may either work or crash the system.
+    protect access to the register. In specific configurations, depending on
+    the operating system or the platform, accessing a system register from
+    the kernel may either work or crash the system.
   - Modifying the PACIA key using a kernel which is built with pointer
     authentication crashes the system since the return pointer of the kernel
     functions are authenticated with a different key as used by the previous
     PACIA (believe me, I tried...)
 
-See the file [docs/references.md](docs/references.md) for a list of reference documentations.
+See the file [docs/references.md](docs/references.md) for a list of reference
+documentations on the Arm64 architecture, its system registers and pointer
+authentication features.
 
 ## Build instructions
 
@@ -98,15 +102,16 @@ Syntax: sysregs [options]
 
 See more details in:
 
-- The `apps` subdirectory for other command line tools.
-- The `kernel` subdirectory for programming guidelines.
+- The [apps](apps) subdirectory for other command line tools.
+- The [kernel](kernel) subdirectory for programming guidelines.
 
 ## Focus on Pointer Authentication Code (PAC)
 
 One of the motivations for this project was a better understanding of the
 Pointer Authentication Code (PAC) feature, as introduced in the Armv8.3-A
 architecture. PAC is one of the clever "defensive security" features which
-were designed by Arm (the other one is BTI, the Branch Target Indentification).
+were designed by Arm (the other one is BTI, the Branch Target Indentification
+in Armv8.5-A).
 
 Understanding PAC is harder than it may seem. There are many configuration
 options which depend on the operating system or the platform. Predicting the
@@ -118,12 +123,14 @@ summarizes this.
 There are several documents in the [docs](docs) subdirectory containing the
 summary of observations about the PAC on different platforms. The subdirectory
 [collect](collect) contains informations which were collected on these
-platforms, Linux and macOS, using various Arm-based processor chips.
+platforms, Linux or macOS, using various Arm64-based processor chips
+implementing Armv8.3-A or higher versions of the architecture.
 
 ## List of accessible registers
 
 The reference list of registers which can be accessed by this project is given by
-the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file `kernel/cpusysregs.h`.
+the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file
+[kernel/cpusysregs.h](kernel/cpusysregs.h).
 
 The following table lists them with the corresponding reference sections in the
 [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
