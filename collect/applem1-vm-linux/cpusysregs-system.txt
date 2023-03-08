@@ -1,4 +1,4 @@
-Linux 5.19.0-31-generic #32-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan 20 21:03:31 UTC 2023 aarch64 aarch64
+Linux 5.19.0-35-generic #36-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb 3 18:36:47 UTC 2023 aarch64 aarch64
 gcc (Ubuntu 12.2.0-3ubuntu1) 12.2.0
 Copyright (C) 2022 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
