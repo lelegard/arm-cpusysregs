@@ -29,6 +29,7 @@ FEAT_CSV2_1p2 ............ no
 FEAT_CSV2_2 .............. no
 FEAT_CSV2_3 .............. no
 FEAT_CSV3 ................ yes
+FEAT_D128 ................ no
 FEAT_Debugv8p1 ........... yes
 FEAT_Debugv8p2 ........... yes
 FEAT_Debugv8p4 ........... yes
@@ -52,6 +53,13 @@ FEAT_ETE ................. no
 FEAT_ETEv1p1 ............. no
 FEAT_ETEv1p2 ............. no
 FEAT_ETEv1p3 ............. no
+FEAT_ETMv4 ............... no
+FEAT_ETMv4p1 ............. no
+FEAT_ETMv4p2 ............. no
+FEAT_ETMv4p3 ............. no
+FEAT_ETMv4p4 ............. no
+FEAT_ETMv4p5 ............. no
+FEAT_ETMv4p6 ............. no
 FEAT_ETS ................. no
 FEAT_EVT ................. yes
 FEAT_ExS ................. no
@@ -68,9 +76,11 @@ FEAT_FP16 ................ yes
 FEAT_FPAC ................ no
 FEAT_FPACCOMBINE ......... no
 FEAT_FRINTTS ............. no
+FEAT_GCS ................. no
 FEAT_GICv3 ............... yes
 FEAT_GICv4 ............... yes
 FEAT_GICv4p1 ............. yes
+FEAT_GTG ................. no
 FEAT_HAFDBS .............. yes
 FEAT_HAFT ................ no
 FEAT_HBC ................. no
@@ -179,6 +189,7 @@ FEAT_SPE_FDS ............. no
 FEAT_SPEv1p1 ............. yes
 FEAT_SPEv1p2 ............. no
 FEAT_SPEv1p3 ............. no
+FEAT_SPEv1p4 ............. no
 FEAT_SPMU ................ no
 FEAT_SSBS ................ yes
 FEAT_SSBS2 ............... yes
