@@ -1,0 +1,9 @@
+.gitignore text
+.gitattributes text
+*.txt text
+*.md text linguist-language=MarkDown
+*.h text linguist-language=C++
+*.cpp text linguist-language=C++
+*.c text linguist-language=C
+*.sh text eol=lf linguist-language=Bash
+Makefile* text eol=lf linguist-language=Makefile
