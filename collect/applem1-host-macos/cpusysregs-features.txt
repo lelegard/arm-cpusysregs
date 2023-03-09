@@ -76,6 +76,7 @@ FEAT_FP16 ................ yes
 FEAT_FPAC ................ no
 FEAT_FPACCOMBINE ......... no
 FEAT_FRINTTS ............. yes
+FEAT_GCS ................. no
 FEAT_GICv3 ............... no
 FEAT_GICv4 ............... no
 FEAT_GICv4p1 ............. no
@@ -188,6 +189,7 @@ FEAT_SPE_FDS ............. no
 FEAT_SPEv1p1 ............. no
 FEAT_SPEv1p2 ............. no
 FEAT_SPEv1p3 ............. no
+FEAT_SPEv1p4 ............. no
 FEAT_SPMU ................ no
 FEAT_SSBS ................ yes
 FEAT_SSBS2 ............... yes
