@@ -211,6 +211,8 @@ public:
     int ID_AA64MMFR3_EL1_SCTLRX() const { return (int)(_aa64mmfr3 >> 4) & 0x0F; }
     int ID_AA64MMFR3_EL1_TCRX() const { return (int)(_aa64mmfr3) & 0x0F; }
 
+    int ID_AA64MMFR4_EL1_EIESB() const { return (int)(_aa64mmfr4 >> 4) & 0x0F; }
+
     int ID_AA64SMFR0_EL1_FA64() const { return (int)(_aa64smfr0 >> 63) & 0x01; }
     int ID_AA64SMFR0_EL1_SMEver() const { return (int)(_aa64smfr0 >> 56) & 0x0F; }
     int ID_AA64SMFR0_EL1_I16I64() const { return (int)(_aa64smfr0 >> 52) & 0x0F; }
@@ -478,6 +480,7 @@ public:
     bool FEAT_CSV2_2() const { return ID_AA64PFR0_EL1_CSV2() >= 2; }
     bool FEAT_CSV2_3() const { return ID_AA64PFR0_EL1_CSV2() >= 3; }
     bool FEAT_CSV3() const { return ID_AA64PFR0_EL1_CSV3() >= 1; }
+    bool FEAT_D128() const { return ID_AA64MMFR3_EL1_D128() >= 1; }
     bool FEAT_Debugv8p1() const { return ID_AA64DFR0_EL1_DebugVer() >= 7; }
     bool FEAT_Debugv8p2() const { return ID_AA64DFR0_EL1_DebugVer() >= 8; }
     bool FEAT_Debugv8p4() const { return ID_AA64DFR0_EL1_DebugVer() >= 9; }
@@ -501,6 +504,14 @@ public:
     bool FEAT_ETEv1p1() const { return TRCDEVARCH_REVISION() >= 1; }
     bool FEAT_ETEv1p2() const { return TRCDEVARCH_REVISION() >= 2; }
     bool FEAT_ETEv1p3() const { return TRCDEVARCH_REVISION() >= 3; }
+    // About ETMv4, see Arm Embedded Trace Macrocell Architecture Specification ETMv4.0 to ETMv4.6
+    bool FEAT_ETMv4() const { return TRCDEVARCH_ARCHITECT() == 0b01000111011 && TRCDEVARCH_PRESENT() == 1 && TRCDEVARCH_ARCHVER() == 0b0100 && TRCDEVARCH_ARCHPART() == 0b101000010011; }
+    bool FEAT_ETMv4p1() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 1; }
+    bool FEAT_ETMv4p2() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 2; }
+    bool FEAT_ETMv4p3() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 3; }
+    bool FEAT_ETMv4p4() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 4; }
+    bool FEAT_ETMv4p5() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 5; }
+    bool FEAT_ETMv4p6() const { return FEAT_ETMv4() && TRCDEVARCH_REVISION() >= 6; }
     bool FEAT_ETS() const { return ID_AA64MMFR1_EL1_ETS() >= 1; }
     bool FEAT_EVT() const { return ID_AA64MMFR2_EL1_EVT() >= 1; }
     bool FEAT_ExS() const { return ID_AA64MMFR0_EL1_ExS() >= 1; }
@@ -520,6 +531,7 @@ public:
     bool FEAT_GICv3() const { return ID_AA64PFR0_EL1_GIC() >= 1; }
     bool FEAT_GICv4() const { return ID_AA64PFR0_EL1_GIC() >= 1; }
     bool FEAT_GICv4p1() const { return ID_AA64PFR0_EL1_GIC() >= 3; }
+    bool FEAT_GTG() const { return ID_AA64MMFR0_EL1_TGran4_2() > 1 || ID_AA64MMFR0_EL1_TGran16_2() > 1 || ID_AA64MMFR0_EL1_TGran64_2() > 1; }
     bool FEAT_HAFDBS() const { return ID_AA64MMFR1_EL1_HAFDBS() >= 1; }
     bool FEAT_HAFT() const { return ID_AA64MMFR1_EL1_HAFDBS() >= 3; }
     bool FEAT_HBC() const { return ID_AA64ISAR2_EL1_BC() >= 1; }
@@ -689,6 +701,7 @@ private:
     csr_u64_t _aa64mmfr1;
     csr_u64_t _aa64mmfr2;
     csr_u64_t _aa64mmfr3;
+    csr_u64_t _aa64mmfr4;
     csr_u64_t _aa64smfr0;
     csr_u64_t _aa64zfr0;
     csr_u64_t _isar0;

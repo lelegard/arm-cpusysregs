@@ -30,6 +30,7 @@ ArmFeatures::ArmFeatures() :
     _aa64mmfr1(0),
     _aa64mmfr2(0),
     _aa64mmfr3(0),
+    _aa64mmfr4(0),
     _aa64smfr0(0),
     _aa64zfr0(0),
     _isar0(0),
@@ -67,7 +68,7 @@ void ArmFeatures::clear()
 {
     _loaded = false;
     _aa64isar0 = _aa64isar1 = _aa64isar2 = _aa64pfr0 = _aa64pfr1 = _aa64pfr2 = _aa64dfr0 = _aa64dfr1 = 0;
-    _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64smfr0 = _aa64zfr0 = 0;
+    _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64mmfr4 = _aa64smfr0 = _aa64zfr0 = 0;
     _isar0 = _isar1 = _isar2 = _isar3 = _isar4 = _isar5 = _isar6 = 0;
     _mmfr0 = _mmfr1 = _mmfr2 = _mmfr3 = _mmfr4 = _mmfr5 = 0;
     _ctr = _tcr = _tcr2 = _trcdevarch = _pmmir = _pmsidr = 0;
@@ -136,6 +137,7 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_ID_AA64MMFR1_EL1, _aa64mmfr1) &&
         reg.read(CSR_REGID_ID_AA64MMFR2_EL1, _aa64mmfr2) &&
         reg.read(CSR_REGID_ID_AA64MMFR3_EL1, _aa64mmfr3) &&
+        reg.read(CSR_REGID_ID_AA64MMFR4_EL1, _aa64mmfr4) &&
         reg.read(CSR_REGID_ID_ISAR0_EL1, _isar0) &&
         reg.read(CSR_REGID_ID_ISAR1_EL1, _isar1) &&
         reg.read(CSR_REGID_ID_ISAR2_EL1, _isar2) &&

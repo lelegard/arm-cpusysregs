@@ -30,7 +30,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_BRBEv1p1            | Armv9.3  |           |  X  | Branch Record Buffer Extensions version 1.1
 | FEAT_BTI                 | Armv8.5  |           |  X  | Branch target identification
 | FEAT_CCIDX               | Armv8.3  |           |  X  | Extended cache index
-| FEAT_CHK                 |          |           |     | Detect when Guarded Control Stacks are implemented
+| FEAT_CHK                 |          |           | n/a | Detect when Guarded Control Stacks are implemented
 | FEAT_CLRBHB              |          |           |  X  | A new instruction CLRBHB is added in HINT space
 | FEAT_CMOW                |          | Armv8.8   |  X  | Control for cache maintenance permission
 | FEAT_CNTSC               | Armv8.4  |           | n/a | Generic Counter Scaling
@@ -44,7 +44,7 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_CSV2_2              | Armv8.0  |           |  X  | SCXTNUM_ELx registers
 | FEAT_CSV2_3              | Armv8.0  |           |  X  | New identification mechanism for Branch History information
 | FEAT_CSV3                | Armv8.0  | Armv8.5   |  X  | Cache Speculation Variant 3
-| FEAT_D128                |          |           |     | 128-bit Translation Tables, 56 bit PA
+| FEAT_D128                |          |           |  X  | 128-bit Translation Tables, 56 bit PA
 | FEAT_Debugv8p1           |          |           |  X  | Debug with VHE
 | FEAT_Debugv8p2           | Armv8.2  |           |  X  | ARMv8.2 Debug
 | FEAT_Debugv8p4           |          | Armv8.4   |  X  | Debug relaxations and extensions version 8.4
@@ -69,13 +69,13 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_ETEv1p1             | Armv9.1  |           |  X  | Embedded Trace Extension, version 1.1
 | FEAT_ETEv1p2             | Armv9.2  |           |  X  | Embedded Trace Extension, version 1.2
 | FEAT_ETEv1p3             |          |           |  X  | ETE support for v9.3
-| FEAT_ETMv4               |          |           |     | Embedded Trace Macrocell version 4
-| FEAT_ETMv4p1             |          |           |     | Embedded Trace Macrocell version 4.1
-| FEAT_ETMv4p2             |          |           |     | Embedded Trace Macrocell version 4.2
-| FEAT_ETMv4p3             |          |           |     | Embedded Trace Macrocell version 4.3
-| FEAT_ETMv4p4             |          |           |     | Embedded Trace Macrocell version 4.3
-| FEAT_ETMv4p5             |          |           |     | Embedded Trace Macrocell version 4.4
-| FEAT_ETMv4p6             |          |           |     | Embedded Trace Macrocell version 4.5
+| FEAT_ETMv4               |          |           |  X  | Embedded Trace Macrocell version 4
+| FEAT_ETMv4p1             |          |           |  X  | Embedded Trace Macrocell version 4.1
+| FEAT_ETMv4p2             |          |           |  X  | Embedded Trace Macrocell version 4.2
+| FEAT_ETMv4p3             |          |           |  X  | Embedded Trace Macrocell version 4.3
+| FEAT_ETMv4p4             |          |           |  X  | Embedded Trace Macrocell version 4.3
+| FEAT_ETMv4p5             |          |           |  X  | Embedded Trace Macrocell version 4.4
+| FEAT_ETMv4p6             |          |           |  X  | Embedded Trace Macrocell version 4.5
 | FEAT_ETS                 | Armv8.0  | Armv8.7   |  X  | Enhanced Translation Synchronization
 | FEAT_EVT                 | Armv8.2  | Armv8.5   |  X  | Enhanced Virtualization Traps
 | FEAT_ExS                 | Armv8.5  |           |  X  | Disabling context synchronizing exception entry and exit
@@ -95,11 +95,11 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 | FEAT_GCS                 |          |           |  X  | Guarded Control Stack Extension
 | FEAT_GICv3               |          |           |  X  | Generic Interrupt Controller version 3
 | FEAT_GICv3_NMI           |          |           |     | Non-maskable Interrupts
-| FEAT_GICv3_TDIR          |          |           |     | Trapping Non-secure EL1 writes to ICV_DIR
+| FEAT_GICv3_TDIR          |          |           | n/a | Trapping Non-secure EL1 writes to ICV_DIR
 | FEAT_GICv3p1             |          |           |     | Generic Interrupt Controller version 3.1
 | FEAT_GICv4               |          |           |  X  | Generic Interrupt Controller version 4
 | FEAT_GICv4p1             |          |           |  X  | Generic Interrupt Controller version 4.1
-| FEAT_GTG                 |          |           |     | Guest translation granule size
+| FEAT_GTG                 |          | Armv8.5   |  X  | Guest translation granule size
 | FEAT_HAFDBS              | Armv8.1  |           |  X  | Hardware updates to access flag and dirty state in translation tables
 | FEAT_HAFT                |          |           |  X  | Hardware managed Access Flag for Table descriptors
 | FEAT_HBC                 |          | Armv8.8   |  X  | Hinted conditional branches
