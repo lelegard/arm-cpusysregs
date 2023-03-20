@@ -1,0 +1,9 @@
+#include <windows.h>
+#include <ntverp.h>
+
+#define	VER_FILETYPE             VFT_DRV
+#define	VER_FILESUBTYPE          VFT2_DRV_SYSTEM
+#define VER_FILEDESCRIPTION_STR  "Access the Arm64 CPU system registers"
+#define VER_INTERNALNAME_STR     "cpusysregs.sys"
+
+#include "common.ver"

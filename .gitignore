@@ -14,6 +14,11 @@ tmp
 *.s
 *.S
 
+# Visual Studio binary directories
+ARM64
+x64
+.vs
+
 # Linker output
 *.ilk
 *.map

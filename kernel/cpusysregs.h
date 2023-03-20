@@ -24,6 +24,24 @@
     #include <mach/mach_types.h>
     typedef u_int64_t csr_u64_t;
 
+#elif defined(WINDOWS)
+
+    #if defined(KERNEL)
+        #include <ntddk.h>
+    #else
+        #include <windows.h>
+        #include <winioctl.h>
+        #if defined(__cplusplus)
+            #if defined(min)
+                #undef min
+            #endif
+            #if defined(max)
+                #undef max
+            #endif
+        #endif
+    #endif
+    typedef UINT64 csr_u64_t;
+
 #endif
 
 // Linux kernel module or macOS kernel extension name.
@@ -38,7 +56,11 @@ typedef struct {
 } csr_pair_t;
 
 // Attribute of a macro-like function.
-#define CSR_INLINE static inline __attribute__((always_inline))
+#if defined(_MSC_VER)
+    #define CSR_INLINE static inline __forceinline
+#else
+    #define CSR_INLINE static inline __attribute__((always_inline))
+#endif
 
 
 //----------------------------------------------------------------------------
