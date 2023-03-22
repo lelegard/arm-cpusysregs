@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>

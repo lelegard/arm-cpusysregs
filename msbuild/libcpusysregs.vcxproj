@@ -9,14 +9,14 @@
     <ProjectGuid>{29BD96E0-B6C5-42A0-B683-FD9740810600}</ProjectGuid>
   </PropertyGroup>
 
-  <ImportGroup Label="PropertySheets">
-    <Import Project="msbuild-options.props"/>
-  </ImportGroup>
-
   <PropertyGroup Label="Configuration">
     <TargetExt>.lib</TargetExt>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msbuild-options.props"/>
+  </ImportGroup>
 
   <ItemGroup>
     <ClInclude Include="..\kernel\cpusysregs.h"/>

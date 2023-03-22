@@ -15,6 +15,7 @@ if (-not $MSBuild) {
 }
 else {
     # Build the project.
+    Write-Output "MSBuild: $MSBuild"
     $SolutionFile = "$PSScriptRoot\cpusysregs.sln"
     & $MSBuild $SolutionFile /nologo /property:Configuration=Release /property:Platform=ARM64
 }
