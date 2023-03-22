@@ -182,24 +182,24 @@ void ArmFeatures::loadDirect()
     // Linux kernel emulates access to system registers of the following ranges:
     // Op0=3, Op1=0, CRn=0, CRm=0,2,3,4,5,6,7
 
-    csr_mrs_str(_aa64isar0, "id_aa64isar0_el1");
-    csr_mrs_str(_aa64isar1, "id_aa64isar1_el1");
-    csr_mrs_str(_aa64isar2, "id_aa64isar2_el1");
-    csr_mrs_str(_aa64pfr0,  "id_aa64pfr0_el1");
-    csr_mrs_str(_aa64pfr1,  "id_aa64pfr1_el1");
-    csr_mrs_num(_aa64pfr2,  CSR_SREG_ID_AA64PFR2_EL1);
-    csr_mrs_str(_aa64dfr0,  "id_aa64dfr0_el1");
-    csr_mrs_str(_aa64dfr1,  "id_aa64dfr1_el1");
-    csr_mrs_str(_aa64mmfr0, "id_aa64mmfr0_el1");
-    csr_mrs_str(_aa64mmfr1, "id_aa64mmfr1_el1");
-    csr_mrs_str(_aa64mmfr2, "id_aa64mmfr2_el1");
-    csr_mrs_num(_aa64mmfr3, CSR_SREG_ID_AA64MMFR3_EL1);
-    csr_mrs_str(_ctr,       "ctr_el0");
+    csr_mrs(_aa64isar0, CSR_SREG_ID_AA64ISAR0_EL1);
+    csr_mrs(_aa64isar1, CSR_SREG_ID_AA64ISAR1_EL1);
+    csr_mrs(_aa64isar2, CSR_SREG_ID_AA64ISAR2_EL1);
+    csr_mrs(_aa64pfr0,  CSR_SREG_ID_AA64PFR0_EL1);
+    csr_mrs(_aa64pfr1,  CSR_SREG_ID_AA64PFR1_EL1);
+    csr_mrs(_aa64pfr2,  CSR_SREG_ID_AA64PFR2_EL1);
+    csr_mrs(_aa64dfr0,  CSR_SREG_ID_AA64DFR0_EL1);
+    csr_mrs(_aa64dfr1,  CSR_SREG_ID_AA64DFR1_EL1);
+    csr_mrs(_aa64mmfr0, CSR_SREG_ID_AA64MMFR0_EL1);
+    csr_mrs(_aa64mmfr1, CSR_SREG_ID_AA64MMFR1_EL1);
+    csr_mrs(_aa64mmfr2, CSR_SREG_ID_AA64MMFR2_EL1);
+    csr_mrs(_aa64mmfr3, CSR_SREG_ID_AA64MMFR3_EL1);
+    csr_mrs(_ctr,       CSR_SREG_CTR_EL0);
     if (csr_has_sme(_aa64pfr1)) {
-        csr_mrs_num(_aa64smfr0, CSR_SREG_ID_AA64SMFR0_EL1);
+        csr_mrs(_aa64smfr0, CSR_SREG_ID_AA64SMFR0_EL1);
     }
     if (csr_has_sve(_aa64pfr0)) {
-        csr_mrs_num(_aa64zfr0, CSR_SREG_ID_AA64ZFR0_EL1);
+        csr_mrs(_aa64zfr0, CSR_SREG_ID_AA64ZFR0_EL1);
     }
     _loaded = true;
 }
