@@ -10,6 +10,7 @@
 
 #pragma once
 #include "cpusysregs.h"
+#include <cstring>
 #include <string>
 
 // Zero memory.
