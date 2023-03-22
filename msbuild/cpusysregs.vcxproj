@@ -72,7 +72,7 @@
   <ItemGroup>
     <ClCompile Include="..\kernel\windows\cpusysregs.c" />
     <ClInclude Include="..\kernel\cpusysregs.h" />
-    <ResourceCompile Include="cpusysregs.rc" />
+    <ResourceCompile Include="..\kernel\windows\cpusysregs.rc" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

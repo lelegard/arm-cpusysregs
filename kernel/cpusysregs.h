@@ -278,6 +278,7 @@ typedef struct {
 // Kernel module commands.
 // Linux: Use ioctl() on /dev/cpusysregs.
 // macOS: Use getsockopt() and setsockopt() on system control cpusysregs.
+// Windows: Use DeviceIoControl() on \\.\cpusysregs.
 //----------------------------------------------------------------------------
 
 #if defined(__linux__)
@@ -339,6 +340,63 @@ typedef struct {
     {
         const int instr = opt & _CSR_SOCKOPT_MASK;
         return (opt & ~_CSR_SOCKOPT_MASK) == _CSR_SOCKOPT_INSTR && instr < _CSR_INSTR_END ? instr : CSR_INSTR_INVALID;
+    }
+
+#elif defined(WINDOWS)
+
+    // Device name, as seen from userland applications.
+    #define CSR_DEVICE_NAME      "\\\\.\\" CSR_MODULE_NAME
+
+    // Windows NT and DOS devices names, as seen from the driver.
+    #define CSR_NT_DEVICE_NAME   L"\\Device\\" CSR_MODULE_NAME
+    #define CSR_DOS_DEVICE_NAME  L"\\DosDevices\\" CSR_MODULE_NAME
+
+    // I/O control codes for \\.\cpusysregs.
+    // Each code shall be unique since all commands go through DeviceIoControl().
+    // Device types (_CSR_IOC_REG, _CSR_IOC_INSTR) are in the "User Defined" range.
+    // The IOCTL function codes (12 bits) from 0x800 to 0xFFF are for customer use.
+    #define _CSR_IOC                40000
+    #define _CSR_FUNC_SET_REG       0xA00
+    #define _CSR_FUNC_GET_REG       0xB00
+    #define _CSR_FUNC_INSTR         0xC00
+    #define CSR_IOC_GET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_GET_REG + (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
+    #define CSR_IOC_SET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_SET_REG + (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
+    #define CSR_IOC_INSTR(instr)    CTL_CODE(_CSR_IOC, _CSR_FUNC_INSTR + (instr), METHOD_BUFFERED, FILE_ANY_ACCESS)
+
+    // Not found in ntddk.h (similar to DEVICE_TYPE_FROM_CTL_CODE and METHOD_FROM_CTL_CODE.
+    #define FUNCTION_FROM_CTL_CODE(ctrlCode)  ((ULONG)((ctrlCode) >> 2) & 0x0FFF)
+
+    // Extract the get register id from an DeviceIoControl() code.
+    // Return CSR_REGID_INVALID if not a get register command.
+    CSR_INLINE int csr_ioc_to_get_regid(long cmd)
+    {
+        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
+        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC &&
+               func > _CSR_FUNC_GET_REG + CSR_REGID_INVALID &&
+               func != _CSR_FUNC_GET_REG + _CSR_REGID_END &&
+               func < _CSR_FUNC_GET_REG + _CSR_REGID2_END ?
+               func - _CSR_FUNC_GET_REG : CSR_INSTR_INVALID;
+    }
+
+    // Extract the set register id from an DeviceIoControl() code.
+    // Return CSR_REGID_INVALID if not a set register command.
+    CSR_INLINE int csr_ioc_to_set_regid(long cmd)
+    {
+        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
+        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC &&
+            func > _CSR_FUNC_SET_REG + CSR_REGID_INVALID &&
+            func != _CSR_FUNC_SET_REG + _CSR_REGID_END &&
+            func < _CSR_FUNC_SET_REG + _CSR_REGID2_END ?
+            func - _CSR_FUNC_SET_REG : CSR_INSTR_INVALID;
+    }
+
+    // Extract the instruction code from an DeviceIoControl() code.
+    // Return CSR_INSTR_INVALID if not an instruction command.
+    CSR_INLINE int csr_ioc_to_instr(long cmd)
+    {
+        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
+        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC && func > _CSR_FUNC_INSTR + CSR_INSTR_INVALID && func < _CSR_FUNC_INSTR + _CSR_INSTR_END ?
+               func - _CSR_FUNC_INSTR : CSR_INSTR_INVALID;
     }
 
 #endif
@@ -815,17 +873,6 @@ typedef struct {
     ".equ .csr_gpr_wzr, 31\n"
 
 //
-// Macros to read/write system registers by name.
-// The corresponding register names must be known at all levels of architecture.
-// Examples:
-//    csr_u64_t r;
-//    csr_mrs_str(r, "id_aa64pfr0_el1");
-//    csr_msr_str("id_aa64pfr0_el1", r);
-//
-#define csr_msr_str(sreg,value)   asm("msr " sreg ", %0" : : "r" (value))
-#define csr_mrs_str(result,sreg)  asm("mrs %0, " sreg : "=r" (result))
-
-//
 // Macros to read/write system registers using their identifier.
 // This method works at all levels of architecture, including when the target
 // register does not exist. It is the responsibility of the code logic to execute
@@ -837,11 +884,15 @@ typedef struct {
 //    csr_msr_num(CSR_APIAKEYHI_EL1, r);
 //    csr_mrs_num(r, CSR_APIAKEYHI_EL1);
 //
-#define csr_msr_num(sreg,value) \
-    asm(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
-
-#define csr_mrs_num(result,sreg) \
-    asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+#if defined(_MSC_VER)
+    // msvc syntax
+    #define csr_msr(sreg,value)                  // @@@ not yet implemented
+    #define csr_mrs(result,sreg) ((result) = 0)  // @@@ not yet implemented
+#else
+    // gcc/clang syntax
+    #define csr_msr(sreg,value) asm(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
+    #define csr_mrs(result,sreg) asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+#endif
 
 //
 // Macros to generate PACxx and AUTxx instructions.
@@ -849,25 +900,29 @@ typedef struct {
 // supported by the assembler. Since these instructions are in the HINT range,
 // executing them before Armv8.3 is a NOP.
 //
-#define csr_pacia(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_pacib(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_pacda(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac10800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_pacdb(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac10c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_pacga(result,data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
-#define csr_autia(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac11000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_autib(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac11400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_autda(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-#define csr_autdb(data,mod) \
-    asm(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-
+#if defined(_MSC_VER)
+    // msvc syntax
+    #define csr_pacia(data,mod) // @@@ not yet implemented
+    #define csr_pacib(data,mod) // @@@ not yet implemented
+    #define csr_pacda(data,mod) // @@@ not yet implemented
+    #define csr_pacdb(data,mod) // @@@ not yet implemented
+    #define csr_autia(data,mod) // @@@ not yet implemented
+    #define csr_autib(data,mod) // @@@ not yet implemented
+    #define csr_autda(data,mod) // @@@ not yet implemented
+    #define csr_autdb(data,mod) // @@@ not yet implemented
+    #define csr_pacga(result,data,mod) // @@@ not yet implemented
+#else
+    // gcc/clang syntax
+    #define csr_pacia(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacib(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacda(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacdb(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autia(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autib(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autda(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autdb(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacga(result,data,mod) asm(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
+#endif
 
 
 //----------------------------------------------------------------------------
@@ -899,13 +954,13 @@ typedef struct {
 CSR_INLINE int csr_get_cpu_features(void)
 {
     csr_u64_t pfr0, pfr1, dfr0, isar0, isar1, isar2, mmfr3;
-    csr_mrs_str(pfr0,  "id_aa64pfr0_el1");
-    csr_mrs_str(pfr1,  "id_aa64pfr1_el1");
-    csr_mrs_str(dfr0,  "id_aa64dfr0_el1");
-    csr_mrs_str(isar0, "id_aa64isar0_el1");
-    csr_mrs_str(isar1, "id_aa64isar1_el1");
-    csr_mrs_str(isar2, "id_aa64isar2_el1");
-    csr_mrs_num(mmfr3, CSR_SREG_ID_AA64MMFR3_EL1);
+    csr_mrs(pfr0, CSR_SREG_ID_AA64PFR0_EL1);
+    csr_mrs(pfr1, CSR_SREG_ID_AA64PFR1_EL1);
+    csr_mrs(dfr0, CSR_SREG_ID_AA64DFR0_EL1);
+    csr_mrs(isar0, CSR_SREG_ID_AA64ISAR0_EL1);
+    csr_mrs(isar1, CSR_SREG_ID_AA64ISAR1_EL1);
+    csr_mrs(isar2, CSR_SREG_ID_AA64ISAR2_EL1);
+    csr_mrs(mmfr3, CSR_SREG_ID_AA64MMFR3_EL1);
     return (csr_has_pac(isar1, isar2) ? FEAT_PAC : 0) |
            (csr_has_pacga(isar1, isar2) ? FEAT_PACGA : 0) |
            (csr_has_bti(pfr1) ? FEAT_BTI : 0) |
@@ -928,16 +983,16 @@ CSR_INLINE int csr_get_cpu_features(void)
 CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_features)
 {
 #define _check(features) if (((features) & cpu_features) != (features)) return 2
-#define _setreg(id, sreg, features)     \
-    case (id):                          \
-        _check(features);               \
-        csr_msr_num(sreg, value->low);  \
+#define _setreg(id, sreg, features) \
+    case (id):                      \
+        _check(features);           \
+        csr_msr(sreg, value->low);  \
         return 0
 #define _setreg2(id, sreg_high, sreg_low, features) \
     case (id):                                      \
         _check(features);                           \
-        csr_msr_num(sreg_high, value->high);        \
-        csr_msr_num(sreg_low, value->low);          \
+        csr_msr(sreg_high, value->high);            \
+        csr_msr(sreg_low, value->low);              \
         return 0
 
     switch (regid) {
@@ -966,16 +1021,16 @@ CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_feat
 CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
 {
 #define _check(features) if (((features) & cpu_features) != (features)) return 2
-#define _getreg(id, sreg, features)     \
-    case (id):                          \
-        _check(features);               \
-        csr_mrs_num(value->low, sreg);  \
+#define _getreg(id, sreg, features) \
+    case (id):                      \
+        _check(features);           \
+        csr_mrs(value->low, sreg);  \
         return 0
 #define _getreg2(id, sreg_high, sreg_low, features) \
     case (id):                                      \
         _check(features);                           \
-        csr_mrs_num(value->high, sreg_high);        \
-        csr_mrs_num(value->low, sreg_low);          \
+        csr_mrs(value->high, sreg_high);            \
+        csr_mrs(value->low, sreg_low);              \
         return 0
 
     switch (regid) {

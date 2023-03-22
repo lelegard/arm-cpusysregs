@@ -1,5 +1,18 @@
 # Building for Windows
 
+**Warning:** Preliminary notes, this project is not ready yet for Windows.
+
+As of this writing, Visual Studio 17.5.2 is available on Windows 11 Arm64.
+However, the Windows Driver Kit (WDK) is not. This means that, on Windows Arm64,
+we can develop userland applications but not drivers. In 2023...
+
+Question [asked here](https://stackoverflow.com/questions/75793332/how-to-natively-build-windows-11-device-drivers-for-arm64-on-an-arm64-system)
+but no answer was received.
+
+To build this project, we must use an Intel PC with Windows 11, Visual Studio,
+including the Arm64 building tools, and the WDK. The Arm64 applications and
+drivers can be compiled on the Intel PC and then moved to the Windows Arm64 system.
+
 ## Prerequisites
 
 - Install the Windows Driver Kit (WDK).
@@ -10,7 +23,7 @@
   - Start Menu -> Settings -> System -> Recovery -> Advanced Startup -> Restart now
   - "Light blue" boot menu -> Troubleshoot -> Advanced options -> Startup settings -> Restart
   - Press F7 (for 7th option "Disable driver signature enforcement")
-  - This settings may not be persistent across reboots (to be confirmed).
+  - This settings may not always be persistent across reboots (to be confirmed).
 
 - Disable secure boot on Windows 11 (may be necessary in some cases).
   - Start Menu -> Settings -> System -> Recovery -> Advanced Startup -> Restart now
