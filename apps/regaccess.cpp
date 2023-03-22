@@ -12,12 +12,13 @@
 #include "strutils.h"
 #include <cstddef>
 #include <cstdlib>
-#include <unistd.h>
 
 #if defined(__linux__)
+    #include <unistd.h>
     #include <fcntl.h>
     #include <sys/ioctl.h>
 #elif defined(__APPLE__)
+    #include <unistd.h>
     #include <sys/socket.h>
     #include <sys/sys_domain.h>
     #include <sys/kern_control.h>
@@ -30,7 +31,7 @@
 //----------------------------------------------------------------------------
 
 RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
-    _fd(-1),
+    _fd(CSR_INVALID_SYSHANDLE),
     _print_errors(print_errors),
     _error(0),
     _error_ref()
@@ -53,7 +54,7 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
 
     // Get the control id of the cpusysregs kernel extension.
     struct ctl_info info;
-    bzero(&info, sizeof(info));
+    Zero(&info, sizeof(info));
     ::strncpy(info.ctl_name, CSR_SOCKET_NAME, sizeof(info.ctl_name));
     if (::ioctl(_fd, CTLIOCGINFO, &info) < 0) {
         setError(errno, "ioctl(CTLIOCGINFO)", true, exit_on_open_error);
@@ -62,7 +63,7 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
 
     // Connect to the kernel extension using its id.
     struct sockaddr_ctl addr;
-    bzero(&addr, sizeof(addr));
+    Zero(&addr, sizeof(addr));
     addr.sc_len = sizeof(addr);
     addr.sc_family = AF_SYSTEM;
     addr.ss_sysaddr = AF_SYS_CONTROL;
@@ -72,15 +73,35 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
         return;
     }
 
+#elif defined(WINDOWS)
+
+    // @@@ to be completed
+
 #endif
 }
 
-RegAccess::~RegAccess()
+
+//----------------------------------------------------------------------------
+// Close the kernel module, check if open.
+//----------------------------------------------------------------------------
+
+bool RegAccess::isOpen() const
 {
-    if (_fd >= 0 && ::close(_fd) < 0) {
-        setError(errno, "close");
+    return _fd != CSR_INVALID_SYSHANDLE;
+}
+
+void RegAccess::close()
+{
+    if (_fd != CSR_INVALID_SYSHANDLE) {
+#if defined(__linux__) || defined(__APPLE__)
+        if (::close(_fd) < 0) {
+            setError(errno, "close");
+        }
+#elif defined(WINDOWS)
+        // @@@ to be completed
+#endif
     }
-    _fd = -1;
+    _fd = CSR_INVALID_SYSHANDLE;
 }
 
 
@@ -105,9 +126,8 @@ bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool e
 {
     _error = code;
     _error_ref = ref;
-    if (close_fd && _fd >= 0) {
-        ::close(_fd);
-        _fd = -1;
+    if (close_fd) {
+        close();
     }
     if (_print_errors || exit_on_error) {
         printLastError();
@@ -137,6 +157,8 @@ bool RegAccess::read(int regid, csr_u64_t& reg)
     if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, &len) < 0)  {
         return setError(errno, "getsockopt(GET_REG)");
     }
+#elif defined(WINDOWS)
+    // @@@ to be completed
 #endif
     return true;
 }
@@ -159,6 +181,8 @@ bool RegAccess::read(int regid, csr_pair_t& reg)
     if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, &len) < 0)  {
         return setError(errno, "getsockopt(GET_REG2)");
     }
+#elif defined(WINDOWS)
+    // @@@ to be completed
 #endif
     return true;
 }
@@ -181,6 +205,8 @@ bool RegAccess::write(int regid, csr_u64_t reg)
     if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
         return setError(errno, "setsockopt(SET_REG)");
     }
+#elif defined(WINDOWS)
+    // @@@ to be completed
 #endif
     return true;
 }
@@ -201,6 +227,8 @@ bool RegAccess::write(int regid, const csr_pair_t& reg)
     if (::setsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_REG(regid), &reg, sizeof(reg)) < 0)  {
         return setError(errno, "setsockopt(SET_REG2)");
     }
+#elif defined(WINDOWS)
+    // @@@ to be completed
 #endif
     return true;
 }
@@ -221,6 +249,8 @@ bool RegAccess::executeInstr(int instr, csr_instr_t& args)
     if (::getsockopt(_fd, SYSPROTO_CONTROL, CSR_SOCKOPT_INSTR(instr), &args, &len) < 0)  {
         return setError(errno, "getsockopt(INSTR)");
     }
+#elif defined(WINDOWS)
+    // @@@ to be completed
 #endif
     return true;
 }

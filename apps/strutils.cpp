@@ -118,7 +118,7 @@ std::string Format(const char* fmt, ...)
     // Actual formatting.
     std::string buf(len + 1, '\0');
     va_start(ap, fmt);
-    len = ::vsnprintf(buf.data(), buf.size(), fmt, ap);
+    len = ::vsnprintf(&buf[0], buf.size(), fmt, ap);
     va_end(ap);
 
     buf.resize(std::max(0, len));
@@ -163,6 +163,8 @@ std::string Pad(const std::string& str, size_t width, char pad, bool right)
 // Transform an errno value into an error message string.
 //----------------------------------------------------------------------------
 
+#if defined(__linux__) || defined(__APPLE__)
+
 // Depending on GNU vs. POSIX, strerror_r returns an int or a char*.
 // There are two short functions to handle the strerror_r result.
 // The C++ compiler will automatically invoke the right one.
@@ -180,10 +182,14 @@ namespace {
     }
 }
 
+#endif
+
 std::string Error(int code)
 {
+#if defined(__linux__) || defined(__APPLE__)
+
     char message[1024];
-    bzero(message, sizeof(message));
+    Zero(message, sizeof(message));
 
     char* result = message;
     bool found = false;
@@ -200,4 +206,21 @@ std::string Error(int code)
         // Message is not found.
         return Format("System error %d (0x%X)", code, code);
     }
+
+#elif defined(WINDOWS)
+
+    std::string message;
+    message.resize(1024);
+    size_t length = ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, code, 0, &message[0], ::DWORD(message.size()), nullptr);
+    message.resize(std::min(length, message.size()));
+
+    if (!message.empty()) {
+        return message;
+    }
+    else {
+        // Message is not found.
+        return Format("System error %d (0x%X)", code, code);
+    }
+
+#endif
 }

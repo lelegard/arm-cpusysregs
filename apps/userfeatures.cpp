@@ -83,6 +83,11 @@ UserFeatures::UserFeatures()
         return feat.value;
     }
 
+#elif defined(WINDOWS)
+
+    // @@@ to be completed
+    #define FEATURE(feat,type,flag,name,eval) (false)
+
 #endif
 
 

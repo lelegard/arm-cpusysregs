@@ -1,4 +1,20 @@
+//----------------------------------------------------------------------------
+//
+// Arm64 CPU system registers tools
+// Copyright (c) 2023, Thierry Lelegard
+// BSD-2-Clause license, see the LICENSE file.
+//
+// Windows kernel driver for \\.\cpusysregs.
+// Reads the Arm64 CPU system registers and return them to userland.
+// For test and educational purpose only, can have unexpected security effects.
+//
+//----------------------------------------------------------------------------
+
 #include "cpusysregs.h"
+
+// Global data: set of CPU features.
+
+static int cpu_features = 0;
 
 // Device driver routine declarations.
 
@@ -14,7 +30,10 @@ _Dispatch_type_(IRP_MJ_DEVICE_CONTROL) DRIVER_DISPATCH csr_ioctl;
 #pragma alloc_text(PAGE, csr_unload)
 #endif
 
+
+//----------------------------------------------------------------------------
 // Called when the driver is initialized.
+//----------------------------------------------------------------------------
 
 NTSTATUS DriverEntry(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path)
 {
@@ -23,7 +42,8 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path
     UNICODE_STRING link_name;
     PDEVICE_OBJECT device_object = NULL;
 
-    UNREFERENCED_PARAMETER(registry_path);
+    // Get CPU features we may need later.
+    cpu_features = csr_get_cpu_features();
 
     // Driver entry point in the driver object.
     driver_object->MajorFunction[IRP_MJ_CREATE] = csr_open_close;
@@ -33,7 +53,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path
 
     // Create our device.
     RtlInitUnicodeString(&device_name, CSR_NT_DEVICE_NAME);
-    status = IoCreateDevice(driver_object,             // Our Driver Object
+    status = IoCreateDevice(driver_object,            // Our Driver Object
                             0,                        // No device extension
                             &device_name,             // Device name "\Device\xxxxx"
                             FILE_DEVICE_UNKNOWN,      // Device type
@@ -54,14 +74,17 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path
     return status;
 }
 
+
+//----------------------------------------------------------------------------
 // Called when the driver is unloaded.
+//----------------------------------------------------------------------------
 
 void csr_unload(PDRIVER_OBJECT driver_object)
 {
+    PAGED_CODE();
+
     PDEVICE_OBJECT device_object = driver_object->DeviceObject;
     UNICODE_STRING link_name;
-
-    PAGED_CODE();
 
     // Delete the link from our device name to a name in the Win32 namespace.
     RtlInitUnicodeString(&link_name, CSR_DOS_DEVICE_NAME);
@@ -73,62 +96,91 @@ void csr_unload(PDRIVER_OBJECT driver_object)
     }
 }
 
+
+//----------------------------------------------------------------------------
 // Called when the device is opened or closed.
+//----------------------------------------------------------------------------
 
 NTSTATUS csr_open_close(PDEVICE_OBJECT device_object, PIRP irp)
 {
-    UNREFERENCED_PARAMETER(device_object);
     PAGED_CODE();
 
+    // Complete with success status.
     irp->IoStatus.Status = STATUS_SUCCESS;
     irp->IoStatus.Information = 0;
-
     IoCompleteRequest(irp, IO_NO_INCREMENT);
     return STATUS_SUCCESS;
 }
 
+
+//----------------------------------------------------------------------------
 // Called to perform a device I/O control function.
+//----------------------------------------------------------------------------
 
 NTSTATUS csr_ioctl(PDEVICE_OBJECT device_object, PIRP irp)
 {
-    NTSTATUS status = STATUS_SUCCESS;
-    
-    // Caller's I/O stack location
-    PIO_STACK_LOCATION irp_sp = IoGetCurrentIrpStackLocation(irp);
-
-    // Input and output data sizes.
-    //ULONG in_length = irp_sp->Parameters.DeviceIoControl.InputBufferLength;
-    //ULONG out_length = irp_sp->Parameters.DeviceIoControl.OutputBufferLength;
-
-    // We use only buffered ioctl. The I/O manager allocates a buffer large enough to
-    // to accommodate the larger of the user input buffer and output buffer, assigns
-    // the address to irp->AssociatedIrp.SystemBuffer, and copies the content of the
-    // user input buffer into this SystemBuffer. When the IRP is completed, the content
-    // of the SystemBuffer is copied to the user output buffer and the SystemBuffer is freed.
-    //void* buffer = irp->AssociatedIrp.SystemBuffer;
-
     PAGED_CODE();
 
-    switch (irp_sp->Parameters.DeviceIoControl.IoControlCode) {
-        //case CSR_IOCTL_FOO:
-        //    // Use a csr_foo_t as input and output
-        //    if (in_length < sizeof(csr_foo_t) || out_length < sizeof(csr_foo_t)) {
-        //        status = STATUS_INVALID_PARAMETER;
-        //    }
-        //    else {
-        //        // Use input data, update output buffer.
-        //        csr_foo_t* data = (csr_foo_t*)(buffer);
-        //        data->out = data->in + 1;
+    // Caller's I/O stack location
+    const PIO_STACK_LOCATION irp_sp = IoGetCurrentIrpStackLocation(irp);
 
-        //        // Return output data size.
-        //        irp->IoStatus.Information = sizeof(csr_foo_t);
-        //    }
-        //    break;
+    // Input and output data sizes.
+    const ULONG in_length = irp_sp->Parameters.DeviceIoControl.InputBufferLength;
+    const ULONG out_length = irp_sp->Parameters.DeviceIoControl.OutputBufferLength;
 
-        default:
-            // The specified I/O control code is unrecognized by this driver.
-            status = STATUS_INVALID_DEVICE_REQUEST;
-            break;
+    // We use only buffered ioctl. The I/O manager allocates a buffer large
+    // enough to accommodate the larger of the user input buffer and output buffer,
+    // assigns the address to irp->AssociatedIrp.SystemBuffer, and copies the
+    // content of the user input buffer into this SystemBuffer. When the IRP is
+    // completed, the content of the SystemBuffer is copied to the user output
+    // buffer and the SystemBuffer is freed.
+    void* const buffer = irp->AssociatedIrp.SystemBuffer;
+
+    // I/O control command.
+    const ULONG cmd = irp_sp->Parameters.DeviceIoControl.IoControlCode;
+    const int instr = csr_ioc_to_instr(cmd);
+    const int regid = csr_ioc_to_regid(cmd);
+
+    // Preset returned size to zero.
+    irp->IoStatus.Information = 0;
+    NTSTATUS status = STATUS_SUCCESS;
+
+    if (METHOD_FROM_CTL_CODE(cmd) != METHOD_BUFFERED) {
+        // We only accept buffered commands.
+        status = STATUS_INVALID_DEVICE_REQUEST;
+    }
+    else if (instr != CSR_INSTR_INVALID) {
+        // Execute a specific instruction.
+        if (in_length < sizeof(csr_instr_t) || out_length < sizeof(csr_instr_t) || csr_exec_instr(instr, (csr_instr_t*)(buffer))) {
+            status = STATUS_INVALID_PARAMETER;
+        }
+        else {
+            // Update returned data size (the csr_instr_t is in/out).
+            irp->IoStatus.Information = sizeof(csr_instr_t);
+        }
+    }
+    else if (regid != CSR_REGID_INVALID) {
+        // This is a register to read/write.
+        const ULONG size = csr_regid_is_pair(regid) ? sizeof(csr_pair_t) : sizeof(csr_u64_t);
+        if (csr_ioc_is_set_reg(cmd)) {
+            // Set register value.
+            if (in_length < size || csr_set_register(regid, (const csr_pair_t*)(buffer), cpu_features)) {
+                status = STATUS_INVALID_PARAMETER;
+            }
+        }
+        else {
+            // Get register value.
+            if (out_length < size || csr_get_register(regid, (csr_pair_t*)(buffer), cpu_features)) {
+                status = STATUS_INVALID_PARAMETER;
+            }
+            else {
+                // Update returned data size.
+                irp->IoStatus.Information = size;
+            }
+        }
+    }
+    else {
+        status = STATUS_INVALID_DEVICE_REQUEST;
     }
 
     // Complete the I/O.

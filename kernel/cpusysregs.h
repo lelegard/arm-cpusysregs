@@ -356,47 +356,43 @@ typedef struct {
     // Device types (_CSR_IOC_REG, _CSR_IOC_INSTR) are in the "User Defined" range.
     // The IOCTL function codes (12 bits) from 0x800 to 0xFFF are for customer use.
     #define _CSR_IOC                40000
-    #define _CSR_FUNC_SET_REG       0xA00
-    #define _CSR_FUNC_GET_REG       0xB00
+    #define _CSR_FUNC_MASK          0xF00
+    #define _CSR_FUNC_GET_REG       0xA00
+    #define _CSR_FUNC_SET_REG       0xB00
     #define _CSR_FUNC_INSTR         0xC00
-    #define CSR_IOC_GET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_GET_REG + (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
-    #define CSR_IOC_SET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_SET_REG + (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
-    #define CSR_IOC_INSTR(instr)    CTL_CODE(_CSR_IOC, _CSR_FUNC_INSTR + (instr), METHOD_BUFFERED, FILE_ANY_ACCESS)
+    #define CSR_IOC_GET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_GET_REG | (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
+    #define CSR_IOC_SET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_SET_REG | (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
+    #define CSR_IOC_INSTR(instr)    CTL_CODE(_CSR_IOC, _CSR_FUNC_INSTR | (instr), METHOD_BUFFERED, FILE_ANY_ACCESS)
 
     // Not found in ntddk.h (similar to DEVICE_TYPE_FROM_CTL_CODE and METHOD_FROM_CTL_CODE.
     #define FUNCTION_FROM_CTL_CODE(ctrlCode)  ((ULONG)((ctrlCode) >> 2) & 0x0FFF)
 
-    // Extract the get register id from an DeviceIoControl() code.
-    // Return CSR_REGID_INVALID if not a get register command.
-    CSR_INLINE int csr_ioc_to_get_regid(long cmd)
+    // Check if a DeviceIoControl() code is a set register command.
+    CSR_INLINE int csr_ioc_is_set_reg(ULONG cmd)
     {
-        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
-        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC &&
-               func > _CSR_FUNC_GET_REG + CSR_REGID_INVALID &&
-               func != _CSR_FUNC_GET_REG + _CSR_REGID_END &&
-               func < _CSR_FUNC_GET_REG + _CSR_REGID2_END ?
-               func - _CSR_FUNC_GET_REG : CSR_INSTR_INVALID;
+        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC && (FUNCTION_FROM_CTL_CODE(cmd) & _CSR_FUNC_MASK) == _CSR_FUNC_SET_REG;
     }
 
-    // Extract the set register id from an DeviceIoControl() code.
-    // Return CSR_REGID_INVALID if not a set register command.
-    CSR_INLINE int csr_ioc_to_set_regid(long cmd)
+    // Extract the register id from a DeviceIoControl() code.
+    // Return CSR_REGID_INVALID if not a get/set register command.
+    CSR_INLINE int csr_ioc_to_regid(ULONG cmd)
     {
-        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
+        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd) & _CSR_FUNC_MASK;
+        const int regid = (int)(FUNCTION_FROM_CTL_CODE(cmd) & ~_CSR_FUNC_MASK);
         return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC &&
-            func > _CSR_FUNC_SET_REG + CSR_REGID_INVALID &&
-            func != _CSR_FUNC_SET_REG + _CSR_REGID_END &&
-            func < _CSR_FUNC_SET_REG + _CSR_REGID2_END ?
-            func - _CSR_FUNC_SET_REG : CSR_INSTR_INVALID;
+               (func == _CSR_FUNC_GET_REG || func == _CSR_FUNC_SET_REG) &&
+               regid != _CSR_REGID_END &&
+               regid < _CSR_REGID2_END ?
+               regid : CSR_REGID_INVALID;
     }
 
-    // Extract the instruction code from an DeviceIoControl() code.
+    // Extract the instruction code from a DeviceIoControl() code.
     // Return CSR_INSTR_INVALID if not an instruction command.
-    CSR_INLINE int csr_ioc_to_instr(long cmd)
+    CSR_INLINE int csr_ioc_to_instr(ULONG cmd)
     {
-        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd);
-        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC && func > _CSR_FUNC_INSTR + CSR_INSTR_INVALID && func < _CSR_FUNC_INSTR + _CSR_INSTR_END ?
-               func - _CSR_FUNC_INSTR : CSR_INSTR_INVALID;
+        const ULONG func = FUNCTION_FROM_CTL_CODE(cmd) & _CSR_FUNC_MASK;
+        const int instr = (int)(FUNCTION_FROM_CTL_CODE(cmd) & ~_CSR_FUNC_MASK);
+        return DEVICE_TYPE_FROM_CTL_CODE(cmd) == _CSR_IOC && func == _CSR_FUNC_INSTR && instr < _CSR_INSTR_END ? instr : CSR_INSTR_INVALID;
     }
 
 #endif

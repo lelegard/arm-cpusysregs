@@ -66,7 +66,7 @@ private:
 
     typedef uint64_t const_t;
     typedef uint8_t cell_t;
-    typedef int sbox_t[16];
+    typedef uint8_t sbox_t[16];
 
     static void text2cell(cell_t* cell, text_t is);
     static text_t cell2text(cell_t* cell);

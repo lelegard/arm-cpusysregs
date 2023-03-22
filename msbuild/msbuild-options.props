@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+
+  <PropertyGroup Label="Configuration">
+    <TargetName>$(MSBuildProjectName)</TargetName>
+    <TargetVersion>Windows10</TargetVersion>
+    <PlatformToolset>v143</PlatformToolset>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Release'">
+    <UseDebugLibraries>False</UseDebugLibraries>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
+    <UseDebugLibraries>True</UseDebugLibraries>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+
+  <PropertyGroup>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)$(ProjectName)\</IntDir>
+  </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+  </ImportGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>4100;4244</DisableSpecificWarnings>
+      <PreprocessorDefinitions>WINDOWS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)..\kernel\</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>

@@ -12,6 +12,9 @@
 #include "cpusysregs.h"
 #include <string>
 
+// Zero memory.
+CSR_INLINE void Zero(void* addr, size_t size) { ::memset(addr, 0, size); }
+
 // Format booleans and integers.
 std::string YesNo(bool);
 std::string ToHexa(csr_u64_t);

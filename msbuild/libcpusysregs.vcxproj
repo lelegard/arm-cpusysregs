@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msbuild-configurations.props"/>
+  </ImportGroup>
+
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{29BD96E0-B6C5-42A0-B683-FD9740810600}</ProjectGuid>
+  </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="msbuild-options.props"/>
+  </ImportGroup>
+
+  <PropertyGroup Label="Configuration">
+    <TargetExt>.lib</TargetExt>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ClInclude Include="..\kernel\cpusysregs.h"/>
+    <ClInclude Include="..\apps\armfeatures.h"/>
+    <ClCompile Include="..\apps\armfeatures.cpp"/>
+    <ClInclude Include="..\apps\armpseudocode.h"/>
+    <ClCompile Include="..\apps\armpseudocode.cpp"/>
+    <ClInclude Include="..\apps\qarma64.h"/>
+    <ClCompile Include="..\apps\qarma64.cpp"/>
+    <ClInclude Include="..\apps\regaccess.h"/>
+    <ClCompile Include="..\apps\regaccess.cpp"/>
+    <ClInclude Include="..\apps\regview.h"/>
+    <ClCompile Include="..\apps\regview.cpp"/>
+    <ClInclude Include="..\apps\restrictions.h"/>
+    <ClInclude Include="..\apps\strutils.h"/>
+    <ClCompile Include="..\apps\strutils.cpp"/>
+    <ClInclude Include="..\apps\userfeatures.h"/>
+    <ClCompile Include="..\apps\userfeatures.cpp"/>
+  </ItemGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+
+</Project>

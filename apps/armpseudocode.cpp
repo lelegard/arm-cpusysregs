@@ -82,7 +82,7 @@ void ArmPseudoCode::AArch64_GetS1TTWParams(S1TTWParams& walkparams, csr_u64_t  v
 // Gather stage 1 translation table walk parameters for EL1&0 regime (with EL2 enabled or disabled)
 void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange varange)
 {
-    bzero(&walkparams, sizeof(walkparams));
+    Zero(&walkparams, sizeof(walkparams));
 
     // Currently ignore 128-bit registers.
     if (varange == VARange_LOWER) {

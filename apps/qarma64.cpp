@@ -105,8 +105,8 @@ Qarma64::text_t Qarma64::pseudo_reflect(text_t is, key_t tk)
         for (int y = 0; y < 4; y++) {
             cell_t temp = 0;
             for (int j = 0; j < 4; j++) {
-                int b;
-                if ((b = Q[4 * x + j])) {
+                const int b = Q[4 * x + j];
+                if (b) {
                     cell_t a = perm[4 * j + y];
                     temp ^= ((a << b) & 0x0F) | (a >> (4 - b));
                 }
@@ -116,12 +116,14 @@ Qarma64::text_t Qarma64::pseudo_reflect(text_t is, key_t tk)
     }
 
     // AddRoundTweakey
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++) {
         cell[i] ^= (tk >> (4 * (15 - i))) & 0xF;
+    }
 
     // ShuffleCells invert
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++) {
         perm[i] = cell[t_inv[i]];
+    }
 
     return cell2text(perm);
 }

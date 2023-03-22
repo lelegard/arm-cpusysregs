@@ -1157,17 +1157,17 @@ void RegView::Register::display(std::ostream& out, const csr_pair_t& value) cons
                 ((value.high << (127 - bf.msb)) >> (63 - bf.msb + bf.lsb)) :
                 ((value.low << (63 - bf.msb)) >> (63 - bf.msb + bf.lsb));
             // Look for a name for this value.
-            std::string name(bf.values.empty() ? Format("%lld", bfval) : "reserved");
+            std::string valname(bf.values.empty() ? Format("%lld", bfval) : "reserved");
             for (const auto& nm : bf.values) {
                 if (nm.value == bfval) {
-                    name = nm.name;
+                    valname = nm.name;
                     break;
                 }
             }
             // Print the bitfield description.
             const int hexwidth = (bf.msb - bf.lsb) / 4 + 1;
             out << "  " << Pad(bf.name + ":", name_width + 1, ' ')
-                << " " << Format("0x%0*llX", hexwidth, bfval) << " (" << name << ")" << std::endl;
+                << " " << Format("0x%0*llX", hexwidth, bfval) << " (" << valname << ")" << std::endl;
         }
     }
 }
