@@ -1,26 +1,33 @@
-# Driver loader / unloader from PowerShell.
+#----------------------------------------------------------------------------
 #
-# There are two methods to load / unload the driver:
-# 1) PowerShell: this script
-# 2) C++ application: see loader.cpp
+# Arm64 CPU system registers tools
+# Copyright (c) 2023, Thierry Lelegard
+# BSD-2-Clause license, see the LICENSE file.
+#
+# PowerShell script to load and unload the driver.
+#
+# Options:
+#   -Load     Load the driver (the default)
+#   -Unload   Unload the driver
+#   -Show     Show the state of the driver
+#   -NoPause  Do not wait for user input at end (for use in other scripts)
+#
+#----------------------------------------------------------------------------
 
 [CmdletBinding(SupportsShouldProcess=$true)]
 param(
     [switch]$Load = $false,
     [switch]$Unload = $false,
-    [switch]$Query = $false,
+    [switch]$Show = $false,
     [switch]$NoPause = $false
 )
 
 # -Load is the default.
-$Load = $Load -or ((-not $Unload) -and (-not $Query))
-
-# Local architecture is x64 or ARM64
-$Arch = if ((Get-CimInstance Win32_OperatingSystem).OSArchitecture -match "arm") {"AMR64"} else {"x64"}
+$Load = $Load -or ((-not $Unload) -and (-not $Show))
 
 # Driver description. Search binary in build directory and in same directory.
 $DriverName = "cpusysregs"
-$DriverSys = "$PSScriptRoot\$Arch\Release\$DriverName.sys"
+$DriverSys = "$PSScriptRoot\ARM64\Release\$DriverName.sys"
 if (-not (Test-Path $DriverSys)) {
     $DriverSys = "$PSScriptRoot\$DriverName.sys"
 }
@@ -38,8 +45,8 @@ if (-not $IsAdmin) {
     if ($Unload) {
         $cmd += " -Unload"
     }
-    if ($Query) {
-        $cmd += " -Query"
+    if ($Show) {
+        $cmd += " -Show"
     }
     if ($NoPause) {
         $cmd += " -NoPause"
@@ -55,7 +62,7 @@ else {
         sc.exe start "$DriverName"
         Write-Output ""
     }
-    if ($Query) {
+    if ($Show) {
         Write-Output ""
         sc.exe query "$DriverName"
         Write-Output ""

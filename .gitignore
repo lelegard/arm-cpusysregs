@@ -64,3 +64,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Archive
+*.zip
+*.tar
+*.gz
+*.tgz
+*.xz

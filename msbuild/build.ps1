@@ -1,4 +1,12 @@
-﻿# Build the driver and the applications
+﻿#----------------------------------------------------------------------------
+#
+# Arm64 CPU system registers tools
+# Copyright (c) 2023, Thierry Lelegard
+# BSD-2-Clause license, see the LICENSE file.
+#
+# PowerShell script to build the driver and the applications.
+#
+#----------------------------------------------------------------------------
 
 [CmdletBinding(SupportsShouldProcess=$true)]
 param([switch]$NoPause = $false)
