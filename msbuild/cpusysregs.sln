@@ -7,6 +7,31 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpusysregs", "cpusysregs.vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcpusysregs", "libcpusysregs.vcxproj", "{29BD96E0-B6C5-42A0-B683-FD9740810600}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-qarma64", "test-qarma64.vcxproj", "{29BD96E0-B6C5-42A0-B683-FD9740810602}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29BD96E0-B6C5-42A0-B683-FD9740810600} = {29BD96E0-B6C5-42A0-B683-FD9740810600}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo-pac", "demo-pac.vcxproj", "{29BD96E0-B6C5-42A0-B683-FD9740810603}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29BD96E0-B6C5-42A0-B683-FD9740810600} = {29BD96E0-B6C5-42A0-B683-FD9740810600}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo-userfeatures", "demo-userfeatures.vcxproj", "{29BD96E0-B6C5-42A0-B683-FD9740810604}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29BD96E0-B6C5-42A0-B683-FD9740810600} = {29BD96E0-B6C5-42A0-B683-FD9740810600}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pacga", "pacga.vcxproj", "{29BD96E0-B6C5-42A0-B683-FD9740810605}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29BD96E0-B6C5-42A0-B683-FD9740810600} = {29BD96E0-B6C5-42A0-B683-FD9740810600}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sysregs", "sysregs.vcxproj", "{B1DA10FC-F97E-43BE-9813-71176E89CBB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29BD96E0-B6C5-42A0-B683-FD9740810600} = {29BD96E0-B6C5-42A0-B683-FD9740810600}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -21,8 +46,31 @@ Global
 		{29BD96E0-B6C5-42A0-B683-FD9740810600}.Debug|ARM64.Build.0 = Debug|ARM64
 		{29BD96E0-B6C5-42A0-B683-FD9740810600}.Release|ARM64.ActiveCfg = Release|ARM64
 		{29BD96E0-B6C5-42A0-B683-FD9740810600}.Release|ARM64.Build.0 = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810602}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810602}.Debug|ARM64.Build.0 = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810602}.Release|ARM64.ActiveCfg = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810602}.Release|ARM64.Build.0 = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810603}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810603}.Debug|ARM64.Build.0 = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810603}.Release|ARM64.ActiveCfg = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810603}.Release|ARM64.Build.0 = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810604}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810604}.Debug|ARM64.Build.0 = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810604}.Release|ARM64.ActiveCfg = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810604}.Release|ARM64.Build.0 = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810605}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810605}.Debug|ARM64.Build.0 = Debug|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810605}.Release|ARM64.ActiveCfg = Release|ARM64
+		{29BD96E0-B6C5-42A0-B683-FD9740810605}.Release|ARM64.Build.0 = Release|ARM64
+		{B1DA10FC-F97E-43BE-9813-71176E89CBB4}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{B1DA10FC-F97E-43BE-9813-71176E89CBB4}.Debug|ARM64.Build.0 = Debug|ARM64
+		{B1DA10FC-F97E-43BE-9813-71176E89CBB4}.Release|ARM64.ActiveCfg = Release|ARM64
+		{B1DA10FC-F97E-43BE-9813-71176E89CBB4}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F58E214E-6278-4868-BDF9-3DB63B60E5D6}
 	EndGlobalSection
 EndGlobal

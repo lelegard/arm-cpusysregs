@@ -371,7 +371,9 @@ public:
 
 const std::list<Feature> AllArmFeatures {
     // Automatically generated file:
+#if !defined(WINDOWS) // @@@ not yet implemented
     #include "_armfeatures.h"
+#endif // @@@ not yet implemented
 };
 
 

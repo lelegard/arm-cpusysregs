@@ -25,8 +25,8 @@
 int main(int argc, char* argv[])
 {
     csr_pair_t key;
-    csr_u64_t modifier;
-    csr_u64_t value;
+    csr_u64_t modifier = 0;
+    csr_u64_t value = 0;
 
     // Read command line arguments.
     if (argc < 4 || !DecodeHexa(key, argv[1]) || !DecodeHexa(modifier, argv[2]) || !DecodeHexa(value, argv[3])) {

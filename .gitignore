@@ -14,10 +14,11 @@ tmp
 *.s
 *.S
 
-# Visual Studio binary directories
+# Visual Studio temporary files
 ARM64
 x64
 .vs
+*.vcxproj.user
 
 # Linker output
 *.ilk

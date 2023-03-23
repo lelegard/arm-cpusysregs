@@ -7,3 +7,8 @@
 *.c text linguist-language=C
 *.sh text eol=lf linguist-language=Bash
 Makefile* text eol=lf linguist-language=Makefile
+*.sln text eol=crlf linguist-language=VisualStudio
+*.props text eol=crlf linguist-language=VisualStudio
+*.vcxproj text eol=crlf linguist-language=VisualStudio
+*.vcxproj.filters text eol=crlf linguist-language=VisualStudio
+*.rc text eol=crlf linguist-language=WindowsResource

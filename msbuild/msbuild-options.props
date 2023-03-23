@@ -4,7 +4,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
 
   <PropertyGroup Label="Configuration">
-    <TargetName>$(MSBuildProjectName)</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
     <TargetVersion>Windows10</TargetVersion>
     <PlatformToolset>v143</PlatformToolset>
     <DriverTargetPlatform>Desktop</DriverTargetPlatform>
@@ -38,6 +38,10 @@
       <PreprocessorDefinitions>WINDOWS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)..\kernel\</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link Condition="'$(ProjectName)'!='libcpusysregs'">
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcpusysregs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
 
 </Project>
