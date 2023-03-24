@@ -3,110 +3,110 @@
 
 Initial IA key........... Cannot read APIAKEY_EL1 on this CPU
 Before PACIA............. 00000012-3456789A
-After PACIA (user)....... 9A6B8012-3456789A
+After PACIA (user)....... CB3D8012-3456789A
 After AUTIA (user)....... 00000012-3456789A (passed)
-After PACIA (kernel)..... 1E218012-3456789A
+After PACIA (kernel)..... 847C8012-3456789A
 After AUTIA (kernel)..... 00000012-3456789A (passed)
 PACIA mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... 9A6B8012-3456789B
+Corrupted (user)......... CB3D8012-3456789B
 After AUTIA (user)....... 20000012-3456789B (failed)
 
 ---- Testing key IA (upper addresses)
 
 Initial IA key........... Cannot read APIAKEY_EL1 on this CPU
 Before PACIA............. FFFFFF12-3456789A
-After PACIA (user)....... 24B3FF12-3456789A
+After PACIA (user)....... FABB7F12-3456789A
 After AUTIA (user)....... FFFFFF12-3456789A (passed)
-After PACIA (kernel)..... F6D2FF12-3456789A
+After PACIA (kernel)..... 8BC37F12-3456789A
 After AUTIA (kernel)..... FFFFFF12-3456789A (passed)
 PACIA mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... 24B3FF12-3456789B
+Corrupted (user)......... FABB7F12-3456789B
 After AUTIA (user)....... BFFFFF12-3456789B (failed)
 
 ---- Testing key IB (lower addresses)
 
 Initial IB key........... Cannot read APIBKEY_EL1 on this CPU
 Before PACIB............. 00000012-3456789A
-After PACIB (user)....... 6A6F0012-3456789A
+After PACIB (user)....... 7D0B0012-3456789A
 After AUTIB (user)....... 00000012-3456789A (passed)
-After PACIB (kernel)..... 44638012-3456789A
+After PACIB (kernel)..... DA788012-3456789A
 After AUTIB (kernel)..... 00000012-3456789A (passed)
 PACIB mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... 6A6F0012-3456789B
+Corrupted (user)......... 7D0B0012-3456789B
 After AUTIB (user)....... 40000012-3456789B (failed)
 
 ---- Testing key IB (upper addresses)
 
 Initial IB key........... Cannot read APIBKEY_EL1 on this CPU
 Before PACIB............. FFFFFF12-3456789A
-After PACIB (user)....... 4AFC7F12-3456789A
+After PACIB (user)....... 8EC9FF12-3456789A
 After AUTIB (user)....... FFFFFF12-3456789A (passed)
-After PACIB (kernel)..... 5AE87F12-3456789A
+After PACIB (kernel)..... 87CD7F12-3456789A
 After AUTIB (kernel)..... FFFFFF12-3456789A (passed)
 PACIB mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... 4AFC7F12-3456789B
+Corrupted (user)......... 8EC9FF12-3456789B
 After AUTIB (user)....... DFFFFF12-3456789B (failed)
 
 ---- Testing key DA (lower addresses)
 
 Initial DA key........... Cannot read APDAKEY_EL1 on this CPU
 Before PACDA............. 00000012-3456789A
-After PACDA (user)....... 007E8012-3456789A
+After PACDA (user)....... 00320012-3456789A
 After AUTDA (user)....... 00000012-3456789A (passed)
-After PACDA (kernel)..... 001F8012-3456789A
+After PACDA (kernel)..... 00078012-3456789A
 After AUTDA (kernel)..... 00000012-3456789A (passed)
 PACDA mask............... 007F8000-00000000 (8 bits)
-Corrupted (user)......... 007E8012-3456789B
+Corrupted (user)......... 00320012-3456789B
 After AUTDA (user)....... 00200012-3456789B (failed)
 
 ---- Testing key DA (upper addresses)
 
 Initial DA key........... Cannot read APDAKEY_EL1 on this CPU
 Before PACDA............. FFFFFF12-3456789A
-After PACDA (user)....... B1F7FF12-3456789A
+After PACDA (user)....... 70C4FF12-3456789A
 After AUTDA (user)....... FFFFFF12-3456789A (passed)
-After PACDA (kernel)..... 20EBFF12-3456789A
+After PACDA (kernel)..... 72A8FF12-3456789A
 After AUTDA (kernel)..... FFFFFF12-3456789A (passed)
 PACDA mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... B1F7FF12-3456789B
+Corrupted (user)......... 70C4FF12-3456789B
 After AUTDA (user)....... BFFFFF12-3456789B (failed)
 
 ---- Testing key DB (lower addresses)
 
 Initial DB key........... Cannot read APDBKEY_EL1 on this CPU
 Before PACDB............. 00000012-3456789A
-After PACDB (user)....... 00548012-3456789A
+After PACDB (user)....... 001E0012-3456789A
 After AUTDB (user)....... 00000012-3456789A (passed)
-After PACDB (kernel)..... 006A0012-3456789A
+After PACDB (kernel)..... 000E0012-3456789A
 After AUTDB (kernel)..... 00000012-3456789A (passed)
 PACDB mask............... 007F8000-00000000 (8 bits)
-Corrupted (user)......... 00548012-3456789B
+Corrupted (user)......... 001E0012-3456789B
 After AUTDB (user)....... 00400012-3456789B (failed)
 
 ---- Testing key DB (upper addresses)
 
 Initial DB key........... Cannot read APDBKEY_EL1 on this CPU
 Before PACDB............. FFFFFF12-3456789A
-After PACDB (user)....... 44F77F12-3456789A
+After PACDB (user)....... 73C4FF12-3456789A
 After AUTDB (user)....... FFFFFF12-3456789A (passed)
-After PACDB (kernel)..... ED897F12-3456789A
+After PACDB (kernel)..... ADBC7F12-3456789A
 After AUTDB (kernel)..... FFFFFF12-3456789A (passed)
 PACDB mask............... FF7F8000-00000000 (16 bits)
-Corrupted (user)......... 44F77F12-3456789B
+Corrupted (user)......... 73C4FF12-3456789B
 After AUTDB (user)....... DFFFFF12-3456789B (failed)
 
 ---- Testing key GA
 
 Initial GA key........... Cannot read APGAKEY_EL1 on this CPU
 Input value.............. FEDCBA98-76543210
-PACGA (user)............. BFA976FE-00000000
-PACGA (kernel)........... A97630BF-00000000
+PACGA (user)............. 51A72B9E-00000000
+PACGA (kernel)........... 10C96391-00000000
 Update GA key............ Cannot write APGAKEY_EL1 on this CPU
 Updated GA key........... Cannot read APGAKEY_EL1 on this CPU
-PACGA (user)............. BFA976FE-00000000
-PACGA (kernel)........... A97630BF-00000000
+PACGA (user)............. 51A72B9E-00000000
+PACGA (kernel)........... 10C96391-00000000
 Restore GA key........... Cannot write APGAKEY_EL1 on this CPU
 Restored GA key.......... Cannot read APGAKEY_EL1 on this CPU
-PACGA (user)............. BFA976FE-00000000
-PACGA (kernel)........... A97630BF-00000000
+PACGA (user)............. 51A72B9E-00000000
+PACGA (kernel)........... 10C96391-00000000
 

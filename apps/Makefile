@@ -43,30 +43,25 @@ $(LIB_FILE): $(LIB_OBJS)
 clean:
 	rm -f *.o *.a *.d _*.h $(EXECS)
 
-# A few headers are automatically generated from list of features.
+# A temporary few headers are automatically generated from list of features.
+# Header files which need to be generated on Windows too are built by a Python script.
 sysregs.d: _armfeatures.h
-_armfeatures.h: armfeatures.h
-	grep '^ *bool FEAT_' $^ | \
-	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&ArmFeatures::FEAT_\1},/' | \
-	    $(SORT) >$@
-
 demo-userfeatures.d: _userfeatures.h
-_userfeatures.h: userfeatures.h
-	grep '^ *bool FEAT_' $^ | \
-	    sed -e 's/^ *bool FEAT_\([^ (]*\) *().*$$/    {"FEAT_\1", \&UserFeatures::FEAT_\1},/' | \
-	    $(SORT) >$@
-
 linux-hwcaps.d: _hwcaps.h
+mac-sysctl.d: _sysctl.h
+
+_%.h: %.h
+	./build-features-header.py $^ $@
+
+_sysctl.h:
+	sysctl hw | grep arm | sed -e 's/^\(.*\)\.\([^\.]*\):.*$$/    {"\2", "\1.\2"},/' | $(SORT) -u >$@
+
 _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
 	(grep '^#define[[:space:]]* HWCAP_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP_\([^ \t]*\).*$$/    {"\1", AT_HWCAP, HWCAP_\1},/'; \
 	 grep '^#define[[:space:]]* HWCAP2_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP2_\([^ \t]*\).*$$/    {"\1", AT_HWCAP2, HWCAP2_\1},/') | \
 	 $(SORT) -u >$@
-
-mac-sysctl.d: _sysctl.h
-_sysctl.h:
-	sysctl hw | grep arm | sed -e 's/^\(.*\)\.\([^\.]*\):.*$$/    {"\2", "\1.\2"},/' | sort -u -d -f >$@
 
 # Regenerate implicit dependencies.
 ifneq ($(if $(MAKECMDGOALS),$(filter-out clean,$(MAKECMDGOALS)),true),)
