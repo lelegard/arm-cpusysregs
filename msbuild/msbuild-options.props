@@ -3,6 +3,11 @@
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
 
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+    <Import Project="$(ProjectDir)armasm.props" />
+  </ImportGroup>
+
   <PropertyGroup Label="Configuration">
     <TargetName>$(ProjectName)</TargetName>
     <TargetVersion>Windows10</TargetVersion>

@@ -431,7 +431,14 @@ typedef struct {
 // The following macro build the encoding of a system register for a MSR or MRS instruction.
 // See the description of each system register in section D17.2 to get its identifiers.
 //
-#define CSR_SREG(op0, op1, crn, crm, op2) (((op0) << 19) | ((op1) << 16) | ((crn) << 12) | ((crm) << 8) | ((op2) << 5))
+#if defined(__linux__) ||  defined(__APPLE__)
+    // Define a value for direct placement in an MRS/MSR instruction.
+    #define CSR_SREG(op0, op1, crn, crm, op2) (((op0) << 19) | ((op1) << 16) | ((crn) << 12) | ((crm) << 8) | ((op2) << 5))
+#elif defined(WINDOWS)
+    // Define the non-shifted value. The bit 20 in the MSR/MRS instructions is always 1.
+    // It must not be part of the value for _Read/Write StatusReg intrinsics of the MS compiler.
+    #define CSR_SREG(op0, op1, crn, crm, op2) ((((op0) & 0x1) << 14) | ((op1) << 12) | ((crn) << 7) | ((crm) << 3) | (op2))
+#endif
 
 //
 // The following macros define the encoding of most Arm system registers.
@@ -880,14 +887,14 @@ typedef struct {
 //    csr_msr_num(CSR_APIAKEYHI_EL1, r);
 //    csr_mrs_num(r, CSR_APIAKEYHI_EL1);
 //
-#if defined(_MSC_VER)
-    // msvc syntax
-    #define csr_msr(sreg,value)                  // @@@ not yet implemented
-    #define csr_mrs(result,sreg) ((result) = 0)  // @@@ not yet implemented
-#else
+#if defined(__linux__) ||  defined(__APPLE__)
     // gcc/clang syntax
     #define csr_msr(sreg,value) asm(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
     #define csr_mrs(result,sreg) asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+#elif defined(WINDOWS)
+    // msvc syntax
+    #define csr_msr(sreg,value) _WriteStatusReg((sreg), (value))
+    #define csr_mrs(result,sreg) ((result) = _ReadStatusReg(sreg))
 #endif
 
 //
@@ -896,18 +903,7 @@ typedef struct {
 // supported by the assembler. Since these instructions are in the HINT range,
 // executing them before Armv8.3 is a NOP.
 //
-#if defined(_MSC_VER)
-    // msvc syntax
-    #define csr_pacia(data,mod) // @@@ not yet implemented
-    #define csr_pacib(data,mod) // @@@ not yet implemented
-    #define csr_pacda(data,mod) // @@@ not yet implemented
-    #define csr_pacdb(data,mod) // @@@ not yet implemented
-    #define csr_autia(data,mod) // @@@ not yet implemented
-    #define csr_autib(data,mod) // @@@ not yet implemented
-    #define csr_autda(data,mod) // @@@ not yet implemented
-    #define csr_autdb(data,mod) // @@@ not yet implemented
-    #define csr_pacga(result,data,mod) // @@@ not yet implemented
-#else
+#if defined(__linux__) ||  defined(__APPLE__)
     // gcc/clang syntax
     #define csr_pacia(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
     #define csr_pacib(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
@@ -918,6 +914,26 @@ typedef struct {
     #define csr_autda(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
     #define csr_autdb(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
     #define csr_pacga(result,data,mod) asm(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
+#elif defined(_MSC_VER)
+    // msvc does not support inline asm and has no intrinsics for PAC => need an external .asm module
+    __int64 csr_pacia_helper(__int64, __int64);
+    __int64 csr_pacib_helper(__int64, __int64);
+    __int64 csr_pacda_helper(__int64, __int64);
+    __int64 csr_pacdb_helper(__int64, __int64);
+    __int64 csr_autia_helper(__int64, __int64);
+    __int64 csr_autib_helper(__int64, __int64);
+    __int64 csr_autda_helper(__int64, __int64);
+    __int64 csr_autdb_helper(__int64, __int64);
+    __int64 csr_pacga_helper(__int64, __int64);
+    #define csr_pacia(data,mod) ((data) = csr_pacia_helper((data), (mod)))
+    #define csr_pacib(data,mod) ((data) = csr_pacib_helper((data), (mod)))
+    #define csr_pacda(data,mod) ((data) = csr_pacda_helper((data), (mod)))
+    #define csr_pacdb(data,mod) ((data) = csr_pacdb_helper((data), (mod)))
+    #define csr_autia(data,mod) ((data) = csr_autia_helper((data), (mod)))
+    #define csr_autib(data,mod) ((data) = csr_autib_helper((data), (mod)))
+    #define csr_autda(data,mod) ((data) = csr_autda_helper((data), (mod)))
+    #define csr_autdb(data,mod) ((data) = csr_autdb_helper((data), (mod)))
+    #define csr_pacga(result,data,mod) ((result) = csr_pacga_helper((data), (mod)))
 #endif
 
 

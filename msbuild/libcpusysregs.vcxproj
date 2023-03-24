@@ -35,8 +35,14 @@
     <ClCompile Include="..\apps\strutils.cpp"/>
     <ClInclude Include="..\apps\userfeatures.h"/>
     <ClCompile Include="..\apps\userfeatures.cpp"/>
+    <ARMASM Include="..\kernel\windows\pac.asm" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+    <Import Project="$(BuildConfig_ARMASM_Path)armasm.targets" />
+  </ImportGroup>
 
 </Project>

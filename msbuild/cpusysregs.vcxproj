@@ -12,6 +12,11 @@
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+    <Import Project="$(ProjectDir)armasm.props" />
+  </ImportGroup>
+
   <PropertyGroup Label="Configuration">
     <TargetName>$(MSBuildProjectName)</TargetName>
     <TargetVersion>Windows10</TargetVersion>
@@ -60,9 +65,15 @@
   <ItemGroup>
     <ClCompile Include="..\kernel\windows\cpusysregs.c" />
     <ClInclude Include="..\kernel\cpusysregs.h" />
+    <MASM Include="..\kernel\windows\pac.asm" />
     <ResourceCompile Include="..\kernel\windows\cpusysregs.rc" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+    <Import Project="$(BuildConfig_ARMASM_Path)armasm.targets" />
+  </ImportGroup>
 
 </Project>
