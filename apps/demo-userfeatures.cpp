@@ -24,9 +24,7 @@ public:
 };
 const std::list<Feature> AllUserFeatures {
     // Automatically generated file:
-#if !defined(WINDOWS) // @@@ not yet implemented
     #include "_userfeatures.h"
-#endif // @@@ not yet implemented
 };
 
 

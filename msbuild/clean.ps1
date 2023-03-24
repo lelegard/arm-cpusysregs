@@ -11,7 +11,7 @@
 [CmdletBinding(SupportsShouldProcess=$true)]
 param([switch]$NoPause = $false)
 
-Get-ChildItem $PSScriptRoot -Recurse -Include @("ARM64", ".vs", "*.vcxproj.user") -Force | Remove-Item -Recurse -Force -Verbose
+Get-ChildItem $PSScriptRoot -Recurse -Include @("ARM64", ".vs", "*.vcxproj.user", "*.zip") -Force | Remove-Item -Recurse -Force -Verbose
 
 if (-not $NoPause) {
     pause

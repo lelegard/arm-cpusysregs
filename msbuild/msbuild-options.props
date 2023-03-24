@@ -36,7 +36,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DisableSpecificWarnings>4100;4244</DisableSpecificWarnings>
       <PreprocessorDefinitions>WINDOWS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)..\kernel\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(OutDir);$(ProjectDir)..\kernel\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link Condition="'$(ProjectName)'!='libcpusysregs'">
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
