@@ -1,6 +1,6 @@
 Kernel
 ------
-Linux 5.15.0-1030-aws #34-Ubuntu SMP Mon Jan 23 20:14:51 UTC 2023 aarch64 aarch64
+Linux 5.15.0-1031-aws #35-Ubuntu SMP Fri Feb 10 02:12:38 UTC 2023 aarch64 aarch64
 
 Operating system
 ----------------
