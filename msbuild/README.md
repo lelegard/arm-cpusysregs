@@ -2,7 +2,7 @@
 
 **Warning:** Preliminary notes, this project is not ready yet for Windows.
 
-As of this writing, Visual Studio 17.5.2 is available on Windows 11 Arm64.
+As of this writing, Visual Studio 17.5.x is available on Windows 11 Arm64.
 However, the Windows Driver Kit (WDK) is not. This means that, on Windows Arm64,
 we can develop userland applications but not drivers. In 2023...
 

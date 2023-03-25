@@ -18,7 +18,7 @@ param([switch]$NoPause = $false)
 & "$PSScriptRoot\build.ps1" -NoPause
 
 # Build archive.
-Compress-Archive -DestinationPath "$PSScriptRoot\arm-cpusysregs.zip" @(
+Compress-Archive -Force -DestinationPath "$PSScriptRoot\arm-cpusysregs.zip" @(
     "$PSScriptRoot\loader.ps1",
     "$PSScriptRoot\loader-unload.ps1",
     "$PSScriptRoot\ARM64\Release\cpusysregs.sys",
