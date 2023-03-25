@@ -33,14 +33,14 @@
 RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
     _fd(CSR_INVALID_SYSHANDLE),
     _print_errors(print_errors),
-    _error(0),
+    _error(CSR_SUCCESS),
     _error_ref()
 {
 #if defined(__linux__)
 
     // Open the pseudo-device for the kernel module.
     if ((_fd = ::open(CSR_DEVICE_PATH, O_RDONLY)) < 0) {
-        setError(errno, CSR_DEVICE_PATH, false, exit_on_open_error);
+        setError(errno, "Error opening " CSR_DEVICE_PATH ", kernel module probably not loaded", false, exit_on_open_error);
         return;
     }
 
@@ -57,7 +57,7 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
     Zero(&info, sizeof(info));
     ::strncpy(info.ctl_name, CSR_SOCKET_NAME, sizeof(info.ctl_name));
     if (::ioctl(_fd, CTLIOCGINFO, &info) < 0) {
-        setError(errno, "ioctl(CTLIOCGINFO)", true, exit_on_open_error);
+        setError(errno, "Error accessing system socket " CSR_SOCKET_NAME ", kernel extension probably not loaded", true, exit_on_open_error);
         return;
     }
 
@@ -75,7 +75,12 @@ RegAccess::RegAccess(bool print_errors, bool exit_on_open_error) :
 
 #elif defined(WINDOWS)
 
-    // @@@ to be completed
+    // Open the pseudo-device for the kernel driver.
+    _fd = ::CreateFileA(CSR_DEVICE_NAME, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (_fd == INVALID_HANDLE_VALUE) {
+        setError(::GetLastError(), "Error opening " CSR_DEVICE_NAME ", kernel driver probably not loaded", false, exit_on_open_error);
+        return;
+    }
 
 #endif
 }
@@ -98,7 +103,9 @@ void RegAccess::close()
             setError(errno, "close");
         }
 #elif defined(WINDOWS)
-        // @@@ to be completed
+        if (!::CloseHandle(_fd)) {
+            setError(::GetLastError(), "CloseHandle");
+        }
 #endif
     }
     _fd = CSR_INVALID_SYSHANDLE;
@@ -111,7 +118,7 @@ void RegAccess::close()
 
 void RegAccess::printLastError(const std::string& label, std::ostream& file) const
 {
-    if (_error != 0) {
+    if (_error != CSR_SUCCESS) {
         if (!label.empty()) {
             file << label << ": ";
         }
@@ -122,7 +129,7 @@ void RegAccess::printLastError(const std::string& label, std::ostream& file) con
     }
 }
 
-bool RegAccess::setError(int code, const std::string& ref, bool close_fd, bool exit_on_error)
+bool RegAccess::setError(SysError code, const std::string& ref, bool close_fd, bool exit_on_error)
 {
     _error = code;
     _error_ref = ref;
@@ -158,7 +165,13 @@ bool RegAccess::read(int regid, csr_u64_t& reg)
         return setError(errno, "getsockopt(GET_REG)");
     }
 #elif defined(WINDOWS)
-    // @@@ to be completed
+    ::ULONG retsize = 0;
+    if (!::DeviceIoControl(_fd, CSR_IOC_GET_REG(regid), nullptr, 0, &reg, sizeof(reg), &retsize, nullptr)) {
+        return setError(::GetLastError(), "DeviceIoControl(GET_REG)");
+    }
+    if (retsize < sizeof(reg)) {
+        return setError(ERROR_INVALID_DATA, Format("DeviceIoControl(GET_REG) returned size too short: ", retsize));
+    }
 #endif
     return true;
 }
@@ -182,7 +195,13 @@ bool RegAccess::read(int regid, csr_pair_t& reg)
         return setError(errno, "getsockopt(GET_REG2)");
     }
 #elif defined(WINDOWS)
-    // @@@ to be completed
+    ::ULONG retsize = 0;
+    if (!::DeviceIoControl(_fd, CSR_IOC_GET_REG(regid), nullptr, 0, &reg, sizeof(reg), &retsize, nullptr)) {
+        return setError(::GetLastError(), "DeviceIoControl(GET_REG)");
+    }
+    if (retsize < sizeof(reg)) {
+        return setError(ERROR_INVALID_DATA, Format("DeviceIoControl(GET_REG) returned size too short: ", retsize));
+    }
 #endif
     return true;
 }
@@ -206,7 +225,9 @@ bool RegAccess::write(int regid, csr_u64_t reg)
         return setError(errno, "setsockopt(SET_REG)");
     }
 #elif defined(WINDOWS)
-    // @@@ to be completed
+    if (!::DeviceIoControl(_fd, CSR_IOC_SET_REG(regid), const_cast<csr_u64_t*>(&reg), sizeof(reg), nullptr, 0, nullptr, nullptr)) {
+        return setError(::GetLastError(), "DeviceIoControl(SET_REG)");
+    }
 #endif
     return true;
 }
@@ -228,7 +249,9 @@ bool RegAccess::write(int regid, const csr_pair_t& reg)
         return setError(errno, "setsockopt(SET_REG2)");
     }
 #elif defined(WINDOWS)
-    // @@@ to be completed
+    if (!::DeviceIoControl(_fd, CSR_IOC_SET_REG(regid), const_cast<csr_pair_t*>(&reg), sizeof(reg), nullptr, 0, nullptr, nullptr)) {
+        return setError(::GetLastError(), "DeviceIoControl(SET_REG)");
+    }
 #endif
     return true;
 }
@@ -250,7 +273,13 @@ bool RegAccess::executeInstr(int instr, csr_instr_t& args)
         return setError(errno, "getsockopt(INSTR)");
     }
 #elif defined(WINDOWS)
-    // @@@ to be completed
+    ::ULONG retsize = 0;
+    if (!::DeviceIoControl(_fd, CSR_IOC_INSTR(instr), &args, sizeof(args), &args, sizeof(args), &retsize, nullptr)) {
+        return setError(::GetLastError(), "DeviceIoControl(INSTR)");
+    }
+    if (retsize < sizeof(args)) {
+        return setError(ERROR_INVALID_DATA, Format("DeviceIoControl(INSTR) returned size too short: ", retsize));
+    }
 #endif
     return true;
 }

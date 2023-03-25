@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ImportGroup Label="PropertySheets">
-    <Import Project="msbuild-app.props" />
+    <Import Project="msbuild-app.props"/>
   </ImportGroup>
 
   <Target Name="BuildArmFeaturesHeader" Inputs="$(ProjectDir)..\apps\armfeatures.h" Outputs="$(OutDir)_armfeatures.h" BeforeTargets='PrepareForBuild'>

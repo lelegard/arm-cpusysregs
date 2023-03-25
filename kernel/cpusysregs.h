@@ -44,6 +44,10 @@
 
 #endif
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 // Linux kernel module or macOS kernel extension name.
 #define CSR_MODULE_NAME "cpusysregs"
 
@@ -1156,5 +1160,9 @@ CSR_INLINE int csr_exec_instr(int instr, csr_instr_t* args)
 }
 
 #endif // KERNEL
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // CPUSYSREGS_H

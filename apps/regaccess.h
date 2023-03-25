@@ -58,20 +58,24 @@ private:
     // File descriptor, device handle, per system.
     #if defined(__linux__) || defined(__APPLE__)
         typedef int SysHandle;
+        typedef int SysError;
         #define CSR_INVALID_SYSHANDLE (-1)
+        #define CSR_SUCCESS 0
     #elif defined(WINDOWS)
         typedef ::HANDLE SysHandle;
+        typedef ::DWORD SysError;
         #define CSR_INVALID_SYSHANDLE INVALID_HANDLE_VALUE
+        #define CSR_SUCCESS ERROR_SUCCESS
     #endif
 
     SysHandle   _fd;            // file descriptor to access the kernel module
     bool        _print_errors;  // automatic error reporting
-    int         _error;         // last error code
+    SysError    _error;         // last error code
     std::string _error_ref;     // reference of last error
 
     // Close the kernel module.
     void close();
 
     // Set error code and return false. Report when necessary.
-    bool setError(int code, const std::string& ref, bool close_fd = false, bool exit_on_error = false);
+    bool setError(SysError code, const std::string& ref, bool close_fd = false, bool exit_on_error = false);
 };

@@ -85,7 +85,7 @@ UserFeatures::UserFeatures()
 
 #elif defined(WINDOWS)
 
-    // @@@ to be completed
+    // No way to get ARM features in user mode on Windows.
     #define FEATURE(feat,type,flag,name,eval) (false)
 
 #endif
