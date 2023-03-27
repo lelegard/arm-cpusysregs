@@ -14,7 +14,7 @@ MAKEFLAGS += --no-print-directory
 default:
 	$(MAKE) -C kernel/$(SYSTEM)
 	$(MAKE) -C apps
-	./build-md-toc.sh *.md docs/*.md apps/*.md kernel/*.md kernel/*/*.md
+	./build-md-toc.sh *.md */*.md */*/*.md
 
 clean:
 	$(MAKE) $@ -C kernel/$(SYSTEM)

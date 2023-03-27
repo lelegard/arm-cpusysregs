@@ -1,6 +1,8 @@
 # Pointer Authentication Code format
 
-This note explains the format of the "signature" which is inserted in pointers using the PACxx instructions in the Arm64 instruction set. This signature is indifferently named "pointer authentication code" or PAC.
+This note explains the format of the "signature" which is inserted in pointers using
+the PACxx instructions in the Arm64 instruction set. This signature is indifferently
+named "pointer authentication code" or PAC.
 
 **Contents:**
 
@@ -80,6 +82,17 @@ The upper byte is unused in one case in the macOS host while it is unused on thr
 
 Another peculiarity is the number of virtual address bits. On macOS, the system uses 47 bits. On Linux, it uses 48 bits, reducing the entropy of the PAC by one bit. The reason for this is unknown.
 
+On the same MacBook machine with an Apple M1 chip, the command displays this in a Windows virtual machine:
+~~~
+  Data  (lower): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
+  Data  (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
+  Instr (lower): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
+  Instr (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
+~~~
+
+The PAC is supposed to use its maximum size. However, the practice demonstrates that the PAC
+instructions are inoperative. They leave the pointers unmodified, without signature.
+
 ### The PACGA instruction
 
 We have seen two categories of signatures: pointers to instructions (PACIA and PACIB instructions) and pointers to data (PACDA and PACDB instructions). There is third category: the "generic" PAC computation, using the PACGA instruction.
@@ -91,6 +104,8 @@ The PACGA instruction is used to compute a keyed hash over general purpose data.
 To compute a keyed hash over a memory area, simply iterate PACGA over that area, 64 bits at a time, reinjecting the 32-bit PAC in the next iteration.
 
 The previously mentioned rules about the PAC size and location do not apply to PACGA. Its output is always a 32-bit value.
+
+On Windows, the PACGA instruction works as expected. Only the PACIx and PACDx are inoperative.
 
 ## PAC computation principles
 
@@ -211,6 +226,13 @@ The following subsections are some observations from these results. The next sec
   - As previously observed, this means than switching from EL0 to EL1 implies a detour through EL3 to reprogram the PAC key registers. And again when switching back from EL1 to EL0.
   - Note a difference with Linux here. On macOS using the "arm64e" platform, the generated code uses three PAC keys, IA, IB, DA, but not DB and GA. Since the kernel is compiled for "arm64e", it uses these three PAC registers. However, unlike the Linux kernel, the macOS kernel choses to change all PAC keys when switching to kernel mode, even those it doesn't use.
 
+### Specific to Windows
+
+- The PAC key registers can be read and modified. Their initial value in a process
+  is zero. Modifying them is possible. The assigned value remains valid in the process.
+- The PACIx and PACDx instructions are inoperative in practice. They leave the pointer
+  unmodified.
+
 ### Specific to Arm-designed cores
 
 - The computed PAC values match the QARMA5 software computation. This was expected but still nice to verify.
@@ -223,47 +245,47 @@ The following subsections are some observations from these results. The next sec
 
 The following table compares various forms of PAC computations on several platforms.
 
-| Platform             | macOS host (M1) | Linux VM (M1)   | Linux VM (G3)   |
-| -------------------- | --------------- | --------------- | --------------- |
-| OS                   | macOS           | Linux           | Linux           |
-| OS kernel version    | 13.2.1          | 5.19.0-31       | 5.15.0-1030-aws |
-| Virtualization       | Host            | VM              | VM              |
-| Processor chip       | Apple M1        | Apple M1        | AWS Graviton 3  |
-| CPU cores            | Apple Firestorm | Apple Firestorm | Arm Neoverse V1 |
-| PAC algorithm        | private         | private         | QARMA5          |
-| PAuth / PAuth2       | yes / no        | yes / no        | yes / yes       |
-| EPAC / FPAC          | yes / no        | yes / no        | yes / no        |
-| MTE tagging          | no              | no              | no              |
-|                      |                 |                 |                 |
-| **PAC size**         |                 |                 |                 |
-| data, lower          | 8 bits          | 7 bits          | 7 bits          |
-| data, upper          | 16 bits         | 7 bits          | 7 bits          |
-| instruction, lower   | 16 bits         | 7 bits          | 7 bits          |
-| instruction, upper   | 16 bits         | 15 bits         | 15 bits         |
-|                      |                 |                 |                 |
-| **PAC position**     |                 |                 |                 |
-| data, lower          | 54:47           | 54:48           | 54:48           |
-| data, upper          | 63:56,54:47     | 54:48           | 54:48           |
-| instruction, lower   | 63:56,54:47     | 54:48           | 54:48           |
-| instruction, upper   | 63:56,54:47     | 63:56,54:48     | 63:56,54:48     |
-|                      |                 |                 |                 |
-| **PAC selector bit** |                 |                 |                 |
-| data, lower          | bit 55          | bit 55          | bit 55          |
-| data, upper          | bit 55          | bit 55          | bit 55          |
-| instruction, lower   | bit 63          | bit 55          | bit 55          |
-| instruction, upper   | bit 63          | bit 55          | bit 55          |
-|                      |                 |                 |                 |
-| **EL0/EL1 PAC keys** |                 |                 |                 |
-| DA                   | distinct keys   | same key        | same key        |
-| DB                   | distinct keys   | same key        | same key        |
-| IA                   | distinct keys   | distinct keys   | distinct keys   |
-| IB                   | distinct keys   | same key        | same key        |
-| Generic (PACGA)      | distinct keys   | same key        | same key        |
-|                      |                 |                 |                 |
-| **TCR_EL1 register** |                 |                 |                 |
-| TBI0                 | 1               | 1               | 1               |
-| TBID0                | 1               | 0               | 0               |
-| T0SZ                 | 17              | 16              | 16              |
-| TBI1                 | 0               | 1               | 1               |
-| TBID1                | 0               | 1               | 1               |
-| T1SZ                 | 17              | 16              | 16              |
+| Platform             | macOS host (M1) | Linux VM (M1)   | Windows VM (M1) | Linux VM (G3)   |
+| -------------------- | --------------- | --------------- | --------------- | --------------- |
+| OS                   | macOS           | Linux           | Windows 11      | Linux           |
+| OS kernel version    | 13.2.1          | 5.19.0-31       | 10.0.22000      | 5.15.0-1030-aws |
+| Virtualization       | Host            | VM              | VM              | VM              |
+| Processor chip       | Apple M1        | Apple M1        | Apple M1        | AWS Graviton 3  |
+| CPU cores            | Apple Firestorm | Apple Firestorm | Apple Firestorm | Arm Neoverse V1 |
+| PAC algorithm        | private         | private         | private         | QARMA5          |
+| PAuth / PAuth2       | yes / no        | yes / no        | yes / no        | yes / yes       |
+| EPAC / FPAC          | yes / no        | yes / no        | yes / no        | yes / no        |
+| MTE tagging          | no              | no              | no              | no              |
+|                      |                 |                 |                 |                 |
+| **PAC size**         |                 |                 |                 |                 |
+| data, lower          | 8 bits          | 7 bits          | 16 bits         | 7 bits          |
+| data, upper          | 16 bits         | 7 bits          | 16 bits         | 7 bits          |
+| instruction, lower   | 16 bits         | 7 bits          | 16 bits         | 7 bits          |
+| instruction, upper   | 16 bits         | 15 bits         | 16 bits         | 15 bits         |
+|                      |                 |                 |                 |                 |
+| **PAC position**     |                 |                 |                 |                 |
+| data, lower          | 54:47           | 54:48           | 63:56,54:47     | 54:48           |
+| data, upper          | 63:56,54:47     | 54:48           | 63:56,54:47     | 54:48           |
+| instruction, lower   | 63:56,54:47     | 54:48           | 63:56,54:47     | 54:48           |
+| instruction, upper   | 63:56,54:47     | 63:56,54:48     | 63:56,54:47     | 63:56,54:48     |
+|                      |                 |                 |                 |                 |
+| **PAC selector bit** |                 |                 |                 |                 |
+| data, lower          | bit 55          | bit 55          | bit 63          | bit 55          |
+| data, upper          | bit 55          | bit 55          | bit 63          | bit 55          |
+| instruction, lower   | bit 63          | bit 55          | bit 63          | bit 55          |
+| instruction, upper   | bit 63          | bit 55          | bit 63          | bit 55          |
+|                      |                 |                 |                 |                 |
+| **EL0/EL1 PAC keys** |                 |                 |                 |                 |
+| DA                   | distinct keys   | same key        | zero            | same key        |
+| DB                   | distinct keys   | same key        | zero            | same key        |
+| IA                   | distinct keys   | distinct keys   | zero            | distinct keys   |
+| IB                   | distinct keys   | same key        | zero            | same key        |
+| Generic (PACGA)      | distinct keys   | same key        | zero            | same key        |
+|                      |                 |                 |                 |                 |
+| **TCR_EL1 register** |                 |                 |                 |                 |
+| TBI0                 | 1               | 1               | 0               | 1               |
+| TBID0                | 1               | 0               | 0               | 0               |
+| T0SZ                 | 17              | 16              | 17              | 16              |
+| TBI1                 | 0               | 1               | 0               | 1               |
+| TBID1                | 0               | 1               | 0               | 1               |
+| T1SZ                 | 17              | 16              | 17              | 16              |

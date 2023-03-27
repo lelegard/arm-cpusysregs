@@ -2,6 +2,10 @@
 
 **Contents:**
 
+* [Sample usages of the cpusysregs kernel module](#sample-usages-of-the-cpusysregs-kernel-module)
+* [Demo applications](#demo-applications)
+* [Sample Arm features without using the kernel module](#sample-arm-features-without-using-the-kernel-module)
+
 ## Sample usages of the `cpusysregs` kernel module
 
 `sysregs` is a generic tool to read and write the system registers.

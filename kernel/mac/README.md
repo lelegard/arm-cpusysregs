@@ -2,6 +2,12 @@
 
 **Contents:**
 
+* [Usage instructions](#usage-instructions)
+* [Limitations](#limitations)
+  * [Disable the system integrity protection](#disable-the-system-integrity-protection)
+  * [Reboot on kernel extension update](#reboot-on-kernel-extension-update)
+  * [Reading the PAC key registers is not allowed by default at EL1](#reading-the-pac-key-registers-is-not-allowed-by-default-at-el1)
+
 The file `cpusysregs.c` contains the source code of the kernel extension. The extension name is `cpusysregs`.
 It creates a system socket named `cpusysregs` which can be accessed from any userland process.
 It is not possible to send or receive on this socket. We can only send a few `getsockopt()`

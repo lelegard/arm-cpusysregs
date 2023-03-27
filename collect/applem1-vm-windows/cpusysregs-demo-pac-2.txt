@@ -1,0 +1,112 @@
+
+---- Testing key IA (lower addresses)
+
+Initial IA key........... 00000000-00000000-00000000-00000000
+Before PACIA............. 00000012-3456789A
+After PACIA (user)....... 00000012-3456789A
+After AUTIA (user)....... 00000012-3456789A (passed)
+After PACIA (kernel)..... 00000012-3456789A
+After AUTIA (kernel)..... 00000012-3456789A (passed)
+PACIA mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... 00000012-3456789B
+After AUTIA (user)....... 00000012-3456789B (passed)
+
+---- Testing key IA (upper addresses)
+
+Initial IA key........... 00000000-00000000-00000000-00000000
+Before PACIA............. FFFFFF12-3456789A
+After PACIA (user)....... FFFFFF12-3456789A
+After AUTIA (user)....... FFFFFF12-3456789A (passed)
+After PACIA (kernel)..... FFFFFF12-3456789A
+After AUTIA (kernel)..... FFFFFF12-3456789A (passed)
+PACIA mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... FFFFFF12-3456789B
+After AUTIA (user)....... FFFFFF12-3456789B (passed)
+
+---- Testing key IB (lower addresses)
+
+Initial IB key........... 00000000-00000000-00000000-00000000
+Before PACIB............. 00000012-3456789A
+After PACIB (user)....... 00000012-3456789A
+After AUTIB (user)....... 00000012-3456789A (passed)
+After PACIB (kernel)..... 00000012-3456789A
+After AUTIB (kernel)..... 00000012-3456789A (passed)
+PACIB mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... 00000012-3456789B
+After AUTIB (user)....... 00000012-3456789B (passed)
+
+---- Testing key IB (upper addresses)
+
+Initial IB key........... 00000000-00000000-00000000-00000000
+Before PACIB............. FFFFFF12-3456789A
+After PACIB (user)....... FFFFFF12-3456789A
+After AUTIB (user)....... FFFFFF12-3456789A (passed)
+After PACIB (kernel)..... FFFFFF12-3456789A
+After AUTIB (kernel)..... FFFFFF12-3456789A (passed)
+PACIB mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... FFFFFF12-3456789B
+After AUTIB (user)....... FFFFFF12-3456789B (passed)
+
+---- Testing key DA (lower addresses)
+
+Initial DA key........... 00000000-00000000-00000000-00000000
+Before PACDA............. 00000012-3456789A
+After PACDA (user)....... 00000012-3456789A
+After AUTDA (user)....... 00000012-3456789A (passed)
+After PACDA (kernel)..... 00000012-3456789A
+After AUTDA (kernel)..... 00000012-3456789A (passed)
+PACDA mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... 00000012-3456789B
+After AUTDA (user)....... 00000012-3456789B (passed)
+
+---- Testing key DA (upper addresses)
+
+Initial DA key........... 00000000-00000000-00000000-00000000
+Before PACDA............. FFFFFF12-3456789A
+After PACDA (user)....... FFFFFF12-3456789A
+After AUTDA (user)....... FFFFFF12-3456789A (passed)
+After PACDA (kernel)..... FFFFFF12-3456789A
+After AUTDA (kernel)..... FFFFFF12-3456789A (passed)
+PACDA mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... FFFFFF12-3456789B
+After AUTDA (user)....... FFFFFF12-3456789B (passed)
+
+---- Testing key DB (lower addresses)
+
+Initial DB key........... 00000000-00000000-00000000-00000000
+Before PACDB............. 00000012-3456789A
+After PACDB (user)....... 00000012-3456789A
+After AUTDB (user)....... 00000012-3456789A (passed)
+After PACDB (kernel)..... 00000012-3456789A
+After AUTDB (kernel)..... 00000012-3456789A (passed)
+PACDB mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... 00000012-3456789B
+After AUTDB (user)....... 00000012-3456789B (passed)
+
+---- Testing key DB (upper addresses)
+
+Initial DB key........... 00000000-00000000-00000000-00000000
+Before PACDB............. FFFFFF12-3456789A
+After PACDB (user)....... FFFFFF12-3456789A
+After AUTDB (user)....... FFFFFF12-3456789A (passed)
+After PACDB (kernel)..... FFFFFF12-3456789A
+After AUTDB (kernel)..... FFFFFF12-3456789A (passed)
+PACDB mask............... FF7F8000-00000000 (16 bits)
+Corrupted (user)......... FFFFFF12-3456789B
+After AUTDB (user)....... FFFFFF12-3456789B (passed)
+
+---- Testing key GA
+
+Initial GA key........... 00000000-00000000-00000000-00000000
+Input value.............. FEDCBA98-76543210
+PACGA (user)............. DF690283-00000000
+PACGA (kernel)........... DF690283-00000000
+Update GA key............ 01234567-89ABCDEF-DEADBEEF-BADC0FFE
+Updated GA key........... 01234567-89ABCDEF-DEADBEEF-BADC0FFE
+PACGA (user)............. D1A602C6-00000000
+PACGA (kernel)........... D1A602C6-00000000
+Restore GA key........... 00000000-00000000-00000000-00000000
+Restored GA key.......... 00000000-00000000-00000000-00000000
+PACGA (user)............. DF690283-00000000
+PACGA (kernel)........... DF690283-00000000
+

@@ -1,4 +1,4 @@
-﻿#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 #
 # Arm64 CPU system registers tools
 # Copyright (c) 2023, Thierry Lelegard
@@ -21,6 +21,7 @@ param([switch]$NoPause = $false)
 Compress-Archive -Force -DestinationPath "$PSScriptRoot\arm-cpusysregs.zip" @(
     "$PSScriptRoot\loader.ps1",
     "$PSScriptRoot\loader-unload.ps1",
+    "$PSScriptRoot\..\collect\collect.ps1",
     "$PSScriptRoot\ARM64\Release\cpusysregs.sys",
     "$PSScriptRoot\ARM64\Release\*.exe"
 )

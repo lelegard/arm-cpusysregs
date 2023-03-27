@@ -6,4 +6,4 @@ It creates a special device named `\\.\cpusysregs` which can be accessed from an
 It is not possible to read or write on this device. We can only send a few `DeviceIoControl()`.
 This is the way the system registers of the CPU are accessed.
 
-Usage instructions: see [msbuild directory](../../msbuild).
+Additional notes and usage instructions: see [msbuild directory](../../msbuild).

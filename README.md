@@ -7,9 +7,9 @@ Similarly, system registers in `_EL2` are accessible only in hypervisor mode and
 `_EL3` in monitor mode.
 
 This educational project provides a way to return the exact content of a few Arm64
-system registers to userland through a dedicated loadable kernel module, on Linux
-and macOS. Some application programs are provided to display an analysis of the
-contents of these registers.
+system registers to userland through a dedicated loadable kernel module, on Linux,
+macOS, and Windows. Some application programs are provided to display an analysis
+of the contents of these registers.
 
 **Contents:**
 
@@ -40,8 +40,8 @@ In some cases, some parts of the register content are blacked out.
 This is a Linux-only feature and it is limited to a few registers, or a subpart of
 them. This means that we are never really sure of what the physical register was.
 
-This project provides Linux and macOS kernel modules to read and write selected
-system registers from user applications.
+This project provides Linux, macOS, and Windows kernel modules to read and write
+selected system registers from user applications.
 
 **Warning:** This project is for educational purpose only, for people wanting to
 increase their knowledge in the Arm64 architecture. Loading a custom kernel
@@ -69,13 +69,17 @@ authentication features.
 
 ## Build instructions
 
+For Linux and macOS:
 - `make` : Build the kernel module and the applications.
 - `make install` : Install the kernel module in the system tree.
 - `make load` : Load the kernel module.
 - `make unload` : Unload the kernel module.
 - `make show` : Show the loaded kernel module.
 
-See more details in the README files of the various subdirectories.
+For Windows, see the directory [msbuild](msbuild).
+
+See also more details in the README files of the [apps](apps) and [kernel](kernel)
+subdirectories.
 
 ##  Usage instructions
 
@@ -123,7 +127,7 @@ summarizes this.
 There are several documents in the [docs](docs) subdirectory containing the
 summary of observations about the PAC on different platforms. The subdirectory
 [collect](collect) contains informations which were collected on these
-platforms, Linux or macOS, using various Arm64-based processor chips
+platforms, Linux, macOS, Windows, using various Arm64-based processor chips
 implementing Armv8.3-A or higher versions of the architecture.
 
 ## List of accessible registers
@@ -143,7 +147,7 @@ version 0487I.a.
 | APGAKey_EL1      | D17.2.19/.20  | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
 | APIAKey_EL1      | D17.2.21/.22  | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
 | APIBKey_EL1      | D17.2.23/.24  | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
-| CTR_EL0          | D17.2.34      | R       | Cache Type Register
+| CTR_EL0          | D17.2.34      | R   [5] | Cache Type Register
 | HCR_EL2          | D17.2.48      | R   [2] | Hypervisor Configuration Register
 | ID_AA64AFR0_EL1  | D17.2.57      | R       | AArch64 Auxiliary Feature Register 0
 | ID_AA64AFR1_EL1  | D17.2.58      | R       | AArch64 Auxiliary Feature Register 1
@@ -194,9 +198,9 @@ version 0487I.a.
 | SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
 | TCR_EL1          | D17.2.131     | R       | Translation Control Register (EL1)
 | TCR2_EL1         | N/A           | R       | Extended Translation Control Register (EL1)
-| TPIDR_EL0        | D17.2.139     | R/W     | EL0 Read/Write Software Thread ID Register
-| TPIDR_EL1        | D17.2.140     | R/W     | EL1 Software Thread ID Register
-| TPIDRRO_EL0      | D17.2.143     | R/W     | EL0 Read-Only Software Thread ID Register
+| TPIDR_EL0        | D17.2.139     | R/W [5] | EL0 Read/Write Software Thread ID Register
+| TPIDR_EL1        | D17.2.140     | R/W [5] | EL1 Software Thread ID Register
+| TPIDRRO_EL0      | D17.2.143     | R/W [5] | EL0 Read-Only Software Thread ID Register
 | TRCDEVARCH       | D17.4.23      | R       | Trace Device Architecture Register
 | TTBR0_EL1        | D17.2.144     | R       | Translation Table Base Register 0 (EL1)
 | TTBR1_EL1        | D17.2.147     | R       | Translation Table Base Register 1 (EL1)
@@ -213,3 +217,5 @@ Accessing the PAC key registers at EL1 crashes macOS.
 [3] SCR_EL3 cannot by read/write at EL1. It is supported to format its possible values only.
 
 [4] PMSIDR_EL1 cannot be read on Linux at EL1, even when FEAT_SPE is implemented.
+
+[5] These registers cannot be accessed on Windows. Reading or writing them crashes the system.

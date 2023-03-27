@@ -2,6 +2,15 @@
 
 **Contents:**
 
+* [No native Arm64 driver development on Windows so far](#no-native-arm64-driver-development-on-windows-so-far)
+* [Prerequisites](#prerequisites)
+* [Building the driver and the applications](#building-the-driver-and-the-applications)
+* [Loading / unloading the driver](#loading--unloading-the-driver)
+* [Additional notes](#additional-notes)
+  * [Lack of ARM64 assembler support](#lack-of-arm64-assembler-support)
+  * [Accessing some system registers crashes the system](#accessing-some-system-registers-crashes-the-system)
+  * [PAC instructions are disabled](#pac-instructions-are-disabled)
+
 ## No native Arm64 driver development on Windows so far
 
 As of this writing, Visual Studio 17.5.x is available on Windows 11 Arm64.
@@ -12,8 +21,8 @@ The question was [asked here](https://stackoverflow.com/questions/75793332/how-t
 but no answer was received.
 
 To build this project, you must use an Intel PC with Windows 10 or 11, Visual Studio,
-including the Arm64 building tools, and the WDK. The Arm64 applications and
-drivers can be compiled on the Intel PC and then moved to the Windows Arm64 system.
+including the Arm64 building tools, and the WDK. The Arm64 driver and the applications
+can be compiled on the Intel PC and then moved to the Windows Arm64 system.
 
 To facilitate this process, the script `build-arm64-archive.ps1` can be used on the
 development system. It builds the drivers and the applications. Then, it packages the
@@ -91,3 +100,43 @@ Administrator privileges are requested through UAC if necessary.
 The script `loader-unload.ps1` is a shortcut for `loader.ps1 -Unload`. It is
 provided to unload the driver using a double-click on this script from the
 Windows Explorer.
+
+## Additional notes
+
+### Lack of ARM64 assembler support
+
+On Windows, it is currently not supported to embed inline `__asm` directives
+in C code for ARM64 targets. This is possible for Intel assembler only.
+
+In the Linux and macOS implementations of this project, inline assembly is
+used for MSR, MRS, PACxx and AUTxx instructions. On Windows, MSR and MRS
+can be replaced with intrinsics. However, there is not equivalent for
+PACxx and AUTxx instructions.
+
+To implement PACxx and AUTxx instructions, a separate assembler source
+file `kernel\windows\pac.asm` contains small helper functions for these
+instructions.
+
+This assembler file is separately compiled and linked for the driver and
+the applications. At that point, there is a new difficulty: the ARM64
+assembler is not integrated in MSBuild and Visual Studio IDE. The
+integration is done using the three files `armasm.props`, `armasm.targets`,
+and `armasm.xml`. Arm64 assembler files can then be integrated using
+`<ARMASM>` XML directoves in project files.
+
+### Accessing some system registers crashes the system
+
+Accessing any of the following system registers from the Windows driver
+crashes the system: `CTR_EL0`,  `TPIDRRO_EL0`,  `TPIDR_EL0`,  `TPIDR_EL1`.
+They are disabled by default in `sysregs -a`.
+
+### PAC instructions are disabled
+
+PAC and AUT instructions are "disabled". PAC instruction (except PACGA)
+do nothing. The pointer is not modified, no signature is inserted.
+
+All key registers are reset to zero in all processes. You may modify
+them, the content will be retained for the rest of the process.
+But the PAC instructions remain ineffective.
+
+Only PACGA seems to work as expected.
