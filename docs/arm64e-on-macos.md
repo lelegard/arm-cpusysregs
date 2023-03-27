@@ -1,12 +1,24 @@
 # Apple architectures `arm64` and `arm64e` on macOS
 
-Recent Mac machines use so-called "Apple Silicon" chips, from the M1 or M2 families of chips. These chips are designed by Apple and use CPU cores implementing the 64-bit Arm Instruction Set Architecture (ISA), also called `arm64` in the Apple context and elsewhere.
+Recent Mac machines use so-called "Apple Silicon" chips, from the M1 or M2 families
+of chips. These chips are designed by Apple and use CPU cores implementing the 64-bit
+Arm Instruction Set Architecture (ISA), also called `arm64` in the Apple context and
+elsewhere.
 
-The `arm64` ISA is described in details in the [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest). Be aware that this is a monstrous document of nearly 12,000 pages.
+The `arm64` ISA is described in details in the
+[Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest).
+Be aware that this is a monstrous document of nearly 12,000 pages.
 
-The name `arm64e` was recently introduced by Apple. This platform ABI is currently in "preview" on macOS. This note explores the differences between `arm64` and `arm64e`.
+The name `arm64e` was recently introduced by Apple. This platform ABI is currently
+in "preview" on macOS. This note explores the differences between `arm64` and `arm64e`.
 
-**Disclaimer:** I am not working for Apple or Arm. I have no internal information on the M1 or M2 chips, or macOS. Everything in this note is based on my observations and tests on a MacBook with an M1 chip. The explanations on how such or such feature is implemented in macOS are just **speculations**, based on a rational analysis of the technical possibilites. Moreover, all tests were performed on macOS 13 (Ventura). Future versions of macOS may behave differently. Specifically, the `arm64e` ABI, as defined by Apple, is still in preview mode and may evolve in the future.
+**Disclaimer:** I am not working for Apple or Arm. I have no internal information on
+the M1 or M2 chips, or macOS. Everything in this note is based on my observations and
+tests on a MacBook with an M1 chip. The explanations on how such or such feature is
+implemented in macOS are just **speculations**, based on a rational analysis of the
+technical possibilites. Moreover, all tests were performed on macOS 13 (Ventura).
+Future versions of macOS may behave differently. Specifically, the `arm64e` ABI,
+as defined by Apple, is still in preview mode and may evolve in the future.
 
 **Contents:**
 

@@ -8,22 +8,32 @@
 
 ## Checking the presence of Arm features on a CPU
 
-At a given level of Arm architecture, several features are mandatory or optional. A CPU core may or may not implement them. In the Arm architecture reference manual, they are usually named `FEAT_xxx`.
+At a given level of Arm architecture, several features are mandatory or optional.
+A CPU core may or may not implement them. In the Arm architecture reference manual,
+they are usually named `FEAT_xxx`.
 
-Using system registers (usually accessible at EL1 only), it is possible to check the presence of each feature. Consequently, the exact list of features is known to the kernel only. Userland applications cannot read these registers and cannot determine the exact list of features.
+Using system registers (usually accessible at EL1 only), it is possible to check the
+presence of each feature. Consequently, the exact list of features is known to the
+kernel only. Userland applications cannot read these registers and cannot determine
+the exact list of features.
 
-Depending on the operating system, it is possible to query a limited subset of the supported Arm features from userland using various commands or system calls:
+Depending on the operating system, it is possible to query a limited subset of the
+supported Arm features from userland using various commands or system calls:
 
 - On Linux: use `cat /proc/cpuinfo` on the command line or the `getauxval()` library function.
 - On macOS: use `sysctl`, either the command line tool or the system call of the same name.
 
 The C++ class `UserFeatures` and the program `demo-userfeatures` in this project demonstrate this.
 
-To get the complete list of features from userland, we need a specialized kernel module (Linux) or kernel extension (macOS) to read all relevant system registers, such as done in this project. The command line `sysregs` calls the kernel module to fetch all relevant information and displays them.
+To get the complete list of features from userland, we need a specialized kernel
+module (Linux) or kernel extension (macOS) to read all relevant system registers,
+such as done in this project. The command line `sysregs` calls the kernel module
+to fetch all relevant information and displays them.
 
 ## Complete list of Arm features in the Apple M1
 
-The following table lists all Arm features which are implemented - or not - in the Apple M1, based on the command `sysregs -s`.
+The following table lists all Arm features which are implemented - or not - in the Apple M1,
+based on the command `sysregs -s`.
 
 ~~~
 FEAT_AA32BF16 ............ no    FEAT_GICv4 ............... no    FEAT_RAS ................. yes
@@ -101,9 +111,12 @@ FEAT_GICv3 ............... no    FEAT_PRFMSLC ............. no    FEAT_XS ......
 
 ## Features comparison between the M1 and the M2
 
-The following table compares the features of the M1 and M2 based on the output of the command `sysctl hw.optional.arm`. Since the lists of features are not exactly the same, the two chips must use distinct types of cores.
+The following table compares the features of the M1 and M2 based on the output of
+the command `sysctl hw.optional.arm`. Since the lists of features are not exactly
+the same, the two chips must use distinct types of cores.
 
-Specifically, we can notice that the M2 implements all missing security features from the M1: BTI, PAuth2, FPAC.
+Specifically, we can notice that the M2 implements all missing security features
+from the M1: BTI, PAuth2, FPAC.
 
 | Feature      | Apple M1 | Apple M2
 | :----------- | :------: | :------:
