@@ -37,7 +37,8 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
   - Update first if your Visual Studio is not up-to-date. Wait for the update to complete.
   - Click "Modify" -> select the "Individual components" tab.
   - Scroll down to "Compilers, build tools, and runtimes" section.
-  - Select "MSVC 143 - VS 2022 C++ ARM64/ARM64EC build tools (latest)" (may be different on newer versions).
+  - Select "MSVC 143 - VS 2022 C++ ARM64/ARM64EC build tools (latest)"
+    (may be different on newer versions).
   - Click "Modify" (lower right corner). Wait for the update to complete.
 
 - Install the Windows Driver Kit (WDK) on the development system.
@@ -67,13 +68,13 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
 
 First option: Use the Visual Studio IDE, open solution file `cpusysregs.sln`,
 select "Release" configuration, build the solution. Note that this project is
-specific to the ARM64 platform and has not option for Intel platforms, x86 or x64.
+specific to the ARM64 platform and has no option for Intel platforms, x86 or x64.
 
-Second option: Run the PowerShell script `build.ps1`. It can be directly started
-from the Windows Explorer (right-click on the script and select "Run with PowerShell"
-if this is not the default). When run from a PowerScript windows or from another
-PowerShell script, use option `-NoPause` to avoid the user confirmation at the
-end of the build.
+Second option: Run the PowerShell script `build.ps1`.
+- It can be directly started from the Windows Explorer (right-click on the script
+  and select "Run with PowerShell" if this is not the default).
+- When run from a PowerScript windows or from another PowerShell script, use option
+  `-NoPause` to avoid the user confirmation at the end of the build.
 
 In all cases, the binaries for the driver (`cpusysregs.sys`) and the applications are
 left in the `msbuild\ARM64\Release` directory.
@@ -110,19 +111,20 @@ in C code for ARM64 targets. This is possible for Intel assembler only.
 
 In the Linux and macOS implementations of this project, inline assembly is
 used for MSR, MRS, PACxx and AUTxx instructions. On Windows, MSR and MRS
-can be replaced with intrinsics. However, there is not equivalent for
+can be replaced with intrinsics. However, there is no equivalent for
 PACxx and AUTxx instructions.
 
 To implement PACxx and AUTxx instructions, a separate assembler source
-file `kernel\windows\pac.asm` contains small helper functions for these
-instructions.
+file [kernel\windows\pac.asm](../kernel/windows/pac.asm) contains small
+helper functions for these instructions.
 
 This assembler file is separately compiled and linked for the driver and
 the applications. At that point, there is a new difficulty: the ARM64
 assembler is not integrated in MSBuild and Visual Studio IDE. The
-integration is done using the three files `armasm.props`, `armasm.targets`,
-and `armasm.xml`. Arm64 assembler files can then be integrated using
-`<ARMASM>` XML directoves in project files.
+integration is done using the three files [armasm.props](armasm.props),
+[armasm.targets](armasm.targets), and [armasm.xml](armasm.xml). Arm64
+assembler files can then be integrated using `<ARMASM>` XML directives
+in project files.
 
 ### Accessing some system registers crashes the system
 
@@ -132,7 +134,7 @@ They are disabled by default in `sysregs -a`.
 
 ### PAC instructions are disabled
 
-PAC and AUT instructions are "disabled". PAC instruction (except PACGA)
+PAC and AUT instructions are "disabled". PAC instructions (except PACGA)
 do nothing. The pointer is not modified, no signature is inserted.
 
 All key registers are reset to zero in all processes. You may modify
