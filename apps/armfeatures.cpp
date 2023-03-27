@@ -158,9 +158,13 @@ bool ArmFeatures::load(RegAccess& reg)
         (!csr_has_sve(_aa64pfr0) || reg.read(CSR_REGID_ID_AA64ZFR0_EL1, _aa64zfr0)) &&
         reg.read(CSR_REGID_TCR_EL1, _tcr) &&
         (!csr_has_tcr2(_aa64mmfr3) || reg.read(CSR_REGID_TCR2_EL1, _tcr2)) &&
-        reg.read(CSR_REGID_CTR_EL0, _ctr) &&
         (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch)) &&
         (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR_EL1, _pmmir));
+
+#if !defined(CSR_AVOID_CTR_EL0)
+    _loaded = _loaded &&
+        reg.read(CSR_REGID_CTR_EL0, _ctr);
+#endif
 
 #if !defined(CSR_AVOID_PMSIDR_EL1)
     _loaded = _loaded &&

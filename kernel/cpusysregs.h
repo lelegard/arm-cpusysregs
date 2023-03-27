@@ -48,7 +48,7 @@
 extern "C" {
 #endif
 
-// Linux kernel module or macOS kernel extension name.
+// Linux kernel module name, macOS kernel extension name, Windows driver name.
 #define CSR_MODULE_NAME "cpusysregs"
 
 // Description of a pair of hi/lo registers for PAC authentication keys.
@@ -368,8 +368,10 @@ typedef struct {
     #define CSR_IOC_SET_REG(regid)  CTL_CODE(_CSR_IOC, _CSR_FUNC_SET_REG | (regid), METHOD_BUFFERED, FILE_ANY_ACCESS)
     #define CSR_IOC_INSTR(instr)    CTL_CODE(_CSR_IOC, _CSR_FUNC_INSTR | (instr), METHOD_BUFFERED, FILE_ANY_ACCESS)
 
-    // Not found in ntddk.h (similar to DEVICE_TYPE_FROM_CTL_CODE and METHOD_FROM_CTL_CODE.
-    #define FUNCTION_FROM_CTL_CODE(ctrlCode)  ((ULONG)((ctrlCode) >> 2) & 0x0FFF)
+    // Not found in current version of ntddk.h (similar to DEVICE_TYPE_FROM_CTL_CODE and METHOD_FROM_CTL_CODE.
+    #if !defined(FUNCTION_FROM_CTL_CODE)
+        #define FUNCTION_FROM_CTL_CODE(ctrlCode)  ((ULONG)((ctrlCode) >> 2) & 0x0FFF)
+    #endif
 
     // Check if a DeviceIoControl() code is a set register command.
     CSR_INLINE int csr_ioc_is_set_reg(ULONG cmd)
@@ -944,7 +946,6 @@ typedef struct {
 //----------------------------------------------------------------------------
 // This code in used in the kernel only (Linux or macOS).
 // All functions are typically called only once in the kernel module.
-// For this reason, they are all inlined.
 //----------------------------------------------------------------------------
 
 #if defined(KERNEL)
@@ -967,7 +968,7 @@ typedef struct {
 #define FEAT_SPE      0x00004000
 
 // Get the CPU features. Typically called once on module initialization.
-CSR_INLINE int csr_get_cpu_features(void)
+static int csr_get_cpu_features(void)
 {
     csr_u64_t pfr0, pfr1, dfr0, isar0, isar1, isar2, mmfr3;
     csr_mrs(pfr0, CSR_SREG_ID_AA64PFR0_EL1);
@@ -996,7 +997,7 @@ CSR_INLINE int csr_get_cpu_features(void)
 
 // Set the value of a single register or pair of registers.
 // Return values: 0=success, 1=unknown register, 2=CPU feature missing
-CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_features)
+static int csr_set_register(int regid, const csr_pair_t* value, int cpu_features)
 {
 #define _check(features) if (((features) & cpu_features) != (features)) return 2
 #define _setreg(id, sreg, features) \
@@ -1034,7 +1035,7 @@ CSR_INLINE int csr_set_register(int regid, const csr_pair_t* value, int cpu_feat
 
 // Get the value of a single register or pair of registers.
 // Return values: 0=success, 1=unknown register, 2=CPU feature missing
-CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
+static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
 {
 #define _check(features) if (((features) & cpu_features) != (features)) return 2
 #define _getreg(id, sreg, features) \
@@ -1124,7 +1125,7 @@ CSR_INLINE int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
 
 // Execute a PACxx or AUTxx instruction.
 // Return values: 0=success, 1=unknown instruction.
-CSR_INLINE int csr_exec_instr(int instr, csr_instr_t* args)
+static int csr_exec_instr(int instr, csr_instr_t* args)
 {
     switch (instr) {
         case CSR_INSTR_PACIA:

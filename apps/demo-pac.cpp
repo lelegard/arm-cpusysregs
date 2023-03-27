@@ -129,6 +129,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
     int aut_instr = 0;
     csr_u64_t value_pac = value;
     csr_u64_t value_aut = 0;
+    csr_u64_t corrupted_value = value ^ 1;
     csr_u64_t corrupted = 0;
     csr_u64_t corrupted_aut = 0;
 
@@ -245,7 +246,7 @@ void TestKeyOneValue(RegAccess& regaccess, int regid, csr_u64_t value, csr_u64_t
     // Verify that a corrupted signed pointer (lsb flipped) is not authenticated.
     if (!fpac) {
         std::cout << Pad("Corrupted (user)", WIDTH) << " " << ToHexa(corrupted) << std::endl;
-        std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << Status(corrupted_aut, value) << std::endl;
+        std::cout << Pad("After AUT" + keyname + " (user)", WIDTH) << " " << Status(corrupted_aut, corrupted_value) << std::endl;
     }
 }
 

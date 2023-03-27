@@ -21,3 +21,13 @@
 #if defined(__APPLE__)
     #define CSR_AVOID_PAC_KEY_REGISTERS 1
 #endif
+
+// The register CTR_EL0 cannot be read on Windows at EL1 (the system crashes).
+#if defined(WINDOWS)
+    #define CSR_AVOID_CTR_EL0 1
+#endif
+
+// The software thread ID registers TPIDR* cannot be read on Windows at EL1 (the system crashes).
+#if defined(WINDOWS)
+    #define CSR_AVOID_TPIDR 1
+#endif

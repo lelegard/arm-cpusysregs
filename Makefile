@@ -12,10 +12,9 @@ SYSTEM := $(subst Linux,linux,$(subst Darwin,mac,$(shell uname -s)))
 MAKEFLAGS += --no-print-directory
 
 default:
-	./build-md-toc.sh *.md
 	$(MAKE) -C kernel/$(SYSTEM)
 	$(MAKE) -C apps
-	$(MAKE) -C docs
+	./build-md-toc.sh *.md docs/*.md apps/*.md kernel/*.md kernel/*/*.md
 
 clean:
 	$(MAKE) $@ -C kernel/$(SYSTEM)

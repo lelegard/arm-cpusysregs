@@ -27,6 +27,20 @@
     #define READ_PMSIDR RegView::READ
 #endif
 
+#if defined(CSR_AVOID_CTR_EL0)
+    #define READ_CTR_EL0 0
+#else
+    #define READ_CTR_EL0 RegView::READ
+#endif
+
+#if defined(CSR_AVOID_TPIDR)
+    #define READ_TPIDR 0
+    #define WRITE_TPIDR 0
+#else
+    #define READ_TPIDR RegView::READ
+    #define WRITE_TPIDR RegView::WRITE
+#endif
+
 // Map view of AllRegisters, indexed by CMD_REG_ values and names.
 std::map<int, RegView::Register> RegView::AllRegistersByIndex;
 std::map<std::string, RegView::Register> RegView::AllRegistersByName;
@@ -151,7 +165,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "APIBKEY_EL1", "D17.2.23/24", CSR_REGID2_APIBKEY_EL1, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
-        "CTR_EL0", "D17.2.34", CSR_REGID_CTR_EL0, READ,
+        "CTR_EL0", "D17.2.34", CSR_REGID_CTR_EL0, READ_CTR_EL0,
         {
             {"TminLine", 37, 32, {}},
             {"DIC",      29, 29, {}},
@@ -1001,13 +1015,13 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
-        "TPIDRRO_EL0", "D17.2.143", CSR_REGID_TPIDRRO_EL0, READ | WRITE, {}
+        "TPIDRRO_EL0", "D17.2.143", CSR_REGID_TPIDRRO_EL0, READ_TPIDR | WRITE_TPIDR, {}
     },
     {
-        "TPIDR_EL0", "D17.2.139", CSR_REGID_TPIDR_EL0, READ | WRITE, {}
+        "TPIDR_EL0", "D17.2.139", CSR_REGID_TPIDR_EL0, READ_TPIDR | WRITE_TPIDR, {}
     },
     {
-        "TPIDR_EL1", "D17.2.140", CSR_REGID_TPIDR_EL1, READ | WRITE, {}
+        "TPIDR_EL1", "D17.2.140", CSR_REGID_TPIDR_EL1, READ_TPIDR | WRITE_TPIDR, {}
     },
     {
         "TTBR0_EL1", "D17.2.144", CSR_REGID_TTBR0_EL1, READ,
