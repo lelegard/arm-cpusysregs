@@ -3,9 +3,12 @@
 Reference page: [Feature names in A-profile architecture](https://developer.arm.com/downloads/-/exploration-tools/feature-names-for-a-profile).
 
 The following table lists all known Arm features by name.
-For each feature, the initial versions for which it was optional and then mandatory are indicated (when known).
+For each feature, the initial versions for which it was optional and
+then mandatory are indicated (when known).
 
-The `sysreg` column is checked when the feature is detected by the command `sysreg -s`. When set to "n/a", the presence of the feature cannot be detected from software (external debug interfaces features for instance).
+The `sysreg` column is checked when the feature is detected by the command `sysreg -s`.
+When set to "n/a", the presence of the feature cannot be detected from software
+(external debug interfaces features for instance).
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------------

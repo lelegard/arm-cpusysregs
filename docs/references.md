@@ -24,5 +24,9 @@
 
 While working on this project, a few defects were found in the clang (LLVM) compiler for Arm64.
 
-- [LLVM clang bug report](https://github.com/llvm/llvm-project/issues/60239), incorrect generated code with options `-arch arm64e -mbranch-protection=pac-bti`, don't use them together.
-- [Apple LLVM clang bug report](https://github.com/apple/llvm-project/issues/6307), request to reduce call sequences of C++ virtual functions from 9 to 7 instructions in `arm64e` mode.
+- [LLVM clang bug report](https://github.com/llvm/llvm-project/issues/60239),
+  incorrect generated code with options `-arch arm64e -mbranch-protection=pac-bti`,
+  don't use them together.
+- [Apple LLVM clang bug report](https://github.com/apple/llvm-project/issues/6307),
+  request to reduce call sequences of C++ virtual functions from 9 to 7 instructions
+  in `arm64e` mode.
