@@ -21,6 +21,7 @@ named "pointer authentication code" or PAC.
   * [Common to all operating systems](#common-to-all-operating-systems)
   * [Specific to Linux](#specific-to-linux)
   * [Specific to macOS](#specific-to-macos)
+  * [Specific to Windows](#specific-to-windows)
   * [Specific to Arm\-designed cores](#specific-to-arm-designed-cores)
   * [Specific to Apple M1 chip](#specific-to-apple-m1-chip)
 * [Comparisons of platforms](#comparisons-of-platforms)
