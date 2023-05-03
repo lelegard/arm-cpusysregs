@@ -20,6 +20,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/uaccess.h>
+#include <linux/version.h>
 
 // Description of the kernel module.
 
@@ -36,11 +37,20 @@ static struct class* csr_class = NULL;
 static struct device* csr_device = NULL;
 static int cpu_features = 0;
 
+// Starting with Linux 6.2, the devnode callback in the device class structure
+// uses "const struct device*" instead of "struct device*".
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 2, 0)
+    #define DEVNODE_PARAM struct device*
+#else
+    #define DEVNODE_PARAM const struct device*
+#endif
+
 // Functions in this module.
 
 static int __init csr_init(void);
 static void __exit csr_exit(void);
-static char* csr_devnode(struct device* dev, umode_t* mode);
+static char* csr_devnode(DEVNODE_PARAM dev, umode_t* mode);
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long argp);
 
 // Registration of the module.
@@ -114,7 +124,7 @@ static void __exit csr_exit(void)
 // Called during the creation of our device to set its permissions.
 //----------------------------------------------------------------------------
 
-static char* csr_devnode(struct device* dev, umode_t* mode)
+static char* csr_devnode(DEVNODE_PARAM dev, umode_t* mode)
 {
     // Warning, mode is null when called on device deletion.
     if (mode != NULL && dev->devt == MKDEV(csr_major_number, 0)) {
