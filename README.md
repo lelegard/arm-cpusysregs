@@ -136,76 +136,72 @@ The reference list of registers which can be accessed by this project is given b
 the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file
 [kernel/cpusysregs.h](kernel/cpusysregs.h).
 
-The following table lists them with the corresponding reference sections in the
-[Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest),
-version 0487I.a.
-
-| Register         | Section       | Access  | Description
-| ---------------- | ------------- | ------- | -----------
-| APDAKey_EL1      | D17.2.15/.16  | R/W [1] | Pointer Authentication Key A for Data (Hi/Lo pair)
-| APDBKey_EL1      | D17.2.17/.18  | R/W [1] | Pointer Authentication Key B for Data (Hi/Lo pair)
-| APGAKey_EL1      | D17.2.19/.20  | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
-| APIAKey_EL1      | D17.2.21/.22  | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
-| APIBKey_EL1      | D17.2.23/.24  | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
-| CTR_EL0          | D17.2.34      | R   [5] | Cache Type Register
-| HCR_EL2          | D17.2.48      | R   [2] | Hypervisor Configuration Register
-| ID_AA64AFR0_EL1  | D17.2.57      | R       | AArch64 Auxiliary Feature Register 0
-| ID_AA64AFR1_EL1  | D17.2.58      | R       | AArch64 Auxiliary Feature Register 1
-| ID_AA64DFR0_EL1  | D17.2.59      | R       | AArch64 Debug Feature Register 0
-| ID_AA64DFR1_EL1  | D17.2.60      | R       | AArch64 Debug Feature Register 1
-| ID_AA64ISAR0_EL1 | D17.2.61      | R       | AArch64 Instruction Set Attribute Register 0
-| ID_AA64ISAR1_EL1 | D17.2.62      | R       | AArch64 Instruction Set Attribute Register 1
-| ID_AA64ISAR2_EL1 | D17.2.63      | R       | AArch64 Instruction Set Attribute Register 2
-| ID_AA64MMFR0_EL1 | D17.2.64      | R       | AArch64 Memory Model Feature Register 0
-| ID_AA64MMFR1_EL1 | D17.2.65      | R       | AArch64 Memory Model Feature Register 1
-| ID_AA64MMFR2_EL1 | D17.2.66      | R       | AArch64 Memory Model Feature Register 2
-| ID_AA64MMFR3_EL1 | N/A           | R       | AArch64 Memory Model Feature Register 3
-| ID_AA64MMFR4_EL1 | N/A           | R       | AArch64 Memory Model Feature Register 4
-| ID_AA64PFR0_EL1  | D17.2.67      | R       | AArch64 Processor Feature Register 0
-| ID_AA64PFR1_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 1
-| ID_AA64PFR2_EL1  | D17.2.68      | R       | AArch64 Processor Feature Register 2
-| ID_AA64SMFR0_EL1 | D17.2.69      | R       | SME Feature ID register 0
-| ID_AA64ZFR0_EL1  | D17.2.70      | R       | SVE Feature ID register 0
-| ID_ISAR0_EL1     | D17.2.74      | R       | AArch32 Instruction Set Attribute Register 0
-| ID_ISAR1_EL1     | D17.2.75      | R       | AArch32 Instruction Set Attribute Register 1
-| ID_ISAR2_EL1     | D17.2.76      | R       | AArch32 Instruction Set Attribute Register 2
-| ID_ISAR3_EL1     | D17.2.77      | R       | AArch32 Instruction Set Attribute Register 3
-| ID_ISAR4_EL1     | D17.2.78      | R       | AArch32 Instruction Set Attribute Register 4
-| ID_ISAR5_EL1     | D17.2.79      | R       | AArch32 Instruction Set Attribute Register 5
-| ID_ISAR6_EL1     | D17.2.80      | R       | AArch32 Instruction Set Attribute Register 6
-| ID_MMFR0_EL1     | D17.2.81      | R       | AArch32 Memory Model Feature Register 0
-| ID_MMFR1_EL1     | D17.2.82      | R       | AArch32 Memory Model Feature Register 1
-| ID_MMFR2_EL1     | D17.2.83      | R       | AArch32 Memory Model Feature Register 2
-| ID_MMFR3_EL1     | D17.2.84      | R       | AArch32 Memory Model Feature Register 3
-| ID_MMFR4_EL1     | D17.2.85      | R       | AArch32 Memory Model Feature Register 4
-| ID_MMFR5_EL1     | D17.2.86      | R       | AArch32 Memory Model Feature Register 5
-| ID_PFR0_EL1      | D17.2.87      | R       | AArch32 Processor Feature Register 0
-| ID_PFR1_EL1      | D17.2.88      | R       | AArch32 Processor Feature Register 1
-| ID_PFR2_EL1      | D17.2.89      | R       | AArch32 Processor Feature Register 2
-| MAIR_EL1         | D17.2.97      | R       | Memory Attribute Indirection Register (EL1)
-| MAIR2_EL1        | N/A           | R       | Extended Memory Attribute Indirection Register (EL1)
-| MIDR_EL1         | D17.2.100     | R       | Main ID Register
-| MPIDR_EL1        | D17.2.101     | R       | Multiprocessor Affinity Register
-| PIR_EL1          | N/A           | R       | Permission Indirection Register 1 (EL1)
-| PIRE0_EL1        | N/A           | R       | Permission Indirection Register 0 (EL1)
-| REVIDR_EL1       | D17.2.106     | R       | Revision ID Register
-| RNDR             | D17.2.111     | R       | Random Number
-| RNDRRS           | D17.2.112     | R       | Reseeded Random Number
-| SCR_EL3          | D17.2.117     |     [3] | Secure Configuration Register (EL3)
-| SCTLR_EL1        | D17.2.118     | R/W     | System Control Register (EL1)
-| SCTLR2_EL1       | N/A           | R/W     | System Control Register 2 (EL1)
-| SCXTNUM_EL0      | D17.2.121     | R/W     | EL0 Read/Write Software Context Number
-| SCXTNUM_EL1      | D17.2.122     | R/W     | EL1 Read/Write Software Context Number
-| TCR_EL1          | D17.2.131     | R       | Translation Control Register (EL1)
-| TCR2_EL1         | N/A           | R       | Extended Translation Control Register (EL1)
-| TPIDR_EL0        | D17.2.139     | R/W [5] | EL0 Read/Write Software Thread ID Register
-| TPIDR_EL1        | D17.2.140     | R/W [5] | EL1 Software Thread ID Register
-| TPIDRRO_EL0      | D17.2.143     | R/W [5] | EL0 Read-Only Software Thread ID Register
-| TRCDEVARCH       | D17.4.23      | R       | Trace Device Architecture Register
-| TTBR0_EL1        | D17.2.144     | R       | Translation Table Base Register 0 (EL1)
-| TTBR1_EL1        | D17.2.147     | R       | Translation Table Base Register 1 (EL1)
-| PMMIR_EL1        | D17.5.12      | R       | Performance Monitors Machine Identification Register
-| PMSIDR_EL1       | D17.7.10      | R   [4] | Sampling Profiling ID Register
+| Register         | Access  | Description
+| ---------------- | ------- | -----------
+| APDAKey_EL1      | R/W [1] | Pointer Authentication Key A for Data (Hi/Lo pair)
+| APDBKey_EL1      | R/W [1] | Pointer Authentication Key B for Data (Hi/Lo pair)
+| APGAKey_EL1      | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
+| APIAKey_EL1      | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
+| APIBKey_EL1      | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| CTR_EL0          | R   [5] | Cache Type Register
+| HCR_EL2          | R   [2] | Hypervisor Configuration Register
+| ID_AA64AFR0_EL1  | R       | AArch64 Auxiliary Feature Register 0
+| ID_AA64AFR1_EL1  | R       | AArch64 Auxiliary Feature Register 1
+| ID_AA64DFR0_EL1  | R       | AArch64 Debug Feature Register 0
+| ID_AA64DFR1_EL1  | R       | AArch64 Debug Feature Register 1
+| ID_AA64ISAR0_EL1 | R       | AArch64 Instruction Set Attribute Register 0
+| ID_AA64ISAR1_EL1 | R       | AArch64 Instruction Set Attribute Register 1
+| ID_AA64ISAR2_EL1 | R       | AArch64 Instruction Set Attribute Register 2
+| ID_AA64MMFR0_EL1 | R       | AArch64 Memory Model Feature Register 0
+| ID_AA64MMFR1_EL1 | R       | AArch64 Memory Model Feature Register 1
+| ID_AA64MMFR2_EL1 | R       | AArch64 Memory Model Feature Register 2
+| ID_AA64MMFR3_EL1 | R       | AArch64 Memory Model Feature Register 3
+| ID_AA64MMFR4_EL1 | R       | AArch64 Memory Model Feature Register 4
+| ID_AA64PFR0_EL1  | R       | AArch64 Processor Feature Register 0
+| ID_AA64PFR1_EL1  | R       | AArch64 Processor Feature Register 1
+| ID_AA64PFR2_EL1  | R       | AArch64 Processor Feature Register 2
+| ID_AA64SMFR0_EL1 | R       | SME Feature ID register 0
+| ID_AA64ZFR0_EL1  | R       | SVE Feature ID register 0
+| ID_ISAR0_EL1     | R       | AArch32 Instruction Set Attribute Register 0
+| ID_ISAR1_EL1     | R       | AArch32 Instruction Set Attribute Register 1
+| ID_ISAR2_EL1     | R       | AArch32 Instruction Set Attribute Register 2
+| ID_ISAR3_EL1     | R       | AArch32 Instruction Set Attribute Register 3
+| ID_ISAR4_EL1     | R       | AArch32 Instruction Set Attribute Register 4
+| ID_ISAR5_EL1     | R       | AArch32 Instruction Set Attribute Register 5
+| ID_ISAR6_EL1     | R       | AArch32 Instruction Set Attribute Register 6
+| ID_MMFR0_EL1     | R       | AArch32 Memory Model Feature Register 0
+| ID_MMFR1_EL1     | R       | AArch32 Memory Model Feature Register 1
+| ID_MMFR2_EL1     | R       | AArch32 Memory Model Feature Register 2
+| ID_MMFR3_EL1     | R       | AArch32 Memory Model Feature Register 3
+| ID_MMFR4_EL1     | R       | AArch32 Memory Model Feature Register 4
+| ID_MMFR5_EL1     | R       | AArch32 Memory Model Feature Register 5
+| ID_PFR0_EL1      | R       | AArch32 Processor Feature Register 0
+| ID_PFR1_EL1      | R       | AArch32 Processor Feature Register 1
+| ID_PFR2_EL1      | R       | AArch32 Processor Feature Register 2
+| MAIR_EL1         | R       | Memory Attribute Indirection Register (EL1)
+| MAIR2_EL1        | R       | Extended Memory Attribute Indirection Register (EL1)
+| MIDR_EL1         | R       | Main ID Register
+| MPIDR_EL1        | R       | Multiprocessor Affinity Register
+| PIR_EL1          | R       | Permission Indirection Register 1 (EL1)
+| PIRE0_EL1        | R       | Permission Indirection Register 0 (EL1)
+| REVIDR_EL1       | R       | Revision ID Register
+| RNDR             | R       | Random Number
+| RNDRRS           | R       | Reseeded Random Number
+| SCR_EL3          |     [3] | Secure Configuration Register (EL3)
+| SCTLR_EL1        | R/W     | System Control Register (EL1)
+| SCTLR2_EL1       | R/W     | System Control Register 2 (EL1)
+| SCXTNUM_EL0      | R/W     | EL0 Read/Write Software Context Number
+| SCXTNUM_EL1      | R/W     | EL1 Read/Write Software Context Number
+| TCR_EL1          | R       | Translation Control Register (EL1)
+| TCR2_EL1         | R       | Extended Translation Control Register (EL1)
+| TPIDR_EL0        | R/W [5] | EL0 Read/Write Software Thread ID Register
+| TPIDR_EL1        | R/W [5] | EL1 Software Thread ID Register
+| TPIDRRO_EL0      | R/W [5] | EL0 Read-Only Software Thread ID Register
+| TRCDEVARCH       | R       | Trace Device Architecture Register
+| TTBR0_EL1        | R       | Translation Table Base Register 0 (EL1)
+| TTBR1_EL1        | R       | Translation Table Base Register 1 (EL1)
+| PMMIR_EL1        | R       | Performance Monitors Machine Identification Register
+| PMSIDR_EL1       | R   [4] | Sampling Profiling ID Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers

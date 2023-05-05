@@ -156,25 +156,21 @@ Options::Options(int argc, char* argv[]) :
 void ListRegisters(const Options& opt, std::ostream& out)
 {
     const std::string name_title("Register");
-    const std::string doc_title("RTFM section");
     const std::string feature_title("Features");
 
     size_t name_width = name_title.length();
-    size_t doc_width = doc_title.length();
     size_t feature_width = 30;
 
     for (const auto& desc : RegView::AllRegisters) {
         name_width = std::max(name_width, desc.name.length());
-        doc_width = std::max(doc_width, desc.section.length());
     }
 
     out << std::endl
-        << Pad(name_title, name_width, ' ') << "  " << Pad(doc_title, doc_width, ' ') << "  " << feature_title << std::endl
-        << Pad("", name_width, '-') << "  " << Pad("", doc_width, '-') << "  " << Pad("", feature_width, '-') << std::endl;
+        << Pad(name_title, name_width, ' ') << "  " << feature_title << std::endl
+        << Pad("", name_width, '-') << "  " << Pad("", feature_width, '-') << std::endl;
 
     for (const auto& desc : RegView::AllRegisters) {
         out << Pad(desc.name, name_width, ' ') << "  "
-            << Pad(desc.section, doc_width, ' ') << "  "
             << desc.featuresList() << std::endl;
     }
     out << std::endl;
