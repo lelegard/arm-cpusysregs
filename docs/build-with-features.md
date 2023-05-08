@@ -24,8 +24,8 @@ at best or crashes the application on an "illegal instruction" fault at worst.
 
 Some of these specific instructions bring a significant performance improvement.
 This is the case for the "accelerated cryptographic instructions" for CRC, AES,
-SHA-1, SHA-256, SHA-512. When available, these instructions may accelerate the
-corresponding algorithm with a factor or 10 or even 20. It is consequently
+SHA-1, SHA-256, SHA-512, SHA-3. When available, these instructions may accelerate the
+corresponding algorithm by a factor or 10 or even 20. It is consequently
 important to use them when available.
 
 The gcc and clang compilers have options to specify the target CPU, its level
@@ -34,17 +34,17 @@ compiler will generate - or refuse to generate - the instructions which are
 specific to an Arm feature.
 
 This approach is acceptable in an embedded computing environment, the original
-domain where Arm CPU were used first. In such a context, the application is
-compiled for a dedicated unique target. It is consequently possible to fine-tume
+domain where Arm CPU's were used first. In such a context, the application is
+compiled for a dedicated unique target. It is consequently possible to fine-tune
 the compilation options for a specific target.
 
 However, as Arm CPU's are now frequently used in server environments, this
-approach is no longer acceptable. On a generic server or laptop, there is
+approach is no longer acceptable. On a generic server or even a laptop, there are
 no longer dedicated targets. The end-user purchases a machine and installs
 generic software on it. The binaries for the operating system and applications
 are simply downloaded and installed. Think in terms of "Linux distribution"
 and "package management". A single binary shall be installed and capable to
-run on any Arm64 machine and get the best of it (ie. use the appropriate
+run on any Arm64 machine and get the best of it (i.e. use the appropriate
 optimizations when available).
 
 This note explores some aspects of this problem and how to solve it.
@@ -57,13 +57,13 @@ perspective of a generic build.
 
 ### Hints
 
-In the Arm64 instruction set, there is a whole range of encoding for "hint"
+In the Arm64 instruction set, there is a whole range of encoding for _hint_
 instructions. Functionally, these instructions do nothing. They do not change
 the semantics of the program. By default, they act as a NOP. They are silently
 ignored by the execution unit.
 
 However, some of these hint instructions are used in specific Arm features
-to define "hints" on the execution when a CPU implements the corresponding
+to define hints on the execution when a CPU implements the corresponding
 optional features.
 
 Examples of these instructions are PACIA, AUTIA (pointer authentication) or
@@ -95,8 +95,9 @@ do not implement the corresponding Arm feature.
 
 In the set of pointer authentication instructions, this is the case of the RETAA
 instruction. It is equivalent to a sequence of AUTIASP and RET. This instruction
-has an important semantics, it "returns", meaning branch to code address in register X30.
-This cannot be ignored or guessed by older CPU's.
+has an important semantics, it "returns", meaning it branches to the code address
+in register X30 (after validating the pointer's signature). This cannot be ignored
+or guessed by older CPU's.
 
 Let's illustrate this. On Linux, using `gcc -mbranch-protection=pac-ret`, the generated
 code for a function prolog and epilog is:
@@ -109,7 +110,7 @@ code for a function prolog and epilog is:
 This code is generic and works with or without FEAT_PAuth. Without this feature, the
 instructions PACIASP and AUTIASP act as NOP.
 
-However, using `gcc -mbranch-protection=pac-ret -march=armv8.3-a`, code sequence becomes:
+However, using `gcc -mbranch-protection=pac-ret -march=armv8.3-a`, the code sequence becomes:
 ~~~
     paciasp
     ...
@@ -128,7 +129,7 @@ The recommended strategy is to not use these instructions on generic binaries.
 
 ### Accelerated instructions
 
-Other optional instructions provides a much more significant performance improvement,
+Other optional instructions provide a much more significant performance improvement,
 speeding up standard algorithms such as AES by a factor of 10 or even 20.
 It is not possible to avoid them when they are available. 
 
@@ -138,7 +139,7 @@ to produce dedicated binaries for all possible combinations of FEAT_AES, FEAT_SH
 FEAT_SHA512, FEAT_SHA3, FEAT_CRC32.
 
 The recommended strategy is to implement the two versions of critical algorithms in
-the same universal binary. One of the version is "portable". It can be compiled on
+the same universal binary. One version is "portable". It can be executed on
 all architectures and uses standard instructions only. The second version explicitly
 uses the accelerated instructions, either using `asm()` directives or the equivalent
 compiler intrinsics.
@@ -184,42 +185,46 @@ defined a set of features. This is no longer the case. Each feature is uniquely
 identified by a name FEAT_xxx and can be implemented at various levels of architectures.
 
 There are of course a number of dependencies which are mandatory but the
-principle is that each feature is identified.
+principle is that each feature is individually identified.
 
 However, gcc and clang do not follow that scheme. Many features are still bound
-to an explicit level of architecture. Additional features must be specified in
-the `-march` options but their naming and combinations are inconsistent with the
-Arm naming:
+to an explicit level of architecture, as in the old days. Additional features must
+be specified in the `-march` options but their naming and combinations are
+inconsistent with the Arm naming.
+
+See some examples below:
 
 - To start with the only consistent one, FEAT_CRC32 is activated using option
   `-march=armv8-a+crc`.
 
 - More questionable, FEAT_AES and FEAT_SHA1 are activated using `-march=armv8-a+crypto`.
   These two features are distinct but cannot be individually handled by the compiler.
+  The compiler only knows some "crypto" feature (which only covers a small part of the
+  cryptographic instructions, AES and SHA-1).
 
 - It starts to become weird with FEAT_SHA256. It can be activated only with
   `-march=armv8-a+crypto+sha2`. Why `crypto+sha2` and not only `sha2`?
-  Moreover, SHA-256 and SHA-512 and both part of the SHA-2 family but FEAT_SHA256
+  Moreover, SHA-256 and SHA-512 are both part of the SHA-2 family but FEAT_SHA256
   and FEAT_SHA512 are distinct features.
 
 - Finally, it becomes completely insane with FEAT_SHA512. It requires the options
   `-march=armv8.2-a+crypto+sha2+sha3`. Note the required combination of `crypto+sha2+sha3`
-  which is particulary stupid since SHA-512 is part of SHA-2 and not SHA-3.
-  The Arm architecture defines a specific FEAT_SHA3 which is completely distinct.
+  which is particulary insane since SHA-512 is part of SHA-2, not SHA-3. And
+  the Arm architecture also defines a specific FEAT_SHA3 which is completely distinct.
 
-In the last case, also note the requirement of `-march=armv8.2-a` to get access
+In the last case, also note the required `-march=armv8.2-a` to get access
 to FEAT_SHA512. This creates very unconvenient side effects.
 
 #### Side-effects on code generation
 
 Based on the observations of the previous section, we are tempted to specify
 some "wide" compilation option which accepts all the specialized instructions
-and intrinsics we explicitly use the code.
+and intrinsics that we explicitly use in the code.
 
 In the case of FEAT_SHA512, for instance, this means using `-march=armv8.2-a+crypto+sha2+sha3`.
 However, note the required `armv8.2-a`. This has a very nasty effect on generic
 binaries. The compiler feels free to generate any kind of instruction which
-is new in Armv8.2 (or even 8.1), independently of the explicit instructions
+is new in Armv8.2 or 8.1, independently of the explicit instructions
 we use in our code.
 
 This is not a theoretical threat. That happened for real in practical code.
@@ -228,8 +233,8 @@ of code used specialized instructions for SHA-512. The code used to run fine
 on recent Arm CPU cores until it was run on a Raspberry Pi 4 where it crashed
 with an "illegal instruction" fault. This system uses Cortex A72 cores, based
 on Armv8.0. An analysis of the core dump exibited that the program stopped on
-an atomic add instruction which is defined in the FEAT_LSE feature. Because
-of the required `-march=armv8.2-a` for FEAT_SHA512, the compiler decided to
+an atomic add instruction which is defined in the FEAT_LSE feature (introduced in Armv8.1).
+Because of the required `-march=armv8.2-a` for FEAT_SHA512, the compiler decided to
 use the FEAT_LSE instructions in unrelated parts of the code.
 
 ### Possible improvements in compilers
@@ -238,17 +243,18 @@ The use case we expect the compilers to address is the following: compile generi
 binaries with specialized parts using explicit instructions or intrinsics.
 
 This is a requirement for the adoption of the Arm64 in the server ecosystem.
+But we have just seen that this not easy to implement in practice.
 
-Several possible improvements are suggested here.
+Several possible improvements are suggested here for gcc and clang.
 
-Accept explicit instructions and intrinsics without explicit specification
-of a precise target. It is recommended to issue a warning when these instructions
-or intrinsics do not match the explicit targets. Developers doing this on
-purpose will mute this specific warnings in the corresponding branches of
-code using pragmas.
+- Accept explicit instructions and intrinsics without explicit specification
+  of a precise target. It is recommended to issue a warning when these instructions
+  or intrinsics do not match the explicit targets. Developers doing this on
+  purpose will mute this specific warnings in the corresponding branches of
+  code using pragmas.
 
-Maybe more complicated, allow a temporary change of target using pragmas,
-just like warning pragmas. For instance:
+- Maybe more complicated, allow a temporary change of target using pragmas,
+  just like warning pragmas. For instance:
 ~~~
     if (sha512_supported_on_this_cpu()) {
         #pragma target push
@@ -258,18 +264,17 @@ just like warning pragmas. For instance:
     }
 ~~~
 
-Disconnect Arm features from the Arm architecture level. The problem which
-was described in the previous section is due to the fact that gcc requires
-to specify Armv8.2 to use FEAT_SHA512 and Armv8.2 implicitely activates FEAT_LSE.
-It should be possible to specific `-march=armv8-a+sha512`.
+- Disconnect Arm features from the Arm architecture level. The problem which
+  was described in the previous section is due to the fact that gcc requires
+  to specify Armv8.2 to use FEAT_SHA512 and Armv8.2 implicitely activates FEAT_LSE
+  (and many other features). It should be possible to specify `-march=armv8-a+sha512`.
 
-Adopt a more Arm-compatible feature naming. Requiring `crypto+sha2+sha3` for
-FEAT_512 is particularly insane. These specific features should be individually
-selectable, as in `-march=armv8-a+crc+aes+sha1+sha256+sha512+sha3`.
+- Adopt a more Arm-compatible feature segmentation and naming. Requiring `crypto+sha2+sha3` for
+  FEAT_512 is particularly insane. These specific features should be individually
+  selectable, as in `-march=armv8-a+crc+aes+sha1+sha256+sha512+sha3`.
 
 Of course, these rules only apply to specific Arm features which are required to
 build generic binaries with optimal implementation.
-
 Most features which are marked as mandatory at a given level of architecture will continue
 to be implicitely activated. For instance, `-march=armv8.1-a` is sufficient to
 activate FEAT_LSE. This feature is not one that brings a significant improvement
@@ -277,7 +282,7 @@ in generic binaries.
 
 ### Proposed solution with current compilers
 
-As a lesson from the previously described problel, we must be very careful to
+As a lesson from the previously described problem, we must be very careful to
 never execute any part of a compilation unit which was built with non-generic `-march`
 option on a CPU which does not implement it.
 
@@ -289,22 +294,22 @@ the following:
 - Compile each of these specialized modules with the exact compilation options it needs.
 - Compile all other modules without explicit `-march` option (or simply `-march=armv8-a`
   in the case of cross-compilation).
-- Check the availability of the Arm features at run time in the generic modules only
-  and call dedicated functions in the specialized modules only when the check succeeded.
+- Check the availability of the Arm features at run time in the generic modules
+  and call dedicated functions in the specialized modules only when the check succeeds.
 
 ### Complete example
 
 A complete example is proposed in the directory [samples/compile-accel](../samples/compile-accel).
 
 This is the skeleton of an application which uses CRC-32, AES, SHA-1, SHA-256, SHA-512.
-The cryptographic algorithms are replaced by simple `printf()`. This example illustrates
+The cryptographic algorithms are replaced by simple `printf()`. This example only illustrates
 the source code structure and build procedures.
 
 The individual algorithms are (hypothetically) implemented in several source files:
 `aes.c`, `crc.c`, `sha1.c`, `sha256.c`, `sha512.c`. These modules contain the portable
-implementations of their respective algorithm.
+implementation of their respective algorithm.
 
-The accelerated versions, uses specialized instructions or intrinsics are (hypothetically)
+The accelerated versions, using specialized instructions or intrinsics, are (hypothetically)
 implemented in distinct source files: `aes_accel.c`, `crc_accel.c`, `sha1_accel.c`,
 `sha256_accel.c`, `sha512_accel.c`. The compilation of these modules uses the specific
 fine-tuned options for the specialized instructions or intrinsics they use.
