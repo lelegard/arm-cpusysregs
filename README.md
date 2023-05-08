@@ -11,6 +11,9 @@ system registers to userland through a dedicated loadable kernel module, on Linu
 macOS, and Windows. Some application programs are provided to display an analysis
 of the contents of these registers.
 
+More generally, this project provides some notes, examples, and information on the
+the Arm64 architecture for developers.
+
 **Contents:**
 
 * [Accessing the system registers](#accessing-the-system-registers)

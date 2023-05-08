@@ -19,6 +19,7 @@ default:
 clean:
 	$(MAKE) $@ -C kernel/$(SYSTEM)
 	$(MAKE) $@ -C apps
+	$(MAKE) $@ -C samples/compile-accel
 
 install load unload show:
 	$(MAKE) $@ -C kernel/$(SYSTEM)
