@@ -305,18 +305,18 @@ the following:
 
 A complete example is proposed in the directory [samples/compile-accel](../samples/compile-accel).
 
-This is the skeleton of an application which uses CRC-32, AES, SHA-1, SHA-256, SHA-512.
+This is the skeleton of an application which uses CRC-32, AES, SHA-1, SHA-256, SHA-512, SHA-3.
 The cryptographic algorithms are replaced by simple `printf()`. This example only illustrates
 the source code structure and build procedures.
 
 The individual algorithms are (hypothetically) implemented in several source files:
-`aes.c`, `crc.c`, `sha1.c`, `sha256.c`, `sha512.c`. These modules contain the portable
+`aes.c`, `crc.c`, `sha1.c`, `sha256.c`, `sha512.c`, `sha3.c`. These modules contain the portable
 implementation of their respective algorithm.
 
 The accelerated versions, using specialized instructions or intrinsics, are (hypothetically)
 implemented in distinct source files: `aes_accel.c`, `crc_accel.c`, `sha1_accel.c`,
-`sha256_accel.c`, `sha512_accel.c`. The compilation of these modules uses the specific
-fine-tuned options for the specialized instructions or intrinsics they use.
+`sha256_accel.c`, `sha512_accel.c`, `sha1_accel.c`. The compilation of these modules uses the
+specific fine-tuned options for the specialized instructions or intrinsics they use.
 
 This part of the makefile looks like this:
 ~~~
@@ -338,11 +338,12 @@ Notes:
 - Depending on the system, `uname -m` may return `aarch64` or `arm64`.
 
 The individual Arm features are tested at run-time in the generic modules (e.g. `aes.c`).
-We do not use the kernel module from this educational project. Instead, we use some
-OS-specific features which extract a few features from the kernel. Fortunately, the
-features we need are among them.
+We do not use the kernel module from this educational project (this would be too dangerous
+for real applications). Instead, we use some OS-specific features which extract a few features
+from the kernel.
 
-On Linux, we use `getauxval()`. On macOS, we use `sysctlbyname()`.
+On Linux, we use `getauxval()`. On macOS, we use `sysctlbyname()`. These functions can only
+check a small subset of all Arm features. Fortunately, the features we need are among them.
 
 Sample execution on a MacBook M1, Armv8.5 CPU, implementing all cryptographic accelerations,
 macOS host or Linux virtual machine:
