@@ -7,7 +7,7 @@
     const int crc_accel_compiled = 1;
     void crc_accel()
     {
-        printf("crc(): accelerated implementation\n");
+        printf("crc():    accelerated implementation\n");
         // Dummy CRC instruction, just to demonstrate it is accepted by the compiler.
         asm("crc32x w8, w8, x8" : : : "x8");
     }
@@ -18,7 +18,7 @@
     void crc_accel()
     {
         // Should never be called if the CPU does not support the compilation target of this module;
-        printf("crc(): ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
+        printf("crc():    ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
         assert(0);
     }
     

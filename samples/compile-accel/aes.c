@@ -19,6 +19,6 @@ void aes()
         aes_accel();
     }
     else {
-        printf("aes(): portable implementation\n");
+        printf("aes():    portable implementation\n");
     }
 }

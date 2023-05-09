@@ -19,6 +19,6 @@ void sha1()
         sha1_accel();
     }
     else {
-        printf("sha1(): portable implementation\n");
+        printf("sha1():   portable implementation\n");
     }
 }

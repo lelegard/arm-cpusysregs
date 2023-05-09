@@ -19,6 +19,6 @@ void crc()
         crc_accel();
     }
     else {
-        printf("crc(): portable implementation\n");
+        printf("crc():    portable implementation\n");
     }
 }
