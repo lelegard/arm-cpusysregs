@@ -324,6 +324,7 @@ ifeq ($(subst aarch64,arm64,$(shell uname -s -m)),Linux arm64)
     sha1_accel.o:   CFLAGS_TARGET = -march=armv8-a+crypto
     sha256_accel.o: CFLAGS_TARGET = -march=armv8-a+crypto+sha2
     sha512_accel.o: CFLAGS_TARGET = -march=armv8.2-a+crypto+sha2+sha3
+    sha3_accel.o:   CFLAGS_TARGET = -march=armv8-a+sha3
 endif
 ~~~
 
@@ -347,6 +348,7 @@ aes(): accelerated implementation
 sha1(): accelerated implementation
 sha256(): accelerated implementation
 sha512(): accelerated implementation
+sha3(): accelerated implementation
 ~~~
 
 Execution of the same Linux binary on a Raspberry Pi 4, BCM2711 SoC, Cortex A72 core, Armv8.0,
@@ -357,6 +359,7 @@ aes(): portable implementation
 sha1(): portable implementation
 sha256(): portable implementation
 sha512(): portable implementation
+sha3(): portable implementation
 ~~~
 
 We can see that the same generic binary runs on different levels of CPU but takes
@@ -370,4 +373,5 @@ aes(): portable implementation
 sha1(): portable implementation
 sha256(): portable implementation
 sha512(): portable implementation
+sha3(): portable implementation
 ~~~

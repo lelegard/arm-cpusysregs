@@ -2,17 +2,24 @@
 #include <assert.h>
 #include <stdio.h>
 
-void aes_accel()
-{
 #if defined(__ARM_FEATURE_CRYPTO)
 
-    printf("aes(): accelerated implementation\n");
+    const int aes_accel_compiled = 1;
+    void aes_accel()
+    {
+        printf("aes(): accelerated implementation\n");
+        // Dummy AES instruction, just to demonstrate it is accepted by the compiler.
+        asm("aese v8.16B, v8.16B" : : : "v8");
+    }
 
 #else
 
-    // Should never be called if the CPU does not support the compilation target of this module;
-    printf("aes(): ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
-    assert(0);
+    const int aes_accel_compiled = 0;
+    void aes_accel()
+    {
+        // Should never be called if the CPU does not support the compilation target of this module;
+        printf("aes(): ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
+        assert(0);
+    }
     
 #endif
-}
