@@ -14,6 +14,16 @@
 
 #if defined(__linux__)
     #include <sys/auxv.h>
+    #include <asm/hwcap.h>
+    // Registers id_aa64isar2_el1 and id_aa64mmfr2_el1 are not defined in older compiler versions.
+    // Not sure about which exact versions, adapt if necessary.
+    #if defined(__clang__) && (__clang_major__ < 12)
+        // Need clang 12.x and above ?
+        #define NO_AA64ISAR2 1
+    #elif !defined(__clang__) && (__GNUC__ < 11)
+        // Need gcc 12.x and above ?
+        #define NO_AA64ISAR2 1
+    #endif
 #elif defined(__APPLE__)
     #include <sys/types.h>
     #include <sys/sysctl.h>
@@ -52,11 +62,15 @@ UserFeatures::UserFeatures()
                 // Use system registers as emulated by Linux kernel at EL0.
                 if (!_reg_loaded) {
                     // System registers not yet loaded.
+                    asm("mrs %0, id_aa64pfr0_el1"  : "=r" (_pfr0));
                     asm("mrs %0, id_aa64isar0_el1" : "=r" (_isar0));
                     asm("mrs %0, id_aa64isar1_el1" : "=r" (_isar1));
-                    asm("mrs %0, id_aa64isar2_el1" : "=r" (_isar2));
-                    asm("mrs %0, id_aa64pfr0_el1"  : "=r" (_pfr0));
-                    asm("mrs %0, id_aa64mmfr2_el1" : "=r" (_mmfr2));
+                    #if defined(NO_AA64ISAR2)
+                        _isar2 = _mmfr2 = 0;
+                    #else
+                        asm("mrs %0, id_aa64isar2_el1" : "=r" (_isar2));
+                        asm("mrs %0, id_aa64mmfr2_el1" : "=r" (_mmfr2));
+                    #endif
                     _reg_loaded = true;
                 }
                 // Call the lambda function to extract the feature from the register values.
