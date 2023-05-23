@@ -1,16 +1,17 @@
 Kernel
 ------
-Darwin 22.3.0 Darwin Kernel Version 22.3.0: Mon Jan 30 20:39:35 PST 2023; root:xnu-8792.81.3~2/RELEASE_ARM64_T8103 arm64 arm
+Darwin 22.4.0 Darwin Kernel Version 22.4.0: Mon Mar  6 21:00:41 PST 2023; root:xnu-8796.101.5~3/RELEASE_ARM64_T8103 arm64 arm
 
 Operating system
 ----------------
 ProductName:            macOS
-ProductVersion:         13.2.1
-BuildVersion:           22D68
+ProductVersion:         13.3.1
+ProductVersionExtra:    (a)
+BuildVersion:           22E772610a
 
 Compiler
 --------
-Apple clang version 14.0.0 (clang-1400.0.29.202)
-Target: arm64-apple-darwin22.3.0
+Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+Target: arm64-apple-darwin22.4.0
 Thread model: posix
 InstalledDir: /Library/Developer/CommandLineTools/usr/bin

@@ -392,7 +392,7 @@ The following table compares various forms of PAC computations on several platfo
 | Platform             | macOS host (M1) | Linux VM (M1)   | Linux VM (M1)   | Windows VM (M1) | Linux VM (G3)   |
 | -------------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
 | OS                   | macOS           | Linux (Ubuntu)  | Linux (Debian)  | Windows 11      | Linux (Ubuntu)  |
-| OS kernel version    | 13.2.1          | 6.2.0-20        | 5.10.0-23       | 10.0.22000      | 5.15.0-1030-aws |
+| OS kernel version    | 13.3.1          | 6.2.0-20        | 5.10.0-23       | 10.0.22000      | 5.15.0-1030-aws |
 | Virtualization       | Host            | VM              | VM              | VM              | VM              |
 | Processor chip       | Apple M1        | Apple M1        | Apple M1        | Apple M1        | AWS Graviton 3  |
 | CPU cores            | Apple Firestorm | Apple Firestorm | Apple Firestorm | Apple Firestorm | Arm Neoverse V1 |
