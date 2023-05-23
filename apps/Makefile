@@ -64,7 +64,7 @@ _hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
 	 $(SORT) -u >$@
 
 # Regenerate implicit dependencies.
-ifneq ($(if $(MAKECMDGOALS),$(filter-out clean,$(MAKECMDGOALS)),true),)
+ifeq ($(filter clean,$(MAKECMDGOALS)),)
     -include $(patsubst %.cpp,%.d,$(SOURCES))
 endif
 %.d: %.cpp

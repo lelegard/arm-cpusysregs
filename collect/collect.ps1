@@ -46,5 +46,6 @@ Write-Output $OS.Caption | Out-File -Encoding ascii -Append "$DestDir\cpusysregs
 . $BinDir\demo-pac      | Out-File -Encoding ascii "$DestDir\cpusysregs-demo-pac-2.txt"
 . $BinDir\demo-pac      | Out-File -Encoding ascii "$DestDir\cpusysregs-demo-pac-3.txt"
 . $BinDir\demo-userfeatures | Out-File -Encoding ascii "$DestDir\cpusysregs-user-features.txt"
+. $BinDir\collect           | Out-File -Encoding ascii "$DestDir\cpusysregs-pac-md.txt"
 
 Get-ChildItem $DestDir/cpusysregs-*.txt

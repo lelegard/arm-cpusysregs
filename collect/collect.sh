@@ -61,5 +61,6 @@ apps/demo-pac >$DESTDIR/cpusysregs-demo-pac-1.txt
 apps/demo-pac >$DESTDIR/cpusysregs-demo-pac-2.txt
 apps/demo-pac >$DESTDIR/cpusysregs-demo-pac-3.txt
 apps/demo-userfeatures >$DESTDIR/cpusysregs-user-features.txt
+apps/collect >$DESTDIR/cpusysregs-pac-md.txt
 
 ls -l $DESTDIR/cpusysregs-*.txt

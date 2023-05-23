@@ -100,7 +100,8 @@ On an Apple M1 chip (MacBook laptop), the command `sysregs -p` displays this in 
   Instr (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
 ~~~
 
-On the same machine with an Apple M1 chip, the same command displays this in a Linux virtual machine:
+On the same machine with an Apple M1 chip, the same command displays this in a virtual machine
+running Linux Ubuntu 23 and the Linux kernel 6.2:
 ~~~
   Data  (lower): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
   Data  (upper): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
@@ -119,7 +120,20 @@ Another peculiarity is the number of virtual address bits. On macOS, the system 
 47 bits. On Linux, it uses 48 bits, reducing the entropy of the PAC by one bit.
 The reason for this is unknown.
 
-On the same MacBook machine with an Apple M1 chip, the command displays this in a Windows virtual machine:
+Even more peculiar, on the same machine with an Apple M1 chip, in a virtual machine
+running Linux Debian 11 and an older Linux kernel 5.10, we get this:
+~~~
+  Data  (lower): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
+  Data  (upper): PAC size: 15 bits, bit range: 63:56,54:48 (top: 63, sel: 55, bottom: 48)
+  Instr (lower): PAC size:  7 bits, bit range:       54:48 (top: 55, sel: 55, bottom: 48)
+  Instr (upper): PAC size: 15 bits, bit range: 63:56,54:48 (top: 63, sel: 55, bottom: 48)
+~~~
+
+The reason for using 15 bits instead of 7 for the PAC on upper data addresses, for different
+versions of the  kernel, is also unknown.
+
+Finally, still on the same MacBook machine with an Apple M1 chip, the command displays this
+in a Windows 11 virtual machine:
 ~~~
   Data  (lower): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
   Data  (upper): PAC size: 16 bits, bit range: 63:56,54:47 (top: 63, sel: 63, bottom: 47)
@@ -310,8 +324,8 @@ contains a full comparison of results per platform.
 
 - The meaningful virtual address part of a pointer uses 48 bits, leaving 16 bits
   for PAC, MTE and selector bit.
-- Most PAC values use 7 bits, except for instruction pointers on upper addresses
-  where the PAC use 15 bits.
+- Most PAC values use 7 bits, except for pointers on upper addresses where the PAC
+  uses either 7 or 15 bits, depending on the kernel version.
 - Executing a PACxx instruction in user mode (EL0) and kernel mode (EL1) on the
   same input value gives the same result, except with PACIA. Conclusion: only the
   IA key is different between user and kernel. Each time an application switches
