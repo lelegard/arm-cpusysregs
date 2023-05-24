@@ -41,7 +41,9 @@ This is where the PAC is stored.
 The number of bits in the PAC is variable, typically from 7 to 16 bits.
 
 The actual number of bits in the PAC depends on several factors:
-- The size of the virtual address space for the processes (typically 47 or 48 bits).
+- The size of the virtual address space for the processes, typically 47 or 48 bits.
+  For the record, 47 and 48 bits respectively address 128 and 256 TB of
+  virtual memory, which is probably sufficient for most applications.
 - The usage of other security mechanisms which also use the upper bits.
   The optional Memory Tagging Extension (MTE) - which is a more recent Arm extension
   than PAC - uses the upper 8 bits of data addresses to "tag" their usage and check
@@ -118,7 +120,8 @@ The reason why the upper byte is not used by the PAC is some cases is unknown.
 
 Another peculiarity is the number of virtual address bits. On macOS, the system uses
 47 bits. On Linux, it uses 48 bits, reducing the entropy of the PAC by one bit.
-The reason for this is unknown.
+The reason for this is unknown (47 bits address 128 TB of virtual address space
+and very few systems require more than this).
 
 Even more peculiar, on the same machine with an Apple M1 chip, in a virtual machine
 running Linux Debian 11 and an older Linux kernel 5.10, we get this:
@@ -130,7 +133,7 @@ running Linux Debian 11 and an older Linux kernel 5.10, we get this:
 ~~~
 
 The reason for using 15 bits instead of 7 for the PAC on upper data addresses, for different
-versions of the  kernel, is also unknown.
+versions of the kernel, is also unknown.
 
 Finally, still on the same MacBook machine with an Apple M1 chip, the command displays this
 in a Windows 11 virtual machine:
@@ -430,6 +433,6 @@ The following table compares various forms of PAC computations on several platfo
 | TBI0                 | 1               | 1               | 1               | 0               | 1               |
 | TBID0                | 1               | 0               | 0               | 0               | 0               |
 | T0SZ                 | 17              | 16              | 16              | 17              | 16              |
-| TBI1                 | 0               | 1               | 1               | 0               | 1               |
-| TBID1                | 0               | 1               | 1               | 0               | 1               |
+| TBI1                 | 0               | 1               | 0               | 0               | 1               |
+| TBID1                | 0               | 1               | 0               | 0               | 1               |
 | T1SZ                 | 17              | 16              | 16              | 17              | 16              |
