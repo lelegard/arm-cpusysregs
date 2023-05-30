@@ -31,7 +31,7 @@ When set to "n/a", the presence of the feature cannot be detected from software
 | FEAT_BF16                | Armv8.2  | Armv8.6   |  X  | AARch64 BFloat16 instructions
 | FEAT_BRBE                | Armv9.2  |           |  X  | Branch Record Buffer Extensions
 | FEAT_BRBEv1p1            | Armv9.3  |           |  X  | Branch Record Buffer Extensions version 1.1
-| FEAT_BTI                 | Armv8.5  |           |  X  | Branch target identification
+| FEAT_BTI                 |          | Armv8.5   |  X  | Branch target identification
 | FEAT_CCIDX               | Armv8.3  |           |  X  | Extended cache index
 | FEAT_CHK                 |          |           | n/a | Detect when Guarded Control Stacks are implemented
 | FEAT_CLRBHB              |          |           |  X  | A new instruction CLRBHB is added in HINT space
