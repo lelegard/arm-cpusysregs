@@ -218,23 +218,19 @@ Their behavior is not expected to depend on the way the application was compiled
 
 Does this mean that the M1 chip "does not work"? Not really.
 
-Digging into the Arm architecture reference manual, there is a special control
-register named SCTLR_EL3, the System Control Register. When writing selected
-bits into this register it is possible to selectively enable or disable each
-category of PAC. When these bits are zero, PACIA, AUTIA and other PAC instructions
+There is a special control register named SCTLR_EL1, the System Control Register for EL1.
+When writing selected bits into this register it is possible to selectively enable or disable
+each category of PAC. When these bits are zero, PACIA, AUTIA and other PAC instructions
 become simple NOP's. Authenticated branch and load instructions perform their
 functional task without address authentication. For instance, RETAA becomes a simple RET.
 
-However, this register is highly protected and accessible at EL3 only.
-For the record, EL means "Exception Level", EL0 is the user mode, EL1 the kernel mode,
-EL2 the hypervisor mode and EL3 the monitor mode. In most embedded systems,
-the EL3 monitor is part of the "Arm Trusted Firmware", usually provided by Arm
-as open-source code.
+The register SCTLR_EL1 must be accessed from EL1 (kernel) and controls the execution
+of PAC instructions at EL0 and EL1. Similar registers exist for EL1 and EL3, SCTLR_EL2
+and SCTLR_EL3.
 
-**Speculation:** Apple probably developed their own EL3 monitor with specific features
-to control the way the PAC instructions behave, depending on the software target platform.
-When macOS boots in `arm64` mode, the EL3 monitor probably configures SCTLR_EL3 to disable
-the PAC features before booting outer levels.
+**Speculation:** The macOS kernel probably controls the way the PAC instructions behave,
+depending on the software target platform. When macOS boots in `arm64` mode, the kernel
+probably configures SCTLR_EL1 to disable the PAC features before booting.
 
 ### Trying the `arm64e` target platform
 
@@ -551,7 +547,7 @@ leave main, arch is arm64e
 
 We have already demonstrated that macOS can enable or disable the pointer authentication
 in the PAC instructions, probably using a configuration of the special system register
-SCTLR_EL3 from a dedicated EL3 monitor.
+SCTLR_EL1 from the kernel.
 
 Additionally, even in `arm64e` mode, the PAC hardware is configured in a way which
 is different from other platforms such as Linux (in a more secure way).
@@ -573,22 +569,32 @@ On Linux, we can change the value of the PAC keys inside a process and observe t
 impact on the PAC instructions. We can conclude that our special kernel module was
 allowed to read and write the PAC key registers.
 
-However, on macOS, the same sample code crashes the system. Why? Again, another EL3
-register named SCR_EL3, the Secure Configuration Register, can be configured to
-prevent access to the PAC key registers. In fact, it does not completely forbid
-access to these registers. Instead, accessing a PAC key register generates a trap at EL3.
+However, on macOS, the same sample code crashes the system. Why does accessing EL1
+systems registers from EL1 crash the system?
 
-**Speculation:** The Apple EL3 monitor probably includes specific traps for PAC
-key register access. When the macOS kernel schedules a process, it probably calls
-the EL3 monitor to configure the PAC keys registers on behalf of the kernel.
-The details of this process are unknown.
+According to the Arm architecture reference manual, there are two ways to
+prevent access to the PAC key registers from EL1.
 
-For the sake of completeness, there is another way to trap (to EL2) on access to
-the PAC key registers, using the bit APK in the register HCR_EL2, the Hypervisor
-Configuration Register. However, this register is clearly designed to support the
-virtualization. When running on the macOS host system, it appears that HCR_EL2 is
+1. EL2 hypervisor control: Using the system register HCR_EL2, the Hypervisor
+   Configuration Register, it is possible force all accesses to PAC key registers
+   to generate a trap at EL2. Finer-grained access control can be also set using
+   registers HFGRTR_EL2 and HFGWTR_EL2.
+
+2. EL3 monitor control: Using the system register SCR_EL3, the Secure Configuration
+   Register, it is possible force all accesses to PAC key registers to generate a
+   trap at EL3.
+
+The first method is typically used by hypervisors to control or emulate the PAC
+features in a virtual machine. It is unlikely that this is used by macOS.
+Moreover, when running on the macOS host system, it appears that HCR_EL2 is
 still readable from EL1 on the M1, and we see that HCR_EL2.APK = 1, meaning
-"no trap on accessing the PAC key registers".
+"no trap on accessing the PAC key registers". Consequently, the second method
+is probably used here.
+
+**Speculation:** There is probably a specific Apple EL3 monitor which includes traps
+for PAC key register access. When the macOS kernel schedules a process, it probably
+calls the EL3 monitor to configure the PAC keys registers on behalf of the kernel.
+The details of this process are unknown.
 
 This way of accessing the PAC key registers is more secure than in Linux where the
 EL1 kernel is allowed to fully configure the PAC. Using macOS, the kernel is not
@@ -684,10 +690,7 @@ unauthenticated pointers and the library should not fail when manipulating them.
 Only in the last case, when an `arm64e` application is run, the PAC instructions are effective.
 
 **Speculation:** When the macOS kernel schedules an `arm64` application on a core,
-it probably calls the EL3 monitor to reconfigure the SCTLR_EL3 register to disable
-the PAC instructions. In practice, each time a process is scheduled on a core, the
-EL3 monitor shall be called, either to configure the PAC key registers (`arm64e`
-application) or to disable the PAC instructions (`arm64` applications).
+it probably reconfigures the SCTLR_EL1 register to disable the PAC instructions.
 
 ## Code generation differences between `arm64` and `arm64e`
 
