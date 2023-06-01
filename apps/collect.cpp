@@ -68,7 +68,7 @@ std::string PacKeys(RegAccess& regs, int regid)
     // Check if PAC is implemented.
     ArmFeatures feat(regs);
     if (!feat.FEAT_PAuth()) {
-        return "none";
+        return Str("none");
     }
 
     const csr_u64_t modifier = 47;

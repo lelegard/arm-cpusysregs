@@ -265,6 +265,13 @@ int main(int argc, char* argv[])
 {
     // Open the pseudo-device for the kernel module.
     RegAccess regaccess(true, true);
+    ArmFeatures features(regaccess);
+
+    // This application makes sense only if PAC is implemented.
+    if (!features.FEAT_PAuth()) {
+        std::cout << "PAC is not implemented in this CPU" << std::endl;
+        return EXIT_SUCCESS;
+    }
 
     TestKey(regaccess, CSR_REGID2_APIAKEY_EL1);
     TestKey(regaccess, CSR_REGID2_APIBKEY_EL1);
