@@ -15,6 +15,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <sys/auxv.h>
+#include <asm/hwcap.h>
 
 // Hardware capabilities.
 struct CapName {

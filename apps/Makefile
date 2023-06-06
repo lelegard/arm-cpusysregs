@@ -56,10 +56,10 @@ _%.h: %.h
 _sysctl.h:
 	sysctl hw | grep arm | sed -e 's/^\(.*\)\.\([^\.]*\):.*$$/    {"\2", "\1.\2"},/' | $(SORT) -u >$@
 
-_hwcaps.h: $(wildcard /usr/include/*/bits/hwcap.h)
-	(grep '^#define[[:space:]]* HWCAP_' $^ | \
+_hwcaps.h: $(wildcard /usr/include/*/hwcap.h /usr/include/*/bits/hwcap.h)
+	(grep -h '^#define[[:space:]]* HWCAP_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP_\([^ \t]*\).*$$/    {"\1", AT_HWCAP, HWCAP_\1},/'; \
-	 grep '^#define[[:space:]]* HWCAP2_' $^ | \
+	 grep -h '^#define[[:space:]]* HWCAP2_' $^ | \
 	    sed -e 's/^#define[[:space:]]* HWCAP2_\([^ \t]*\).*$$/    {"\1", AT_HWCAP2, HWCAP2_\1},/') | \
 	 $(SORT) -u >$@
 

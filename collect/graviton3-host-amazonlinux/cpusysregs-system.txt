@@ -1,0 +1,26 @@
+Kernel
+------
+Linux 6.1.27-43.48.amzn2023.aarch64 #1 SMP Tue May  2 04:53:12 UTC 2023 aarch64 aarch64
+
+Operating system
+----------------
+NAME="Amazon Linux"
+VERSION="2023"
+ID="amzn"
+ID_LIKE="fedora"
+VERSION_ID="2023"
+PLATFORM_ID="platform:al2023"
+PRETTY_NAME="Amazon Linux 2023"
+ANSI_COLOR="0;33"
+CPE_NAME="cpe:2.3:o:amazon:amazon_linux:2023"
+HOME_URL="https://aws.amazon.com/linux/"
+BUG_REPORT_URL="https://github.com/amazonlinux/amazon-linux-2023"
+SUPPORT_END="2028-03-01"
+
+Compiler
+--------
+gcc (GCC) 11.3.1 20221121 (Red Hat 11.3.1-4)
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
