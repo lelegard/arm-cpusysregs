@@ -12,4 +12,5 @@ The following subdirectories contain the collected files for various platforms:
 - [applem1-vm-ubuntu](applem1-vm-ubuntu) : MacBook M1, virtual machine: Linux Ubuntu 23.04
 - [applem1-vm-windows](applem1-vm-windows) : MacBook M1, virtual machine: Windows 11
 - [cortexa72-host-ubuntu](cortexa72-host-ubuntu) : Raspberry Pi 4, host OS: Linux Ubuntu 23.04
+- [graviton3-host-amazonlinux](graviton3-host-amazonlinux) : AWS Graviton 3 server, host OS: Amazon Linux 2023
 - [graviton3-vm-ubuntu](graviton3-vm-ubuntu) : AWS Graviton 3 server, virtual machine: Linux Ubuntu 22.04.1
