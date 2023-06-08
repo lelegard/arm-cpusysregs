@@ -99,7 +99,8 @@ b.harmless();
 
 The generated code on macOS with option `-arch arm64e` is the following.
 We see that the pointer to C++ vtables (at start of object) is authenticated
-with address diversity plus semantic diversity. The hard-coded constants
+with address diversity plus semantic diversity. The pointers to virtual methods
+are authenticated using the same principles. The hard-coded constants
 which are added for semantic diversity are different, depending on fully
 qualified names of class and virtual method.
 
