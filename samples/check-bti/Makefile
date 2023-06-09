@@ -1,9 +1,12 @@
-default: check-bti
-asm: check-bti.s
-test: check-bti
-	./check-bti
+# Only one source file here
+EXEC := $(firstword $(notdir $(basename $(wildcard *.c))))
+
+default: $(EXEC)
+asm: $(EXEC).s
+test: $(EXEC)
+	./$(EXEC)
 clean:
-	rm -f check-bti *.s *.o *.d
+	rm -f $(EXEC) *.s *.o *.d
 
 CFLAGS += -mbranch-protection=bti
 
