@@ -7,7 +7,7 @@ elsewhere.
 
 The `arm64` ISA is described in details in the
 [Arm Architecture Reference Manual for A-profile architecture](https://developer.arm.com/documentation/ddi0487/latest).
-Be aware that this is a monstrous document of nearly 12,000 pages.
+Be aware that this is a monstrous document of nearly 13,000 pages.
 
 The name `arm64e` was recently introduced by Apple. This platform ABI is currently
 in "preview" on macOS. This note explores the differences between `arm64` and `arm64e`.
@@ -225,8 +225,8 @@ become simple NOP's. Authenticated branch and load instructions perform their
 functional task without address authentication. For instance, RETAA becomes a simple RET.
 
 The register SCTLR_EL1 must be accessed from EL1 (kernel) and controls the execution
-of PAC instructions at EL0 and EL1. Similar registers exist for EL1 and EL3, SCTLR_EL2
-and SCTLR_EL3.
+of PAC instructions at EL0 (user) and EL1 (kernel). Similar registers exist for EL2
+(hypervisor) and EL3 (monitor), SCTLR_EL2 and SCTLR_EL3.
 
 **Speculation:** The macOS kernel probably controls the way the PAC instructions behave,
 depending on the software target platform. When macOS boots in `arm64` mode, the kernel
@@ -563,10 +563,10 @@ are accessible at EL1 (kernel).
 
 This is demonstrated in this project which allows an application to manipulate some
 system registers which are normally accessible to the kernel only. To do this,
-a special kernel module was developed with Linux and macOS variants.
+a special kernel module was developed with Linux, Windows and macOS variants.
 
-On Linux, we can change the value of the PAC keys inside a process and observe the
-impact on the PAC instructions. We can conclude that our special kernel module was
+On Linux and Windows, we can change the value of the PAC keys inside a process and observe
+the impact on the PAC instructions. We can conclude that our special kernel module was
 allowed to read and write the PAC key registers.
 
 However, on macOS, the same sample code crashes the system. Why does accessing EL1
@@ -609,7 +609,7 @@ When a Linux virtual machine is run on the macOS host, Pointer Authentication
 returns to a simpler mechanism when used inside the virtual machine.
 
 - The PAC instructions work as expected, even when the macOS host booted in `arm64` mode.
-  These instructiosn are inoperative in the macOS host OS but work as expected in the Linux guest OS.
+  These instructions are inoperative in the macOS host OS but work as expected in the Linux guest OS.
 - The Linux kernel can fully control the PAC registers at EL1.
 
 **Speculation:** The EL2 hypervisor probably emulates the PAC mechanism. HCR_EL2,
