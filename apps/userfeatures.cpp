@@ -20,7 +20,7 @@
     #if defined(__clang__) && (__clang_major__ < 12)
         // Need clang 12.x and above ?
         #define NO_AA64ISAR2 1
-    #elif !defined(__clang__) && (__GNUC__ < 11)
+    #elif !defined(__clang__) && (__GNUC__ < 12)
         // Need gcc 12.x and above ?
         #define NO_AA64ISAR2 1
     #endif
