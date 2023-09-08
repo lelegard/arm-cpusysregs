@@ -7,6 +7,7 @@ The PowerScript `collect.ps1` is the equivalent for Windows.
 
 The following subdirectories contain the collected files for various platforms:
 
+- [ampere-astra-host-ubuntu](ampere-astra-host-ubuntu) : Ampere Mt. Jade server, host OS: Linux Ubuntu 22.04
 - [applem1-host-macos](applem1-host-macos) :  MacBook M1, host OS: macOS 13.2.1 (Ventura)
 - [applem1-vm-debian](applem1-vm-debian) : MacBook M1, virtual machine: Linux Debian 11.7
 - [applem1-vm-ubuntu](applem1-vm-ubuntu) : MacBook M1, virtual machine: Linux Ubuntu 23.04
