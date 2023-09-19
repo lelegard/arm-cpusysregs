@@ -1,5 +1,6 @@
 # Executable files in apps directory
 collect
+demo-counters
 demo-pac
 demo-userfeatures
 linux-hwcaps
