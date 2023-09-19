@@ -139,6 +139,10 @@ The reference list of registers which can be accessed by this project is given b
 the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file
 [kernel/cpusysregs.h](kernel/cpusysregs.h).
 
+Some _EL0 registers can be protected by the kernel using _EL1 control registers.
+Reading these _EL0 registers in user mode raises an illegal instruction exception.
+In that case, they can be accessed from kernel mode using the kernel module.
+
 | Register         | Access  | Description
 | ---------------- | ------- | -----------
 | APDAKey_EL1      | R/W [1] | Pointer Authentication Key A for Data (Hi/Lo pair)
@@ -146,7 +150,11 @@ the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file
 | APGAKey_EL1      | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
 | APIAKey_EL1      | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
 | APIBKey_EL1      | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| CNTFRQ_EL0       | R       | Counter-timer Frequency register
 | CNTKCTL_EL1      | R/W     | Counter-timer Kernel Control register
+| CNTPCT_EL0       | R       | Counter-timer Physical Count register
+| CNTPS_CTL_EL1    | R/W     | Counter-timer Physical Secure Timer Control register
+| CNTVCT_EL0       | R       | Counter-timer Virtual Count register
 | CTR_EL0          | R   [5] | Cache Type Register
 | HCR_EL2          | R   [2] | Hypervisor Configuration Register
 | ID_AA64AFR0_EL1  | R       | AArch64 Auxiliary Feature Register 0

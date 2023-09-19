@@ -41,6 +41,14 @@
     #define WRITE_TPIDR RegView::WRITE
 #endif
 
+#if defined(CSR_AVOID_CNTPS_CTL_EL1)
+    #define READ_CNTPS_CTL_EL1 0
+    #define WRITE_CNTPS_CTL_EL1 0
+#else
+    #define READ_CNTPS_CTL_EL1 RegView::READ
+    #define WRITE_CNTPS_CTL_EL1 RegView::WRITE
+#endif
+
 // Map view of AllRegisters, indexed by CMD_REG_ values and names.
 std::map<int, RegView::Register> RegView::AllRegistersByIndex;
 std::map<std::string, RegView::Register> RegView::AllRegistersByName;
@@ -165,6 +173,12 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "APIBKEY_EL1", CSR_REGID2_APIBKEY_EL1, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
+        "CNTFRQ_EL0", CSR_REGID_CNTFRQ_EL0, READ,
+        {
+            {"Clock frequency", 31, 0, {}},
+        }
+    },
+    {
         "CNTKCTL_EL1", CSR_REGID_CNTKCTL_EL1, READ | WRITE,
         {
             {"EVNTIS",  17, 17, {}},
@@ -176,6 +190,20 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"EL0VCTEN", 1,  1, {}},
             {"EL0PCTEN", 0,  0, {}},
         }
+    },
+    {
+        "CNTPCT_EL0", CSR_REGID_CNTPCT_EL0, READ, {}
+    },
+    {
+        "CNTPS_CTL_EL1", CSR_REGID_CNTPS_CTL_EL1, READ_CNTPS_CTL_EL1 | WRITE_CNTPS_CTL_EL1,
+        {
+            {"ISTATUS", 2, 2, {}},
+            {"IMASK",   1, 1, {}},
+            {"ENABLE",  0, 0, {}},
+        }
+    },
+    {
+        "CNTVCT_EL0", CSR_REGID_CNTVCT_EL0, READ, {}
     },
     {
         "CTR_EL0", CSR_REGID_CTR_EL0, READ_CTR_EL0,

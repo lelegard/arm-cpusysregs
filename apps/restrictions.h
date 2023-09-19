@@ -31,3 +31,7 @@
 #if defined(WINDOWS)
     #define CSR_AVOID_TPIDR 1
 #endif
+
+// Reading/writing CNTPS_CTL_EL1 crashes the system on Linux VM, untested in other configurations.
+// Precise check would require access to SCR_EL3. Disable it by default.
+#define CSR_AVOID_CNTPS_CTL_EL1 1

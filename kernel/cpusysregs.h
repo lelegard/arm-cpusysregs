@@ -218,6 +218,10 @@ enum {
     CSR_REGID_ID_PFR2_EL1,      // AArch32 Processor Feature Register 2
     CSR_REGID_PMSIDR_EL1,       // Sampling Profiling ID Register
     CSR_REGID_CNTKCTL_EL1,      // Counter-timer Kernel Control register
+    CSR_REGID_CNTPS_CTL_EL1,    // Counter-timer Physical Secure Timer Control register
+    CSR_REGID_CNTFRQ_EL0,       // Counter-timer Frequency register
+    CSR_REGID_CNTPCT_EL0,       // Counter-timer Physical Count register
+    CSR_REGID_CNTVCT_EL0,       // Counter-timer Virtual Count register
     // -----------------------  // End of individual registers
     _CSR_REGID_END,
     // -----------------------  // Registers which come in pair
@@ -1138,6 +1142,7 @@ static int csr_set_register(int regid, const csr_pair_t* value, int cpu_features
         _setreg(CSR_REGID_SCXTNUM_EL0,   CSR_SREG_SCXTNUM_EL0, FEAT_CSV2_2);
         _setreg(CSR_REGID_SCXTNUM_EL1,   CSR_SREG_SCXTNUM_EL1, FEAT_CSV2_2);
         _setreg(CSR_REGID_CNTKCTL_EL1,   CSR_SREG_CNTKCTL_EL1, 0);
+        _setreg(CSR_REGID_CNTPS_CTL_EL1, CSR_SREG_CNTPS_CTL_EL1, 0);
         _setreg2(CSR_REGID2_APIAKEY_EL1, CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _setreg2(CSR_REGID2_APIBKEY_EL1, CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _setreg2(CSR_REGID2_APDAKEY_EL1, CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
@@ -1229,6 +1234,10 @@ static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_ID_PFR2_EL1,      CSR_SREG_ID_PFR2_EL1, 0);
         _getreg(CSR_REGID_PMSIDR_EL1,       CSR_SREG_PMSIDR_EL1, FEAT_SPE);
         _getreg(CSR_REGID_CNTKCTL_EL1,      CSR_SREG_CNTKCTL_EL1, 0);
+        _getreg(CSR_REGID_CNTPS_CTL_EL1,    CSR_SREG_CNTPS_CTL_EL1, 0);
+        _getreg(CSR_REGID_CNTFRQ_EL0,       CSR_SREG_CNTFRQ_EL0, 0);
+        _getreg(CSR_REGID_CNTPCT_EL0,       CSR_SREG_CNTPCT_EL0, 0);
+        _getreg(CSR_REGID_CNTVCT_EL0,       CSR_SREG_CNTVCT_EL0, 0);
         _getreg2(CSR_REGID2_APIAKEY_EL1,    CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APIBKEY_EL1,    CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APDAKEY_EL1,    CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);
