@@ -22,6 +22,7 @@ apps:
 markdown:
 	$(PYTHON) ./build-md-toc.py *.md */*.md */*/*.md
 clean:
+	$(MAKE) $@ -C kernel
 	$(MAKE) $@ -C kernel/$(SYSTEM)
 	$(MAKE) $@ -C apps
 	$(MAKE) $@ -C samples/compile-accel

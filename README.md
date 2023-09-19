@@ -146,6 +146,7 @@ the list of `CSR_REG_xxx` and `CSR_REG2_xxx` constants in file
 | APGAKey_EL1      | R/W [1] | Pointer Authentication Generic Key (Hi/Lo pair)
 | APIAKey_EL1      | R/W [1] | Pointer Authentication Key A for Instructions (Hi/Lo pair)
 | APIBKey_EL1      | R/W [1] | Pointer Authentication Key B for Instructions (Hi/Lo pair)
+| CNTKCTL_EL1      | R/W     | Counter-timer Kernel Control register
 | CTR_EL0          | R   [5] | Cache Type Register
 | HCR_EL2          | R   [2] | Hypervisor Configuration Register
 | ID_AA64AFR0_EL1  | R       | AArch64 Auxiliary Feature Register 0

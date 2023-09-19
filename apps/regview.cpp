@@ -165,6 +165,19 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "APIBKEY_EL1", CSR_REGID2_APIBKEY_EL1, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
     {
+        "CNTKCTL_EL1", CSR_REGID_CNTKCTL_EL1, READ | WRITE,
+        {
+            {"EVNTIS",  17, 17, {}},
+            {"EL0PTEN",  9,  9, {}},
+            {"EL0VTEN",  8,  8, {}},
+            {"EVNTI",    7,  4, {}},
+            {"EVNTDIR",  3,  3, {}},
+            {"EVNTEN",   2,  2, {}},
+            {"EL0VCTEN", 1,  1, {}},
+            {"EL0PCTEN", 0,  0, {}},
+        }
+    },
+    {
         "CTR_EL0", CSR_REGID_CTR_EL0, READ_CTR_EL0,
         {
             {"TminLine", 37, 32, {}},
