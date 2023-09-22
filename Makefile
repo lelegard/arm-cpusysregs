@@ -11,7 +11,10 @@ SYSTEM := $(subst Linux,linux,$(subst Darwin,mac,$(shell uname -s)))
 
 MAKEFLAGS += --no-print-directory
 
+# Command to update table of content in markdown files.
+# See https://github.com/lelegard/markdown-toc
 PYTHON = $(firstword $(shell which python3 2>/dev/null) $(shell which python 2>/dev/null))
+MDTOC = $(if $(PYTHON),$(firstword $(shell which markdown-toc 2>/dev/null) $(wildcard ../markdown-toc/markdown-toc)))
 
 .PHONY: default kernel apps markdown clean install load unload show
 default: kernel apps markdown
@@ -20,7 +23,7 @@ kernel:
 apps:
 	$(MAKE) -C apps
 markdown:
-	$(PYTHON) ./build-md-toc.py *.md */*.md */*/*.md
+	$(if $(MDTOC),$(PYTHON) $(MDTOC) *.md */*.md */*/*.md)
 clean:
 	$(MAKE) $@ -C kernel
 	$(MAKE) $@ -C kernel/$(SYSTEM)
