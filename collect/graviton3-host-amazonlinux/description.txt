@@ -1,0 +1,3 @@
+cpu: AWS Graviton 3
+core: Neoverse V1
+machine: AWS EC2 instance c7g.xlarge

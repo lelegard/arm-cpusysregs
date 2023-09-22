@@ -1,0 +1,3 @@
+cpu: Ampere Altra
+core: Neoverse N1
+machine: Ampere Mt.Jade Server

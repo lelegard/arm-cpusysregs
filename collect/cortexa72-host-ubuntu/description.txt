@@ -1,0 +1,3 @@
+cpu: Broadcom BCM2711
+core: Cortex-A72
+machine: Raspberry Pi 4 Model B Rev 1.5
