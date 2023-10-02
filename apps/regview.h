@@ -47,12 +47,13 @@ public:
         NEED_SVE     = 0x00000040,  // exist only with SVE
         NEED_SME     = 0x00000080,  // exist only with SME
         NEED_ETE     = 0x00000100,  // exist only with ETE
-        NEED_PMUv3p4 = 0x00000200,  // exist only with PMUv3p4
-        NEED_TCR2    = 0x00000400,  // exist only with TCR2
-        NEED_SCTLR2  = 0x00000800,  // exist only with SCTLR2
-        NEED_AIE     = 0x00001000,  // exist only with AIE
-        NEED_S1PIE   = 0x00002000,  // exist only with S1PIE
-        NEED_SPE     = 0x00004000,  // exist only with SPE
+        NEED_PMUv3   = 0x00000200,  // exist only with PMUv3p4
+        NEED_PMUv3p4 = 0x00000400,  // exist only with PMUv3p4
+        NEED_TCR2    = 0x00000800,  // exist only with TCR2
+        NEED_SCTLR2  = 0x00001000,  // exist only with SCTLR2
+        NEED_AIE     = 0x00002000,  // exist only with AIE
+        NEED_S1PIE   = 0x00004000,  // exist only with S1PIE
+        NEED_SPE     = 0x00008000,  // exist only with SPE
     };
 
     // Description of one register with bitfields.

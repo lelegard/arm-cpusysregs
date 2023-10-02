@@ -71,6 +71,7 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_SVE) || feat.FEAT_SVE()) &&
            (!(features & NEED_SME) || feat.FEAT_SME()) &&
            (!(features & NEED_ETE) || feat.FEAT_ETE()) &&
+           (!(features & NEED_PMUv3) || feat.FEAT_PMUv3()) &&
            (!(features & NEED_PMUv3p4) || feat.FEAT_PMUv3p4()) &&
            (!(features & NEED_TCR2) || feat.FEAT_TCR2()) &&
            (!(features & NEED_SCTLR2) || feat.FEAT_SCTLR2()) &&
@@ -108,6 +109,9 @@ std::string RegView::Register::featuresList() const
     }
     if (features & RegView::NEED_ETE) {
         res.push_back("need ETE");
+    }
+    if (features & RegView::NEED_PMUv3) {
+        res.push_back("need PMU v3");
     }
     if (features & RegView::NEED_PMUv3p4) {
         res.push_back("need PMU v3.4");
@@ -839,6 +843,83 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "PMCCFILTR_EL0", CSR_REGID_PMCCFILTR_EL0, READ | NEED_PMUv3,
+        {
+            {"P",   31, 31, {}},
+            {"U",   30, 30, {}},
+            {"NSK", 29, 29, {}},
+            {"NSU", 28, 28, {}},
+            {"NSH", 27, 27, {}},
+            {"M",   26, 26, {}},
+            {"SH",  24, 24, {}},
+            {"T",   23, 23, {}},
+            {"RLK", 22, 22, {}},
+            {"RLU", 21, 21, {}},
+            {"RLH", 20, 20, {}},
+        }
+    },
+    {
+        "PMCCNTR_EL0", CSR_REGID_PMCCNTR_EL0, READ | NEED_PMUv3, {}
+    },
+    {
+        "PMCR_EL0", CSR_REGID_PMCR_EL0, READ | NEED_PMUv3,
+        {
+            {"FZS",    32, 32, {}},
+            {"IMP",    31, 24, {}},
+            {"IDCODE", 23, 16, {}},
+            {"N",      15, 11, {}},
+            {"FZ0",     9,  9, {}},
+            {"LP",      7,  7, {}},
+            {"LC",      6,  6, {}},
+            {"DP",      5,  5, {}},
+            {"X",       4,  4, {}},
+            {"D",       3,  3, {}},
+            {"C",       2,  2, {}},
+            {"P",       1,  1, {}},
+            {"E",       0,  0, {}},
+        }
+    },
+    {
+        "PMMIR_EL1", CSR_REGID_PMMIR_EL1, READ | NEED_PMUv3p4,
+        {
+            {"EDGE",      27, 24, {}},
+            {"THWIDTH",   23, 20, {}},
+            {"BUS_WIDTH", 19, 16, {}},
+            {"BUS_SLOTS", 15,  8, {}},
+            {"SLOTS",      7,  0, {}},
+        }
+    },
+    {
+        "PMSIDR_EL1", CSR_REGID_PMSIDR_EL1, READ_PMSIDR | NEED_SPE,
+        {
+            {"CRR",       25, 25, {{0, "none"}, {1, "SPE_CRR"}}},
+            {"PBT",       24, 24, {{0, "none"}, {1, "SPEv1p2"}}},
+            {"Format",    23, 20, {}},
+            {"CountSize", 19, 16, {{2, "12-bit saturating"}, {3, "16-bit saturating"}}},
+            {"MaxSize",   15, 12, {{4, "16 bytes"}, {5, "32 bytes"}, {6, "64 bytes"}, {7, "128 bytes"},
+                                   {8, "256 bytes"}, {9, "512 bytes"}, {10, "1KB"}, {11, "2KB"}}},
+            {"Interval",  11,  8, {{0, "256"}, {2, "512"}, {3, "768"}, {4, "1024"},
+                                   {5, "1536"}, {6, "2048"}, {7, "3072"}, {8, "4096"}}},
+            {"FDS",        7,  7, {}},
+            {"FNE",        6,  6, {}},
+            {"ERnd",       5,  5, {}},
+            {"LDS",        4,  4, {}},
+            {"ArchInst",   3,  3, {}},
+            {"FL",         2,  2, {}},
+            {"FT",         1,  1, {}},
+            {"FE",         0,  0, {}},
+        }
+    },
+    {
+        "PMUSERENR_EL0", CSR_REGID_PMUSERENR_EL0, READ | NEED_PMUv3,
+        {
+            {"ER", 3, 3, {}},
+            {"CR", 2, 2, {}},
+            {"SW", 1, 1, {}},
+            {"EN", 0, 0, {}},
+        }
+    },
+    {
         "REVIDR_EL1", CSR_REGID_REVIDR_EL1, READ, {}
     },
     {
@@ -1088,37 +1169,6 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"REVISION",  19, 16, {{0, "ETEv1.0"}, {1, "ETEv1.1"}, {2, "ETEv1.2"}}},
             {"ARCHVER",   15, 12, {{5, "ETEv1"}}},
             {"ARCHPART",  11,  0, {{0xA13, "Arm PE trace architecture"}}},
-        }
-    },
-    {
-        "PMMIR_EL1", CSR_REGID_PMMIR_EL1, READ | NEED_PMUv3p4,
-        {
-            {"EDGE",      27, 24, {}},
-            {"THWIDTH",   23, 20, {}},
-            {"BUS_WIDTH", 19, 16, {}},
-            {"BUS_SLOTS", 15,  8, {}},
-            {"SLOTS",      7,  0, {}},
-        }
-    },
-    {
-        "PMSIDR_EL1", CSR_REGID_PMSIDR_EL1, READ_PMSIDR | NEED_SPE,
-        {
-            {"CRR",       25, 25, {{0, "none"}, {1, "SPE_CRR"}}},
-            {"PBT",       24, 24, {{0, "none"}, {1, "SPEv1p2"}}},
-            {"Format",    23, 20, {}},
-            {"CountSize", 19, 16, {{2, "12-bit saturating"}, {3, "16-bit saturating"}}},
-            {"MaxSize",   15, 12, {{4, "16 bytes"}, {5, "32 bytes"}, {6, "64 bytes"}, {7, "128 bytes"},
-                                   {8, "256 bytes"}, {9, "512 bytes"}, {10, "1KB"}, {11, "2KB"}}},
-            {"Interval",  11,  8, {{0, "256"}, {2, "512"}, {3, "768"}, {4, "1024"},
-                                   {5, "1536"}, {6, "2048"}, {7, "3072"}, {8, "4096"}}},
-            {"FDS",        7,  7, {}},
-            {"FNE",        6,  6, {}},
-            {"ERnd",       5,  5, {}},
-            {"LDS",        4,  4, {}},
-            {"ArchInst",   3,  3, {}},
-            {"FL",         2,  2, {}},
-            {"FT",         1,  1, {}},
-            {"FE",         0,  0, {}},
         }
     },
 };

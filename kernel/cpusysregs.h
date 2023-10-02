@@ -111,6 +111,10 @@ typedef struct {
 // ID_AA64DFR0_EL1 system register.
 #define csr_has_ete(dfr0) ((dfr0) & 0x00000000000000F0llu)
 
+// This macro checks if PMUv3p4 (Performance Monitor Extension v3) is supported, based on the value of the
+// ID_AA64DFR0_EL1 system register.
+#define csr_has_pmuv3(dfr0) (((dfr0 >> 8) & 0x0F) >= 1 && ((dfr0 >> 8) & 0x0F) < 15)
+
 // This macro checks if PMUv3p4 (Performance Monitor Extension v3.4) is supported, based on the value of the
 // ID_AA64DFR0_EL1 system register.
 #define csr_has_pmuv3p4(dfr0) (((dfr0 >> 8) & 0x0F) >= 5 && ((dfr0 >> 8) & 0x0F) < 15)
@@ -222,6 +226,10 @@ enum {
     CSR_REGID_CNTFRQ_EL0,       // Counter-timer Frequency register
     CSR_REGID_CNTPCT_EL0,       // Counter-timer Physical Count register
     CSR_REGID_CNTVCT_EL0,       // Counter-timer Virtual Count register
+    CSR_REGID_PMCCFILTR_EL0,    // Performance Monitors Cycle Count Filter Register
+    CSR_REGID_PMCCNTR_EL0,      // Performance Monitors Cycle Count Register
+    CSR_REGID_PMCR_EL0,         // Performance Monitors Control Register
+    CSR_REGID_PMUSERENR_EL0,    // Performance Monitors User Enable Register
     // -----------------------  // End of individual registers
     _CSR_REGID_END,
     // -----------------------  // Registers which come in pair
@@ -1081,12 +1089,13 @@ typedef struct {
 #define FEAT_SVE      0x00000040
 #define FEAT_SME      0x00000080
 #define FEAT_ETE      0x00000100
-#define FEAT_PMUv3p4  0x00000200
-#define FEAT_TCR2     0x00000400
-#define FEAT_SCTLR2   0x00000800
-#define FEAT_AIE      0x00001000
-#define FEAT_S1PIE    0x00002000
-#define FEAT_SPE      0x00004000
+#define FEAT_PMUv3    0x00000200
+#define FEAT_PMUv3p4  0x00000400
+#define FEAT_TCR2     0x00000800
+#define FEAT_SCTLR2   0x00001000
+#define FEAT_AIE      0x00002000
+#define FEAT_S1PIE    0x00004000
+#define FEAT_SPE      0x00008000
 
 // Get the CPU features. Typically called once on module initialization.
 static int csr_get_cpu_features(void)
@@ -1108,6 +1117,7 @@ static int csr_get_cpu_features(void)
            (csr_has_sve(pfr0) ? FEAT_SVE : 0) |
            (csr_has_sme(pfr1) ? FEAT_SME : 0) |
            (csr_has_ete(dfr0) ? FEAT_ETE : 0) |
+           (csr_has_pmuv3(dfr0) ? FEAT_PMUv3 : 0) |
            (csr_has_pmuv3p4(dfr0) ? FEAT_PMUv3p4 : 0) |
            (csr_has_tcr2(mmfr3) ? FEAT_TCR2 : 0) |
            (csr_has_sctlr2(mmfr3) ? FEAT_SCTLR2 : 0) |
@@ -1238,6 +1248,10 @@ static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_CNTFRQ_EL0,       CSR_SREG_CNTFRQ_EL0, 0);
         _getreg(CSR_REGID_CNTPCT_EL0,       CSR_SREG_CNTPCT_EL0, 0);
         _getreg(CSR_REGID_CNTVCT_EL0,       CSR_SREG_CNTVCT_EL0, 0);
+        _getreg(CSR_REGID_PMCCFILTR_EL0,    CSR_SREG_PMCCFILTR_EL0, FEAT_PMUv3);
+        _getreg(CSR_REGID_PMCCNTR_EL0,      CSR_SREG_PMCCNTR_EL0, FEAT_PMUv3);
+        _getreg(CSR_REGID_PMCR_EL0,         CSR_SREG_PMCR_EL0, FEAT_PMUv3);
+        _getreg(CSR_REGID_PMUSERENR_EL0,    CSR_SREG_PMUSERENR_EL0, FEAT_PMUv3);
         _getreg2(CSR_REGID2_APIAKEY_EL1,    CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APIBKEY_EL1,    CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APDAKEY_EL1,    CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

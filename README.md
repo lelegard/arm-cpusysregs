@@ -196,6 +196,12 @@ In that case, they can be accessed from kernel mode using the kernel module.
 | MPIDR_EL1        | R       | Multiprocessor Affinity Register
 | PIR_EL1          | R       | Permission Indirection Register 1 (EL1)
 | PIRE0_EL1        | R       | Permission Indirection Register 0 (EL1)
+| PMCCFILTR_EL0    | R       | Performance Monitors Cycle Count Filter Register
+| PMCCNTR_EL0      | R       | Performance Monitors Cycle Count Register
+| PMCR_EL0         | R       | Performance Monitors Control Register
+| PMMIR_EL1        | R       | Performance Monitors Machine Identification Register
+| PMSIDR_EL1       | R   [4] | Sampling Profiling ID Register
+| PMUSERENR_EL0    | R       | Performance Monitors User Enable Register
 | REVIDR_EL1       | R       | Revision ID Register
 | RNDR             | R       | Random Number
 | RNDRRS           | R       | Reseeded Random Number
@@ -212,8 +218,6 @@ In that case, they can be accessed from kernel mode using the kernel module.
 | TRCDEVARCH       | R       | Trace Device Architecture Register
 | TTBR0_EL1        | R       | Translation Table Base Register 0 (EL1)
 | TTBR1_EL1        | R       | Translation Table Base Register 1 (EL1)
-| PMMIR_EL1        | R       | Performance Monitors Machine Identification Register
-| PMSIDR_EL1       | R   [4] | Sampling Profiling ID Register
 
 [1] The Pointer Authentication Key registers are usually readable and writeable at EL1 (kernel).
 This is the case on Linux. On macOS, however, in the default configuration, the PAC key registers
