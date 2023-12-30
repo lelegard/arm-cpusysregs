@@ -36,7 +36,7 @@ using an `MRS` instruction. If the requested system register is one of a few
 selected allowed registers, the kernel reads the system register and returns it
 to the process, as if the `MRS` instruction executed correctly.
 
-This is [explained in details here](https://www.kernel.org/doc/html/latest/arm64/cpu-feature-registers.html).
+This is [explained in details here](https://www.kernel.org/doc/html/latest/arch/arm64/cpu-feature-registers.html).
 As a general requirement, no sensitive security information is returned.
 In some cases, some parts of the register content are blacked out.
 
