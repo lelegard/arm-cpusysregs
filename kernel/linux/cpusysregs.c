@@ -85,7 +85,11 @@ static int __init csr_init(void)
     pr_info("%s: device major number is %d\n", CSR_MODULE_NAME, csr_major_number);
 
     // Create the device class. Use same name for class and module and device.
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 4, 0)
     csr_class = class_create(THIS_MODULE, CSR_MODULE_NAME);
+#else
+    csr_class = class_create(CSR_MODULE_NAME);
+#endif
     if (IS_ERR(csr_class)) {
         unregister_chrdev(csr_major_number, CSR_MODULE_NAME);
         pr_alert("%s: failed to register device class\n", CSR_MODULE_NAME);
