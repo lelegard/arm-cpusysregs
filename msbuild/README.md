@@ -31,6 +31,8 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
 
 ## Prerequisites
 
+### Build system setup
+
 - Install or update Visual Studio. Make sure that the latest version of the `ARM64/AMR64EC`
   build tools are installed.
   - To update your Visual Studio installation, start the "Visual Studio Installer" application.
@@ -48,14 +50,6 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
   - See: https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk
   - You may need to install the latest Windows SDK first (link from same page).
 
-- Disable driver signature validation on the target Arm64 Windows 11 system.
-  - Start Menu -> Settings -> System -> Recovery -> Advanced Startup -> Restart now
-  - "Light blue" boot menu -> Troubleshoot -> Advanced options -> Startup settings -> Restart
-  - Press F7 (for 7th option "Disable driver signature enforcement")
-  - By default, this settings is not persistent across reboots. If the system is restarted
-    (or if it crashed in the driver...), you have to go through this procedure again.
-    To make this settings permanent, you have to disable secure boot.
-
 - Check some permissions on the build system.
   - Make sure that the developer has write access to the directory
     `C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys`. Grant access if necessary.
@@ -63,6 +57,16 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
     signature of the binary of the driver. Even though this is a self-signature,
     it creates a file there. If your build fails with "Access is denied" while
     signing the driver, the problem is probably there.
+
+### Arm64 target system setup
+
+- Disable driver signature validation on the target Arm64 Windows 11 system.
+  - Start Menu -> Settings -> System -> Recovery -> Advanced Startup -> Restart now
+  - "Light blue" boot menu -> Troubleshoot -> Advanced options -> Startup settings -> Restart
+  - Press F7 (for 7th option "Disable driver signature enforcement")
+  - By default, this settings is not persistent across reboots. If the system is restarted
+    (or if it crashed in the driver...), you have to go through this procedure again.
+    To make this settings permanent, you have to disable secure boot.
 
 - Disable secure boot on the target Arm64 Windows 11 system
   (if you want to permanently disable driver signature enforcement).
