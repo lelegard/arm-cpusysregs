@@ -31,14 +31,17 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
 
 ## Prerequisites
 
-- Install or update Visual Studio. Make sure that the latest version of the `ARM64`
-  or `ARM64/AMR64EC` build tools are installed.
+- Install or update Visual Studio. Make sure that the latest version of the `ARM64/AMR64EC`
+  build tools are installed.
   - To update your Visual Studio installation, start the "Visual Studio Installer" application.
   - Update first if your Visual Studio is not up-to-date. Wait for the update to complete.
   - Click "Modify" -> select the "Individual components" tab.
   - Scroll down to "Compilers, build tools, and runtimes" section.
-  - Select "MSVC 143 - VS 2022 C++ ARM64/ARM64EC build tools (latest)"
+  - Select "MSVC v143 - VS 2022 C++ ARM64/ARM64EC build tools (latest)"
     (may be different on newer versions).
+  - Select "MSVC v143 - VS 2022 C++ ARM64/ARM64EC Spectre-mitigated libs (latest)".
+    Although we do not require Spectre mitigation, it has been observed that the driver
+    fails to compile without this component.
   - Click "Modify" (lower right corner). Wait for the update to complete.
 
 - Install the Windows Driver Kit (WDK) on the development system.
@@ -52,6 +55,14 @@ directory. Just move the archive on the target Arm64 Windows 11 system.
   - By default, this settings is not persistent across reboots. If the system is restarted
     (or if it crashed in the driver...), you have to go through this procedure again.
     To make this settings permanent, you have to disable secure boot.
+
+- Check some permissions on the build system.
+  - Make sure that the developer has write access to the directory
+    `C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys`. Grant access if necessary.
+    It has been observed that the build procedure creates a file here during the
+    signature of the binary of the driver. Even though this is a self-signature,
+    it creates a file there. If your build fails with "Access is denied" while
+    signing the driver, the problem is probably there.
 
 - Disable secure boot on the target Arm64 Windows 11 system
   (if you want to permanently disable driver signature enforcement).
