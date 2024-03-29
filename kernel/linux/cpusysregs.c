@@ -37,20 +37,11 @@ static struct class* csr_class = NULL;
 static struct device* csr_device = NULL;
 static int cpu_features = 0;
 
-// Starting with Linux 6.2, the devnode callback in the device class structure
-// uses "const struct device*" instead of "struct device*".
-
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 2, 0)
-    #define DEVNODE_PARAM struct device*
-#else
-    #define DEVNODE_PARAM const struct device*
-#endif
-
 // Functions in this module.
 
 static int __init csr_init(void);
 static void __exit csr_exit(void);
-static char* csr_devnode(DEVNODE_PARAM dev, umode_t* mode);
+static char* csr_devnode(const struct device* dev, umode_t* mode);
 static long csr_ioctl(struct file* filp, unsigned int cmd, unsigned long argp);
 
 // Registration of the module.
@@ -95,7 +86,13 @@ static int __init csr_init(void)
         pr_alert("%s: failed to register device class\n", CSR_MODULE_NAME);
         return PTR_ERR(csr_class);
     }
+
+    // Dirty warning ignore, due to RHEL 9.3 backport of post 6.2 features.
+    // See comments in function csr_devnode().
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
     csr_class->devnode = csr_devnode;
+    #pragma GCC diagnostic pop
 
     // Create the device.
     csr_device = device_create(csr_class, NULL, MKDEV(csr_major_number, 0), NULL, CSR_MODULE_NAME);
@@ -128,7 +125,17 @@ static void __exit csr_exit(void)
 // Called during the creation of our device to set its permissions.
 //----------------------------------------------------------------------------
 
-static char* csr_devnode(DEVNODE_PARAM dev, umode_t* mode)
+// Parameter type issue: Starting with Linux 6.2, the devnode callback in the
+// device class structure uses "const struct device*" instead of "struct device*".
+// We initially used "#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 2, 0)" to condition
+// the parameter type. However, we noticed that some distros back-ported some kernel
+// features which broke the test on kernel version. For instance RHEL 9.2 used kernel
+// 5.14.0-284.25.1 with "struct device*". But RHEL 9.3, with the almost identical kernel
+// 5.14.0-362.24.1, uses "const struct device*", clearly indicating some sort backport
+// from 6.2. Because it is now impossible to test the kernel version to determine the
+// parameter type, we simply use "const" and mute the warning :-(
+
+static char* csr_devnode(const struct device* dev, umode_t* mode)
 {
     // Warning, mode is null when called on device deletion.
     if (mode != NULL && dev->devt == MKDEV(csr_major_number, 0)) {
