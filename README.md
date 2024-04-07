@@ -133,6 +133,11 @@ summary of observations about the PAC on different platforms. The subdirectory
 platforms, Linux, macOS, Windows, using various Arm64-based processor chips
 implementing Armv8.3-A or higher versions of the architecture.
 
+Specifically, this project was the main tool to support the writing of the white paper
+"[Control Flow Integrity, anti-malware active protection on Arm64 systems](https://sipearl.com/wp-content/uploads/2023/10/SiPearl-WP-CFI-on-Arm64.pdf)"
+from [SiPearl](https://sipearl.com/).
+
+
 ## List of accessible registers
 
 The reference list of registers which can be accessed by this project is given by
