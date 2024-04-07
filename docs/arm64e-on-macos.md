@@ -315,10 +315,15 @@ To disable system integrity, we must reboot in "recovery mode":
   state. This is a clever security precaution to make sure that the operation is
   manually performed by a human and not automatically triggered by some malware.
 - Boot the system, keeping the finger on the power button to display the boot
-  options. Select "Options", "Continue", select a user, "Next", enter our password,
-  open a terminal from the "Utilities" top menu.
+  options. On an iMac, or MacBook, the procedure is the same, keep the finger
+  on the power button. Select "Options", "Continue", select a user, "Next",
+  enter our password, open a terminal from the "Utilities" top menu.
 - Enter command `csrutil disable`. This command prompts for our user name and password again.
 - Reboot the system.
+
+On macOS 14 (Sonoma), the procedure is slightly different. After booting in recovery
+mode and selecting "Options", you can directly open a terminal. The user's password
+will be asked by `csrutil disable`.
 
 **Note:** To restore the system integrity after tests, perform the same recovery
 mode procedure with command `csrutil enable` instead of `disable`.

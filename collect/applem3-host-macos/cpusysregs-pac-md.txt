@@ -1,0 +1,37 @@
+| PAC algorithm        | private         |
+| PAuth / PAuth2       | yes / yes       |
+| EPAC / FPAC          | yes / yes       |
+| MTE tagging          | no              |
+|                      |                 |
+| **PAC size**         |                 |
+| data, lower          | 8 bits          |
+| data, upper          | 16 bits         |
+| instruction, lower   | 16 bits         |
+| instruction, upper   | 16 bits         |
+|                      |                 |
+| **PAC position**     |                 |
+| data, lower          | 54:47           |
+| data, upper          | 63:56,54:47     |
+| instruction, lower   | 63:56,54:47     |
+| instruction, upper   | 63:56,54:47     |
+|                      |                 |
+| **PAC selector bit** |                 |
+| data, lower          | bit 55          |
+| data, upper          | bit 55          |
+| instruction, lower   | bit 63          |
+| instruction, upper   | bit 63          |
+|                      |                 |
+| **EL0/EL1 PAC keys** |                 |
+| DA                   | distinct keys   |
+| DB                   | distinct keys   |
+| IA                   | distinct keys   |
+| IB                   | distinct keys   |
+| Generic (PACGA)      | distinct keys   |
+|                      |                 |
+| **TCR_EL1 register** |                 |
+| TBI0                 | 1               |
+| TBID0                | 1               |
+| T0SZ                 | 17              |
+| TBI1                 | 0               |
+| TBID1                | 0               |
+| T1SZ                 | 17              |

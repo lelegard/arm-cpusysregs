@@ -1,0 +1,3 @@
+cpu: Apple M3
+core: Apple M3
+machine: iMac M3

@@ -1024,8 +1024,8 @@ typedef struct {
 //
 #if defined(__linux__) ||  defined(__APPLE__)
     // gcc/clang syntax
-    #define csr_msr(sreg,value) asm(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
-    #define csr_mrs(result,sreg) asm(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
+    #define csr_msr(sreg,value) asm volatile(_CSR_DEFINE_GPR ".inst 0xd5000000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : : "r" (value))
+    #define csr_mrs(result,sreg) asm volatile(_CSR_DEFINE_GPR ".inst 0xd5200000|(" CSR_STRINGIFY(sreg) ")|(.csr_gpr_%0)" : "=r" (result))
 #elif defined(WINDOWS)
     // msvc syntax
     #define csr_msr(sreg,value) _WriteStatusReg((sreg), (value))
@@ -1040,15 +1040,15 @@ typedef struct {
 //
 #if defined(__linux__) ||  defined(__APPLE__)
     // gcc/clang syntax
-    #define csr_pacia(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_pacib(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_pacda(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_pacdb(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac10c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_autia(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_autib(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_autda(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_autdb(data,mod) asm(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
-    #define csr_pacga(result,data,mod) asm(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
+    #define csr_pacia(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac10000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacib(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac10400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacda(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac10800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacdb(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac10c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autia(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac11000|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autib(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac11400|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autda(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac11800|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_autdb(data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0xdac11c00|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "+r" (data) : "r" (mod))
+    #define csr_pacga(result,data,mod) asm volatile(_CSR_DEFINE_GPR ".inst 0x9ac03000|((.csr_gpr_%2)<<16)|((.csr_gpr_%1)<<5)|(.csr_gpr_%0)" : "=r" (result) : "r" (data), "r" (mod))
 #elif defined(_MSC_VER)
     // msvc does not support inline asm and has no intrinsics for PAC => need an external .asm module
     __int64 csr_pacia_helper(__int64, __int64);
