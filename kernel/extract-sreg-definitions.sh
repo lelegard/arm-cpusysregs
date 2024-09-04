@@ -13,20 +13,80 @@
 
 SCRIPT=$(basename $0)
 SCRIPTDIR=$(cd $(dirname $0); pwd)
-info() { echo >&2 "$SCRIPT: $*"; }
+info()  { echo >&2 "$SCRIPT: $*"; }
 error() { echo >&2 "$SCRIPT: $*"; exit 1; }
+usage() { echo >&2 "invalid command, try \"$SCRIPT --help\""; exit 1; }
 
+# Default values for command line options.
 # Description of Arm reference document (set of XML files).
 BASEURL="https://developer.arm.com/downloads/-/exploration-tools"
+TARBALL_URL=""
 TARBALL_PREFIX="SysReg_xml_A_profile"
 TARBALL_SUFFIX=".tar.gz"
 REGINDEX="AArch64-regindex.xml"
+FORCE_DOWNLOAD=false
 
-# Option "-d" forces download.
-[[ $1 == -d ]] && FORCE_DOWNLOAD=true || FORCE_DOWNLOAD=false
+#-----------------------------------------------------------------------------
+# Display help text
+#-----------------------------------------------------------------------------
+
+showhelp()
+{
+    cat >&2 <<EOF
+
+Extracts and formats the CSR_SREG definitions of all Arm system registers
+from the reference description on Arm site.
+
+Usage: $SCRIPT [options]
+
+Options:
+
+  -d
+  --download
+      Force download, even if the SysReg tarball is already present.
+
+  -h
+  --help
+      Display this help text.
+
+  -u <url>
+  --url <url>
+      Specify the URL of the SysReg tarball. By default, try to find it in
+      $BASEURL
+
+EOF
+    exit 1
+}
+
+#-----------------------------------------------------------------------------
+# Decode command line arguments
+#-----------------------------------------------------------------------------
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -d|--download)
+            FORCE_DOWNLOAD=true
+            ;;
+        -h|--help)
+            showhelp
+            ;;
+        -u|--url)
+            [[ $# -gt 1 ]] || usage; shift
+            TARBALL_URL="$1"
+            ;;
+        *)
+            usage
+            ;;
+    esac
+    shift
+done
+
+#-----------------------------------------------------------------------------
+# Get SysReg tarball
+#-----------------------------------------------------------------------------
 
 # Need xmlstarlet utility.
-[[ -z $(which xmlstarlet) ]] && error "xmlstarlet not installed"
+[[ -z $(which xmlstarlet 2>/dev/null) ]] && error "xmlstarlet not installed"
 
 # Get URL up to host part.
 url_host() {
@@ -61,14 +121,19 @@ $FORCE_DOWNLOAD && rm -rf "$DLDIR"
 # Download and extract SysReg.
 if [[ ! -e "$TARBALL" ]]; then
     # Get URL of SysReg tarball at arm.com.
-    URL=$(curl -sL "$BASEURL" | grep "href=\".*/$TARBALL_PREFIX.*$TARBALL_SUFFIX" | sed -e 's/.*href="//' -e 's/".*//' | head -1)
-    [[ -z "$URL" ]] && error "$TARBALL_PREFIX*$TARBALL_SUFFIX not found in $BASEURL"
-    URL=$(resolve_url "$BASEURL" "$URL")
+    if [[ -z "$TARBALL_URL" ]]; then
+        TARBALL_URL=$(curl -sL "$BASEURL" |
+                      grep "href=\".*/$TARBALL_PREFIX.*$TARBALL_SUFFIX" |
+                      sed -e 's/.*href="//' -e 's/".*//' |
+                      head -1)
+        [[ -z "$TARBALL_URL" ]] && error "$TARBALL_PREFIX*$TARBALL_SUFFIX not found in $BASEURL, try option --url"
+        TARBALL_URL=$(resolve_url "$BASEURL" "$TARBALL_URL")
+    fi
     # Dowload and expand.
     rm -rf "$DLDIR"
     mkdir -p "$DLDIR"
-    echo "downloading $URL ..."
-    curl -L "$URL" -o "$TARBALL"
+    echo "downloading $TARBALL_URL ..."
+    curl -L "$TARBALL_URL" -o "$TARBALL"
     [[ -e "$TARBALL" ]] || error "$TARBALL not downloaded"    
     (cd "$DLDIR"; tar xzf "$TARBALL")
 fi
@@ -77,6 +142,10 @@ fi
 REGXML=$(find "$DLDIR" -name "$REGINDEX" | tail -1)
 [[ -z "$REGXML" ]] && error "$REGINDEX not found in tarball"
 REGDIR=$(dirname "$REGXML")
+
+#-----------------------------------------------------------------------------
+# Generate output
+#-----------------------------------------------------------------------------
 
 # Loop on all register description files (one XML file per register).
 for regfile in $(xmlstarlet sel -T -t -v /register_index/register_links/register_link/@registerfile "$REGXML"); do

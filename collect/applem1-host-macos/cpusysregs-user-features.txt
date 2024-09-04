@@ -8,7 +8,7 @@ FEAT_DIT ..... yes
 FEAT_DotProd . yes
 FEAT_DPB ..... yes
 FEAT_DPB2 .... yes
-FEAT_ECV ..... yes
+FEAT_ECV ..... no
 FEAT_FCMA .... yes
 FEAT_FHM ..... yes
 FEAT_FlagM ... yes

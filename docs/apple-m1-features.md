@@ -4,7 +4,8 @@
 
 * [Checking the presence of Arm features on a CPU](#checking-the-presence-of-arm-features-on-a-cpu)
 * [Complete list of Arm features in the Apple M1](#complete-list-of-arm-features-in-the-apple-m1)
-* [Features comparison between the M1 and the M2](#features-comparison-between-the-m1-and-the-m2)
+* [Complete list of Arm features in the Apple M3](#complete-list-of-arm-features-in-the-apple-m3)
+* [Features comparison between the M1, M2, M3](#features-comparison-between-the-m1-m2-m3)
 
 ## Checking the presence of Arm features on a CPU
 

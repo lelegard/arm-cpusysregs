@@ -13,61 +13,14 @@
 
 
 //----------------------------------------------------------------------------
-// Constructors:
+// Clear contents.
 //----------------------------------------------------------------------------
-
-ArmFeatures::ArmFeatures() :
-    _loaded(false),
-    _aa64isar0(0),
-    _aa64isar1(0),
-    _aa64isar2(0),
-    _aa64pfr0(0),
-    _aa64pfr1(0),
-    _aa64pfr2(0),
-    _aa64dfr0(0),
-    _aa64dfr1(0),
-    _aa64mmfr0(0),
-    _aa64mmfr1(0),
-    _aa64mmfr2(0),
-    _aa64mmfr3(0),
-    _aa64mmfr4(0),
-    _aa64smfr0(0),
-    _aa64zfr0(0),
-    _isar0(0),
-    _isar1(0),
-    _isar2(0),
-    _isar3(0),
-    _isar4(0),
-    _isar5(0),
-    _isar6(0),
-    _mmfr0(0),
-    _mmfr1(0),
-    _mmfr2(0),
-    _mmfr3(0),
-    _mmfr4(0),
-    _mmfr5(0),
-    _pfr0(0),
-    _pfr1(0),
-    _pfr2(0),
-    _ctr(0),
-    _tcr(0),
-    _tcr2(0),
-    _trcdevarch(0),
-    _pmmir(0),
-    _pmsidr(0)
-{
-}
-
-ArmFeatures::ArmFeatures(RegAccess& reg) :
-    ArmFeatures()
-{
-    load(reg);
-}
 
 void ArmFeatures::clear()
 {
     _loaded = false;
-    _aa64isar0 = _aa64isar1 = _aa64isar2 = _aa64pfr0 = _aa64pfr1 = _aa64pfr2 = _aa64dfr0 = _aa64dfr1 = 0;
+    _aa64isar0 = _aa64isar1 = _aa64isar2 = _aa64isar3 = _aa64pfr0 = _aa64pfr1 = _aa64pfr2 = 0;
+    _aa64dfr0 = _aa64dfr1 = _aa64dfr2 = _aa64fpfr0 = 0;
     _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64mmfr4 = _aa64smfr0 = _aa64zfr0 = 0;
     _isar0 = _isar1 = _isar2 = _isar3 = _isar4 = _isar5 = _isar6 = 0;
     _mmfr0 = _mmfr1 = _mmfr2 = _mmfr3 = _mmfr4 = _mmfr5 = 0;
@@ -128,11 +81,14 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_ID_AA64ISAR0_EL1, _aa64isar0) &&
         reg.read(CSR_REGID_ID_AA64ISAR1_EL1, _aa64isar1) &&
         reg.read(CSR_REGID_ID_AA64ISAR2_EL1, _aa64isar2) &&
+        reg.read(CSR_REGID_ID_AA64ISAR3_EL1, _aa64isar3) &&
         reg.read(CSR_REGID_ID_AA64PFR0_EL1, _aa64pfr0) &&
         reg.read(CSR_REGID_ID_AA64PFR1_EL1, _aa64pfr1) &&
         reg.read(CSR_REGID_ID_AA64PFR2_EL1, _aa64pfr2) &&
         reg.read(CSR_REGID_ID_AA64DFR0_EL1, _aa64dfr0) &&
         reg.read(CSR_REGID_ID_AA64DFR1_EL1, _aa64dfr1) &&
+        reg.read(CSR_REGID_ID_AA64DFR2_EL1, _aa64dfr2) &&
+        reg.read(CSR_REGID_ID_AA64FPFR0_EL1, _aa64fpfr0) &&
         reg.read(CSR_REGID_ID_AA64MMFR0_EL1, _aa64mmfr0) &&
         reg.read(CSR_REGID_ID_AA64MMFR1_EL1, _aa64mmfr1) &&
         reg.read(CSR_REGID_ID_AA64MMFR2_EL1, _aa64mmfr2) &&
@@ -189,11 +145,14 @@ void ArmFeatures::loadDirect()
     csr_mrs(_aa64isar0, CSR_SREG_ID_AA64ISAR0_EL1);
     csr_mrs(_aa64isar1, CSR_SREG_ID_AA64ISAR1_EL1);
     csr_mrs(_aa64isar2, CSR_SREG_ID_AA64ISAR2_EL1);
+    csr_mrs(_aa64isar3, CSR_SREG_ID_AA64ISAR3_EL1);
     csr_mrs(_aa64pfr0,  CSR_SREG_ID_AA64PFR0_EL1);
     csr_mrs(_aa64pfr1,  CSR_SREG_ID_AA64PFR1_EL1);
     csr_mrs(_aa64pfr2,  CSR_SREG_ID_AA64PFR2_EL1);
     csr_mrs(_aa64dfr0,  CSR_SREG_ID_AA64DFR0_EL1);
     csr_mrs(_aa64dfr1,  CSR_SREG_ID_AA64DFR1_EL1);
+    csr_mrs(_aa64dfr2,  CSR_SREG_ID_AA64DFR2_EL1);
+    csr_mrs(_aa64fpfr0, CSR_SREG_ID_AA64FPFR0_EL1);
     csr_mrs(_aa64mmfr0, CSR_SREG_ID_AA64MMFR0_EL1);
     csr_mrs(_aa64mmfr1, CSR_SREG_ID_AA64MMFR1_EL1);
     csr_mrs(_aa64mmfr2, CSR_SREG_ID_AA64MMFR2_EL1);

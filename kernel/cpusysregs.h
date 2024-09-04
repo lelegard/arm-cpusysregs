@@ -168,6 +168,7 @@ enum {
     CSR_REGID_ID_AA64ISAR0_EL1, // AArch64 Instruction Set Attribute Register 0
     CSR_REGID_ID_AA64ISAR1_EL1, // AArch64 Instruction Set Attribute Register 1
     CSR_REGID_ID_AA64ISAR2_EL1, // AArch64 Instruction Set Attribute Register 2
+    CSR_REGID_ID_AA64ISAR3_EL1, // AArch64 Instruction Set Attribute Register 3
     CSR_REGID_TCR_EL1,          // Translation Control Register
     CSR_REGID_TCR2_EL1,         // Extended Translation Control Register
     CSR_REGID_MIDR_EL1,         // Main ID Register (read-only)
@@ -195,6 +196,8 @@ enum {
     CSR_REGID_ID_AA64AFR1_EL1,  // AArch64 Auxiliary Feature Register 1
     CSR_REGID_ID_AA64DFR0_EL1,  // AArch64 Debug Feature Register 0
     CSR_REGID_ID_AA64DFR1_EL1,  // AArch64 Debug Feature Register 1
+    CSR_REGID_ID_AA64DFR2_EL1,  // AArch64 Debug Feature Register 2
+    CSR_REGID_ID_AA64FPFR0_EL1, // AArch64 Floating-point Feature Register 0
     CSR_REGID_TRCDEVARCH,       // Trace Device Architecture Register
     CSR_REGID_PMMIR_EL1,        // Performance Monitors Machine Identification Register
     CSR_REGID_CTR_EL0,          // Cache Type Register
@@ -465,6 +468,7 @@ typedef struct {
 //
 #define CSR_SREG_ACCDATA_EL1        CSR_SREG(0b11, 0b000, 0b1101, 0b0000, 0b101)
 #define CSR_SREG_ACTLR_EL1          CSR_SREG(0b11, 0b000, 0b0001, 0b0000, 0b001)
+#define CSR_SREG_ACTLR_EL12         CSR_SREG(0b11, 0b101, 0b0001, 0b0000, 0b001)
 #define CSR_SREG_ACTLR_EL2          CSR_SREG(0b11, 0b100, 0b0001, 0b0000, 0b001)
 #define CSR_SREG_ACTLR_EL3          CSR_SREG(0b11, 0b110, 0b0001, 0b0000, 0b001)
 #define CSR_SREG_AFSR0_EL1          CSR_SREG(0b11, 0b000, 0b0101, 0b0001, 0b000)
@@ -603,8 +607,10 @@ typedef struct {
 #define CSR_SREG_FAR_EL12           CSR_SREG(0b11, 0b101, 0b0110, 0b0000, 0b000)
 #define CSR_SREG_FAR_EL2            CSR_SREG(0b11, 0b100, 0b0110, 0b0000, 0b000)
 #define CSR_SREG_FAR_EL3            CSR_SREG(0b11, 0b110, 0b0110, 0b0000, 0b000)
+#define CSR_SREG_FGWTE3_EL3         CSR_SREG(0b11, 0b110, 0b0001, 0b0001, 0b101)
 #define CSR_SREG_FPCR               CSR_SREG(0b11, 0b011, 0b0100, 0b0100, 0b000)
 #define CSR_SREG_FPEXC32_EL2        CSR_SREG(0b11, 0b100, 0b0101, 0b0011, 0b000)
+#define CSR_SREG_FPMR               CSR_SREG(0b11, 0b011, 0b0100, 0b0100, 0b010)
 #define CSR_SREG_FPSR               CSR_SREG(0b11, 0b011, 0b0100, 0b0100, 0b001)
 #define CSR_SREG_GCR_EL1            CSR_SREG(0b11, 0b000, 0b0001, 0b0000, 0b110)
 #define CSR_SREG_GCSCRE0_EL1        CSR_SREG(0b11, 0b000, 0b0010, 0b0101, 0b010)
@@ -620,10 +626,14 @@ typedef struct {
 #define CSR_SREG_GMID_EL1           CSR_SREG(0b11, 0b001, 0b0000, 0b0000, 0b100)
 #define CSR_SREG_GPCCR_EL3          CSR_SREG(0b11, 0b110, 0b0010, 0b0001, 0b110)
 #define CSR_SREG_GPTBR_EL3          CSR_SREG(0b11, 0b110, 0b0010, 0b0001, 0b100)
+#define CSR_SREG_HACDBSBR_EL2       CSR_SREG(0b11, 0b100, 0b0010, 0b0011, 0b100)
+#define CSR_SREG_HACDBSCONS_EL2     CSR_SREG(0b11, 0b100, 0b0010, 0b0011, 0b101)
 #define CSR_SREG_HACR_EL2           CSR_SREG(0b11, 0b100, 0b0001, 0b0001, 0b111)
 #define CSR_SREG_HAFGRTR_EL2        CSR_SREG(0b11, 0b100, 0b0011, 0b0001, 0b110)
 #define CSR_SREG_HCR_EL2            CSR_SREG(0b11, 0b100, 0b0001, 0b0001, 0b000)
 #define CSR_SREG_HCRX_EL2           CSR_SREG(0b11, 0b100, 0b0001, 0b0010, 0b010)
+#define CSR_SREG_HDBSSBR_EL2        CSR_SREG(0b11, 0b100, 0b0010, 0b0011, 0b010)
+#define CSR_SREG_HDBSSPROD_EL2      CSR_SREG(0b11, 0b100, 0b0010, 0b0011, 0b011)
 #define CSR_SREG_HDFGRTR2_EL2       CSR_SREG(0b11, 0b100, 0b0011, 0b0001, 0b000)
 #define CSR_SREG_HDFGRTR_EL2        CSR_SREG(0b11, 0b100, 0b0011, 0b0001, 0b100)
 #define CSR_SREG_HDFGWTR2_EL2       CSR_SREG(0b11, 0b100, 0b0011, 0b0001, 0b001)
@@ -663,9 +673,12 @@ typedef struct {
 #define CSR_SREG_ID_AA64AFR1_EL1    CSR_SREG(0b11, 0b000, 0b0000, 0b0101, 0b101)
 #define CSR_SREG_ID_AA64DFR0_EL1    CSR_SREG(0b11, 0b000, 0b0000, 0b0101, 0b000)
 #define CSR_SREG_ID_AA64DFR1_EL1    CSR_SREG(0b11, 0b000, 0b0000, 0b0101, 0b001)
+#define CSR_SREG_ID_AA64DFR2_EL1    CSR_SREG(0b11, 0b000, 0b0000, 0b0101, 0b010)
+#define CSR_SREG_ID_AA64FPFR0_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0100, 0b111)
 #define CSR_SREG_ID_AA64ISAR0_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0110, 0b000)
 #define CSR_SREG_ID_AA64ISAR1_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0110, 0b001)
 #define CSR_SREG_ID_AA64ISAR2_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0110, 0b010)
+#define CSR_SREG_ID_AA64ISAR3_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0110, 0b011)
 #define CSR_SREG_ID_AA64MMFR0_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0111, 0b000)
 #define CSR_SREG_ID_AA64MMFR1_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0111, 0b001)
 #define CSR_SREG_ID_AA64MMFR2_EL1   CSR_SREG(0b11, 0b000, 0b0000, 0b0111, 0b010)
@@ -717,6 +730,7 @@ typedef struct {
 #define CSR_SREG_MDRAR_EL1          CSR_SREG(0b10, 0b000, 0b0001, 0b0000, 0b000)
 #define CSR_SREG_MDSCR_EL1          CSR_SREG(0b10, 0b000, 0b0000, 0b0010, 0b010)
 #define CSR_SREG_MDSELR_EL1         CSR_SREG(0b10, 0b000, 0b0000, 0b0100, 0b010)
+#define CSR_SREG_MDSTEPOP_EL1       CSR_SREG(0b10, 0b000, 0b0000, 0b0101, 0b010)
 #define CSR_SREG_MECID_A0_EL2       CSR_SREG(0b11, 0b100, 0b1010, 0b1000, 0b001)
 #define CSR_SREG_MECID_A1_EL2       CSR_SREG(0b11, 0b100, 0b1010, 0b1000, 0b011)
 #define CSR_SREG_MECID_P0_EL2       CSR_SREG(0b11, 0b100, 0b1010, 0b1000, 0b000)
@@ -970,12 +984,14 @@ typedef struct {
 #define CSR_SREG_VBAR_EL2           CSR_SREG(0b11, 0b100, 0b1100, 0b0000, 0b000)
 #define CSR_SREG_VBAR_EL3           CSR_SREG(0b11, 0b110, 0b1100, 0b0000, 0b000)
 #define CSR_SREG_VDISR_EL2          CSR_SREG(0b11, 0b100, 0b1100, 0b0001, 0b001)
+#define CSR_SREG_VDISR_EL3          CSR_SREG(0b11, 0b110, 0b1100, 0b0001, 0b001)
 #define CSR_SREG_VMECID_A_EL2       CSR_SREG(0b11, 0b100, 0b1010, 0b1001, 0b001)
 #define CSR_SREG_VMECID_P_EL2       CSR_SREG(0b11, 0b100, 0b1010, 0b1001, 0b000)
 #define CSR_SREG_VMPIDR_EL2         CSR_SREG(0b11, 0b100, 0b0000, 0b0000, 0b101)
 #define CSR_SREG_VNCR_EL2           CSR_SREG(0b11, 0b100, 0b0010, 0b0010, 0b000)
 #define CSR_SREG_VPIDR_EL2          CSR_SREG(0b11, 0b100, 0b0000, 0b0000, 0b000)
 #define CSR_SREG_VSESR_EL2          CSR_SREG(0b11, 0b100, 0b0101, 0b0010, 0b011)
+#define CSR_SREG_VSESR_EL3          CSR_SREG(0b11, 0b110, 0b0101, 0b0010, 0b011)
 #define CSR_SREG_VSTCR_EL2          CSR_SREG(0b11, 0b100, 0b0010, 0b0110, 0b010)
 #define CSR_SREG_VSTTBR_EL2         CSR_SREG(0b11, 0b100, 0b0010, 0b0110, 0b000)
 #define CSR_SREG_VTCR_EL2           CSR_SREG(0b11, 0b100, 0b0010, 0b0001, 0b010)
@@ -1190,6 +1206,7 @@ static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_ID_AA64ISAR0_EL1, CSR_SREG_ID_AA64ISAR0_EL1, 0);
         _getreg(CSR_REGID_ID_AA64ISAR1_EL1, CSR_SREG_ID_AA64ISAR1_EL1, 0);
         _getreg(CSR_REGID_ID_AA64ISAR2_EL1, CSR_SREG_ID_AA64ISAR2_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64ISAR3_EL1, CSR_SREG_ID_AA64ISAR3_EL1, 0);
         _getreg(CSR_REGID_TCR_EL1,          CSR_SREG_TCR_EL1, 0);
         _getreg(CSR_REGID_TCR2_EL1,         CSR_SREG_TCR2_EL1, FEAT_TCR2);
         _getreg(CSR_REGID_MIDR_EL1,         CSR_SREG_MIDR_EL1, 0);
@@ -1217,6 +1234,8 @@ static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_ID_AA64AFR1_EL1,  CSR_SREG_ID_AA64AFR1_EL1, 0);
         _getreg(CSR_REGID_ID_AA64DFR0_EL1,  CSR_SREG_ID_AA64DFR0_EL1, 0);
         _getreg(CSR_REGID_ID_AA64DFR1_EL1,  CSR_SREG_ID_AA64DFR1_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64DFR2_EL1,  CSR_SREG_ID_AA64DFR2_EL1, 0);
+        _getreg(CSR_REGID_ID_AA64FPFR0_EL1, CSR_SREG_ID_AA64FPFR0_EL1, 0);
         _getreg(CSR_REGID_TRCDEVARCH,       CSR_SREG_TRCDEVARCH, FEAT_ETE);
         _getreg(CSR_REGID_PMMIR_EL1,        CSR_SREG_PMMIR_EL1, FEAT_PMUv3p4);
         _getreg(CSR_REGID_CTR_EL0,          CSR_SREG_CTR_EL0, 0);

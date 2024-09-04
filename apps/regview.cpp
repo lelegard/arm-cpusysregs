@@ -317,6 +317,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "ID_AA64DFR1_EL1", CSR_REGID_ID_AA64DFR1_EL1, READ,
         {
             {"ABL_CMPs", 63, 56, {}},
+            {"DPFZS",    55, 52, {}},
             {"EBEP",     51, 48, {}},
             {"ITE",      47, 44, {}},
             {"ABLE",     43, 40, {}},
@@ -329,6 +330,24 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "ID_AA64DFR2_EL1", CSR_REGID_ID_AA64DFR2_EL1, READ,
+        {
+            {"BWE",   7,  4, {}},
+            {"STEP",  3,  0, {}},
+        }
+     },
+    {
+        "ID_AA64FPFR0_EL1", CSR_REGID_ID_AA64FPFR0_EL1, READ,
+        {
+            {"F8CVT",  31, 31, {}},
+            {"F8FMA",  30, 30, {}},
+            {"F8DP4",  29, 29, {}},
+            {"F8DP2",  28, 28, {}},
+            {"F8E4M3",  1,  1, {}},
+            {"F8E5M2",  0,  0, {}},
+        }
+     },
+     {
         "ID_AA64ISAR0_EL1", CSR_REGID_ID_AA64ISAR0_EL1, READ,
         {
             {"RNDR",   63, 60, {{0, "none"}, {1, "RNG"}}},
@@ -374,6 +393,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64ISAR2_EL1", CSR_REGID_ID_AA64ISAR2_EL1, READ,
         {
+            {"ATS1A",        63, 60, {{0, "none"}, {1, "ATS1A"}}},
+            {"LUT",          59, 56, {{0, "none"}, {1, "LUT"}}},
             {"CSSC",         55, 52, {{0, "none"}, {1, "CSSC"}}},
             {"RPRFM",        51, 48, {{0, "none"}, {1, "RPRFM"}}},
             {"PRFMSLC",      43, 40, {{0, "none"}, {1, "PRFMSLC"}}},
@@ -389,6 +410,15 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"GPA3",         11,  8, {{0, "none"}, {1, "PACQARMA3"}}},
             {"RPRES",         7,  4, {{0, "none"}, {1, "RPRES"}}},
             {"WFxT",          3,  0, {{0, "none"}, {1, "WFxT"}}},
+        }
+    },
+    {
+        "ID_AA64ISAR3_EL1", CSR_REGID_ID_AA64ISAR3_EL1, READ,
+        {
+            {"PACM",     15, 12, {{0, "none"}, {1, "Trivial PACM"}, {2, "Full PACM"}}},
+            {"TLBIW",    11,  8, {{0, "none"}, {1, "TLBI VMALL"}}},
+            {"FAMINMAX",  7,  4, {{0, "none"}, {1, "FAMIN/FAMAX"}}},
+            {"CPA",       3,  0, {{0, "none"}, {1, "implemented"}, {2, "enabled"}}},
         }
     },
     {
@@ -882,6 +912,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "PMMIR_EL1", CSR_REGID_PMMIR_EL1, READ | NEED_PMUv3p4,
         {
+            {"SME",       28, 28, {}},
             {"EDGE",      27, 24, {}},
             {"THWIDTH",   23, 20, {}},
             {"BUS_WIDTH", 19, 16, {}},

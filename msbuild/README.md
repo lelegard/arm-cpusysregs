@@ -4,6 +4,8 @@
 
 * [No native Arm64 driver development on Windows so far](#no-native-arm64-driver-development-on-windows-so-far)
 * [Prerequisites](#prerequisites)
+  * [Build system setup](#build-system-setup)
+  * [Arm64 target system setup](#arm64-target-system-setup)
 * [Building the driver and the applications](#building-the-driver-and-the-applications)
 * [Loading / unloading the driver](#loading--unloading-the-driver)
 * [Additional notes](#additional-notes)

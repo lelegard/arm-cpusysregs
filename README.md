@@ -166,9 +166,12 @@ In that case, they can be accessed from kernel mode using the kernel module.
 | ID_AA64AFR1_EL1  | R       | AArch64 Auxiliary Feature Register 1
 | ID_AA64DFR0_EL1  | R       | AArch64 Debug Feature Register 0
 | ID_AA64DFR1_EL1  | R       | AArch64 Debug Feature Register 1
+| ID_AA64DFR2_EL1  | R       | AArch64 Debug Feature Register 2
+| ID_AA64FPFR0_EL1 | R       | AArch64 Floating-point Feature Register 0
 | ID_AA64ISAR0_EL1 | R       | AArch64 Instruction Set Attribute Register 0
 | ID_AA64ISAR1_EL1 | R       | AArch64 Instruction Set Attribute Register 1
 | ID_AA64ISAR2_EL1 | R       | AArch64 Instruction Set Attribute Register 2
+| ID_AA64ISAR3_EL1 | R       | AArch64 Instruction Set Attribute Register 3
 | ID_AA64MMFR0_EL1 | R       | AArch64 Memory Model Feature Register 0
 | ID_AA64MMFR1_EL1 | R       | AArch64 Memory Model Feature Register 1
 | ID_AA64MMFR2_EL1 | R       | AArch64 Memory Model Feature Register 2
