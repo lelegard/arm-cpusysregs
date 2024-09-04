@@ -1,18 +1,18 @@
 Kernel
 ------
-Linux 6.2.0-20-generic #20-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr  6 10:16:29 UTC 2023 aarch64 aarch64
+Linux 6.8.0-41-generic #41-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  2 23:26:06 UTC 2024 aarch64 aarch64
 
 Operating system
 ----------------
 Distributor ID: Ubuntu
-Description:    Ubuntu 23.04
-Release:        23.04
-Codename:       lunar
+Description:    Ubuntu 24.04.1 LTS
+Release:        24.04
+Codename:       noble
 
 Compiler
 --------
-gcc (Ubuntu 12.2.0-17ubuntu1) 12.2.0
-Copyright (C) 2022 Free Software Foundation, Inc.
+gcc (Ubuntu 13.2.0-23ubuntu4) 13.2.0
+Copyright (C) 2023 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
