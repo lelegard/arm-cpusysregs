@@ -464,7 +464,7 @@ typedef struct {
 
 //
 // The following macros define the encoding of most Arm system registers.
-// These definition were automatically generated using the script extract-sreg-definitions.sh.
+// These definition were automatically generated using the script aarch/extract-sreg-definitions.sh.
 //
 #define CSR_SREG_ACCDATA_EL1        CSR_SREG(0b11, 0b000, 0b1101, 0b0000, 0b101)
 #define CSR_SREG_ACTLR_EL1          CSR_SREG(0b11, 0b000, 0b0001, 0b0000, 0b001)
