@@ -505,7 +505,13 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64MMFR4_EL1", CSR_REGID_ID_AA64MMFR4_EL1, READ,
         {
-            {"EIESB",  7,  4, {}},
+            {"E3DSE",   39, 32, {}},
+            {"E2H0",    27, 24, {}},
+            {"NV_frac", 23, 20, {}},
+            {"FGWTE3",  19, 16, {}},
+            {"HACDBS",  15, 12, {}},
+            {"ASID2",   11,  8, {}},
+            {"EIESB",    7,  4, {}},
         }
     },
     {
@@ -552,6 +558,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64PFR2_EL1", CSR_REGID_ID_AA64PFR2_EL1, READ,
         {
+            {"FPMR",         35,  32, {{0, "none"}, {1, "FPMR"}}},
             {"MTEFAR",       11,  8, {{0, "none"}, {1, "MTE4"}}},
             {"MTESTOREONLY",  7,  4, {{0, "none"}, {1, "MTE_STORE_ONLY"}}},
             {"MTEPERM",       3,  0, {{0, "none"}, {1, "MTE_PERM"}}},
@@ -561,17 +568,23 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "ID_AA64SMFR0_EL1", CSR_REGID_ID_AA64SMFR0_EL1, READ | NEED_SME,
         {
             {"FA64",    63, 63, {{0, "none"}, {1, "SME_FA64"}}},
+            {"LUTv2",   60, 60, {{0, "none"}, {1, "SME2_LUTv2"}}},
             {"SMEver",  59, 56, {}},
             {"I16I64",  55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
             {"F64F64",  48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
             {"I16I32",  47, 44, {}},
             {"B16B16",  43, 43, {}},
             {"F16F16",  42, 42, {}},
+            {"F8F16",   41, 41, {}},
+            {"F8F32",   40, 40, {}},
             {"I8I32",   39, 36, {}},
             {"F16F32",  35, 35, {}},
             {"B16F32",  34, 34, {}},
             {"BI32I32", 33, 33, {}},
             {"F32F32",  32, 32, {}},
+            {"SF8FMA",  30, 30, {}},
+            {"SF8DP4",  29, 29, {}},
+            {"SF8DP2",  28, 28, {}},
         }
     },
     {
@@ -923,6 +936,10 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "PMSIDR_EL1", CSR_REGID_PMSIDR_EL1, READ_PMSIDR | NEED_SPE,
         {
+            {"SME",       32, 32, {{0, "none"}, {1, "SPE_SME"}}},
+            {"ALTCLK",    31, 28, {{0, "none"}, {1, "SPE_ALTCLK"}, {15, "IMPLEMENTATION DEFINED"}}},
+            {"FPF",       27, 27, {{0, "none"}, {1, "SPE_FPF"}}},
+            {"EFT",       26, 26, {{0, "none"}, {1, "SPE_EFT"}}},
             {"CRR",       25, 25, {{0, "none"}, {1, "SPE_CRR"}}},
             {"PBT",       24, 24, {{0, "none"}, {1, "SPEv1p2"}}},
             {"Format",    23, 20, {}},

@@ -49,3 +49,10 @@ while read bar feat rest; do
         echo "*** $feat is missing in $REFNAME"
     fi
 done <"$OUTFILE"
+
+# Check that all features in docs/features.md actuall exist in Features.json.
+while read bar feat rest; do
+    if [[ $bar == "|" && $feat == FEAT_* && $rest != *'(removed)' ]] && ! grep -q "^| *$feat *|" "$OUTFILE"; then
+        echo "--- $feat does not exist in $FEATINDEX, should be marked '(removed)'"
+    fi
+done <"$REFFILE"
