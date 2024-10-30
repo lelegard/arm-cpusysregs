@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------
 //
 // Arm64 CPU system registers tools
-// Copyright (c) 2023, Thierry Lelegard
+// Copyright (c) 2023-2024, Thierry Lelegard
 // BSD-2-Clause license, see the LICENSE file.
 //
 // Description of Arm64 system registers.
@@ -185,14 +185,23 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "CNTKCTL_EL1", CSR_REGID_CNTKCTL_EL1, READ | WRITE,
         {
-            {"EVNTIS",  17, 17, {}},
-            {"EL0PTEN",  9,  9, {}},
-            {"EL0VTEN",  8,  8, {}},
-            {"EVNTI",    7,  4, {}},
-            {"EVNTDIR",  3,  3, {}},
-            {"EVNTEN",   2,  2, {}},
-            {"EL0VCTEN", 1,  1, {}},
-            {"EL0PCTEN", 0,  0, {}},
+            {"CNTPMASK", 19, 19, {}},
+            {"CNTVMASK", 18, 18, {}},
+            {"EVNTIS",   17, 17, {}},
+            {"EL1NVVCT", 16, 16, {}},
+            {"EL1NVPCT", 15, 15, {}},
+            {"EL1TVCT",  14, 14, {}},
+            {"EL1TVT",   13, 13, {}},
+            {"ECV",      12, 12, {}},
+            {"EL1PTEN",  11, 11, {}},
+            {"EL1PCTEN", 10, 10, {}},
+            {"EL0PTEN",   9,  9, {}},
+            {"EL0VTEN",   8,  8, {}},
+            {"EVNTI",     7,  4, {}},
+            {"EVNTDIR",   3,  3, {}},
+            {"EVNTEN",    2,  2, {}},
+            {"EL0VCTEN",  1,  1, {}},
+            {"EL0PCTEN",  0,  0, {}},
         }
     },
     {
@@ -332,8 +341,11 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64DFR2_EL1", CSR_REGID_ID_AA64DFR2_EL1, READ,
         {
-            {"BWE",   7,  4, {}},
-            {"STEP",  3,  0, {}},
+            {"TRBE_EXC", 27, 24, {}},
+            {"SPE_nVM",  23, 20, {}},
+            {"SPE_EXC",  19, 16, {}},
+            {"BWE",       7,  4, {}},
+            {"STEP",      3,  0, {}},
         }
      },
     {
@@ -343,6 +355,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"F8FMA",  30, 30, {}},
             {"F8DP4",  29, 29, {}},
             {"F8DP2",  28, 28, {}},
+            {"F8MM8",  27, 27, {}},
+            {"F8MM4",  26, 26, {}},
             {"F8E4M3",  1,  1, {}},
             {"F8E5M2",  0,  0, {}},
         }
@@ -397,6 +411,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"LUT",          59, 56, {{0, "none"}, {1, "LUT"}}},
             {"CSSC",         55, 52, {{0, "none"}, {1, "CSSC"}}},
             {"RPRFM",        51, 48, {{0, "none"}, {1, "RPRFM"}}},
+            {"PCDPHINT",     47, 44, {{0, "none"}, {1, "PCDPHINT"}}},
             {"PRFMSLC",      43, 40, {{0, "none"}, {1, "PRFMSLC"}}},
             {"SYSINSTR_128", 39, 36, {{0, "none"}, {1, "SYSINSTR_128"}}},
             {"SYSREG_128",   35, 32, {{0, "none"}, {1, "SYSREG_128"}}},
@@ -415,6 +430,10 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64ISAR3_EL1", CSR_REGID_ID_AA64ISAR3_EL1, READ,
         {
+            {"FPRCVT",   31, 28, {}},
+            {"LSUI",     27, 24, {}},
+            {"OCCMO",    23, 20, {}},
+            {"LSFE",     19, 16, {}},
             {"PACM",     15, 12, {{0, "none"}, {1, "Trivial PACM"}, {2, "Full PACM"}}},
             {"TLBIW",    11,  8, {{0, "none"}, {1, "TLBI VMALL"}}},
             {"FAMINMAX",  7,  4, {{0, "none"}, {1, "FAMIN/FAMAX"}}},
@@ -505,13 +524,16 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64MMFR4_EL1", CSR_REGID_ID_AA64MMFR4_EL1, READ,
         {
-            {"E3DSE",   39, 32, {}},
+            {"SRMASK",  47, 44, {}},
+            {"E3DSE",   39, 36, {}},
+            {"RMEGDI",  31, 28, {}},
             {"E2H0",    27, 24, {}},
             {"NV_frac", 23, 20, {}},
             {"FGWTE3",  19, 16, {}},
             {"HACDBS",  15, 12, {}},
             {"ASID2",   11,  8, {}},
             {"EIESB",    7,  4, {}},
+            {"PoPS",     3,  0, {}},
         }
     },
     {
@@ -558,7 +580,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64PFR2_EL1", CSR_REGID_ID_AA64PFR2_EL1, READ,
         {
-            {"FPMR",         35,  32, {{0, "none"}, {1, "FPMR"}}},
+            {"FPMR",         35, 32, {{0, "none"}, {1, "FPMR"}}},
+            {"UINJ",         19, 16, {}},
             {"MTEFAR",       11,  8, {{0, "none"}, {1, "MTE4"}}},
             {"MTESTOREONLY",  7,  4, {{0, "none"}, {1, "MTE_STORE_ONLY"}}},
             {"MTEPERM",       3,  0, {{0, "none"}, {1, "MTE_PERM"}}},
@@ -567,24 +590,31 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "ID_AA64SMFR0_EL1", CSR_REGID_ID_AA64SMFR0_EL1, READ | NEED_SME,
         {
-            {"FA64",    63, 63, {{0, "none"}, {1, "SME_FA64"}}},
-            {"LUTv2",   60, 60, {{0, "none"}, {1, "SME2_LUTv2"}}},
-            {"SMEver",  59, 56, {}},
-            {"I16I64",  55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
-            {"F64F64",  48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
-            {"I16I32",  47, 44, {}},
-            {"B16B16",  43, 43, {}},
-            {"F16F16",  42, 42, {}},
-            {"F8F16",   41, 41, {}},
-            {"F8F32",   40, 40, {}},
-            {"I8I32",   39, 36, {}},
-            {"F16F32",  35, 35, {}},
-            {"B16F32",  34, 34, {}},
-            {"BI32I32", 33, 33, {}},
-            {"F32F32",  32, 32, {}},
-            {"SF8FMA",  30, 30, {}},
-            {"SF8DP4",  29, 29, {}},
-            {"SF8DP2",  28, 28, {}},
+            {"FA64",     63, 63, {{0, "none"}, {1, "SME_FA64"}}},
+            {"LUTv2",    60, 60, {{0, "none"}, {1, "SME2_LUTv2"}}},
+            {"SMEver",   59, 56, {}},
+            {"I16I64",   55, 52, {{0, "none"}, {15, "SME_I16I64"}}},
+            {"F64F64",   48, 48, {{0, "none"}, {1, "SME_F16F64"}}},
+            {"I16I32",   47, 44, {}},
+            {"B16B16",   43, 43, {}},
+            {"F16F16",   42, 42, {}},
+            {"F8F16",    41, 41, {}},
+            {"F8F32",    40, 40, {}},
+            {"I8I32",    39, 36, {}},
+            {"F16F32",   35, 35, {}},
+            {"B16F32",   34, 34, {}},
+            {"BI32I32",  33, 33, {}},
+            {"F32F32",   32, 32, {}},
+            {"SF8FMA",   30, 30, {}},
+            {"SF8DP4",   29, 29, {}},
+            {"SF8DP2",   28, 28, {}},
+            {"SF8MM8",   27, 27, {}},
+            {"SF8MM4",   26, 26, {}},
+            {"SBitPerm", 25, 25, {}},
+            {"AES",      24, 24, {}},
+            {"SFEXPA",   23, 23, {}},
+            {"STMOP",    16, 16, {}},
+            {"SMOP4",     0,  0, {}},
         }
     },
     {
@@ -592,11 +622,14 @@ const std::list<RegView::Register> RegView::AllRegisters {
         {
             {"F64MM",   59, 56, {{0, "none"}, {1, "F64MM"}}},
             {"F32MM",   55, 52, {{0, "none"}, {1, "F32MM"}}},
+            {"F16MM",   51, 48, {}},
             {"I8MM",    47, 44, {{0, "none"}, {1, "I8MM"}}},
             {"SM4",     43, 40, {{0, "none"}, {1, "SVE_SM4"}}},
             {"SHA3",    35, 32, {{0, "none"}, {1, "SVE_SHA3"}}},
+            {"B16B16",  27, 24, {}},
             {"BF16",    23, 20, {{0, "none"}, {1, "BF16"}, {2, "EBF16"}}},
             {"BitPerm", 19, 16, {{0, "none"}, {1, "SVE_BitPerm"}}},
+            {"EltPerm", 15, 12, {}},
             {"AES",      7,  4, {{0, "none"}, {1, "SVE_AES"}, {2, "SVE_AES+SVE_AES"}}},
             {"SVEver",   3,  0, {{0, "none"}, {1, "SVE2"}}},
         }
@@ -888,6 +921,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "PMCCFILTR_EL0", CSR_REGID_PMCCFILTR_EL0, READ | NEED_PMUv3,
         {
+            {"VS",  57, 56, {}},
             {"P",   31, 31, {}},
             {"U",   30, 30, {}},
             {"NSK", 29, 29, {}},
@@ -911,7 +945,7 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"IMP",    31, 24, {}},
             {"IDCODE", 23, 16, {}},
             {"N",      15, 11, {}},
-            {"FZ0",     9,  9, {}},
+            {"FZO",     9,  9, {}},
             {"LP",      7,  7, {}},
             {"LC",      6,  6, {}},
             {"DP",      5,  5, {}},
@@ -961,10 +995,13 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "PMUSERENR_EL0", CSR_REGID_PMUSERENR_EL0, READ | NEED_PMUv3,
         {
-            {"ER", 3, 3, {}},
-            {"CR", 2, 2, {}},
-            {"SW", 1, 1, {}},
-            {"EN", 0, 0, {}},
+            {"TID",  6,  6, {}},
+            {"IR",   5,  5, {}},
+            {"UEN",  4,  4, {}},
+            {"ER",   3,  3, {}},
+            {"CR",   2,  2, {}},
+            {"SW",   1,  1, {}},
+            {"EN",   0,  0, {}},
         }
     },
     {
@@ -1095,6 +1132,12 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "SCTLR2_EL1", CSR_REGID_SCTLR2_EL1, READ | WRITE | NEED_SCTLR2,
         {
+            {"CPTM0",     12, 12, {}},
+            {"CPTM",      11, 11, {}},
+            {"CPTA0",     10, 10, {}},
+            {"CPTA",       9,  9, {}},
+            {"EnPACM0",    8,  8, {}},
+            {"EnPACM",     7,  7, {}},
             {"EnIDCP128",  6,  6, {}},
             {"EASE",       5,  5, {}},
             {"EnANERR",    4,  4, {}},
@@ -1172,6 +1215,11 @@ const std::list<RegView::Register> RegView::AllRegisters {
     {
         "TCR2_EL1", CSR_REGID_TCR2_EL1, READ | NEED_TCR2,
         {
+            {"FNGNA1", 21, 21, {}},
+            {"FNGNA0", 20, 20, {}},
+            {"FNG1",   18, 18, {}},
+            {"FNG0",   17, 17, {}},
+            {"A2",     16, 16, {}},
             {"DisCH1", 15, 15, {}},
             {"DisCH0", 14, 14, {}},
             {"HAFT",   11, 11, {}},
@@ -1197,7 +1245,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "TTBR0_EL1", CSR_REGID_TTBR0_EL1, READ,
         {
             {"ASID",  63, 48, {}},
-            {"BADDR", 47,  1, {}},
+            {"BADDR", 47,  5, {}},
+            {"SKL",    2,  1, {}},
             {"CnP",    0,  0, {{0, "differ"}, {1, "common"}}},
         }
     },
@@ -1205,7 +1254,8 @@ const std::list<RegView::Register> RegView::AllRegisters {
         "TTBR1_EL1", CSR_REGID_TTBR1_EL1, READ,
         {
             {"ASID",  63, 48, {}},
-            {"BADDR", 47,  1, {}},
+            {"BADDR", 47,  5, {}},
+            {"SKL",    2,  1, {}},
             {"CnP",    0,  0, {{0, "differ"}, {1, "common"}}},
         }
     },

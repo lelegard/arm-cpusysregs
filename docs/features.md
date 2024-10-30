@@ -114,13 +114,13 @@ Arm architecture for existing features.
 | FEAT_ETMv4p6             |          |           |    X    | Embedded Trace Macrocell version 4.5 (removed)
 | FEAT_ETS                 | Armv8.0  | Armv8.7   |    X    | Enhanced Translation Synchronization (removed)
 | FEAT_ETS2                | Armv8.0  | Armv8.8   |    X    | Enhanced Translation Synchronization v2
-| FEAT_ETS3                | Armv9.4  | Armv9.5   |   ???   | Enhanced Translation Synchronization
+| FEAT_ETS3                | Armv9.4  | Armv9.5   |    X    | Enhanced Translation Synchronization
 | FEAT_EVT                 | Armv8.2  |           |    X    | Enhanced Virtualization Traps
 | FEAT_ExS                 | Armv8.4  |           |    X    | Disabling context synchronizing exception entry and exit
 | FEAT_F32MM               | Armv8.2  |           |    X    | SVE single-precision floating-point matrix multiply instruction
 | FEAT_F64MM               | Armv8.2  |           |    X    | SVE double-precision floating-point matrix multiply instruction
-| FEAT_F8F16MM             | Armv9.2  |           |   ???   | FP8 to Half-Precision Matrix Multiplication
-| FEAT_F8F32MM             | Armv9.2  |           |   ???   | FP8 to Single-Precision Matrix Multiplication
+| FEAT_F8F16MM             | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication
+| FEAT_F8F32MM             | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication
 | FEAT_FAMINMAX            | Armv9.2  |           |    X    | Advanced SIMD, SVE2, and SME2 FAMIN and FAMAX instructions
 | FEAT_FCMA                | Armv8.2  |           |    X    | Floating-point FCMLA and FCADD instructions
 | FEAT_FGT                 | Armv8.5  |           |    X    | Fine Grain Traps
@@ -139,7 +139,7 @@ Arm architecture for existing features.
 | FEAT_FPACC_SPEC          | Armv8.2  |           |    X    | Faulting on combined pointer authentication instructions
 | FEAT_FPACCOMBINE         | Armv8.2  |           |    X    | Faulting on combined pointer authentication instructions
 | FEAT_FPMR                | Armv9.2  |           |    X    | Floating-point Mode Register
-| FEAT_FPRCVT              | Armv9.5  | Armv9.6   |   ???   | Floating-Point to/from Integer in Scalar FP register
+| FEAT_FPRCVT              | Armv9.5  | Armv9.6   |    X    | Floating-Point to/from Integer in Scalar FP register
 | FEAT_FRINTTS             | Armv8.4  |           |    X    | FRINT32Z, FRINT32X, FRINT64Z, and FRINT64X instructions
 | FEAT_GCS                 | Armv9.3  |           |    X    | Guarded Control Stack Extension
 | FEAT_GICv3               |          |           |    X    | Generic Interrupt Controller version 3 (removed)
@@ -160,7 +160,7 @@ Arm architecture for existing features.
 | FEAT_HPMN0               | Armv8.5  |           |    X    | Setting of MDCR_EL2.HPMN to zero
 | FEAT_I8MM                | Armv8.1  | Armv8.6   |    X    | Int8 Matrix Multiplication
 | FEAT_IDST                | Armv8.3  | Armv8.4   |    X    | ID space trap handling
-| FEAT_IDTE3               | Armv9.0  |           |   ???   | Trapping ID register accesses to EL3
+| FEAT_IDTE3               | Armv9.0  |           |    X    | Trapping ID register accesses to EL3
 | FEAT_IESB                | Armv8.1  |           |    X    | Implicit Error synchronization event
 | FEAT_ITE                 | Armv9.3  |           |    X    | Instrumentation trace extension
 | FEAT_IVIPT               | Armv8.0  |           |   n/a   | The IVIPT Extension
@@ -174,13 +174,13 @@ Arm architecture for existing features.
 | FEAT_LS64                | Armv8.6  |           |    X    | Support for 64 byte loads/stores without return
 | FEAT_LS64_ACCDATA        | Armv8.6  |           |    X    | Support for 64-byte EL0 stores with return
 | FEAT_LS64_V              | Armv8.6  |           |    X    | Support for 64-byte stores with return
-| FEAT_LS64WB              | Armv9.2  |           |   ???   | LS64 for Write-back cacheable memory
+| FEAT_LS64WB              | Armv9.2  |           |    X    | LS64 for Write-back cacheable memory
 | FEAT_LSE                 | Armv8.0  | Armv8.1   |    X    | Large System Extensions
 | FEAT_LSE128              | Armv9.3  |           |    X    | 128-bit Atomics
 | FEAT_LSE2                | Armv8.2  | Armv8.4   |    X    | Large System Extensions version 2
-| FEAT_LSFE                | Armv9.5  |           |   ???   | Large System Float Extension
+| FEAT_LSFE                | Armv9.5  |           |    X    | Large System Float Extension
 | FEAT_LSMAOC              | Armv8.1  |           |    X    | Load/Store instruction multiple atomicity and ordering controls
-| FEAT_LSUI                | Armv9.5  | Armv9.6   |   ???   | Unprivileged Load Store
+| FEAT_LSUI                | Armv9.5  | Armv9.6   |    X    | Unprivileged Load Store
 | FEAT_LUT                 | Armv9.2  |           |    X    | Lookup table instructions with 2-bit and 4-bit indices
 | FEAT_LVA                 | Armv8.1  |           |    X    | Large VA support
 | FEAT_LVA3                | Armv9.3  |           |    X    | 56-bit VA
@@ -189,8 +189,8 @@ Arm architecture for existing features.
 | FEAT_MixedEndEL0         | Armv8.0  |           |    X    | Mixed-endian support at EL0
 | FEAT_MOPS                | Armv8.7  | Armv8.8   |    X    | Standardization of memory operations
 | FEAT_MPAM                | Armv8.2  |           |    X    | Memory Partitioning and Monitoring
-| FEAT_MPAM_MSC_DCTRL      | Armv9.5  |           |   ???   | MPAM Default Resource Control
-| FEAT_MPAM_MSC_DOMAINS    | Armv9.5  |           |   ???   | MPAM Domains PARTID translation
+| FEAT_MPAM_MSC_DCTRL      | Armv9.5  |           |   n/a   | MPAM Default Resource Control
+| FEAT_MPAM_MSC_DOMAINS    | Armv9.5  |           |   n/a   | MPAM Domains PARTID translation
 | FEAT_MPAM_PE_BW_CTRL     | Armv9.5  |           |   ???   | MPAM PE-side Bandwidth Controls
 | FEAT_MPAMv0p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 0.1
 | FEAT_MPAMv1p0            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.0 (removed)
@@ -211,8 +211,8 @@ Arm architecture for existing features.
 | FEAT_nTLBPA              | Armv8.0  |           |    X    | No intermediate caching by output address in TLB
 | FEAT_NV                  | Armv8.2  |           |    X    | Nested virtualization
 | FEAT_NV2                 | Armv8.3  |           |    X    | Enhanced support for nested virtualization
-| FEAT_NV2p1               | Armv9.5  |           |   ???   | Enhanced nested virtualization support
-| FEAT_OCCMO               | Armv9.5  | Armv9.6   |   ???   | Outer Cacheable Cache Maintenance Operation
+| FEAT_NV2p1               | Armv9.5  |           |    X    | Enhanced nested virtualization support
+| FEAT_OCCMO               | Armv9.5  | Armv9.6   |    X    | Outer Cacheable Cache Maintenance Operation
 | FEAT_PACIMP              | Armv8.2  |           |    X    | Pointer authentication - IMPLEMENTATION DEFINED algorithm
 | FEAT_PACQARMA3           | Armv8.2  |           |    X    | Pointer authentication - QARMA3 algorithm
 | FEAT_PACQARMA5           | Armv8.2  |           |    X    | Pointer authentication - QARMA5 algorithm
@@ -222,7 +222,7 @@ Arm architecture for existing features.
 | FEAT_PAuth               | Armv8.2  | Armv8.3   |    X    | Pointer authentication
 | FEAT_PAuth2              | Armv8.2  | Armv8.6   |    X    | Enhancements to pointer authentication
 | FEAT_PAuth_LR            | Armv9.4  |           |    X    | PSTATE.PACM (?)
-| FEAT_PCDPHINT            | Armv9.5  |           |   ???   | Producer-Consumer Data Placement Hints
+| FEAT_PCDPHINT            | Armv9.5  |           |    X    | Producer-Consumer Data Placement Hints
 | FEAT_PCSRv8              | Armv8.0  |           |   n/a   | PC Sample-base Profiling extension (not EL3 and EL2)
 | FEAT_PCSRv8p2            | Armv8.1  |           |   n/a   | PC Sample-based profiling version 8.2
 | FEAT_PCSRv8p9            | Armv8.8  |           |   n/a   | PCSR disable control
@@ -234,7 +234,7 @@ Arm architecture for existing features.
 | FEAT_PMUv3_EXT           | Armv8.0  |           |   n/a   | External interface to the Performance Monitors
 | FEAT_PMUv3_EXT32         | Armv8.0  |           |   n/a   | Original mostly 32-bit external interface to the Performance Monitors
 | FEAT_PMUv3_EXT64         | Armv8.8  |           |   n/a   | Optional 64-bit external interface to the Performance Monitors
-| FEAT_PMUv3_EXTPMN        | Armv9.5  |           |   ???   | Reserving PMU event counters for external agents
+| FEAT_PMUv3_EXTPMN        | Armv9.5  |           |   n/a   | Reserving PMU event counters for external agents
 | FEAT_PMUv3_ICNTR         | Armv8.8  |           |    X    | PMU instruction counter
 | FEAT_PMUv3_SME           | Armv9.4  |           |    X    | Performance Monitors extensions for SME
 | FEAT_PMUv3_SS            | Armv8.8  |           |    X    | PMU snapshot
@@ -247,7 +247,7 @@ Arm architecture for existing features.
 | FEAT_PMUv3p8             | Armv8.7  |           |    X    | Armv8.8 PMU Extensions
 | FEAT_PMUv3p9             | Armv8.8  |           |    X    | EL0 access controls for PMU event counters
 | FEAT_POE                 |          |           |         | Permission model enhancements (removed)
-| FEAT_PoPS                | Armv9.5  |           |   ???   | Point of Physical Storage
+| FEAT_PoPS                | Armv9.5  |           |         | Point of Physical Storage
 | FEAT_PRFMSLC             | Armv8.0  |           |    X    | SLC target support for PRFM instructions
 | FEAT_RAS                 | Armv8.0  | Armv8.2   |    X    | Reliability, Availability, and Serviceability (RAS) Extension
 | FEAT_RASSAv1             |          |           |   n/a   | RAS System Architecture version 1
@@ -257,9 +257,9 @@ Arm architecture for existing features.
 | FEAT_RASv2               | Armv8.8  |           |    X    | Reliability, Availability, and Serviceability (RAS) Extension version 2
 | FEAT_RDM                 | Armv8.0  |           |    X    | Rounding double multiply accumulate
 | FEAT_RME                 | Armv9.1  |           |    X    | Realm Management Extension
-| FEAT_RME_GDI             | Armv9.5  |           |   ???   | RME Granular Data Isolation extension
+| FEAT_RME_GDI             | Armv9.5  |           |    X    | RME Granular Data Isolation extension
 | FEAT_RME_GPC2            | Armv9.4  |           |    X    | RME Granule Protection Check 2 Extension
-| FEAT_RME_GPC3            | Armv9.5  |           |   ???   | RME Granule Protection Check 3 Extension
+| FEAT_RME_GPC3            | Armv9.5  |           |    X    | RME Granule Protection Check 3 Extension
 | FEAT_RNG                 | Armv8.4  |           |    X    | Random number generator
 | FEAT_RNG_TRAP            | Armv8.4  |           |    X    | Trapping support for RNDR and RNDRRS
 | FEAT_RPRES               | Armv8.6  |           |    X    | Increased precision of Reciprocal Estimate and Reciprocal Square Root Estimate
@@ -286,7 +286,7 @@ Arm architecture for existing features.
 | FEAT_SME                 | Armv9.2  |           |    X    | Scalable Matrix Extension
 | FEAT_SME2                | Armv9.2  |           |    X    | Scalable Matrix Extension version 2
 | FEAT_SME2p1              | Armv9.2  |           |    X    | Scalable Matrix Extension version 2.1
-| FEAT_SME2p2              | Armv9.5  |           |   ???   | Scalable Matrix Extension version 2.2
+| FEAT_SME2p2              | Armv9.5  |           |    X    | Scalable Matrix Extension version 2.2
 | FEAT_SME_B16B16          | Armv9.2  |           |    X    | Non-widening BFloat16 to BFloat16 arithmetic for SME2.1
 | FEAT_SME_F16F16          | Armv9.2  |           |    X    | Non-widening half-precision FP16 to FP16 arithmetic for SME2.1
 | FEAT_SME_F64F64          | Armv9.2  |           |    X    | Additional instructions for the SME Extension
@@ -300,12 +300,12 @@ Arm architecture for existing features.
 | FEAT_SPE_CRR             |          |           |    X    | Call Return Branch Records
 | FEAT_SPE_DPFZS           | Armv8.6  |           |    X    | Disable Cycle Counter on SPE Freeze
 | FEAT_SPE_EFT             | Armv9.4  |           |    X    | Statistical Profiling extended filtering by type
-| FEAT_SPE_EXC             | Armv9.5  |           |   ???   | SPE Profiling exception extension
+| FEAT_SPE_EXC             | Armv9.5  |           |    X    | SPE Profiling exception extension
 | FEAT_SPE_FDS             | Armv8.8  |           |    X    | SPE filtering by data source
-| FEAT_SPE_FnE             |          |           |   ???   | Statistical Profiling inverse event filter
+| FEAT_SPE_FnE             |          |           |    X    | Statistical Profiling inverse event filter
 | FEAT_SPE_FPF             | Armv9.4  |           |    X    | Statistical Profiling floating-point flag extension
-| FEAT_SPE_nVM             | Armv9.5  |           |   ???   | Statistical Profiling physical addressing mode extension
-| FEAT_SPE_PBT             |          |           |   ???   | Statistical Profiling previous branch target
+| FEAT_SPE_nVM             | Armv9.5  |           |    X    | Statistical Profiling physical addressing mode extension
+| FEAT_SPE_PBT             |          |           |    X    | Statistical Profiling previous branch target
 | FEAT_SPE_SME             | Armv9.4  |           |    X    | Statistical Profiling extensions for SME
 | FEAT_SPECRES             | Armv8.0  | Armv8.5   |    X    | Speculation restriction instructions
 | FEAT_SPECRES2            | Armv8.0  | Armv8.9   |    X    | Adds new Clear Other Speculative Predictions instruction
@@ -314,15 +314,15 @@ Arm architecture for existing features.
 | FEAT_SPEv1p2             | Armv8.6  |           |    X    | Statistical Profiling Extensions version 1.2
 | FEAT_SPEv1p3             | Armv8.7  |           |    X    | Armv8.8 Statistical Profiling Extensions
 | FEAT_SPEv1p4             | Armv8.8  |           |    X    | Addtional SPE events
-| FEAT_SPEv1p5             | Armv9.5  |           |   ???   | Statistical Profiling Extension version 1.5
+| FEAT_SPEv1p5             | Armv9.5  |           |    X    | Statistical Profiling Extension version 1.5
 | FEAT_SPMU                | Armv8.8  |           |    X    | System Performance Monitors Extension
 | FEAT_SPMU2               | Armv9.4  |           |    X    | System Performance Monitors Extension version 2
-| FEAT_SRMASK              | Armv9.5  | Armv9.6   |   ???   | Bitwise System Register Write Masks
+| FEAT_SRMASK              | Armv9.5  | Armv9.6   |    X    | Bitwise System Register Write Masks
 | FEAT_SSBS                | Armv8.0  |           |    X    | Speculative Store Bypass Safe Instruction
 | FEAT_SSBS2               | Armv8.0  |           |    X    | MRS and MSR instructions for SSBS
-| FEAT_SSVE_AES            | Armv9.5  |           |   ???   | Streaming SVE Mode AES and 128-bit polynomial multiply long instructions
-| FEAT_SSVE_F8F16MM        | Armv9.2  |           |   ???   | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode
-| FEAT_SSVE_F8F32MM        | Armv9.2  |           |   ???   | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode
+| FEAT_SSVE_AES            | Armv9.5  |           |    X    | Streaming SVE Mode AES and 128-bit polynomial multiply long instructions
+| FEAT_SSVE_F8F16MM        | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode
+| FEAT_SSVE_F8F32MM        | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode
 | FEAT_SSVE_FP8DOT2        | Armv9.2  |           |    X    | SVE FP8 2-way dot product to half-precision inst in Streaming SVE
 | FEAT_SSVE_FP8DOT4        | Armv9.2  |           |    X    | SVE2 FP8 4-way dot product to single-precision inst in Streaming SVE
 | FEAT_SSVE_FP8FMA         | Armv9.2  |           |    X    | SVE2 FP8 multiply-accumulate to half-precision and single-precision inst in Streaming SVE
@@ -330,13 +330,13 @@ Arm architecture for existing features.
 | FEAT_SVE                 | Armv8.2  |           |    X    | Scalable Vector Extension
 | FEAT_SVE2                | Armv9.0  |           |    X    | SVE version 2
 | FEAT_SVE2p1              | Armv9.2  |           |    X    | Scalable Vector Extension version 2.1
-| FEAT_SVE2p2              | Armv9.5  |           |   ???   | Scalable Vector Extensions version 2.2
+| FEAT_SVE2p2              | Armv9.5  |           |    X    | Scalable Vector Extensions version 2.2
 | FEAT_SVE_AES             | Armv9.0  |           |    X    | SVE AES instructions
-| FEAT_SVE_AES2            | Armv9.5  |           |   ???   | SVE multi-vector AES and 128-bit polynomial multiply long instructions
+| FEAT_SVE_AES2            | Armv9.5  |           |    X    | SVE multi-vector AES and 128-bit polynomial multiply long instructions
 | FEAT_SVE_B16B16          | Armv9.2  |           |    X    | Non-widening BFloat16 to BFloat16 arithmetic for SVE2.1
-| FEAT_SVE_BFSCALE         | Armv9.2  |           |   ???   | BFloat16 Floating-Point Adjust Exponent
+| FEAT_SVE_BFSCALE         | Armv9.2  |           |    X    | BFloat16 Floating-Point Adjust Exponent
 | FEAT_SVE_BitPerm         | Armv9.0  |           |    X    | SVE Bit Permute
-| FEAT_SVE_F16F32MM        | Armv9.2  |           |   ???   | SVE Half-Precision to Single-Precision Matrix Multiplication
+| FEAT_SVE_F16F32MM        | Armv9.2  |           |    X    | SVE Half-Precision to Single-Precision Matrix Multiplication
 | FEAT_SVE_PMULL128        | Armv9.0  |           |    X    | SVE PMULL instructions
 | FEAT_SVE_SHA3            | Armv9.0  |           |    X    | SVE SHA-3 instructions
 | FEAT_SVE_SM4             | Armv9.0  |           |    X    | SVE SM4 instructions
