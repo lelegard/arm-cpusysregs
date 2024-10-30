@@ -20,7 +20,7 @@ are slightly different.
 In the `apps` directory, the C++ class named `RegAccess` (files `regaccess.h` and `.cpp`)
 encapsulates these differences to provide a higher-level of abstraction.
 
-The script `../aarch/extract-sreg-definitions.sh` automatically generates the `CSR_SREG_xxx` definitions
+The Python script `../aarch/extract-arm-spec.py` automatically generates the `CSR_SREG_xxx` definitions
 of all Arm system registers, as used in `cpusysregs.h`. The definition of all registers is based
 on reference XML files on the Arm public web site. This script may be executed each time an update
 of the Arm architecture is published.

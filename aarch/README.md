@@ -7,10 +7,23 @@ The Arm Architecture exploration tools contain links to tarballs of machine-read
 definitions of the Arm Architecture: features, instruction set, system registers.
 The specifications are defined in XML and JSON files.
 
-The script `download-arm-spec.sh` downloads one of these tarballs.
-Use option `--help` for the list of options.
+The script `extract-arm-spec.py` downloads these tarballs and automatically regenerate partial
+texts to be included in various source files in the project.
 
-The script `extract-sreg-definitions.sh` automatically generates the `CSR_SREG_xxx` definitions
-of all Arm system registers, as used in `kernel/cpusysregs.h`. The definition of all registers is based
-on reference XML files on the Arm public web site. This script may be executed each time an update
-of the Arm architecture is published.
+The generated files are:
+
+- `partial_cpusysregs.h` : The definitions of encoding of all system registers for MRS and MSR instructions,
+   as defined in `kernel/cpusysregs.h` (all `#define CSR_SREG_` lines).
+- `partial_armfeatures.h` : To be integrated in file `apps/armfeatures.h`. The C++ class `ArmFeatures`
+   detects the presence of all features in the current CPU. The implementation uses various fields from
+   configuration registers. The generated file contains all functions to access those fields.
+- `partial_registers.md` : To be integrated in `docs/registers.md`.
+- `partial_features.md` : To be integrated in `docs/features.md`. The generated file contains a copy of
+   the table in `docs/features.md` with updated information. New features are marked as `???` in the
+   `sysregs` column. The C++ class `ArmFeatures` should then be updated to detect those features.
+
+The script `extract-arm-spec.py` should be executed each time an update of the Arm architecture is published.
+The modification (use `git diff`) should be inspected as follow:
+
+- Any new interesting system register?
+- Any new feature to detect?
