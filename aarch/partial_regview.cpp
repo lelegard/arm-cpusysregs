@@ -645,6 +645,33 @@
         }
     },
     {
+        "MPAMIDR_EL1", CSR_REGID_MPAMIDR_EL1, READ,
+        {
+            {"HAS_SDEFLT",   61, 61, {}},
+            {"HAS_FORCE_NS", 60, 60, {}},
+            {"SP4",          59, 59, {}},
+            {"HAS_TIDR",     58, 58, {}},
+            {"HAS_ALTSP",    57, 57, {}},
+            {"HAS_BW_CTRL",  56, 56, {}},
+            {"PMG_MAX",      39, 32, {}},
+            {"VPMR_MAX",     20, 18, {}},
+            {"HAS_HCR",      17, 17, {}},
+            {"PARTID_MAX",   15,  0, {}},
+        }
+    },
+    {
+        "TRBIDR_EL1", CSR_REGID_TRBIDR_EL1, READ,
+        {
+            {"MaxBuffSize", 47, 32, {}},
+            {"MPAM",        15, 12, {}},
+            {"EA",          11,  8, {}},
+            {"AddrMode",     7,  6, {}},
+            {"F",            5,  5, {}},
+            {"P",            4,  4, {}},
+            {"Align",        3,  0, {}},
+        }
+    },
+    {
         "MIDR_EL1", CSR_REGID_MIDR_EL1, READ,
         {
             {"Implementer",  31, 24, {}},

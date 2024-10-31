@@ -9,7 +9,7 @@ Total: 604 system registers.
 | ACTLR_EL12        | Auxiliary Control Register (EL1&2)
 | ACTLR_EL2         | Auxiliary Control Register (EL2)
 | ACTLR_EL3         | Auxiliary Control Register (EL3)
-| ACTLRALIAS_EL1    | 
+| ACTLRALIAS_EL1    |
 | ACTLRMASK_EL1     | Auxiliary Control Masking Register (EL1)
 | ACTLRMASK_EL12    | Auxiliary Control Masking Register (EL1&2)
 | ACTLRMASK_EL2     | Auxiliary Control Masking Register (EL2)
@@ -104,7 +104,7 @@ Total: 604 system registers.
 | CONTEXTIDR_EL2    | Context ID Register (EL2)
 | CPACR_EL1         | Architectural Feature Access Control Register
 | CPACR_EL12        | Architectural Feature Access Control Register
-| CPACRALIAS_EL1    | 
+| CPACRALIAS_EL1    |
 | CPACRMASK_EL1     | Architectural Feature Access Control Masking Register
 | CPACRMASK_EL12    | Architectural Feature Access Control Masking Register
 | CPTR_EL2          | Architectural Feature Trap Register (EL2)
@@ -426,7 +426,7 @@ Total: 604 system registers.
 | SCTLR2_EL12       | System Control Register (EL1&2)
 | SCTLR2_EL2        | System Control Register (EL2)
 | SCTLR2_EL3        | System Control Register (EL3)
-| SCTLR2ALIAS_EL1   | 
+| SCTLR2ALIAS_EL1   |
 | SCTLR2MASK_EL1    | Extended System Control Masking Register (EL1)
 | SCTLR2MASK_EL12   | Extended System Control Masking Register (EL1&2)
 | SCTLR2MASK_EL2    | Extended System Control Masking Register (EL2)
@@ -434,7 +434,7 @@ Total: 604 system registers.
 | SCTLR_EL12        | System Control Register (EL1&2)
 | SCTLR_EL2         | System Control Register (EL2)
 | SCTLR_EL3         | System Control Register (EL3)
-| SCTLRALIAS_EL1    | 
+| SCTLRALIAS_EL1    |
 | SCTLRMASK_EL1     | System Control Masking Register (EL1)
 | SCTLRMASK_EL12    | System Control Masking Register (EL1&2)
 | SCTLRMASK_EL2     | System Control Masking Register (EL2)
@@ -486,14 +486,14 @@ Total: 604 system registers.
 | SPSR_UND          | Saved Program Status Register (Undefined mode)
 | SSBS              | Speculative Store Bypass Safe
 | SVCR              | Streaming Vector Control Register
-| SVCRSM            | 
-| SVCRSMZA          | 
-| SVCRZA            | 
+| SVCRSM            |
+| SVCRSMZA          |
+| SVCRZA            |
 | TCO               | Tag Check Override
 | TCR2_EL1          | Extended Translation Control Register (EL1)
 | TCR2_EL12         | Extended Translation Control Register (EL1&2)
 | TCR2_EL2          | Extended Translation Control Register (EL2)
-| TCR2ALIAS_EL1     | 
+| TCR2ALIAS_EL1     |
 | TCR2MASK_EL1      | Extended Translation Control Masking Register (EL1)
 | TCR2MASK_EL12     | Extended Translation Control Masking Register (EL1&2)
 | TCR2MASK_EL2      | Extended Translation Control Masking Register (EL2)
@@ -501,7 +501,7 @@ Total: 604 system registers.
 | TCR_EL12          | Translation Control Register (EL1&2)
 | TCR_EL2           | Translation Control Register (EL2)
 | TCR_EL3           | Translation Control Register (EL3)
-| TCRALIAS_EL1      | 
+| TCRALIAS_EL1      |
 | TCRMASK_EL1       | Translation Control Masking Register (EL1)
 | TCRMASK_EL12      | Translation Control Masking Register (EL1&2)
 | TCRMASK_EL2       | Translation Control Masking Register (EL2)

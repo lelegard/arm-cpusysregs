@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
     if (::memcmp(&check, &key, sizeof(key))) {
         std::cerr << "Key verification failed, APGAKEY register = " << ToHexa(check) << std::endl;
         return EXIT_FAILURE;
-        
+
     }
 
     // Compute PACGA in user mode.

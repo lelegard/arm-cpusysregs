@@ -131,7 +131,7 @@ The recommended strategy is to not use these instructions on generic binaries.
 
 Other optional instructions provide a much more significant performance improvement,
 speeding up standard algorithms such as AES by a factor of 10 or even 20.
-It is not possible to avoid them when they are available. 
+It is not possible to avoid them when they are available.
 
 However, this is not just a matter of two levels of architectures, with or without
 accelerated instructions. Each feature is individually selectable and it is not acceptable

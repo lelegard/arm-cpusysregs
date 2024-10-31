@@ -21,5 +21,5 @@
         printf("sha256(): ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
         assert(0);
     }
-    
+
 #endif

@@ -21,5 +21,5 @@
         printf("crc():    ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
         assert(0);
     }
-    
+
 #endif

@@ -77,7 +77,9 @@ bool RegView::Register::isSupported(RegAccess& ra) const
            (!(features & NEED_SCTLR2) || feat.FEAT_SCTLR2()) &&
            (!(features & NEED_AIE) || feat.FEAT_AIE()) &&
            (!(features & NEED_S1PIE) || feat.FEAT_S1PIE()) &&
-           (!(features & NEED_SPE) || feat.FEAT_SPE());
+           (!(features & NEED_SPE) || feat.FEAT_SPE()) &&
+           (!(features & NEED_MPAM) || feat.FEAT_MPAM()) &&
+           (!(features & NEED_TRBE) || feat.FEAT_TRBE());
 }
 
 std::string RegView::Register::featuresList() const
@@ -128,6 +130,12 @@ std::string RegView::Register::featuresList() const
     if (features & RegView::NEED_SPE) {
         res.push_back("need SPE");
     }
+    if (features & RegView::NEED_MPAM) {
+        res.push_back("need MPAM");
+    }
+    if (features & RegView::NEED_TRBE) {
+        res.push_back("need TRBE");
+    }
     return Join(res, ", ");
 }
 
@@ -137,30 +145,8 @@ std::string RegView::Register::featuresList() const
 //----------------------------------------------------------------------------
 
 const std::list<RegView::Register> RegView::AllRegisters {
-    /* --------
-     * Template for copy/paste on new registers:
-    {
-        "", CSR_REGID_, READ,
-        {
-            {"",    63, 60, {{0, "none"}, {1, ""}}},
-            {"",    59, 56, {{0, "none"}, {1, ""}}},
-            {"",    55, 52, {{0, "none"}, {1, ""}}},
-            {"",    51, 48, {{0, "none"}, {1, ""}}},
-            {"",    47, 44, {{0, "none"}, {1, ""}}},
-            {"",    43, 40, {{0, "none"}, {1, ""}}},
-            {"",    39, 36, {{0, "none"}, {1, ""}}},
-            {"",    35, 32, {{0, "none"}, {1, ""}}},
-            {"",    31, 28, {{0, "none"}, {1, ""}}},
-            {"",    27, 24, {{0, "none"}, {1, ""}}},
-            {"",    23, 20, {{0, "none"}, {1, ""}}},
-            {"",    19, 16, {{0, "none"}, {1, ""}}},
-            {"",    15, 12, {{0, "none"}, {1, ""}}},
-            {"",    11,  8, {{0, "none"}, {1, ""}}},
-            {"",     7,  4, {{0, "none"}, {1, ""}}},
-            {"",     3,  0, {{0, "none"}, {1, ""}}},
-        }
-    },
-    -------- */
+    // For new registers (or registers with new fields), run aarch/extract-arm-spec.py
+    // and collect the new generated layout in aarch/partial_regview.cpp.
     {
         "APDAKEY_EL1", CSR_REGID2_APDAKEY_EL1, READ_PAC | WRITE_PAC | NEED_PAC, {}
     },
@@ -866,6 +852,21 @@ const std::list<RegView::Register> RegView::AllRegisters {
         }
     },
     {
+        "MPAMIDR_EL1", CSR_REGID_MPAMIDR_EL1, READ | NEED_MPAM,
+        {
+            {"HAS_SDEFLT",   61, 61, {}},
+            {"HAS_FORCE_NS", 60, 60, {}},
+            {"SP4",          59, 59, {}},
+            {"HAS_TIDR",     58, 58, {}},
+            {"HAS_ALTSP",    57, 57, {}},
+            {"HAS_BW_CTRL",  56, 56, {}},
+            {"PMG_MAX",      39, 32, {}},
+            {"VPMR_MAX",     20, 18, {}},
+            {"HAS_HCR",      17, 17, {}},
+            {"PARTID_MAX",   15,  0, {}},
+        }
+    },
+    {
         "MPIDR_EL1", CSR_REGID_MPIDR_EL1, READ,
         {
             {"Aff3", 39, 32, {}},
@@ -1240,6 +1241,18 @@ const std::list<RegView::Register> RegView::AllRegisters {
     },
     {
         "TPIDR_EL1", CSR_REGID_TPIDR_EL1, READ_TPIDR | WRITE_TPIDR, {}
+    },
+    {
+        "TRBIDR_EL1", CSR_REGID_TRBIDR_EL1, READ | NEED_TRBE,
+        {
+            {"MaxBuffSize", 47, 32, {}},
+            {"MPAM",        15, 12, {}},
+            {"EA",          11,  8, {}},
+            {"AddrMode",     7,  6, {}},
+            {"F",            5,  5, {}},
+            {"P",            4,  4, {}},
+            {"Align",        3,  0, {}},
+        }
     },
     {
         "TTBR0_EL1", CSR_REGID_TTBR0_EL1, READ,

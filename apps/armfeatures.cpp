@@ -24,7 +24,7 @@ void ArmFeatures::clear()
     _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64mmfr4 = _aa64smfr0 = _aa64zfr0 = 0;
     _isar0 = _isar1 = _isar2 = _isar3 = _isar4 = _isar5 = _isar6 = 0;
     _mmfr0 = _mmfr1 = _mmfr2 = _mmfr3 = _mmfr4 = _mmfr5 = 0;
-    _ctr = _tcr = _tcr2 = _trcdevarch = _pmmir = _pmsidr = 0;
+    _ctr = _tcr = _tcr2 = _trcdevarch = _pmmir = _pmsidr = _mpamidr = _trbidr = 0;
 }
 
 
@@ -115,7 +115,9 @@ bool ArmFeatures::load(RegAccess& reg)
         reg.read(CSR_REGID_TCR_EL1, _tcr) &&
         (!csr_has_tcr2(_aa64mmfr3) || reg.read(CSR_REGID_TCR2_EL1, _tcr2)) &&
         (!csr_has_ete(_aa64dfr0) || reg.read(CSR_REGID_TRCDEVARCH, _trcdevarch)) &&
-        (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR_EL1, _pmmir));
+        (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR_EL1, _pmmir)) &&
+        (!csr_has_mpam(_aa64pfr0, _aa64pfr1) || reg.read(CSR_REGID_MPAMIDR_EL1, _mpamidr)) &&
+        (!csr_has_trbe(_aa64dfr0) || reg.read(CSR_REGID_TRBIDR_EL1, _trbidr));
 
 #if !defined(CSR_AVOID_CTR_EL0)
     _loaded = _loaded &&

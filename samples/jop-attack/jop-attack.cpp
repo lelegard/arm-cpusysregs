@@ -50,7 +50,7 @@ void function_with_buffer_overflow(const B& b)
 void look_at_the_generated_code(A& a, B& b)
 {
     a.danger();
-    b.harmless();    
+    b.harmless();
 }
 
 // Attack scenario.

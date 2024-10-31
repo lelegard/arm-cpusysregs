@@ -17,7 +17,7 @@ should be used on Linux only. On macOS, the PAC key registers are protected
 from kernel access and the demo can only run with the current PAC keys,
 without reading or modifying them.
 
-- `demo-pac` demonstrates some usages of the pointer authentication features. 
+- `demo-pac` demonstrates some usages of the pointer authentication features.
 - `pacga` computes PAC values using specified keys and values.
 
 ## Sample Arm features without using the kernel module

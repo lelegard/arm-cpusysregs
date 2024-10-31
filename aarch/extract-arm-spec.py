@@ -516,7 +516,7 @@ with open(REGISTERS_MD_OUT, 'w') as output:
     print('| %s | %s' % (reg_width * '-', len(reg_header[1]) * '-'), file=output)
     for key in sorted(all_registers.keys(), key=str.lower):
         reg = all_registers[key]
-        print('| %-*s | %s' % (reg_width, reg.name, reg.description), file=output)
+        print(('| %-*s | %s' % (reg_width, reg.name, reg.description)).strip(), file=output)
 
 # Generate the C/C++ definitions of the register encodings.
 name_width = max([len(name) for name in all_registers])

@@ -191,7 +191,7 @@ Arm architecture for existing features.
 | FEAT_MPAM                | Armv8.2  |           |    X    | Memory Partitioning and Monitoring
 | FEAT_MPAM_MSC_DCTRL      | Armv9.5  |           |   n/a   | MPAM Default Resource Control
 | FEAT_MPAM_MSC_DOMAINS    | Armv9.5  |           |   n/a   | MPAM Domains PARTID translation
-| FEAT_MPAM_PE_BW_CTRL     | Armv9.5  |           |   ???   | MPAM PE-side Bandwidth Controls
+| FEAT_MPAM_PE_BW_CTRL     | Armv9.5  |           |    X    | MPAM PE-side Bandwidth Controls
 | FEAT_MPAMv0p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 0.1
 | FEAT_MPAMv1p0            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.0 (removed)
 | FEAT_MPAMv1p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.1
@@ -353,10 +353,10 @@ Arm architecture for existing features.
 | FEAT_TLBIW               | Armv9.4  |           |    X    | TLBI VMALL for Dirty state
 | FEAT_TME                 | Armv9.0  |           |    X    | Transactional Memory Extension
 | FEAT_TRBE                | Armv9.0  |           |    X    | Trace Buffer Extension
-| FEAT_TRBE_EXC            | Armv9.5  |           |   ???   | Trace Buffer Profiling exception extension
-| FEAT_TRBE_EXT            | Armv9.3  |           |   n/a   | Represents TRBE external mode
-| FEAT_TRBE_MPAM           | Armv9.3  |           |   n/a   | Trace Buffer MPAM extensions
-| FEAT_TRBEv1p1            | Armv9.5  |           |   ???   | Trace Buffer Extension version 1.1
+| FEAT_TRBE_EXC            | Armv9.5  |           |    X    | Trace Buffer Profiling exception extension
+| FEAT_TRBE_EXT            | Armv9.3  |           |    X    | Represents TRBE external mode
+| FEAT_TRBE_MPAM           | Armv9.3  |           |    X    | Trace Buffer MPAM extensions
+| FEAT_TRBEv1p1            | Armv9.5  |           |    X    | Trace Buffer Extension version 1.1
 | FEAT_TRC_EXT             | Armv8.0  |           |   n/a   | Trace external registers
 | FEAT_TRC_SR              | Armv8.0  |           |    X    | Trace System registers
 | FEAT_TRF                 | Armv8.3  |           |    X    | Self hosted Trace Extensions
@@ -365,7 +365,7 @@ Arm architecture for existing features.
 | FEAT_TTST                | Armv8.3  |           |    X    | Small translation tables
 | FEAT_TWED                | Armv8.5  |           |    X    | Delayed trapping of WFE
 | FEAT_UAO                 | Armv8.1  | Armv8.2   |    X    | Unprivileged Access Override control
-| FEAT_UINJ                | Armv9.5  | Armv9.6   |   ???   | Injection of Undefined Instruction exceptions
+| FEAT_UINJ                | Armv9.5  | Armv9.6   |    X    | Injection of Undefined Instruction exceptions
 | FEAT_VHE                 | Armv8.0  |           |    X    | Virtualization Host Extensions
 | FEAT_VMID16              | Armv8.0  |           |    X    | 16-bit VMID
 | FEAT_VPIPT               | Armv8.2  |           |    X    | VMID-aware PIPT instruction cache (removed)

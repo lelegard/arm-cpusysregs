@@ -201,6 +201,7 @@ In that case, they can be accessed from kernel mode using the kernel module.
 | MAIR_EL1         | R       | Memory Attribute Indirection Register (EL1)
 | MAIR2_EL1        | R       | Extended Memory Attribute Indirection Register (EL1)
 | MIDR_EL1         | R       | Main ID Register
+| MPAMIDR_EL1      | R       | MPAM ID Register (EL1)
 | MPIDR_EL1        | R       | Multiprocessor Affinity Register
 | PIR_EL1          | R       | Permission Indirection Register 1 (EL1)
 | PIRE0_EL1        | R       | Permission Indirection Register 0 (EL1)
@@ -223,6 +224,7 @@ In that case, they can be accessed from kernel mode using the kernel module.
 | TPIDR_EL0        | R/W [5] | EL0 Read/Write Software Thread ID Register
 | TPIDR_EL1        | R/W [5] | EL1 Software Thread ID Register
 | TPIDRRO_EL0      | R/W [5] | EL0 Read-Only Software Thread ID Register
+| TRBIDR_EL1       | R       | Trace Buffer ID Register
 | TRCDEVARCH       | R       | Trace Device Architecture Register
 | TTBR0_EL1        | R       | Translation Table Base Register 0 (EL1)
 | TTBR1_EL1        | R       | Translation Table Base Register 1 (EL1)

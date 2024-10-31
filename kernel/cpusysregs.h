@@ -139,6 +139,14 @@ typedef struct {
 // ID_AA64MMFR3_EL1 system register.
 #define csr_has_s1pie(mmfr3) ((mmfr3) & 0x0000000000000F00llu)
 
+// This macro checks if MPAM (Memory Partitioning and Monitoring) is supported,
+// based on the values of the ID_AA64PFR0_EL1 and ID_AA64PFR1_EL1 system registers.
+#define csr_has_mpam(pfr0, pfr1) ((((pfr0) >> 40) & 0x0F) >= 1 || (((pfr1) >> 16) & 0x0F) >= 1)
+
+// This macro checks if TRBE (Trace Buffer Extension) is supported,
+// based on the value of the ID_AA64DFR0_EL1 system register.
+#define csr_has_trbe(dfr0) ((((dfr0) >> 44) & 0x0F) >= 1)
+
 
 //----------------------------------------------------------------------------
 // List of system registers which are handled by the kernel module.
@@ -233,6 +241,8 @@ enum {
     CSR_REGID_PMCCNTR_EL0,      // Performance Monitors Cycle Count Register
     CSR_REGID_PMCR_EL0,         // Performance Monitors Control Register
     CSR_REGID_PMUSERENR_EL0,    // Performance Monitors User Enable Register
+    CSR_REGID_MPAMIDR_EL1,      // Memory Partitioning and Monitoring (MPAM) ID Register
+    CSR_REGID_TRBIDR_EL1,       // Trace Buffer ID Register
     // -----------------------  // End of individual registers
     _CSR_REGID_END,
     // -----------------------  // Registers which come in pair
@@ -1165,6 +1175,8 @@ typedef struct {
 #define FEAT_AIE      0x00002000
 #define FEAT_S1PIE    0x00004000
 #define FEAT_SPE      0x00008000
+#define FEAT_MPAM     0x00010000
+#define FEAT_TRBE     0x00020000
 
 // Get the CPU features. Typically called once on module initialization.
 static int csr_get_cpu_features(void)
@@ -1192,7 +1204,9 @@ static int csr_get_cpu_features(void)
            (csr_has_sctlr2(mmfr3) ? FEAT_SCTLR2 : 0) |
            (csr_has_aie(mmfr3) ? FEAT_AIE : 0) |
            (csr_has_s1pie(mmfr3) ? FEAT_S1PIE : 0) |
-           (csr_has_spe(dfr0) ? FEAT_SPE : 0);
+           (csr_has_spe(dfr0) ? FEAT_SPE : 0) |
+           (csr_has_mpam(pfr0, pfr1) ? FEAT_MPAM : 0) |
+           (csr_has_trbe(dfr0) ? FEAT_TRBE : 0);
 }
 
 // Set the value of a single register or pair of registers.
@@ -1324,6 +1338,8 @@ static int csr_get_register(int regid, csr_pair_t* value, int cpu_features)
         _getreg(CSR_REGID_PMCCNTR_EL0,      CSR_SREG_PMCCNTR_EL0, FEAT_PMUv3);
         _getreg(CSR_REGID_PMCR_EL0,         CSR_SREG_PMCR_EL0, FEAT_PMUv3);
         _getreg(CSR_REGID_PMUSERENR_EL0,    CSR_SREG_PMUSERENR_EL0, FEAT_PMUv3);
+        _getreg(CSR_REGID_MPAMIDR_EL1,      CSR_SREG_MPAMIDR_EL1, FEAT_MPAM);
+        _getreg(CSR_REGID_TRBIDR_EL1,       CSR_SREG_TRBIDR_EL1, FEAT_TRBE);
         _getreg2(CSR_REGID2_APIAKEY_EL1,    CSR_SREG_APIAKEYHI_EL1, CSR_SREG_APIAKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APIBKEY_EL1,    CSR_SREG_APIBKEYHI_EL1, CSR_SREG_APIBKEYLO_EL1, FEAT_PAC);
         _getreg2(CSR_REGID2_APDAKEY_EL1,    CSR_SREG_APDAKEYHI_EL1, CSR_SREG_APDAKEYLO_EL1, FEAT_PAC);

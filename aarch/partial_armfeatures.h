@@ -484,3 +484,22 @@
     int PMSIDR_EL1_FT() const { return (int)(_pmsidr >> 1) & 0x01; }
     int PMSIDR_EL1_FE() const { return (int)(_pmsidr) & 0x01; }
 
+    int MPAMIDR_EL1_HAS_SDEFLT() const { return (int)(_mpamidr >> 61) & 0x01; }
+    int MPAMIDR_EL1_HAS_FORCE_NS() const { return (int)(_mpamidr >> 60) & 0x01; }
+    int MPAMIDR_EL1_SP4() const { return (int)(_mpamidr >> 59) & 0x01; }
+    int MPAMIDR_EL1_HAS_TIDR() const { return (int)(_mpamidr >> 58) & 0x01; }
+    int MPAMIDR_EL1_HAS_ALTSP() const { return (int)(_mpamidr >> 57) & 0x01; }
+    int MPAMIDR_EL1_HAS_BW_CTRL() const { return (int)(_mpamidr >> 56) & 0x01; }
+    int MPAMIDR_EL1_PMG_MAX() const { return (int)(_mpamidr >> 32) & 0xFF; }
+    int MPAMIDR_EL1_VPMR_MAX() const { return (int)(_mpamidr >> 18) & 0x07; }
+    int MPAMIDR_EL1_HAS_HCR() const { return (int)(_mpamidr >> 17) & 0x01; }
+    int MPAMIDR_EL1_PARTID_MAX() const { return (int)(_mpamidr) & 0xFFFF; }
+
+    int TRBIDR_EL1_MaxBuffSize() const { return (int)(_trbidr >> 32) & 0xFFFF; }
+    int TRBIDR_EL1_MPAM() const { return (int)(_trbidr >> 12) & 0x0F; }
+    int TRBIDR_EL1_EA() const { return (int)(_trbidr >> 8) & 0x0F; }
+    int TRBIDR_EL1_AddrMode() const { return (int)(_trbidr >> 6) & 0x03; }
+    int TRBIDR_EL1_F() const { return (int)(_trbidr >> 5) & 0x01; }
+    int TRBIDR_EL1_P() const { return (int)(_trbidr >> 4) & 0x01; }
+    int TRBIDR_EL1_Align() const { return (int)(_trbidr) & 0x0F; }
+

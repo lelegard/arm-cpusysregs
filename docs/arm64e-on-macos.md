@@ -413,14 +413,14 @@ Demonstration:
 ~~~
 $ cc -E -x c -dM /dev/null >macros-arm64.txt
 $ cc -E -arch arm64e -x c -dM /dev/null >macros-arm64e.txt
-$ diff macros-arm64.txt macros-arm64e.txt 
+$ diff macros-arm64.txt macros-arm64e.txt
 239a240
 > #define __PTRAUTH_INTRINSICS__ 1
 379a381
 > #define __arm64e__ 1
 392a395
 > #define __ptrauth_abi_version__ 0
-$ 
+$
 ~~~
 
 ### Demo: mixing `arm64` and `arm64e`
@@ -519,7 +519,7 @@ enter main, arch is arm64
 in libtest, arch is arm64
 leave main, arch is arm64
 $
-$ ./main.arm64-to-64e 
+$ ./main.arm64-to-64e
 enter main, arch is arm64
 in libtest, arch is arm64e
 leave main, arch is arm64
@@ -542,7 +542,7 @@ We can see that an `arm64e` application can be linked against `arm64e` libraries
 
 Verifying that the right library is called in the only case which works, full `arm64e`:
 ~~~
-$ ./main.arm64e 
+$ ./main.arm64e
 enter main, arch is arm64e
 in libtest, arch is arm64e
 leave main, arch is arm64e

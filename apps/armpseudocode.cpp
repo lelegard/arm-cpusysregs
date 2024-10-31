@@ -111,7 +111,7 @@ void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange var
         walkparams.hpd   = _feat.FEAT_HPDS() ? _feat.TCR_EL1_HPD1() : 0;
         walkparams.mtx   = _feat.FEAT_MTE4() ? _feat.TCR_EL1_MTX1() : 0;
     }
-    
+
     _regs.read(CSR_REGID_MAIR_EL1, walkparams.mair);
     if (_feat.FEAT_AIE()) {
         _regs.read(CSR_REGID_MAIR2_EL1, walkparams.mair2);
@@ -226,7 +226,7 @@ int ArmPseudoCode::AArch64_PACEffectiveTxSZ(const S1TTWParams& walkparams)
 {
     const int s1maxtxsz = AArch64_MaxTxSZ(walkparams.tgx);
     const int s1mintxsz = AArch64_S1MinTxSZ(walkparams.d128, walkparams.ds, walkparams.tgx);
-    
+
     // Assume no AArch64.S1TxSZFaults(walkparams)
     if (walkparams.txsz < s1mintxsz) {
         return s1mintxsz & 0x3F;

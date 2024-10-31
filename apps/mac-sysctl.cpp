@@ -34,7 +34,7 @@ const std::vector<Param> AllParams {
 int main(int argc, char* argv[])
 {
     const bool verbose = argc > 1 && std::string(argv[1]) == "-v";
-       
+
     size_t name_width = 0;
     for (const auto& param : AllParams) {
         name_width = std::max(name_width, param.name.length());

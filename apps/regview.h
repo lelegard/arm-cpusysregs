@@ -54,6 +54,8 @@ public:
         NEED_AIE     = 0x00002000,  // exist only with AIE
         NEED_S1PIE   = 0x00004000,  // exist only with S1PIE
         NEED_SPE     = 0x00008000,  // exist only with SPE
+        NEED_MPAM    = 0x00010000,  // exist only with MPAM
+        NEED_TRBE    = 0x00020000,  // exist only with TRBE
     };
 
     // Description of one register with bitfields.

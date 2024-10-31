@@ -522,6 +522,25 @@ public:
     int PMSIDR_EL1_FT() const { return (int)(_pmsidr >> 1) & 0x01; }
     int PMSIDR_EL1_FE() const { return (int)(_pmsidr) & 0x01; }
 
+    int MPAMIDR_EL1_HAS_SDEFLT() const { return (int)(_mpamidr >> 61) & 0x01; }
+    int MPAMIDR_EL1_HAS_FORCE_NS() const { return (int)(_mpamidr >> 60) & 0x01; }
+    int MPAMIDR_EL1_SP4() const { return (int)(_mpamidr >> 59) & 0x01; }
+    int MPAMIDR_EL1_HAS_TIDR() const { return (int)(_mpamidr >> 58) & 0x01; }
+    int MPAMIDR_EL1_HAS_ALTSP() const { return (int)(_mpamidr >> 57) & 0x01; }
+    int MPAMIDR_EL1_HAS_BW_CTRL() const { return (int)(_mpamidr >> 56) & 0x01; }
+    int MPAMIDR_EL1_PMG_MAX() const { return (int)(_mpamidr >> 32) & 0xFF; }
+    int MPAMIDR_EL1_VPMR_MAX() const { return (int)(_mpamidr >> 18) & 0x07; }
+    int MPAMIDR_EL1_HAS_HCR() const { return (int)(_mpamidr >> 17) & 0x01; }
+    int MPAMIDR_EL1_PARTID_MAX() const { return (int)(_mpamidr) & 0xFFFF; }
+
+    int TRBIDR_EL1_MaxBuffSize() const { return (int)(_trbidr >> 32) & 0xFFFF; }
+    int TRBIDR_EL1_MPAM() const { return (int)(_trbidr >> 12) & 0x0F; }
+    int TRBIDR_EL1_EA() const { return (int)(_trbidr >> 8) & 0x0F; }
+    int TRBIDR_EL1_AddrMode() const { return (int)(_trbidr >> 6) & 0x03; }
+    int TRBIDR_EL1_F() const { return (int)(_trbidr >> 5) & 0x01; }
+    int TRBIDR_EL1_P() const { return (int)(_trbidr >> 4) & 0x01; }
+    int TRBIDR_EL1_Align() const { return (int)(_trbidr) & 0x0F; }
+
     // --- End of automatically generated part.
 
     // Processor features, using same names as Arm Architecture Reference Manual.
@@ -685,6 +704,7 @@ public:
     bool FEAT_MixedEndEL0() const { return ID_AA64MMFR0_EL1_BigEnd() >= 1 && ID_AA64MMFR0_EL1_BigEndEL0() >= 1; }
     bool FEAT_MOPS() const { return ID_AA64ISAR2_EL1_MOPS() >= 1; }
     bool FEAT_MPAM() const { return ID_AA64PFR0_EL1_MPAM() >= 1 || ID_AA64PFR1_EL1_MPAM_frac() >= 1; }
+    bool FEAT_MPAM_PE_BW_CTRL() const { return MPAMIDR_EL1_HAS_BW_CTRL() >= 1; }
     bool FEAT_MPAMv0p1() const { return ID_AA64PFR1_EL1_MPAM_frac() >= 1; }
     bool FEAT_MPAMv1p0() const { return ID_AA64PFR0_EL1_MPAM() >= 1; }
     bool FEAT_MPAMv1p1() const { return (ID_AA64PFR0_EL1_MPAM() == 1 && ID_AA64PFR1_EL1_MPAM_frac() >= 1) || ID_AA64PFR0_EL1_MPAM() >= 2; }
@@ -832,6 +852,10 @@ public:
     bool FEAT_TLBIW() const { return ID_AA64ISAR3_EL1_TLBIW() >= 1; }
     bool FEAT_TME() const { return ID_AA64ISAR0_EL1_TME() >= 1; }
     bool FEAT_TRBE() const { return ID_AA64DFR0_EL1_TraceBuffer() >= 1; }
+    bool FEAT_TRBE_ECX() const { return ID_AA64DFR2_EL1_TRBE_EXC() >= 1; }
+    bool FEAT_TRBE_EXT() const { return ID_AA64DFR0_EL1_ExtTrcBuff() >= 1; }
+    bool FEAT_TRBE_MPAM() const { return TRBIDR_EL1_MPAM() >= 2; }
+    bool FEAT_TRBEv1p1() const { return ID_AA64DFR0_EL1_TraceBuffer() >= 2; }
     bool FEAT_TRC_SR() const { return ID_AA64DFR0_EL1_TraceVer() >= 1; }
     bool FEAT_TRF() const { return ID_AA64DFR0_EL1_TraceFilt() >= 1; }
     bool FEAT_TTCNP() const { return ID_AA64MMFR2_EL1_CnP() >= 1; }
@@ -839,6 +863,7 @@ public:
     bool FEAT_TTST() const { return ID_AA64MMFR2_EL1_ST() >= 1; }
     bool FEAT_TWED() const { return ID_AA64MMFR1_EL1_TWED() >= 1; }
     bool FEAT_UAO() const { return ID_AA64MMFR2_EL1_UAO() >= 1; }
+    bool FEAT_UINJ() const { return ID_AA64PFR2_EL1_UINJ() >= 1; }
     bool FEAT_VHE() const { return ID_AA64MMFR1_EL1_VH() >= 1 || ID_AA64DFR0_EL1_DebugVer() >= 7; }
     bool FEAT_VMID16() const { return ID_AA64MMFR1_EL1_VMIDBits() == 2; }
     bool FEAT_VPIPT() const { return CTR_EL0_L1Ip() == 0; }
@@ -903,4 +928,6 @@ private:
     csr_u64_t _trcdevarch = 0;  // @REG: TRCDEVARCH
     csr_u64_t _pmmir = 0;       // @REG: PMMIR_EL1
     csr_u64_t _pmsidr = 0;      // @REG: PMSIDR_EL1
+    csr_u64_t _mpamidr = 0;     // @REG: MPAMIDR_EL1
+    csr_u64_t _trbidr = 0;      // @REG: TRBIDR_EL1
 };

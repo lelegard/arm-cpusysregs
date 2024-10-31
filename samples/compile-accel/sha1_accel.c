@@ -21,5 +21,5 @@
         printf("sha1():   ACCELERATED IMPLEMENTATION SHOULD NOT GET CALLED !\n");
         assert(0);
     }
-    
+
 #endif

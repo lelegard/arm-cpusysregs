@@ -69,7 +69,7 @@ in A::danger(), a dangerously privileged method
 
 On macOS, we now compile the application with option `-arch arm64e`. In this context,
 all code and data pointers are protected using PAC. Moreover, the signature of each
-pointer is performed using address diversity plus semantic diversity. 
+pointer is performed using address diversity plus semantic diversity.
 
 ~~~
 $ clang++ -arch arm64e jop-attack.cpp -o jop-attack-protected
@@ -94,7 +94,7 @@ for calling virtual methods. Let's start from the following source code:
 A a;
 B b;
 a.danger();
-b.harmless();    
+b.harmless();
 ~~~
 
 The generated code on macOS with option `-arch arm64e` is the following.
