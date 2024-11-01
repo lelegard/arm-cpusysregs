@@ -698,8 +698,10 @@ with file_armfeatures_h.rewrite() as output:
     file_armfeatures_h.complete(output)
 
 # Generate the C/C++ template data structure for regview.cpp.
+cppregs = [reg for reg in Register.byname.values() if reg.cpusysregs]
+cppregs.sort(key=lambda x: x.name.lower())
 with open(REGVIEW_CPP_OUT, 'w') as output:
-    for reg in [reg for reg in Register.byname.values() if reg.cpusysregs]:
+    for reg in cppregs:
         print('    {', file=output)
         print('        "%s", CSR_REGID_%s, READ,' % (reg.name, reg.name), file=output)
         print('        {', file=output)

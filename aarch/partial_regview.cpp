@@ -1,4 +1,262 @@
     {
+        "APDAKEYHI_EL1", CSR_REGID_APDAKEYHI_EL1, READ,
+        {
+            {"APDAKeyHi", 63,  0, {}},
+        }
+    },
+    {
+        "APDAKEYLO_EL1", CSR_REGID_APDAKEYLO_EL1, READ,
+        {
+            {"APDAKeyLo", 63,  0, {}},
+        }
+    },
+    {
+        "APDBKEYHI_EL1", CSR_REGID_APDBKEYHI_EL1, READ,
+        {
+            {"APDBKeyHi", 63,  0, {}},
+        }
+    },
+    {
+        "APDBKEYLO_EL1", CSR_REGID_APDBKEYLO_EL1, READ,
+        {
+            {"APDBKeyLo", 63,  0, {}},
+        }
+    },
+    {
+        "APGAKEYHI_EL1", CSR_REGID_APGAKEYHI_EL1, READ,
+        {
+            {"APGAKeyHi", 63,  0, {}},
+        }
+    },
+    {
+        "APGAKEYLO_EL1", CSR_REGID_APGAKEYLO_EL1, READ,
+        {
+            {"APGAKeyLo", 63,  0, {}},
+        }
+    },
+    {
+        "APIAKEYHI_EL1", CSR_REGID_APIAKEYHI_EL1, READ,
+        {
+            {"APIAKeyHi", 63,  0, {}},
+        }
+    },
+    {
+        "APIAKEYLO_EL1", CSR_REGID_APIAKEYLO_EL1, READ,
+        {
+            {"APIAKeyLo", 63,  0, {}},
+        }
+    },
+    {
+        "APIBKEYHI_EL1", CSR_REGID_APIBKEYHI_EL1, READ,
+        {
+            {"APIBKeyHi", 63,  0, {}},
+        }
+    },
+    {
+        "APIBKEYLO_EL1", CSR_REGID_APIBKEYLO_EL1, READ,
+        {
+            {"APIBKeyLo", 63,  0, {}},
+        }
+    },
+    {
+        "CNTFRQ_EL0", CSR_REGID_CNTFRQ_EL0, READ,
+        {
+            {"ClockFreq", 31,  0, {}},
+        }
+    },
+    {
+        "CNTKCTL_EL1", CSR_REGID_CNTKCTL_EL1, READ,
+        {
+            {"CNTPMASK", 19, 19, {}},
+            {"CNTVMASK", 18, 18, {}},
+            {"EVNTIS",   17, 17, {}},
+            {"EL1NVVCT", 16, 16, {}},
+            {"EL1NVPCT", 15, 15, {}},
+            {"EL1TVCT",  14, 14, {}},
+            {"EL1TVT",   13, 13, {}},
+            {"ECV",      12, 12, {}},
+            {"EL1PTEN",  11, 11, {}},
+            {"EL1PCTEN", 10, 10, {}},
+            {"EL0PTEN",   9,  9, {}},
+            {"EL0VTEN",   8,  8, {}},
+            {"EVNTI",     7,  4, {}},
+            {"EVNTDIR",   3,  3, {}},
+            {"EVNTEN",    2,  2, {}},
+            {"EL0VCTEN",  1,  1, {}},
+            {"EL0PCTEN",  0,  0, {}},
+        }
+    },
+    {
+        "CNTPCT_EL0", CSR_REGID_CNTPCT_EL0, READ,
+        {
+            {"PhysicalCount", 63,  0, {}},
+        }
+    },
+    {
+        "CNTPS_CTL_EL1", CSR_REGID_CNTPS_CTL_EL1, READ,
+        {
+            {"ISTATUS",  2,  2, {}},
+            {"IMASK",    1,  1, {}},
+            {"ENABLE",   0,  0, {}},
+        }
+    },
+    {
+        "CNTVCT_EL0", CSR_REGID_CNTVCT_EL0, READ,
+        {
+            {"VirtualCount", 63,  0, {}},
+        }
+    },
+    {
+        "CTR_EL0", CSR_REGID_CTR_EL0, READ,
+        {
+            {"TminLine", 37, 32, {}},
+            {"DIC",      29, 29, {}},
+            {"IDC",      28, 28, {}},
+            {"CWG",      27, 24, {}},
+            {"ERG",      23, 20, {}},
+            {"DminLine", 19, 16, {}},
+            {"L1Ip",     15, 14, {}},
+            {"IminLine",  3,  0, {}},
+        }
+    },
+    {
+        "HCR_EL2", CSR_REGID_HCR_EL2, READ,
+        {
+            {"TWEDEL",   63, 60, {}},
+            {"TWEDEn",   59, 59, {}},
+            {"TID5",     58, 58, {}},
+            {"DCT",      57, 57, {}},
+            {"ATA",      56, 56, {}},
+            {"TTLBOS",   55, 55, {}},
+            {"TTLBIS",   54, 54, {}},
+            {"EnSCXT",   53, 53, {}},
+            {"TOCU",     52, 52, {}},
+            {"AMVOFFEN", 51, 51, {}},
+            {"TICAB",    50, 50, {}},
+            {"TID4",     49, 49, {}},
+            {"GPF",      48, 48, {}},
+            {"FIEN",     47, 47, {}},
+            {"FWB",      46, 46, {}},
+            {"NV2",      45, 45, {}},
+            {"AT",       44, 44, {}},
+            {"NV1",      43, 43, {}},
+            {"NV",       42, 42, {}},
+            {"API",      41, 41, {}},
+            {"APK",      40, 40, {}},
+            {"TME",      39, 39, {}},
+            {"MIOCNCE",  38, 38, {}},
+            {"TEA",      37, 37, {}},
+            {"TERR",     36, 36, {}},
+            {"TLOR",     35, 35, {}},
+            {"E2H",      34, 34, {}},
+            {"ID",       33, 33, {}},
+            {"CD",       32, 32, {}},
+            {"RW",       31, 31, {}},
+            {"TRVM",     30, 30, {}},
+            {"HCD",      29, 29, {}},
+            {"TDZ",      28, 28, {}},
+            {"TGE",      27, 27, {}},
+            {"TVM",      26, 26, {}},
+            {"TTLB",     25, 25, {}},
+            {"TPU",      24, 24, {}},
+            {"TPCP",     23, 23, {}},
+            {"TPC",      23, 23, {}},
+            {"TSW",      22, 22, {}},
+            {"TACR",     21, 21, {}},
+            {"TIDCP",    20, 20, {}},
+            {"TSC",      19, 19, {}},
+            {"TID3",     18, 18, {}},
+            {"TID2",     17, 17, {}},
+            {"TID1",     16, 16, {}},
+            {"TID0",     15, 15, {}},
+            {"TWE",      14, 14, {}},
+            {"TWI",      13, 13, {}},
+            {"DC",       12, 12, {}},
+            {"BSU",      11, 10, {}},
+            {"FB",        9,  9, {}},
+            {"VSE",       8,  8, {}},
+            {"VI",        7,  7, {}},
+            {"VF",        6,  6, {}},
+            {"AMO",       5,  5, {}},
+            {"IMO",       4,  4, {}},
+            {"FMO",       3,  3, {}},
+            {"PTW",       2,  2, {}},
+            {"SWIO",      1,  1, {}},
+            {"VM",        0,  0, {}},
+        }
+    },
+    {
+        "ID_AA64AFR0_EL1", CSR_REGID_ID_AA64AFR0_EL1, READ,
+        {
+            {"IMPLEMENTATION DEFINED", 31, 28, {}},
+        }
+    },
+    {
+        "ID_AA64AFR1_EL1", CSR_REGID_ID_AA64AFR1_EL1, READ,
+        {
+        }
+    },
+    {
+        "ID_AA64DFR0_EL1", CSR_REGID_ID_AA64DFR0_EL1, READ,
+        {
+            {"HPMN0",       63, 60, {}},
+            {"ExtTrcBuff",  59, 56, {}},
+            {"BRBE",        55, 52, {}},
+            {"MTPMU",       51, 48, {}},
+            {"TraceBuffer", 47, 44, {}},
+            {"TraceFilt",   43, 40, {}},
+            {"DoubleLock",  39, 36, {}},
+            {"PMSVer",      35, 32, {}},
+            {"CTX_CMPs",    31, 28, {}},
+            {"SEBEP",       27, 24, {}},
+            {"WRPs",        23, 20, {}},
+            {"PMSS",        19, 16, {}},
+            {"BRPs",        15, 12, {}},
+            {"PMUVer",      11,  8, {}},
+            {"TraceVer",     7,  4, {}},
+            {"DebugVer",     3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64DFR1_EL1", CSR_REGID_ID_AA64DFR1_EL1, READ,
+        {
+            {"ABL_CMPs", 63, 56, {}},
+            {"DPFZS",    55, 52, {}},
+            {"EBEP",     51, 48, {}},
+            {"ITE",      47, 44, {}},
+            {"ABLE",     43, 40, {}},
+            {"PMICNTR",  39, 36, {}},
+            {"SPMU",     35, 32, {}},
+            {"CTX_CMPs", 31, 24, {}},
+            {"WRPs",     23, 16, {}},
+            {"BRPs",     15,  8, {}},
+            {"SYSPMUID",  7,  0, {}},
+        }
+    },
+    {
+        "ID_AA64DFR2_EL1", CSR_REGID_ID_AA64DFR2_EL1, READ,
+        {
+            {"TRBE_EXC", 27, 24, {}},
+            {"SPE_nVM",  23, 20, {}},
+            {"SPE_EXC",  19, 16, {}},
+            {"BWE",       7,  4, {}},
+            {"STEP",      3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64FPFR0_EL1", CSR_REGID_ID_AA64FPFR0_EL1, READ,
+        {
+            {"F8CVT",  31, 31, {}},
+            {"F8FMA",  30, 30, {}},
+            {"F8DP4",  29, 29, {}},
+            {"F8DP2",  28, 28, {}},
+            {"F8MM8",  27, 27, {}},
+            {"F8MM4",  26, 26, {}},
+            {"F8E4M3",  1,  1, {}},
+            {"F8E5M2",  0,  0, {}},
+        }
+    },
+    {
         "ID_AA64ISAR0_EL1", CSR_REGID_ID_AA64ISAR0_EL1, READ,
         {
             {"RNDR",   63, 60, {}},
@@ -71,117 +329,6 @@
             {"TLBIW",    11,  8, {}},
             {"FAMINMAX",  7,  4, {}},
             {"CPA",       3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64PFR0_EL1", CSR_REGID_ID_AA64PFR0_EL1, READ,
-        {
-            {"CSV3",    63, 60, {}},
-            {"CSV2",    59, 56, {}},
-            {"RME",     55, 52, {}},
-            {"DIT",     51, 48, {}},
-            {"AMU",     47, 44, {}},
-            {"MPAM",    43, 40, {}},
-            {"SEL2",    39, 36, {}},
-            {"SVE",     35, 32, {}},
-            {"RAS",     31, 28, {}},
-            {"GIC",     27, 24, {}},
-            {"AdvSIMD", 23, 20, {}},
-            {"FP",      19, 16, {}},
-            {"EL3",     15, 12, {}},
-            {"EL2",     11,  8, {}},
-            {"EL1",      7,  4, {}},
-            {"EL0",      3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64PFR1_EL1", CSR_REGID_ID_AA64PFR1_EL1, READ,
-        {
-            {"PFAR",      63, 60, {}},
-            {"DF2",       59, 56, {}},
-            {"MTEX",      55, 52, {}},
-            {"THE",       51, 48, {}},
-            {"GCS",       47, 44, {}},
-            {"MTE_frac",  43, 40, {}},
-            {"NMI",       39, 36, {}},
-            {"CSV2_frac", 35, 32, {}},
-            {"RNDR_trap", 31, 28, {}},
-            {"SME",       27, 24, {}},
-            {"MPAM_frac", 19, 16, {}},
-            {"RAS_frac",  15, 12, {}},
-            {"MTE",       11,  8, {}},
-            {"SSBS",       7,  4, {}},
-            {"BT",         3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64PFR2_EL1", CSR_REGID_ID_AA64PFR2_EL1, READ,
-        {
-            {"FPMR",         35, 32, {}},
-            {"UINJ",         19, 16, {}},
-            {"MTEFAR",       11,  8, {}},
-            {"MTESTOREONLY",  7,  4, {}},
-            {"MTEPERM",       3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64DFR0_EL1", CSR_REGID_ID_AA64DFR0_EL1, READ,
-        {
-            {"HPMN0",       63, 60, {}},
-            {"ExtTrcBuff",  59, 56, {}},
-            {"BRBE",        55, 52, {}},
-            {"MTPMU",       51, 48, {}},
-            {"TraceBuffer", 47, 44, {}},
-            {"TraceFilt",   43, 40, {}},
-            {"DoubleLock",  39, 36, {}},
-            {"PMSVer",      35, 32, {}},
-            {"CTX_CMPs",    31, 28, {}},
-            {"SEBEP",       27, 24, {}},
-            {"WRPs",        23, 20, {}},
-            {"PMSS",        19, 16, {}},
-            {"BRPs",        15, 12, {}},
-            {"PMUVer",      11,  8, {}},
-            {"TraceVer",     7,  4, {}},
-            {"DebugVer",     3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64DFR1_EL1", CSR_REGID_ID_AA64DFR1_EL1, READ,
-        {
-            {"ABL_CMPs", 63, 56, {}},
-            {"DPFZS",    55, 52, {}},
-            {"EBEP",     51, 48, {}},
-            {"ITE",      47, 44, {}},
-            {"ABLE",     43, 40, {}},
-            {"PMICNTR",  39, 36, {}},
-            {"SPMU",     35, 32, {}},
-            {"CTX_CMPs", 31, 24, {}},
-            {"WRPs",     23, 16, {}},
-            {"BRPs",     15,  8, {}},
-            {"SYSPMUID",  7,  0, {}},
-        }
-    },
-    {
-        "ID_AA64DFR2_EL1", CSR_REGID_ID_AA64DFR2_EL1, READ,
-        {
-            {"TRBE_EXC", 27, 24, {}},
-            {"SPE_nVM",  23, 20, {}},
-            {"SPE_EXC",  19, 16, {}},
-            {"BWE",       7,  4, {}},
-            {"STEP",      3,  0, {}},
-        }
-    },
-    {
-        "ID_AA64FPFR0_EL1", CSR_REGID_ID_AA64FPFR0_EL1, READ,
-        {
-            {"F8CVT",  31, 31, {}},
-            {"F8FMA",  30, 30, {}},
-            {"F8DP4",  29, 29, {}},
-            {"F8DP2",  28, 28, {}},
-            {"F8MM8",  27, 27, {}},
-            {"F8MM4",  26, 26, {}},
-            {"F8E4M3",  1,  1, {}},
-            {"F8E5M2",  0,  0, {}},
         }
     },
     {
@@ -277,6 +424,57 @@
             {"ASID2",   11,  8, {}},
             {"EIESB",    7,  4, {}},
             {"PoPS",     3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64PFR0_EL1", CSR_REGID_ID_AA64PFR0_EL1, READ,
+        {
+            {"CSV3",    63, 60, {}},
+            {"CSV2",    59, 56, {}},
+            {"RME",     55, 52, {}},
+            {"DIT",     51, 48, {}},
+            {"AMU",     47, 44, {}},
+            {"MPAM",    43, 40, {}},
+            {"SEL2",    39, 36, {}},
+            {"SVE",     35, 32, {}},
+            {"RAS",     31, 28, {}},
+            {"GIC",     27, 24, {}},
+            {"AdvSIMD", 23, 20, {}},
+            {"FP",      19, 16, {}},
+            {"EL3",     15, 12, {}},
+            {"EL2",     11,  8, {}},
+            {"EL1",      7,  4, {}},
+            {"EL0",      3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64PFR1_EL1", CSR_REGID_ID_AA64PFR1_EL1, READ,
+        {
+            {"PFAR",      63, 60, {}},
+            {"DF2",       59, 56, {}},
+            {"MTEX",      55, 52, {}},
+            {"THE",       51, 48, {}},
+            {"GCS",       47, 44, {}},
+            {"MTE_frac",  43, 40, {}},
+            {"NMI",       39, 36, {}},
+            {"CSV2_frac", 35, 32, {}},
+            {"RNDR_trap", 31, 28, {}},
+            {"SME",       27, 24, {}},
+            {"MPAM_frac", 19, 16, {}},
+            {"RAS_frac",  15, 12, {}},
+            {"MTE",       11,  8, {}},
+            {"SSBS",       7,  4, {}},
+            {"BT",         3,  0, {}},
+        }
+    },
+    {
+        "ID_AA64PFR2_EL1", CSR_REGID_ID_AA64PFR2_EL1, READ,
+        {
+            {"FPMR",         35, 32, {}},
+            {"UINJ",         19, 16, {}},
+            {"MTEFAR",       11,  8, {}},
+            {"MTESTOREONLY",  7,  4, {}},
+            {"MTEPERM",       3,  0, {}},
         }
     },
     {
@@ -522,91 +720,104 @@
         }
     },
     {
-        "CTR_EL0", CSR_REGID_CTR_EL0, READ,
+        "MAIR2_EL1", CSR_REGID_MAIR2_EL1, READ,
         {
-            {"TminLine", 37, 32, {}},
-            {"DIC",      29, 29, {}},
-            {"IDC",      28, 28, {}},
-            {"CWG",      27, 24, {}},
-            {"ERG",      23, 20, {}},
-            {"DminLine", 19, 16, {}},
-            {"L1Ip",     15, 14, {}},
-            {"IminLine",  3,  0, {}},
+            {"Attr<n>", 63,  0, {}},
         }
     },
     {
-        "TCR_EL1", CSR_REGID_TCR_EL1, READ,
+        "MAIR_EL1", CSR_REGID_MAIR_EL1, READ,
         {
-            {"MTX1",   61, 61, {}},
-            {"MTX0",   60, 60, {}},
-            {"DS",     59, 59, {}},
-            {"TCMA1",  58, 58, {}},
-            {"TCMA0",  57, 57, {}},
-            {"E0PD1",  56, 56, {}},
-            {"E0PD0",  55, 55, {}},
-            {"NFD1",   54, 54, {}},
-            {"NFD0",   53, 53, {}},
-            {"TBID1",  52, 52, {}},
-            {"TBID0",  51, 51, {}},
-            {"HWU162", 50, 50, {}},
-            {"HWU161", 49, 49, {}},
-            {"HWU160", 48, 48, {}},
-            {"HWU159", 47, 47, {}},
-            {"HWU062", 46, 46, {}},
-            {"HWU061", 45, 45, {}},
-            {"HWU060", 44, 44, {}},
-            {"HWU059", 43, 43, {}},
-            {"HPD1",   42, 42, {}},
-            {"HPD0",   41, 41, {}},
-            {"HD",     40, 40, {}},
-            {"HA",     39, 39, {}},
-            {"TBI1",   38, 38, {}},
-            {"TBI0",   37, 37, {}},
-            {"AS",     36, 36, {}},
-            {"IPS",    34, 32, {}},
-            {"TG1",    31, 30, {}},
-            {"SH1",    29, 28, {}},
-            {"ORGN1",  27, 26, {}},
-            {"IRGN1",  25, 24, {}},
-            {"EPD1",   23, 23, {}},
-            {"A1",     22, 22, {}},
-            {"T1SZ",   21, 16, {}},
-            {"TG0",    15, 14, {}},
-            {"SH0",    13, 12, {}},
-            {"ORGN0",  11, 10, {}},
-            {"IRGN0",   9,  8, {}},
-            {"EPD0",    7,  7, {}},
-            {"T0SZ",    5,  0, {}},
+            {"Attr<n>", 63,  0, {}},
         }
     },
     {
-        "TCR2_EL1", CSR_REGID_TCR2_EL1, READ,
+        "MIDR_EL1", CSR_REGID_MIDR_EL1, READ,
         {
-            {"FNGNA1", 21, 21, {}},
-            {"FNGNA0", 20, 20, {}},
-            {"FNG1",   18, 18, {}},
-            {"FNG0",   17, 17, {}},
-            {"A2",     16, 16, {}},
-            {"DisCH1", 15, 15, {}},
-            {"DisCH0", 14, 14, {}},
-            {"HAFT",   11, 11, {}},
-            {"PTTWI",  10, 10, {}},
-            {"D128",    5,  5, {}},
-            {"AIE",     4,  4, {}},
-            {"POE",     3,  3, {}},
-            {"E0POE",   2,  2, {}},
-            {"PIE",     1,  1, {}},
-            {"PnCH",    0,  0, {}},
+            {"Implementer",  31, 24, {}},
+            {"Variant",      23, 20, {}},
+            {"Architecture", 19, 16, {}},
+            {"PartNum",      15,  4, {}},
+            {"Revision",      3,  0, {}},
         }
     },
     {
-        "TRCDEVARCH", CSR_REGID_TRCDEVARCH, READ,
+        "MPAMIDR_EL1", CSR_REGID_MPAMIDR_EL1, READ,
         {
-            {"ARCHITECT", 31, 21, {}},
-            {"PRESENT",   20, 20, {}},
-            {"REVISION",  19, 16, {}},
-            {"ARCHVER",   15, 12, {}},
-            {"ARCHPART",  11,  0, {}},
+            {"HAS_SDEFLT",   61, 61, {}},
+            {"HAS_FORCE_NS", 60, 60, {}},
+            {"SP4",          59, 59, {}},
+            {"HAS_TIDR",     58, 58, {}},
+            {"HAS_ALTSP",    57, 57, {}},
+            {"HAS_BW_CTRL",  56, 56, {}},
+            {"PMG_MAX",      39, 32, {}},
+            {"VPMR_MAX",     20, 18, {}},
+            {"HAS_HCR",      17, 17, {}},
+            {"PARTID_MAX",   15,  0, {}},
+        }
+    },
+    {
+        "MPIDR_EL1", CSR_REGID_MPIDR_EL1, READ,
+        {
+            {"Aff3", 39, 32, {}},
+            {"U",    30, 30, {}},
+            {"MT",   24, 24, {}},
+            {"Aff2", 23, 16, {}},
+            {"Aff1", 15,  8, {}},
+            {"Aff0",  7,  0, {}},
+        }
+    },
+    {
+        "PIR_EL1", CSR_REGID_PIR_EL1, READ,
+        {
+            {"Perm<m>", 63,  0, {}},
+        }
+    },
+    {
+        "PIRE0_EL1", CSR_REGID_PIRE0_EL1, READ,
+        {
+            {"Perm<m>", 63,  0, {}},
+        }
+    },
+    {
+        "PMCCFILTR_EL0", CSR_REGID_PMCCFILTR_EL0, READ,
+        {
+            {"VS",  57, 56, {}},
+            {"P",   31, 31, {}},
+            {"U",   30, 30, {}},
+            {"NSK", 29, 29, {}},
+            {"NSU", 28, 28, {}},
+            {"NSH", 27, 27, {}},
+            {"M",   26, 26, {}},
+            {"SH",  24, 24, {}},
+            {"T",   23, 23, {}},
+            {"RLK", 22, 22, {}},
+            {"RLU", 21, 21, {}},
+            {"RLH", 20, 20, {}},
+        }
+    },
+    {
+        "PMCCNTR_EL0", CSR_REGID_PMCCNTR_EL0, READ,
+        {
+            {"CCNT", 63,  0, {}},
+        }
+    },
+    {
+        "PMCR_EL0", CSR_REGID_PMCR_EL0, READ,
+        {
+            {"FZS",    32, 32, {}},
+            {"IMP",    31, 24, {}},
+            {"IDCODE", 23, 16, {}},
+            {"N",      15, 11, {}},
+            {"FZO",     9,  9, {}},
+            {"LP",      7,  7, {}},
+            {"LC",      6,  6, {}},
+            {"DP",      5,  5, {}},
+            {"X",       4,  4, {}},
+            {"D",       3,  3, {}},
+            {"C",       2,  2, {}},
+            {"P",       1,  1, {}},
+            {"E",       0,  0, {}},
         }
     },
     {
@@ -644,232 +855,21 @@
         }
     },
     {
-        "MPAMIDR_EL1", CSR_REGID_MPAMIDR_EL1, READ,
+        "PMUSERENR_EL0", CSR_REGID_PMUSERENR_EL0, READ,
         {
-            {"HAS_SDEFLT",   61, 61, {}},
-            {"HAS_FORCE_NS", 60, 60, {}},
-            {"SP4",          59, 59, {}},
-            {"HAS_TIDR",     58, 58, {}},
-            {"HAS_ALTSP",    57, 57, {}},
-            {"HAS_BW_CTRL",  56, 56, {}},
-            {"PMG_MAX",      39, 32, {}},
-            {"VPMR_MAX",     20, 18, {}},
-            {"HAS_HCR",      17, 17, {}},
-            {"PARTID_MAX",   15,  0, {}},
-        }
-    },
-    {
-        "TRBIDR_EL1", CSR_REGID_TRBIDR_EL1, READ,
-        {
-            {"MaxBuffSize", 47, 32, {}},
-            {"MPAM",        15, 12, {}},
-            {"EA",          11,  8, {}},
-            {"AddrMode",     7,  6, {}},
-            {"F",            5,  5, {}},
-            {"P",            4,  4, {}},
-            {"Align",        3,  0, {}},
-        }
-    },
-    {
-        "MIDR_EL1", CSR_REGID_MIDR_EL1, READ,
-        {
-            {"Implementer",  31, 24, {}},
-            {"Variant",      23, 20, {}},
-            {"Architecture", 19, 16, {}},
-            {"PartNum",      15,  4, {}},
-            {"Revision",      3,  0, {}},
-        }
-    },
-    {
-        "MPIDR_EL1", CSR_REGID_MPIDR_EL1, READ,
-        {
-            {"Aff3", 39, 32, {}},
-            {"U",    30, 30, {}},
-            {"MT",   24, 24, {}},
-            {"Aff2", 23, 16, {}},
-            {"Aff1", 15,  8, {}},
-            {"Aff0",  7,  0, {}},
+            {"TID",  6,  6, {}},
+            {"IR",   5,  5, {}},
+            {"UEN",  4,  4, {}},
+            {"ER",   3,  3, {}},
+            {"CR",   2,  2, {}},
+            {"SW",   1,  1, {}},
+            {"EN",   0,  0, {}},
         }
     },
     {
         "REVIDR_EL1", CSR_REGID_REVIDR_EL1, READ,
         {
             {"IMPLEMENTATION DEFINED", 63,  0, {}},
-        }
-    },
-    {
-        "TPIDRRO_EL0", CSR_REGID_TPIDRRO_EL0, READ,
-        {
-            {"ThreadID", 63,  0, {}},
-        }
-    },
-    {
-        "TPIDR_EL0", CSR_REGID_TPIDR_EL0, READ,
-        {
-            {"ThreadID", 63,  0, {}},
-        }
-    },
-    {
-        "TPIDR_EL1", CSR_REGID_TPIDR_EL1, READ,
-        {
-            {"ThreadID", 63,  0, {}},
-        }
-    },
-    {
-        "SCXTNUM_EL0", CSR_REGID_SCXTNUM_EL0, READ,
-        {
-            {"SCXTNUM", 63,  0, {}},
-        }
-    },
-    {
-        "SCXTNUM_EL1", CSR_REGID_SCXTNUM_EL1, READ,
-        {
-            {"SCXTNUM", 63,  0, {}},
-        }
-    },
-    {
-        "SCTLR_EL1", CSR_REGID_SCTLR_EL1, READ,
-        {
-            {"TIDCP",     63, 63, {}},
-            {"SPINTMASK", 62, 62, {}},
-            {"NMI",       61, 61, {}},
-            {"EnTP2",     60, 60, {}},
-            {"TCSO",      59, 59, {}},
-            {"TCSO0",     58, 58, {}},
-            {"EPAN",      57, 57, {}},
-            {"EnALS",     56, 56, {}},
-            {"EnAS0",     55, 55, {}},
-            {"EnASR",     54, 54, {}},
-            {"TME",       53, 53, {}},
-            {"TME0",      52, 52, {}},
-            {"TMT",       51, 51, {}},
-            {"TMT0",      50, 50, {}},
-            {"TWEDEL",    49, 46, {}},
-            {"TWEDEn",    45, 45, {}},
-            {"DSSBS",     44, 44, {}},
-            {"ATA",       43, 43, {}},
-            {"ATA0",      42, 42, {}},
-            {"TCF",       41, 40, {}},
-            {"TCF0",      39, 38, {}},
-            {"ITFSB",     37, 37, {}},
-            {"BT1",       36, 36, {}},
-            {"BT0",       35, 35, {}},
-            {"EnFPM",     34, 34, {}},
-            {"MSCEn",     33, 33, {}},
-            {"CMOW",      32, 32, {}},
-            {"EnIA",      31, 31, {}},
-            {"EnIB",      30, 30, {}},
-            {"LSMAOE",    29, 29, {}},
-            {"nTLSMD",    28, 28, {}},
-            {"EnDA",      27, 27, {}},
-            {"UCI",       26, 26, {}},
-            {"EE",        25, 25, {}},
-            {"E0E",       24, 24, {}},
-            {"SPAN",      23, 23, {}},
-            {"EIS",       22, 22, {}},
-            {"IESB",      21, 21, {}},
-            {"TSCXT",     20, 20, {}},
-            {"WXN",       19, 19, {}},
-            {"nTWE",      18, 18, {}},
-            {"nTWI",      16, 16, {}},
-            {"UCT",       15, 15, {}},
-            {"DZE",       14, 14, {}},
-            {"EnDB",      13, 13, {}},
-            {"I",         12, 12, {}},
-            {"EOS",       11, 11, {}},
-            {"EnRCTX",    10, 10, {}},
-            {"UMA",        9,  9, {}},
-            {"SED",        8,  8, {}},
-            {"ITD",        7,  7, {}},
-            {"nAA",        6,  6, {}},
-            {"CP15BEN",    5,  5, {}},
-            {"SA0",        4,  4, {}},
-            {"SA",         3,  3, {}},
-            {"C",          2,  2, {}},
-            {"A",          1,  1, {}},
-            {"M",          0,  0, {}},
-        }
-    },
-    {
-        "SCTLR2_EL1", CSR_REGID_SCTLR2_EL1, READ,
-        {
-            {"CPTM0",     12, 12, {}},
-            {"CPTM",      11, 11, {}},
-            {"CPTA0",     10, 10, {}},
-            {"CPTA",       9,  9, {}},
-            {"EnPACM0",    8,  8, {}},
-            {"EnPACM",     7,  7, {}},
-            {"EnIDCP128",  6,  6, {}},
-            {"EASE",       5,  5, {}},
-            {"EnANERR",    4,  4, {}},
-            {"EnADERR",    3,  3, {}},
-            {"NMEA",       2,  2, {}},
-        }
-    },
-    {
-        "HCR_EL2", CSR_REGID_HCR_EL2, READ,
-        {
-            {"TWEDEL",   63, 60, {}},
-            {"TWEDEn",   59, 59, {}},
-            {"TID5",     58, 58, {}},
-            {"DCT",      57, 57, {}},
-            {"ATA",      56, 56, {}},
-            {"TTLBOS",   55, 55, {}},
-            {"TTLBIS",   54, 54, {}},
-            {"EnSCXT",   53, 53, {}},
-            {"TOCU",     52, 52, {}},
-            {"AMVOFFEN", 51, 51, {}},
-            {"TICAB",    50, 50, {}},
-            {"TID4",     49, 49, {}},
-            {"GPF",      48, 48, {}},
-            {"FIEN",     47, 47, {}},
-            {"FWB",      46, 46, {}},
-            {"NV2",      45, 45, {}},
-            {"AT",       44, 44, {}},
-            {"NV1",      43, 43, {}},
-            {"NV",       42, 42, {}},
-            {"API",      41, 41, {}},
-            {"APK",      40, 40, {}},
-            {"TME",      39, 39, {}},
-            {"MIOCNCE",  38, 38, {}},
-            {"TEA",      37, 37, {}},
-            {"TERR",     36, 36, {}},
-            {"TLOR",     35, 35, {}},
-            {"E2H",      34, 34, {}},
-            {"ID",       33, 33, {}},
-            {"CD",       32, 32, {}},
-            {"RW",       31, 31, {}},
-            {"TRVM",     30, 30, {}},
-            {"HCD",      29, 29, {}},
-            {"TDZ",      28, 28, {}},
-            {"TGE",      27, 27, {}},
-            {"TVM",      26, 26, {}},
-            {"TTLB",     25, 25, {}},
-            {"TPU",      24, 24, {}},
-            {"TPCP",     23, 23, {}},
-            {"TPC",      23, 23, {}},
-            {"TSW",      22, 22, {}},
-            {"TACR",     21, 21, {}},
-            {"TIDCP",    20, 20, {}},
-            {"TSC",      19, 19, {}},
-            {"TID3",     18, 18, {}},
-            {"TID2",     17, 17, {}},
-            {"TID1",     16, 16, {}},
-            {"TID0",     15, 15, {}},
-            {"TWE",      14, 14, {}},
-            {"TWI",      13, 13, {}},
-            {"DC",       12, 12, {}},
-            {"BSU",      11, 10, {}},
-            {"FB",        9,  9, {}},
-            {"VSE",       8,  8, {}},
-            {"VI",        7,  7, {}},
-            {"VF",        6,  6, {}},
-            {"AMO",       5,  5, {}},
-            {"IMO",       4,  4, {}},
-            {"FMO",       3,  3, {}},
-            {"PTW",       2,  2, {}},
-            {"SWIO",      1,  1, {}},
-            {"VM",        0,  0, {}},
         }
     },
     {
@@ -945,14 +945,199 @@
         }
     },
     {
-        "ID_AA64AFR0_EL1", CSR_REGID_ID_AA64AFR0_EL1, READ,
+        "SCTLR2_EL1", CSR_REGID_SCTLR2_EL1, READ,
         {
-            {"IMPLEMENTATION DEFINED", 31, 28, {}},
+            {"CPTM0",     12, 12, {}},
+            {"CPTM",      11, 11, {}},
+            {"CPTA0",     10, 10, {}},
+            {"CPTA",       9,  9, {}},
+            {"EnPACM0",    8,  8, {}},
+            {"EnPACM",     7,  7, {}},
+            {"EnIDCP128",  6,  6, {}},
+            {"EASE",       5,  5, {}},
+            {"EnANERR",    4,  4, {}},
+            {"EnADERR",    3,  3, {}},
+            {"NMEA",       2,  2, {}},
         }
     },
     {
-        "ID_AA64AFR1_EL1", CSR_REGID_ID_AA64AFR1_EL1, READ,
+        "SCTLR_EL1", CSR_REGID_SCTLR_EL1, READ,
         {
+            {"TIDCP",     63, 63, {}},
+            {"SPINTMASK", 62, 62, {}},
+            {"NMI",       61, 61, {}},
+            {"EnTP2",     60, 60, {}},
+            {"TCSO",      59, 59, {}},
+            {"TCSO0",     58, 58, {}},
+            {"EPAN",      57, 57, {}},
+            {"EnALS",     56, 56, {}},
+            {"EnAS0",     55, 55, {}},
+            {"EnASR",     54, 54, {}},
+            {"TME",       53, 53, {}},
+            {"TME0",      52, 52, {}},
+            {"TMT",       51, 51, {}},
+            {"TMT0",      50, 50, {}},
+            {"TWEDEL",    49, 46, {}},
+            {"TWEDEn",    45, 45, {}},
+            {"DSSBS",     44, 44, {}},
+            {"ATA",       43, 43, {}},
+            {"ATA0",      42, 42, {}},
+            {"TCF",       41, 40, {}},
+            {"TCF0",      39, 38, {}},
+            {"ITFSB",     37, 37, {}},
+            {"BT1",       36, 36, {}},
+            {"BT0",       35, 35, {}},
+            {"EnFPM",     34, 34, {}},
+            {"MSCEn",     33, 33, {}},
+            {"CMOW",      32, 32, {}},
+            {"EnIA",      31, 31, {}},
+            {"EnIB",      30, 30, {}},
+            {"LSMAOE",    29, 29, {}},
+            {"nTLSMD",    28, 28, {}},
+            {"EnDA",      27, 27, {}},
+            {"UCI",       26, 26, {}},
+            {"EE",        25, 25, {}},
+            {"E0E",       24, 24, {}},
+            {"SPAN",      23, 23, {}},
+            {"EIS",       22, 22, {}},
+            {"IESB",      21, 21, {}},
+            {"TSCXT",     20, 20, {}},
+            {"WXN",       19, 19, {}},
+            {"nTWE",      18, 18, {}},
+            {"nTWI",      16, 16, {}},
+            {"UCT",       15, 15, {}},
+            {"DZE",       14, 14, {}},
+            {"EnDB",      13, 13, {}},
+            {"I",         12, 12, {}},
+            {"EOS",       11, 11, {}},
+            {"EnRCTX",    10, 10, {}},
+            {"UMA",        9,  9, {}},
+            {"SED",        8,  8, {}},
+            {"ITD",        7,  7, {}},
+            {"nAA",        6,  6, {}},
+            {"CP15BEN",    5,  5, {}},
+            {"SA0",        4,  4, {}},
+            {"SA",         3,  3, {}},
+            {"C",          2,  2, {}},
+            {"A",          1,  1, {}},
+            {"M",          0,  0, {}},
+        }
+    },
+    {
+        "SCXTNUM_EL0", CSR_REGID_SCXTNUM_EL0, READ,
+        {
+            {"SCXTNUM", 63,  0, {}},
+        }
+    },
+    {
+        "SCXTNUM_EL1", CSR_REGID_SCXTNUM_EL1, READ,
+        {
+            {"SCXTNUM", 63,  0, {}},
+        }
+    },
+    {
+        "TCR2_EL1", CSR_REGID_TCR2_EL1, READ,
+        {
+            {"FNGNA1", 21, 21, {}},
+            {"FNGNA0", 20, 20, {}},
+            {"FNG1",   18, 18, {}},
+            {"FNG0",   17, 17, {}},
+            {"A2",     16, 16, {}},
+            {"DisCH1", 15, 15, {}},
+            {"DisCH0", 14, 14, {}},
+            {"HAFT",   11, 11, {}},
+            {"PTTWI",  10, 10, {}},
+            {"D128",    5,  5, {}},
+            {"AIE",     4,  4, {}},
+            {"POE",     3,  3, {}},
+            {"E0POE",   2,  2, {}},
+            {"PIE",     1,  1, {}},
+            {"PnCH",    0,  0, {}},
+        }
+    },
+    {
+        "TCR_EL1", CSR_REGID_TCR_EL1, READ,
+        {
+            {"MTX1",   61, 61, {}},
+            {"MTX0",   60, 60, {}},
+            {"DS",     59, 59, {}},
+            {"TCMA1",  58, 58, {}},
+            {"TCMA0",  57, 57, {}},
+            {"E0PD1",  56, 56, {}},
+            {"E0PD0",  55, 55, {}},
+            {"NFD1",   54, 54, {}},
+            {"NFD0",   53, 53, {}},
+            {"TBID1",  52, 52, {}},
+            {"TBID0",  51, 51, {}},
+            {"HWU162", 50, 50, {}},
+            {"HWU161", 49, 49, {}},
+            {"HWU160", 48, 48, {}},
+            {"HWU159", 47, 47, {}},
+            {"HWU062", 46, 46, {}},
+            {"HWU061", 45, 45, {}},
+            {"HWU060", 44, 44, {}},
+            {"HWU059", 43, 43, {}},
+            {"HPD1",   42, 42, {}},
+            {"HPD0",   41, 41, {}},
+            {"HD",     40, 40, {}},
+            {"HA",     39, 39, {}},
+            {"TBI1",   38, 38, {}},
+            {"TBI0",   37, 37, {}},
+            {"AS",     36, 36, {}},
+            {"IPS",    34, 32, {}},
+            {"TG1",    31, 30, {}},
+            {"SH1",    29, 28, {}},
+            {"ORGN1",  27, 26, {}},
+            {"IRGN1",  25, 24, {}},
+            {"EPD1",   23, 23, {}},
+            {"A1",     22, 22, {}},
+            {"T1SZ",   21, 16, {}},
+            {"TG0",    15, 14, {}},
+            {"SH0",    13, 12, {}},
+            {"ORGN0",  11, 10, {}},
+            {"IRGN0",   9,  8, {}},
+            {"EPD0",    7,  7, {}},
+            {"T0SZ",    5,  0, {}},
+        }
+    },
+    {
+        "TPIDR_EL0", CSR_REGID_TPIDR_EL0, READ,
+        {
+            {"ThreadID", 63,  0, {}},
+        }
+    },
+    {
+        "TPIDR_EL1", CSR_REGID_TPIDR_EL1, READ,
+        {
+            {"ThreadID", 63,  0, {}},
+        }
+    },
+    {
+        "TPIDRRO_EL0", CSR_REGID_TPIDRRO_EL0, READ,
+        {
+            {"ThreadID", 63,  0, {}},
+        }
+    },
+    {
+        "TRBIDR_EL1", CSR_REGID_TRBIDR_EL1, READ,
+        {
+            {"MaxBuffSize", 47, 32, {}},
+            {"MPAM",        15, 12, {}},
+            {"EA",          11,  8, {}},
+            {"AddrMode",     7,  6, {}},
+            {"F",            5,  5, {}},
+            {"P",            4,  4, {}},
+            {"Align",        3,  0, {}},
+        }
+    },
+    {
+        "TRCDEVARCH", CSR_REGID_TRCDEVARCH, READ,
+        {
+            {"ARCHITECT", 31, 21, {}},
+            {"PRESENT",   20, 20, {}},
+            {"REVISION",  19, 16, {}},
+            {"ARCHVER",   15, 12, {}},
+            {"ARCHPART",  11,  0, {}},
         }
     },
     {
@@ -973,190 +1158,5 @@
             {"BADDR[42:0]", 47,  5, {}},
             {"SKL",          2,  1, {}},
             {"CnP",          0,  0, {}},
-        }
-    },
-    {
-        "MAIR_EL1", CSR_REGID_MAIR_EL1, READ,
-        {
-            {"Attr<n>", 63,  0, {}},
-        }
-    },
-    {
-        "MAIR2_EL1", CSR_REGID_MAIR2_EL1, READ,
-        {
-            {"Attr<n>", 63,  0, {}},
-        }
-    },
-    {
-        "PIR_EL1", CSR_REGID_PIR_EL1, READ,
-        {
-            {"Perm<m>", 63,  0, {}},
-        }
-    },
-    {
-        "PIRE0_EL1", CSR_REGID_PIRE0_EL1, READ,
-        {
-            {"Perm<m>", 63,  0, {}},
-        }
-    },
-    {
-        "CNTKCTL_EL1", CSR_REGID_CNTKCTL_EL1, READ,
-        {
-            {"CNTPMASK", 19, 19, {}},
-            {"CNTVMASK", 18, 18, {}},
-            {"EVNTIS",   17, 17, {}},
-            {"EL1NVVCT", 16, 16, {}},
-            {"EL1NVPCT", 15, 15, {}},
-            {"EL1TVCT",  14, 14, {}},
-            {"EL1TVT",   13, 13, {}},
-            {"ECV",      12, 12, {}},
-            {"EL1PTEN",  11, 11, {}},
-            {"EL1PCTEN", 10, 10, {}},
-            {"EL0PTEN",   9,  9, {}},
-            {"EL0VTEN",   8,  8, {}},
-            {"EVNTI",     7,  4, {}},
-            {"EVNTDIR",   3,  3, {}},
-            {"EVNTEN",    2,  2, {}},
-            {"EL0VCTEN",  1,  1, {}},
-            {"EL0PCTEN",  0,  0, {}},
-        }
-    },
-    {
-        "CNTPS_CTL_EL1", CSR_REGID_CNTPS_CTL_EL1, READ,
-        {
-            {"ISTATUS",  2,  2, {}},
-            {"IMASK",    1,  1, {}},
-            {"ENABLE",   0,  0, {}},
-        }
-    },
-    {
-        "CNTFRQ_EL0", CSR_REGID_CNTFRQ_EL0, READ,
-        {
-            {"ClockFreq", 31,  0, {}},
-        }
-    },
-    {
-        "CNTPCT_EL0", CSR_REGID_CNTPCT_EL0, READ,
-        {
-            {"PhysicalCount", 63,  0, {}},
-        }
-    },
-    {
-        "CNTVCT_EL0", CSR_REGID_CNTVCT_EL0, READ,
-        {
-            {"VirtualCount", 63,  0, {}},
-        }
-    },
-    {
-        "PMCCFILTR_EL0", CSR_REGID_PMCCFILTR_EL0, READ,
-        {
-            {"VS",  57, 56, {}},
-            {"P",   31, 31, {}},
-            {"U",   30, 30, {}},
-            {"NSK", 29, 29, {}},
-            {"NSU", 28, 28, {}},
-            {"NSH", 27, 27, {}},
-            {"M",   26, 26, {}},
-            {"SH",  24, 24, {}},
-            {"T",   23, 23, {}},
-            {"RLK", 22, 22, {}},
-            {"RLU", 21, 21, {}},
-            {"RLH", 20, 20, {}},
-        }
-    },
-    {
-        "PMCCNTR_EL0", CSR_REGID_PMCCNTR_EL0, READ,
-        {
-            {"CCNT", 63,  0, {}},
-        }
-    },
-    {
-        "PMCR_EL0", CSR_REGID_PMCR_EL0, READ,
-        {
-            {"FZS",    32, 32, {}},
-            {"IMP",    31, 24, {}},
-            {"IDCODE", 23, 16, {}},
-            {"N",      15, 11, {}},
-            {"FZO",     9,  9, {}},
-            {"LP",      7,  7, {}},
-            {"LC",      6,  6, {}},
-            {"DP",      5,  5, {}},
-            {"X",       4,  4, {}},
-            {"D",       3,  3, {}},
-            {"C",       2,  2, {}},
-            {"P",       1,  1, {}},
-            {"E",       0,  0, {}},
-        }
-    },
-    {
-        "PMUSERENR_EL0", CSR_REGID_PMUSERENR_EL0, READ,
-        {
-            {"TID",  6,  6, {}},
-            {"IR",   5,  5, {}},
-            {"UEN",  4,  4, {}},
-            {"ER",   3,  3, {}},
-            {"CR",   2,  2, {}},
-            {"SW",   1,  1, {}},
-            {"EN",   0,  0, {}},
-        }
-    },
-    {
-        "APDAKEYHI_EL1", CSR_REGID_APDAKEYHI_EL1, READ,
-        {
-            {"APDAKeyHi", 63,  0, {}},
-        }
-    },
-    {
-        "APDAKEYLO_EL1", CSR_REGID_APDAKEYLO_EL1, READ,
-        {
-            {"APDAKeyLo", 63,  0, {}},
-        }
-    },
-    {
-        "APDBKEYHI_EL1", CSR_REGID_APDBKEYHI_EL1, READ,
-        {
-            {"APDBKeyHi", 63,  0, {}},
-        }
-    },
-    {
-        "APDBKEYLO_EL1", CSR_REGID_APDBKEYLO_EL1, READ,
-        {
-            {"APDBKeyLo", 63,  0, {}},
-        }
-    },
-    {
-        "APGAKEYHI_EL1", CSR_REGID_APGAKEYHI_EL1, READ,
-        {
-            {"APGAKeyHi", 63,  0, {}},
-        }
-    },
-    {
-        "APGAKEYLO_EL1", CSR_REGID_APGAKEYLO_EL1, READ,
-        {
-            {"APGAKeyLo", 63,  0, {}},
-        }
-    },
-    {
-        "APIAKEYHI_EL1", CSR_REGID_APIAKEYHI_EL1, READ,
-        {
-            {"APIAKeyHi", 63,  0, {}},
-        }
-    },
-    {
-        "APIAKEYLO_EL1", CSR_REGID_APIAKEYLO_EL1, READ,
-        {
-            {"APIAKeyLo", 63,  0, {}},
-        }
-    },
-    {
-        "APIBKEYHI_EL1", CSR_REGID_APIBKEYHI_EL1, READ,
-        {
-            {"APIBKeyHi", 63,  0, {}},
-        }
-    },
-    {
-        "APIBKEYLO_EL1", CSR_REGID_APIBKEYLO_EL1, READ,
-        {
-            {"APIBKeyLo", 63,  0, {}},
         }
     },
