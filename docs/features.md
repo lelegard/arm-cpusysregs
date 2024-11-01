@@ -10,11 +10,15 @@ The `sysreg` column is checked when the feature is detected by the command `sysr
 When set to "n/a", the presence of the feature cannot be detected from software
 (external debug interfaces features for instance).
 
-The Python script `../aarch/extract-arm-spec.py` automatically generates this table,
-based on reference JSON and XML files on the Arm public web site. This script may be
-executed each time an update of the Arm architecture is published. It preserves all
+The Python script `aarch/extract-arm-spec.py` automatically updates this table,
+based on reference JSON and XML files on the Arm public web site. This script should
+be executed each time an update of the Arm architecture is published. It preserves all
 existing information in the table, adds new features, update minimum versions of the
 Arm architecture for existing features.
+
+<!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
+<!-- @AUTOGEN-BEGIN -->
+Total: 354 features, 325 detectable.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------
@@ -145,7 +149,7 @@ Arm architecture for existing features.
 | FEAT_GICv3               |          |           |    X    | Generic Interrupt Controller version 3 (removed)
 | FEAT_GICv3_NMI           |          |           |   n/a   | Non-maskable Interrupts (removed)
 | FEAT_GICv3_TDIR          |          |           |   n/a   | Trapping Non-secure EL1 writes to ICV_DIR (removed)
-| FEAT_GICv3p1             |          |           |         | Generic Interrupt Controller version 3.1 (removed)
+| FEAT_GICv3p1             |          |           |   n/a   | Generic Interrupt Controller version 3.1 (removed)
 | FEAT_GICv4               |          |           |    X    | Generic Interrupt Controller version 4 (removed)
 | FEAT_GICv4p1             |          |           |    X    | Generic Interrupt Controller version 4.1 (removed)
 | FEAT_GTG                 | Armv8.0  |           |    X    | Guest translation granule size
@@ -227,7 +231,7 @@ Arm architecture for existing features.
 | FEAT_PCSRv8p2            | Armv8.1  |           |   n/a   | PC Sample-based profiling version 8.2
 | FEAT_PCSRv8p9            | Armv8.8  |           |   n/a   | PCSR disable control
 | FEAT_PFAR                | Armv8.8  |           |    X    | Physical fault address registers
-| FEAT_PIE                 |          |           |         | Permission model enhancements (removed)
+| FEAT_PIE                 |          |           |   n/a   | Permission model enhancements (removed)
 | FEAT_PMULL               | Armv8.0  |           |    X    | Advanced SIMD PMULL instructions
 | FEAT_PMUv3               | Armv8.0  |           |    X    | PMU extension version 3
 | FEAT_PMUv3_EDGE          | Armv8.8  |           |    X    | PMU event edge detection
@@ -246,8 +250,8 @@ Arm architecture for existing features.
 | FEAT_PMUv3p7             | Armv8.6  |           |    X    | Armv8.7 PMU Extensions
 | FEAT_PMUv3p8             | Armv8.7  |           |    X    | Armv8.8 PMU Extensions
 | FEAT_PMUv3p9             | Armv8.8  |           |    X    | EL0 access controls for PMU event counters
-| FEAT_POE                 |          |           |         | Permission model enhancements (removed)
-| FEAT_PoPS                | Armv9.5  |           |         | Point of Physical Storage
+| FEAT_POE                 |          |           |   n/a   | Permission model enhancements (removed)
+| FEAT_PoPS                | Armv9.5  |           |    X    | Point of Physical Storage
 | FEAT_PRFMSLC             | Armv8.0  |           |    X    | SLC target support for PRFM instructions
 | FEAT_RAS                 | Armv8.0  | Armv8.2   |    X    | Reliability, Availability, and Serviceability (RAS) Extension
 | FEAT_RASSAv1             |          |           |   n/a   | RAS System Architecture version 1
@@ -372,3 +376,4 @@ Arm architecture for existing features.
 | FEAT_WFxT                | Armv8.6  | Armv8.7   |    X    | WFE and WFI instructions with timeout
 | FEAT_XNX                 | Armv8.1  |           |    X    | Execute-never control distinction by Exception level at stage 2
 | FEAT_XS                  | Armv8.6  | Armv8.7   |    X    | XS attribute
+<!-- @AUTOGEN-END -->
