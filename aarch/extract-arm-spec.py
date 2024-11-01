@@ -666,7 +666,8 @@ with file_bitfields_md.rewrite() as output:
             for bf in reg.bitfields:
                 pos = '%d:%d' % (bf.lsb + bf.bits - 1, bf.lsb)
                 print(('| %-*s | %*s | %*d | %s' %
-                       (name_width, bf.name, len(header[1]), pos, len(header[2]), bf.bits, bf.description)).rstrip(),
+                       (name_width, bf.name, len(header[1]), pos, len(header[2]), bf.bits,
+                        bf.description.replace('|', '\|').replace('\n', ' '))).rstrip(),
                       file=output)
     file_bitfields_md.complete(output)
 

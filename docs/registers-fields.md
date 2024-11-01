@@ -3,6 +3,10 @@
 The following tables detail the bitfields in all known Arm system registers by name,
 when bitfields are defined in the Arm specification.
 
+The description texts are automatically extracted from the Arm-provided XML files.
+This extraction can be rudimentary or even flawed. Just use the description as
+an overview and refer to the Arm Architecture Reference Manual for more details.
+
 The Python script `aarch/extract-arm-spec.py` automatically updates these tables,
 based on reference JSON and XML files on the Arm public web site. This script should
 be executed each time an update of the Arm architecture is published.
@@ -340,11 +344,7 @@ be executed each time an update of the Arm architecture is published.
 | E0POE    |   29:29 |    1 | Enable access to POR_EL0 . Traps EL0 accesses to POR_EL0 , from AArch64 state only to EL1, or to EL2 when it is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using EC syndrome value 0x18 .
 | TTA      |   28:28 |    1 | Traps EL0 and EL1 System register accesses to all implemented trace registers from both Execution states to EL1, or to EL2 when it is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1, as follows: In AArch64 state, accesses to trace registers are trapped, reported using EC syndrome value 0x18 . In AArch32 state, MRC and MCR accesses to trace registers are trapped, reported using EC syndrome value 0x05 . In AArch32 state, MRRC and MCRR accesses to trace registers are trapped, reported using EC syndrome value 0x0C .
 | SMEN     |   25:24 |    2 | Traps execution at EL1 and EL0 of SME instructions, SVE instructions when FEAT_SVE is not implemented or the PE is in Streaming SVE mode, and instructions that directly access the SVCR or SMCR_EL1 System registers to EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. When instructions that directly access the SVCR System register are trapped with reference to this control, the MSR SVCRSM , MSR SVCRZA , and MSR SVCRSMZA instructions are also trapped. The exception is reported using ESR_ELx.EC value of 0x1D , with an ISS code of 0x0000000 . This field does not affect whether Streaming SVE or SME register values are valid. A trap taken as a result of CPACR_EL1.SMEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.
-| FPEN     |   21:20 |    2 | Traps execution at EL1 and EL0 of instructions that access the Advanced SIMD and floating-point registers from both Execution states to EL1, reported using EC syndrome value 0x07 , or to EL2 reported using EC syndrome value 0x00 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1, as follows: In AArch64 state, accesses to FPMR , FPCR , FPSR , and any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-31 registers. In AArch32 state, FPSCR , and any of the SIMD and floating-point registers Q0-15, including their views as D0-D31 registers or S0-31 registers. Traps execution at EL1 and EL0 of 
-SME and 
-SVE instructions
- to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1.
-The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPACR_EL1.SMEN has precedence over a trap taken as a result of CPACR_EL1.FPEN. A trap taken as a result of CPACR_EL1.ZEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.
+| FPEN     |   21:20 |    2 | Traps execution at EL1 and EL0 of instructions that access the Advanced SIMD and floating-point registers from both Execution states to EL1, reported using EC syndrome value 0x07 , or to EL2 reported using EC syndrome value 0x00 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1, as follows: In AArch64 state, accesses to FPMR , FPCR , FPSR , and any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-31 registers. In AArch32 state, FPSCR , and any of the SIMD and floating-point registers Q0-15, including their views as D0-D31 registers or S0-31 registers. Traps execution at EL1 and EL0 of  SME and  SVE instructions  to EL1, or to EL2 when EL2 is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1. The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPACR_EL1.SMEN has precedence over a trap taken as a result of CPACR_EL1.FPEN. A trap taken as a result of CPACR_EL1.ZEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.
 | ZEN      |   17:16 |    2 | Traps execution at EL1 and EL0 of SVE instructions when the PE is not in Streaming SVE mode, and instructions that directly access the ZCR_EL1 System register to EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using EC syndrome value 0x19 . A trap taken as a result of CPACR_EL1.ZEN has precedence over a trap taken as a result of CPACR_EL1.FPEN.
 
 ## CPACRMASK_EL1 bitfields
@@ -368,11 +368,7 @@ The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result
 | E0POE    |   29:29 |    1 | Enable access to POR_EL0 . Traps EL0 accesses to POR_EL0 to EL2, from AArch64 state only. The exception is reported using EC syndrome value 0x18 .
 | TTA      |   28:28 |    1 | Traps System register accesses to all implemented trace registers from both Execution states to EL2, when EL2 is enabled in the current Security state, as follows: In AArch64 state, accesses to trace registers with op0=2, op1=1, and CRn< 0b1000 are trapped to EL2, reported using EC syndrome value 0x18 . In AArch32 state, MRC or MCR accesses to trace registers with cpnum=14, opc1=1, and CRn< 0b1000 are trapped to EL2, reported using EC syndrome value 0x05 .
 | SMEN     |   25:24 |    2 | Traps execution at EL2, EL1, and EL0 of SME instructions, SVE instructions when FEAT_SVE is not implemented or the PE is in Streaming SVE mode, and instructions that directly access the SVCR , SMCR_EL1 , or SMCR_EL2 System registers to EL2, when EL2 is enabled in the current Security state. When instructions that directly access the SVCR System register are trapped with reference to this control, the MSR SVCRSM , MSR SVCRZA , and MSR SVCRSMZA instructions are also trapped. The exception is reported using ESR_EL2.EC value of 0x1D , with an ISS code of 0x0000000 . This field does not affect whether Streaming SVE or SME register values are valid. A trap taken as a result of CPTR_EL2.SMEN has precedence over a trap taken as a result of CPTR_EL2.FPEN.
-| FPEN     |   21:20 |    2 | Traps execution at EL2, EL1, and EL0 of instructions that access the Advanced SIMD and floating-point registers from both Execution states to EL2, when EL2 is enabled in the current Security state. The exception is reported using EC syndrome value 0x07 . Traps execution at EL2, EL1, and EL0 of 
-SME and 
-SVE instructions
- to EL2, when EL2 is enabled in the current Security state.
-The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPTR_EL2.SMEN has precedence over a trap taken as a result of CPTR_EL2.FPEN. A trap taken as a result of CPTR_EL2.ZEN has precedence over a trap taken as a result of CPTR_EL2.FPEN.
+| FPEN     |   21:20 |    2 | Traps execution at EL2, EL1, and EL0 of instructions that access the Advanced SIMD and floating-point registers from both Execution states to EL2, when EL2 is enabled in the current Security state. The exception is reported using EC syndrome value 0x07 . Traps execution at EL2, EL1, and EL0 of  SME and  SVE instructions  to EL2, when EL2 is enabled in the current Security state. The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPTR_EL2.SMEN has precedence over a trap taken as a result of CPTR_EL2.FPEN. A trap taken as a result of CPTR_EL2.ZEN has precedence over a trap taken as a result of CPTR_EL2.FPEN.
 | ZEN      |   17:16 |    2 | Traps execution at EL2, EL1, and EL0 of SVE instructions when the PE is not in Streaming SVE mode, and instructions that directly access the ZCR_EL1 or ZCR_EL2 System registers to EL2, when EL2 is enabled in the current Security state. The exception is reported using EC syndrome value 0x19 . A trap taken as a result of CPTR_EL2.ZEN has precedence over a trap taken as a result of CPTR_EL2.FPEN.
 
 ## CPTR_EL3 bitfields
@@ -383,11 +379,7 @@ The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result
 | TAM      |   30:30 |    1 | Trap Activity Monitor access. Traps EL2, EL1, and EL0 accesses to all Activity Monitor registers to EL3. Accesses to the Activity Monitors registers are trapped as follows: In AArch64 state, the following registers are trapped to EL3 and reported with EC syndrome value 0x18 : AMUSERENR_EL0 , AMCFGR_EL0 , AMCGCR_EL0 , AMCNTENCLR0_EL0 , AMCNTENCLR1_EL0 , AMCNTENSET0_EL0 , AMCNTENSET1_EL0 , AMCR_EL0 , AMEVCNTR0<n>_EL0 , AMEVCNTR1<n>_EL0 , AMEVTYPER0<n>_EL0 , and AMEVTYPER1<n>_EL0 . In AArch32 state, accesses with MRC or MCR to the following registers reported with EC syndrome value 0x03 : AMUSERENR , AMCFGR , AMCGCR , AMCNTENCLR0 , AMCNTENCLR1 , AMCNTENSET0 , AMCNTENSET1 , AMCR , AMEVTYPER0<n> , and AMEVTYPER1<n> . In AArch32 state, accesses with MRRC or MCRR to the following registers, reported with EC syndrome value 0x04 : AMEVCNTR0<n> , AMEVCNTR1<n> .
 | TTA      |   20:20 |    1 | Traps System register accesses. Accesses to the trace registers, from all Exception levels, any Security state, and both Execution states are trapped to EL3 as follows: In AArch64 state, Trace registers with op0=2, op1=1, and CRn< 0b1000 are trapped to EL3 and reported using EC syndrome value 0x18 . In AArch32 state, accesses using MCR or MRC to the Trace registers with cpnum=14, opc1=1, and CRn< 0b1000 are reported using EC syndrome value 0x05 .
 | ESM      |   12:12 |    1 | Traps execution of SME instructions, SVE instructions when FEAT_SVE is not implemented or the PE is in Streaming SVE mode, and instructions that directly access the SMCR_EL1 , SMCR_EL2 , SMCR_EL3 , SMPRI_EL1 , SMPRIMAP_EL2 , or SVCR System registers, from all Exception levels and any Security state, to EL3. When instructions that directly access the SVCR System register are trapped with reference to this control, the MSR SVCRSM , MSR SVCRZA , and MSR SVCRSMZA instructions are also trapped. When direct accesses to SMPRI_EL1 and SMPRIMAP_EL2 are trapped, the exception is reported using an ESR_EL3 .EC value of 0x18 . Otherwise, the exception is reported using an ESR_EL3 .EC value of 0x1D , with an ISS code of 0x0000000 . This field does not affect whether Streaming SVE or SME register values are valid. A trap taken as a result of CPTR_EL3.ESM has precedence over a trap taken as a result of CPTR_EL3.TFP.
-| TFP      |   10:10 |    1 | Traps execution of instructions which access the Advanced SIMD and floating-point functionality, from all Exception levels, any Security state, and both Execution states, to EL3. This includes the following registers, all reported using EC syndrome value 0x07 : FPCR , FPSR , FPEXC32_EL2 , and any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-S31 registers. If FEAT_FPMR is implemented, FPMR . MVFR0 , MVFR1 , MVFR2 , FPSCR , FPEXC , and any of the SIMD and floating-point registers Q0-Q15, including their views as D0-D31 registers or S0-S31 registers. VMSR accesses to FPSID . Permitted VMSR accesses to FPSID are ignored, but for the purposes of this trap the architecture defines a VMSR access to the FPSID from EL1 or higher as an access to a SIMD and floating-point register. Traps execution at all Exception levels of 
-SME and 
-SVE instructions
- to EL3 from any Security state.
-The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPTR_EL3.ESM has precedence over a trap taken as a result of CPTR_EL3.TFP. A trap taken as a result of CPTR_EL3.EZ has precedence over a trap taken as a result of CPTR_EL3.TFP. Defined values are:
+| TFP      |   10:10 |    1 | Traps execution of instructions which access the Advanced SIMD and floating-point functionality, from all Exception levels, any Security state, and both Execution states, to EL3. This includes the following registers, all reported using EC syndrome value 0x07 : FPCR , FPSR , FPEXC32_EL2 , and any of the SIMD and floating-point registers V0-V31, including their views as D0-D31 registers or S0-S31 registers. If FEAT_FPMR is implemented, FPMR . MVFR0 , MVFR1 , MVFR2 , FPSCR , FPEXC , and any of the SIMD and floating-point registers Q0-Q15, including their views as D0-D31 registers or S0-S31 registers. VMSR accesses to FPSID . Permitted VMSR accesses to FPSID are ignored, but for the purposes of this trap the architecture defines a VMSR access to the FPSID from EL1 or higher as an access to a SIMD and floating-point register. Traps execution at all Exception levels of  SME and  SVE instructions  to EL3 from any Security state. The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result of CPTR_EL3.ESM has precedence over a trap taken as a result of CPTR_EL3.TFP. A trap taken as a result of CPTR_EL3.EZ has precedence over a trap taken as a result of CPTR_EL3.TFP. Defined values are:
 | EZ       |     8:8 |    1 | Traps execution of SVE instructions when the PE is not in Streaming SVE mode, and instructions that directly access the ZCR_EL3 , ZCR_EL2 , or ZCR_EL1 System registers, from all Exception levels and any Security state, to EL3. The exception is reported using EC syndrome value 0x19 . A trap taken as a result of CPTR_EL3.EZ has precedence over a trap taken as a result of CPTR_EL3.TFP.
 
 ## CPTRMASK_EL2 bitfields
@@ -958,8 +950,7 @@ The exception is reported using ESR_ELx.EC value 0x07 . A trap taken as a result
 | FZ16     |   19:19 |    1 | Flushing denormalized numbers to zero control bit on half-precision data-processing instructions.
 | Len      |   18:16 |    3 | This field has no function in AArch64 state, and nonzero values are ignored during execution in AArch64 state. This field is included only for context saving and restoration of the AArch32 FPSCR .Len field.
 | IDE      |   15:15 |    1 | Input Denormal floating-point exception trap enable.
-| EBF      |   13:13 |    1 | The value of this bit controls the numeric behaviors of BFloat16 dot product calculations performed by the BFDOT, BFMMLA, BFMOPA, and BFMOPS instructions.
-If FEAT_SME2 is implemented, this also controls BFVDOT instruction. When ID_AA64ISAR1_EL1 .BF16 and ID_AA64ZFR0_EL1 .BF16 are 0b0010 , the PE supports the FPCR.EBF field. Otherwise, FPCR.EBF is RES0 .
+| EBF      |   13:13 |    1 | The value of this bit controls the numeric behaviors of BFloat16 dot product calculations performed by the BFDOT, BFMMLA, BFMOPA, and BFMOPS instructions. If FEAT_SME2 is implemented, this also controls BFVDOT instruction. When ID_AA64ISAR1_EL1 .BF16 and ID_AA64ZFR0_EL1 .BF16 are 0b0010 , the PE supports the FPCR.EBF field. Otherwise, FPCR.EBF is RES0 .
 | IXE      |   12:12 |    1 | Inexact floating-point exception trap enable.
 | UFE      |   11:11 |    1 | Underflow floating-point exception trap enable.
 | OFE      |   10:10 |    1 | Overflow floating-point exception trap enable.
@@ -1714,9 +1705,7 @@ If FEAT_SME2 is implemented, this also controls BFVDOT instruction. When ID_AA64
 | Aff2       |   39:32 |    8 | The affinity 2 value of the affinity path of the cluster for which SGI interrupts will be generated. If the IRM bit is 1, this field is RES0 .
 | INTID      |   27:24 |    4 | The INTID of the SGI.
 | Aff1       |   23:16 |    8 | The affinity 1 value of the affinity path of the cluster for which SGI interrupts will be generated. If the IRM bit is 1, this field is RES0 .
-| TargetList |    15:0 |   16 | Target List. The set of PEs for which SGI interrupts will be generated. Each bit corresponds to the PE within a cluster with an Affinity 0 value equal to the bit number. If SRE is set only for Secure EL3, software executing at EL3 might use the System register interface to generate SGIs.
-Therefore, the Distributor must always be able to receive and acknowledge Generate SGI packets received from CPU interface regardless of the ARE settings for a Security state.
-However, the Distributor might discard such packets. If the IRM bit is 1, this field is RES0 .
+| TargetList |    15:0 |   16 | Target List. The set of PEs for which SGI interrupts will be generated. Each bit corresponds to the PE within a cluster with an Affinity 0 value equal to the bit number. If SRE is set only for Secure EL3, software executing at EL3 might use the System register interface to generate SGIs. Therefore, the Distributor must always be able to receive and acknowledge Generate SGI packets received from CPU interface regardless of the ARE settings for a Security state. However, the Distributor might discard such packets. If the IRM bit is 1, this field is RES0 .
 
 ## ICC_BPR0_EL1 bitfields
 
@@ -2745,30 +2734,7 @@ However, the Distributor might discard such packets. If the IRM bit is 1, this f
 | MTPME    |   28:28 |    1 | Multi-threaded PMU Enable. Enables use of the PMEVTYPER<n>_EL0 .MT bits.
 | TDCC     |   27:27 |    1 | Trap DCC. Traps use of the Debug Comms Channel at EL2, EL1, and EL0 to EL3.
 | NSTBE    |   26:26 |    1 | Non-secure Trace Buffer Extended. Together with MDCR_EL3.NSTB, controls the trace buffer owning Security state and accesses to trace buffer System registers from EL2 and EL1.
-| NSTB     |   25:24 |    2 | Non-secure Trace Buffer. Together with MDCR_EL3.NSTBE, controls the trace buffer owning Security state and accesses to trace buffer System registers from EL2 and EL1. NSTBE NSTB Meaning 0b0 0b00 Secure state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Realm and Non-secure states.
-Accesses to trace buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception.
-When Secure state is not implemented, this encoding is reserved. 0b0 0b01 Secure state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Realm and Non-secure states.
-Accesses to trace buffer System registers at Realm and Non-secure
-EL2, and Realm and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates
-a higher priority exception.
-When Secure state is not implemented, this encoding is reserved. 0b0 0b10 Non-secure state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Realm states.
-Accesses to trace buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception. 0b0 0b11 Non-secure state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Realm states.
-Accesses to trace buffer System registers at Secure and Realm EL2,
-and Secure and Realm EL1, generate Trap exceptions to EL3, unless the access generates a higher
-priority exception. 0b1 0b10 Realm state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Non-secure states.
-Accesses to trace buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b11 Realm state owns the trace buffer.
-When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Non-secure states.
-Accesses to trace buffer System registers at Secure and Non-secure
-EL2, and Secure and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates
-a higher priority exception. All other combinations of MDCR_EL3.NSTBE and MDCR_EL3.NSTB are reserved.
+| NSTB     |   25:24 |    2 | Non-secure Trace Buffer. Together with MDCR_EL3.NSTBE, controls the trace buffer owning Security state and accesses to trace buffer System registers from EL2 and EL1. NSTBE NSTB Meaning 0b0 0b00 Secure state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Realm and Non-secure states. Accesses to trace buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. When Secure state is not implemented, this encoding is reserved. 0b0 0b01 Secure state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Realm and Non-secure states. Accesses to trace buffer System registers at Realm and Non-secure EL2, and Realm and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. When Secure state is not implemented, this encoding is reserved. 0b0 0b10 Non-secure state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Realm states. Accesses to trace buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b0 0b11 Non-secure state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Realm states. Accesses to trace buffer System registers at Secure and Realm EL2, and Secure and Realm EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b10 Realm state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Non-secure states. Accesses to trace buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b11 Realm state owns the trace buffer. When TraceBufferEnabled()==TRUE, tracing is prohibited in Secure and Non-secure states. Accesses to trace buffer System registers at Secure and Non-secure EL2, and Secure and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. All other combinations of MDCR_EL3.NSTBE and MDCR_EL3.NSTB are reserved.
 | SCCD     |   23:23 |    1 | Secure Cycle Counter Disable. Prohibits PMCCNTR_EL0 from counting in Secure state and EL3.
 | ETAD     |   22:22 |    1 | External Trace Access Disable. Together with MDCR_EL3.ETADE, controls access to trace unit registers by an external debugger.
 | EPMAD    |   21:21 |    1 | External Performance Monitors Access Disable. Together with MDCR_EL3.EPMADE, controls access to Performance Monitor registers by an external debugger. External accesses of the following Performance Monitor registers are affected by this control: PMCCFILTR_EL0 , PMCCNTR_EL0 , PMCFGR , PMCNTENCLR_EL0 , PMCNTENSET_EL0 , PMCR_EL0 , PMEVCNTR<n>_EL0 , PMEVTYPER<n>_EL0 , PMINTENCLR_EL1 , PMINTENSET_EL1 , PMOVSCLR_EL0 , and PMOVSSET_EL0 . If PMEVFILT2R<n> is implemented, PMEVFILT2R<n> . If implemented, PMIIDR . If PMSWINC_EL0 is implemented in the external view, PMSWINC_EL0 . If FEAT_PMUv3p4 is implemented, PMMIR . If FEAT_PMUv3_EXT64 is implemented, PMCNTEN , PMINTEN , and PMOVS . If FEAT_PMUv3p9 is implemented, PMZR_EL0 . If FEAT_PMUv3_ICNTR is implemented, PMCGCR0 , PMICFILTR_EL0 , and PMICNTR_EL0 . If FEAT_PCSRv8p9 is implemented, PMPCSCTL .
@@ -2778,30 +2744,7 @@ a higher priority exception. All other combinations of MDCR_EL3.NSTBE and MDCR_E
 | SPME     |   17:17 |    1 | Secure Performance Monitors Enable. Controls PMU operation in Secure state and at EL3 when MDCR_EL3.MPMX is 0.
 | SDD      |   16:16 |    1 | AArch64 Secure Self-hosted invasive debug disable. Disables Software debug exceptions in Secure state, other than Breakpoint Instruction exceptions.
 | SPD32    |   15:14 |    2 | AArch32 Secure self-hosted privileged debug. Enables or disables debug exceptions from Secure EL1 using AArch32, other than Breakpoint Instruction exceptions.
-| NSPB     |   13:12 |    2 | Non-secure Profiling Buffer. Together with MDCR_EL3.NSPBE, controls the Profiling Buffer owning Security state and accesses to Statistical Profiling and Profiling Buffer System registers from EL2 and EL1. NSPBE NSPB Meaning 0b0 0b00 Secure state owns the Profiling Buffer.
-Profiling is disabled in Realm and Non-secure states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception.
-When Secure state is not implemented, this encoding is reserved. 0b0 0b01 Secure state owns the Profiling Buffer.
-Profiling is disabled in Realm and Non-secure states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at Realm and Non-secure
-EL2, and Realm and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates
-a higher priority exception.
-When Secure state is not implemented, this encoding is reserved. 0b0 0b10 Non-secure state owns the Profiling Buffer.
-Profiling is disabled in Secure and Realm states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception. 0b0 0b11 Non-secure state owns the Profiling Buffer.
-Profiling is disabled in Secure and Realm states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at Secure and Realm EL2,
-and Secure and Realm EL1, generate Trap exceptions to EL3, unless the access generates a higher
-priority exception. 0b1 0b10 Realm state owns the Profiling Buffer.
-Profiling is disabled in Secure and Non-secure states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate
-Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b11 Realm state owns the Profiling Buffer.
-Profiling is disabled in Secure and Non-secure states.
-Accesses to Statistical Profiling and Profiling Buffer System registers at Secure and Non-secure
-EL2, and Secure and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates
-a higher priority exception. All other combinations of MDCR_EL3.NSPBE and MDCR_EL3.NSPB are reserved.
+| NSPB     |   13:12 |    2 | Non-secure Profiling Buffer. Together with MDCR_EL3.NSPBE, controls the Profiling Buffer owning Security state and accesses to Statistical Profiling and Profiling Buffer System registers from EL2 and EL1. NSPBE NSPB Meaning 0b0 0b00 Secure state owns the Profiling Buffer. Profiling is disabled in Realm and Non-secure states. Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. When Secure state is not implemented, this encoding is reserved. 0b0 0b01 Secure state owns the Profiling Buffer. Profiling is disabled in Realm and Non-secure states. Accesses to Statistical Profiling and Profiling Buffer System registers at Realm and Non-secure EL2, and Realm and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. When Secure state is not implemented, this encoding is reserved. 0b0 0b10 Non-secure state owns the Profiling Buffer. Profiling is disabled in Secure and Realm states. Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b0 0b11 Non-secure state owns the Profiling Buffer. Profiling is disabled in Secure and Realm states. Accesses to Statistical Profiling and Profiling Buffer System registers at Secure and Realm EL2, and Secure and Realm EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b10 Realm state owns the Profiling Buffer. Profiling is disabled in Secure and Non-secure states. Accesses to Statistical Profiling and Profiling Buffer System registers at EL2 and EL1 generate Trap exceptions to EL3, unless the access generates a higher priority exception. 0b1 0b11 Realm state owns the Profiling Buffer. Profiling is disabled in Secure and Non-secure states. Accesses to Statistical Profiling and Profiling Buffer System registers at Secure and Non-secure EL2, and Secure and Non-secure EL1, generate Trap exceptions to EL3, unless the access generates a higher priority exception. All other combinations of MDCR_EL3.NSPBE and MDCR_EL3.NSPB are reserved.
 | NSPBE    |   11:11 |    1 | Non-secure Profiling Buffer Extended. Together with MDCR_EL3.NSPB, controls the Profiling Buffer owning Security state and accesses to Statistical Profiling and Profiling Buffer System registers from EL2 and EL1.
 | TDOSA    |   10:10 |    1 | Trap debug OS-related register access. Traps EL2 and EL1 System register accesses to the powerdown debug registers to EL3. Accesses to the registers are trapped as follows: Accesses from AArch64 state, OSLAR_EL1 , OSLSR_EL1 , OSDLR_EL1 , DBGPRCR_EL1 , and any IMPLEMENTATION DEFINED register with similar functionality that the implementation specifies as trapped by this field, are trapped to EL3 and reported using EC syndrome value 0x18 . Accesses using MCR or MRC to DBGOSLAR , DBGOSLSR , DBGOSDLR , and DBGPRCR , are trapped to EL3 and reported using EC syndrome value 0x05 . Accesses to any IMPLEMENTATION DEFINED register with similar functionality that the implementation specifies as trapped by this field.
 | TDA      |     9:9 |    1 | Trap accesses of debug System registers. Enables a trap to EL3 on accesses of debug System registers.
@@ -3245,8 +3188,7 @@ a higher priority exception. All other combinations of MDCR_EL3.NSPBE and MDCR_E
 | ---------------------- | ------: | ---: | -----------
 | PA                     |  119:76 |   44 | Output address. The output address (OA) corresponding to the supplied input address. This field returns address bits[55:12].
 | D128                   |   64:64 |    1 | Indicates if the PAR_EL1 uses the 128-bit format.
-| ATTR                   |   63:56 |    8 | Memory attributes for the returned output address. This field uses the same encoding as the Attr<n> fields in MAIR_EL1 , MAIR_EL2 , and MAIR_EL3 . If FEAT_MTE_PERM is implemented and the instruction performed a stage 2 translation, the following additional encoding is defined: ATTR Meaning 0b11100000 Tagged NoTagAccess Normal Inner Write-Back, Outer Write-Back,
-Read-Allocate, Write-Allocate Non-transient memory. This encoding in MAIR_ELx is Reserved. The value returned in this field can be the resulting attribute that is actually implemented by the implementation, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor. The attributes presented are consistent with the stages of translation applied in the address translation instruction. If the instruction performed a stage 1 translation only, the attributes are from the stage 1 translation. If the instruction performed a stage 1 and stage 2 translation, the attributes are from the combined stage 1 and stage 2 translation.
+| ATTR                   |   63:56 |    8 | Memory attributes for the returned output address. This field uses the same encoding as the Attr<n> fields in MAIR_EL1 , MAIR_EL2 , and MAIR_EL3 . If FEAT_MTE_PERM is implemented and the instruction performed a stage 2 translation, the following additional encoding is defined: ATTR Meaning 0b11100000 Tagged NoTagAccess Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. This encoding in MAIR_ELx is Reserved. The value returned in this field can be the resulting attribute that is actually implemented by the implementation, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor. The attributes presented are consistent with the stages of translation applied in the address translation instruction. If the instruction performed a stage 1 translation only, the attributes are from the stage 1 translation. If the instruction performed a stage 1 and stage 2 translation, the attributes are from the combined stage 1 and stage 2 translation.
 | NSE                    |   11:11 |    1 | Reports the NSE attribute for a translation table descriptor from the EL3 translation regime. For a description of the values derived by evaluating NS and NSE together, see PAR_EL1.NS. For a result from a Secure, Non-secure, or Realm translation regime, this bit is unknown.
 | IMPLEMENTATION DEFINED |   10:10 |    1 | IMPLEMENTATION DEFINED .
 | NS                     |     9:9 |    1 | Non-secure. The NS attribute for a translation table entry from a Secure translation regime, a Realm translation regime, and the EL3 translation regime.
@@ -3305,26 +3247,7 @@ Read-Allocate, Write-Allocate Non-transient memory. This encoding in MAIR_ELx is
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | SH       |     9:8 |    2 | Profiling Buffer shareability domain. Defines the shareability domain for Normal memory used by the Profiling Buffer.
-| Attr     |     7:0 |    8 | Profiling Buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the Profiling Buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory.
-See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented:
-Device memory with the XS attribute set to 0.
-See encoding of 'dd' for the type of Device memory.
-Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000
-and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the
-type of Normal memory. 0b01000000 If FEAT_XS is implemented:
-Normal Inner Non-cacheable, Outer Non-cacheable memory
-with the XS attribute set to 0.
-Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented:
-Normal Inner Write-through Cacheable, Outer Write-through Cacheable,
-Read-Allocate, No-Write Allocate, Non-transient memory
-with the XS attribute set to 0.
-Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented:
-Tagged Normal Inner Write-Back, Outer Write-Back,
-Read-Allocate, Write-Allocate Non-transient memory.
-Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000
-and xxxx != 0100
-and xxxx != 1010
-and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
+| Attr     |     7:0 |    8 | Profiling Buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the Profiling Buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
 
 ## PMBSR_EL1 bitfields
 
@@ -3581,73 +3504,31 @@ and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Dev
 | E[28]    |   28:28 |    1 | Filter on IMPLEMENTATION DEFINED event 28.
 | E[27]    |   27:27 |    1 | Filter on IMPLEMENTATION DEFINED event 27.
 | E[26]    |   26:26 |    1 | Filter on IMPLEMENTATION DEFINED event 26.
-| E[25]    |   25:25 |    1 | Filter on 
-SMCU or external coprocessor operation
- event.
-| E[24]    |   24:24 |    1 | Filter on 
-Streaming SVE mode
- event.
-| E[23]    |   23:23 |    1 | Filter on 
-Data snooped
- event.
-| E[22]    |   22:22 |    1 | Filter on 
-Recently fetched
- event.
-| E[21]    |   21:21 |    1 | Filter on 
-Cache data modified
- event.
-| E[20]    |   20:20 |    1 | Filter on 
-Level 2 data cache miss
- event.
-| E[19]    |   19:19 |    1 | Filter on 
-Level 2 data cache access
- event.
-| E[18]    |   18:18 |    1 | Filter on 
-Empty predicate
- event.
-| E[17]    |   17:17 |    1 | Filter on 
-Partial or empty predicate
- event.
-| E[16]    |   16:16 |    1 | Filter on 
-Transactional
- event.
+| E[25]    |   25:25 |    1 | Filter on  SMCU or external coprocessor operation  event.
+| E[24]    |   24:24 |    1 | Filter on  Streaming SVE mode  event.
+| E[23]    |   23:23 |    1 | Filter on  Data snooped  event.
+| E[22]    |   22:22 |    1 | Filter on  Recently fetched  event.
+| E[21]    |   21:21 |    1 | Filter on  Cache data modified  event.
+| E[20]    |   20:20 |    1 | Filter on  Level 2 data cache miss  event.
+| E[19]    |   19:19 |    1 | Filter on  Level 2 data cache access  event.
+| E[18]    |   18:18 |    1 | Filter on  Empty predicate  event.
+| E[17]    |   17:17 |    1 | Filter on  Partial or empty predicate  event.
+| E[16]    |   16:16 |    1 | Filter on  Transactional  event.
 | E[15]    |   15:15 |    1 | Filter on IMPLEMENTATION DEFINED event 15.
 | E[14]    |   14:14 |    1 | Filter on IMPLEMENTATION DEFINED event 14.
 | E[13]    |   13:13 |    1 | Filter on IMPLEMENTATION DEFINED event 13.
 | E[12]    |   12:12 |    1 | Filter on IMPLEMENTATION DEFINED event 12.
-| E[11]    |   11:11 |    1 | Filter on 
-Misalignment
- event.
-| E[10]    |   10:10 |    1 | Filter on 
-Remote access
- event.
-| E[9]     |     9:9 |    1 | Filter on 
-Last Level cache miss
- event.
-| E[8]     |     8:8 |    1 | Filter on 
-Last Level cache access
- event.
-| E[7]     |     7:7 |    1 | Filter on 
-Mispredicted
- event.
-| E[6]     |     6:6 |    1 | Filter on 
-Not taken
- event.
-| E[5]     |     5:5 |    1 | Filter on 
-TLB walk
- event.
-| E[4]     |     4:4 |    1 | Filter on 
-TLB access
- event.
-| E[3]     |     3:3 |    1 | Filter on 
-Level 1 data cache refill or miss
- event.
-| E[2]     |     2:2 |    1 | Filter on 
-Level 1 data cache access
- event.
-| E[1]     |     1:1 |    1 | Filter on 
-Architecturally retired
- event.
+| E[11]    |   11:11 |    1 | Filter on  Misalignment  event.
+| E[10]    |   10:10 |    1 | Filter on  Remote access  event.
+| E[9]     |     9:9 |    1 | Filter on  Last Level cache miss  event.
+| E[8]     |     8:8 |    1 | Filter on  Last Level cache access  event.
+| E[7]     |     7:7 |    1 | Filter on  Mispredicted  event.
+| E[6]     |     6:6 |    1 | Filter on  Not taken  event.
+| E[5]     |     5:5 |    1 | Filter on  TLB walk  event.
+| E[4]     |     4:4 |    1 | Filter on  TLB access  event.
+| E[3]     |     3:3 |    1 | Filter on  Level 1 data cache refill or miss  event.
+| E[2]     |     2:2 |    1 | Filter on  Level 1 data cache access  event.
+| E[1]     |     1:1 |    1 | Filter on  Architecturally retired  event.
 
 ## PMSFCR_EL1 bitfields
 
@@ -3738,73 +3619,31 @@ Architecturally retired
 | E[28]    |   28:28 |    1 | Filter on IMPLEMENTATION DEFINED event 28.
 | E[27]    |   27:27 |    1 | Filter on IMPLEMENTATION DEFINED event 27.
 | E[26]    |   26:26 |    1 | Filter on IMPLEMENTATION DEFINED event 26.
-| E[25]    |   25:25 |    1 | Filter on 
-Not SMCU or coprocessor operation
- event.
-| E[24]    |   24:24 |    1 | Filter on 
-Non-streaming SVE mode
- event.
-| E[23]    |   23:23 |    1 | Filter on 
-Data not snooped
- event.
-| E[22]    |   22:22 |    1 | Filter on 
-Not recently fetched
- event.
-| E[21]    |   21:21 |    1 | Filter on 
-Cache data not modified
- event.
-| E[20]    |   20:20 |    1 | Filter on 
-Level 2 data cache hit
- event.
-| E[19]    |   19:19 |    1 | Filter on 
-No level 2 data cache access
- event.
-| E[18]    |   18:18 |    1 | Filter on 
-Not empty predicate
- event.
-| E[17]    |   17:17 |    1 | Filter on 
-Not partial predicate
- event.
-| E[16]    |   16:16 |    1 | Filter on 
-Not transactional
- event.
+| E[25]    |   25:25 |    1 | Filter on  Not SMCU or coprocessor operation  event.
+| E[24]    |   24:24 |    1 | Filter on  Non-streaming SVE mode  event.
+| E[23]    |   23:23 |    1 | Filter on  Data not snooped  event.
+| E[22]    |   22:22 |    1 | Filter on  Not recently fetched  event.
+| E[21]    |   21:21 |    1 | Filter on  Cache data not modified  event.
+| E[20]    |   20:20 |    1 | Filter on  Level 2 data cache hit  event.
+| E[19]    |   19:19 |    1 | Filter on  No level 2 data cache access  event.
+| E[18]    |   18:18 |    1 | Filter on  Not empty predicate  event.
+| E[17]    |   17:17 |    1 | Filter on  Not partial predicate  event.
+| E[16]    |   16:16 |    1 | Filter on  Not transactional  event.
 | E[15]    |   15:15 |    1 | Filter on IMPLEMENTATION DEFINED event 15.
 | E[14]    |   14:14 |    1 | Filter on IMPLEMENTATION DEFINED event 14.
 | E[13]    |   13:13 |    1 | Filter on IMPLEMENTATION DEFINED event 13.
 | E[12]    |   12:12 |    1 | Filter on IMPLEMENTATION DEFINED event 12.
-| E[11]    |   11:11 |    1 | Filter on 
-Aligned
- event.
-| E[10]    |   10:10 |    1 | Filter on 
-No remote access
- event.
-| E[9]     |     9:9 |    1 | Filter on 
-Last Level cache hit
- event.
-| E[8]     |     8:8 |    1 | Filter on 
-No Last Level cache access
- event.
-| E[7]     |     7:7 |    1 | Filter on 
-Correctly predicted
- event.
-| E[6]     |     6:6 |    1 | Filter on 
-Taken
- event.
-| E[5]     |     5:5 |    1 | Filter on 
-TLB hit
- event.
-| E[4]     |     4:4 |    1 | Filter on 
-No TLB access
- event.
-| E[3]     |     3:3 |    1 | Filter on 
-Level 1 data cache hit
- event.
-| E[2]     |     2:2 |    1 | Filter on 
-No Level 1 data cache access
- event.
-| E[1]     |     1:1 |    1 | Filter on 
-Speculative
- event.
+| E[11]    |   11:11 |    1 | Filter on  Aligned  event.
+| E[10]    |   10:10 |    1 | Filter on  No remote access  event.
+| E[9]     |     9:9 |    1 | Filter on  Last Level cache hit  event.
+| E[8]     |     8:8 |    1 | Filter on  No Last Level cache access  event.
+| E[7]     |     7:7 |    1 | Filter on  Correctly predicted  event.
+| E[6]     |     6:6 |    1 | Filter on  Taken  event.
+| E[5]     |     5:5 |    1 | Filter on  TLB hit  event.
+| E[4]     |     4:4 |    1 | Filter on  No TLB access  event.
+| E[3]     |     3:3 |    1 | Filter on  Level 1 data cache hit  event.
+| E[2]     |     2:2 |    1 | Filter on  No Level 1 data cache access  event.
+| E[1]     |     1:1 |    1 | Filter on  Speculative  event.
 
 ## PMSSCR_EL1 bitfields
 
@@ -4311,28 +4150,23 @@ Speculative
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
-| EZT0     |   30:30 |    1 | Traps execution at EL1 and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to 
-EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using ESR_EL1 .EC or ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
-| LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL1 of (LEN+1)*128 bits.
-This field also defines the Effective Streaming SVE vector length at EL0 when EL2 is not implemented, or EL2 is not enabled in the current Security state, or the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL1 . For all purposes other than returning the result of a direct read of SMCR_EL1, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL2 is implemented and enabled in the current Security state, and the requested length is greater than the Effective length at EL2, then the Effective length at EL2 is used. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL1.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
+| EZT0     |   30:30 |    1 | Traps execution at EL1 and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using ESR_EL1 .EC or ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
+| LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL1 of (LEN+1)*128 bits. This field also defines the Effective Streaming SVE vector length at EL0 when EL2 is not implemented, or EL2 is not enabled in the current Security state, or the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL1 . For all purposes other than returning the result of a direct read of SMCR_EL1, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL2 is implemented and enabled in the current Security state, and the requested length is greater than the Effective length at EL2, then the Effective length at EL2 is used. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL1.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
 ## SMCR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
-| EZT0     |   30:30 |    1 | Traps execution at EL2, EL1, and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to 
-EL2, when EL2 is enabled in the current Security state. The exception is reported using ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
-| LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL2 of (LEN+1)*128 bits.
-This field also defines the Effective Streaming SVE vector length at EL0 when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL2 . For all purposes other than returning the result of a direct read of SMCR_EL2, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL2.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
+| EZT0     |   30:30 |    1 | Traps execution at EL2, EL1, and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL2, when EL2 is enabled in the current Security state. The exception is reported using ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
+| LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL2 of (LEN+1)*128 bits. This field also defines the Effective Streaming SVE vector length at EL0 when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL2 . For all purposes other than returning the result of a direct read of SMCR_EL2, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL2.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
 ## SMCR_EL3 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
-| EZT0     |   30:30 |    1 | Traps execution at all Exception levels of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to 
-EL3. The exception is reported using ESR_EL3 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
+| EZT0     |   30:30 |    1 | Traps execution at all Exception levels of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL3. The exception is reported using ESR_EL3 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
 | LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL3 of (LEN+1)*128 bits. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL3 . For all purposes other than returning the result of a direct read of SMCR_EL3, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL3.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
 ## SMIDR_EL1 bitfields
@@ -4554,8 +4388,7 @@ EL3. The exception is reported using ESR_EL3 .EC value 0x1D , with an ISS code o
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| ZA       |     1:1 |    1 | Enables SME ZA storage.
-If FEAT_SME2 is implemented, also enables SME2 ZT0 storage. When this storage is disabled, execution of an instruction which can access it is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of { 0x1D , 0x3 }. The possible values of this bit are:
+| ZA       |     1:1 |    1 | Enables SME ZA storage. If FEAT_SME2 is implemented, also enables SME2 ZT0 storage. When this storage is disabled, execution of an instruction which can access it is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of { 0x1D , 0x3 }. The possible values of this bit are:
 | SM       |     0:0 |    1 | Enables Streaming SVE mode. When the PE is in Streaming SVE mode, the Streaming SVE vector length (SVL) applies to SVE instructions, and execution at any Exception level of an instruction which is illegal in that mode is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of { 0x1D , 0x1 }. When the PE is not in Streaming SVE mode, the SVE vector length (VL) applies to SVE instructions, and execution at any Exception level of an instruction which is only legal in that mode is trapped. The exception is reported using an ESR_ELx.{EC, SMTC} value of { 0x1D , 0x2 }. The possible values of this bit are:
 
 ## TCO bitfields
@@ -4857,26 +4690,7 @@ If FEAT_SME2 is implemented, also enables SME2 ZT0 storage. When this storage is
 | -------- | ------: | ---: | -----------
 | PAS      |   11:10 |    2 | Physical address specifier. Defines the PAS attribute for memory addressed by the buffer in External mode.
 | SH       |     9:8 |    2 | Trace buffer shareability domain. Defines the shareability domain for Normal memory used by the trace buffer.
-| Attr     |     7:0 |    8 | Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory.
-See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented:
-Device memory with the XS attribute set to 0.
-See encoding of 'dd' for the type of Device memory.
-Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000
-and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the
-type of Normal memory. 0b01000000 If FEAT_XS is implemented:
-Normal Inner Non-cacheable, Outer Non-cacheable memory
-with the XS attribute set to 0.
-Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented:
-Normal Inner Write-through Cacheable, Outer Write-through Cacheable,
-Read-Allocate, No-Write Allocate, Non-transient memory
-with the XS attribute set to 0.
-Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented:
-Tagged Normal Inner Write-Back, Outer Write-Back,
-Read-Allocate, Write-Allocate Non-transient memory.
-Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000
-and xxxx != 0100
-and xxxx != 1010
-and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
+| Attr     |     7:0 |    8 | Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
 
 ## TRBMPAM_EL1 bitfields
 
@@ -5505,8 +5319,7 @@ and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Dev
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| RESS     |   63:57 |    7 | Reserved, Sign extended. If the bits marked as RESS do not all have the same value, then there is a CONSTRAINED UNPREDICTABLE choice between: Generating an EL2 translation regime Translation abort on use of the VNCR_EL2 register.
-If FEAT_D128 is implemented: If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56] for all purposes other than reading back the register. If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56]. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52] for all purposes other than reading back the register. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52]. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes other than reading back the register. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes. Where the EL2 translation regime has upper and lower address ranges, bit[56] is used to select between those address ranges to determine the number of bits supported by the address space.
+| RESS     |   63:57 |    7 | Reserved, Sign extended. If the bits marked as RESS do not all have the same value, then there is a CONSTRAINED UNPREDICTABLE choice between: Generating an EL2 translation regime Translation abort on use of the VNCR_EL2 register. If FEAT_D128 is implemented: If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56] for all purposes other than reading back the register. If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56]. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52] for all purposes other than reading back the register. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52]. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes other than reading back the register. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes. Where the EL2 translation regime has upper and lower address ranges, bit[56] is used to select between those address ranges to determine the number of bits supported by the address space.
 | BADDR    |   56:12 |   45 | Base Address. If the virtual address space for EL2 does not support more than 48 bits, then bits [56:49] are RESS. If the virtual address space for EL2 does not support more than 52 bits, then bits [56:53] are RESS
 
 ## VPIDR_EL2 bitfields
@@ -5599,15 +5412,13 @@ If FEAT_D128 is implemented: If the virtual address space for EL2 supports 56 bi
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| LEN      |     3:0 |    4 | Requests an Effective Non-streaming SVE vector length at EL1 of (LEN+1)*128 bits.
-This field also defines the Effective Non-streaming SVE vector length at EL0 when EL2 is not implemented, or EL2 is not enabled in the current Security state, or the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}. The Non-streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support a subset of the architecturally permitted lengths. An implementation is required to support all lengths that are powers of two, from 128 bits up to its maximum implemented Non-streaming SVE vector length. When FEAT_SME is not implemented, or the PE is not in Streaming SVE mode, the Effective SVE vector length (VL) is equal to the Effective Non-streaming SVE vector length. When FEAT_SME is implemented and the PE is in Streaming SVE mode, VL is equal to the Effective Streaming SVE vector length. See SMCR_EL1 . For all purposes other than returning the result of a direct read of ZCR_EL1, the PE selects the Effective Non-streaming SVE vector length by performing checks in the following order: If EL2 is implemented and enabled in the current Security state, and the requested length is greater than the Effective length at EL2, then the Effective length at EL2 is used. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Non-streaming SVE vector length that is less than or equal to the requested length. An indirect read of ZCR_EL1.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
+| LEN      |     3:0 |    4 | Requests an Effective Non-streaming SVE vector length at EL1 of (LEN+1)*128 bits. This field also defines the Effective Non-streaming SVE vector length at EL0 when EL2 is not implemented, or EL2 is not enabled in the current Security state, or the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}. The Non-streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support a subset of the architecturally permitted lengths. An implementation is required to support all lengths that are powers of two, from 128 bits up to its maximum implemented Non-streaming SVE vector length. When FEAT_SME is not implemented, or the PE is not in Streaming SVE mode, the Effective SVE vector length (VL) is equal to the Effective Non-streaming SVE vector length. When FEAT_SME is implemented and the PE is in Streaming SVE mode, VL is equal to the Effective Streaming SVE vector length. See SMCR_EL1 . For all purposes other than returning the result of a direct read of ZCR_EL1, the PE selects the Effective Non-streaming SVE vector length by performing checks in the following order: If EL2 is implemented and enabled in the current Security state, and the requested length is greater than the Effective length at EL2, then the Effective length at EL2 is used. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Non-streaming SVE vector length that is less than or equal to the requested length. An indirect read of ZCR_EL1.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
 ## ZCR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| LEN      |     3:0 |    4 | Requests an Effective Non-streaming SVE vector length at EL2 of (LEN+1)*128 bits.
-This field also defines the Effective Non-streaming SVE vector length at EL0 when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. The Non-streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support a subset of the architecturally permitted lengths. An implementation is required to support all lengths that are powers of two, from 128 bits up to its maximum implemented Non-streaming SVE vector length. When FEAT_SME is not implemented, or the PE is not in Streaming SVE mode, the Effective SVE vector length (VL) is equal to the Effective Non-streaming SVE vector length. When FEAT_SME is implemented and the PE is in Streaming SVE mode, VL is equal to the Effective Streaming SVE vector length. See SMCR_EL2 . For all purposes other than returning the result of a direct read of ZCR_EL2, the PE selects the Effective Non-streaming SVE vector length by performing checks in the following order: If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Non-streaming SVE vector length that is less than or equal to the requested length. An indirect read of ZCR_EL2.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
+| LEN      |     3:0 |    4 | Requests an Effective Non-streaming SVE vector length at EL2 of (LEN+1)*128 bits. This field also defines the Effective Non-streaming SVE vector length at EL0 when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. The Non-streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support a subset of the architecturally permitted lengths. An implementation is required to support all lengths that are powers of two, from 128 bits up to its maximum implemented Non-streaming SVE vector length. When FEAT_SME is not implemented, or the PE is not in Streaming SVE mode, the Effective SVE vector length (VL) is equal to the Effective Non-streaming SVE vector length. When FEAT_SME is implemented and the PE is in Streaming SVE mode, VL is equal to the Effective Streaming SVE vector length. See SMCR_EL2 . For all purposes other than returning the result of a direct read of ZCR_EL2, the PE selects the Effective Non-streaming SVE vector length by performing checks in the following order: If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Non-streaming SVE vector length that is less than or equal to the requested length. An indirect read of ZCR_EL2.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
 ## ZCR_EL3 bitfields
 
