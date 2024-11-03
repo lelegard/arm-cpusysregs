@@ -187,9 +187,9 @@ Version: 2024-09
 | BFMLAL (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point multiply-add long by indexed element.
 | BFMLAL (multiple and single vector) | SME | Multi-vector BFloat16 floating-point multiply-add long by vector.
 | BFMLAL (multiple vectors) | SME | Multi-vector BFloat16 floating-point multiply-add long.
-| BFMLALB | SIMD | BFloat16 floating-point widening multiply-add long (by element).
-| BFMLALB | SIMD | BFloat16 floating-point widening multiply-add long (vector).
+| BFMLALB (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
 | BFMLALB (indexed) | SVE | BFloat16 floating-point multiply-add long to single-precision (bottom, indexed).
+| BFMLALB (vector) | SIMD | BFloat16 floating-point widening multiply-add long (vector).
 | BFMLALB (vectors) | SVE | BFloat16 floating-point multiply-add long to single-precision (bottom).
 | BFMLALT (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
 | BFMLALT (indexed) | SVE | BFloat16 floating-point multiply-add long to single-precision (top, indexed).
@@ -509,11 +509,11 @@ Version: 2024-09
 | DCPS1 | Base | Debug change PE state to EL1.
 | DCPS2 | Base | Debug change PE state to EL2.
 | DCPS3 | Base | Debug change PE state to EL3.
-| DECB | SVE | Decrement scalar by multiple of predicate constraint element count.
-| DECD | SVE | Decrement scalar by multiple of predicate constraint element count.
-| DECD | SVE | Decrement vector by multiple of predicate constraint element count.
-| DECH | SVE | Decrement scalar by multiple of predicate constraint element count.
-| DECH | SVE | Decrement vector by multiple of predicate constraint element count.
+| DECB (scalar) | SVE | Decrement scalar by multiple of predicate constraint element count.
+| DECD (scalar) | SVE | Decrement scalar by multiple of predicate constraint element count.
+| DECD (vector) | SVE | Decrement vector by multiple of predicate constraint element count.
+| DECH (scalar) | SVE | Decrement scalar by multiple of predicate constraint element count.
+| DECH (vector) | SVE | Decrement vector by multiple of predicate constraint element count.
 | DECP (scalar) | SVE | Decrement scalar by count of true predicate elements.
 | DECP (vector) | SVE | Decrement vector by count of true predicate elements.
 | DECW (scalar) | SVE | Decrement scalar by multiple of predicate constraint element count.
@@ -643,12 +643,12 @@ Version: 2024-09
 | FCVTMU (scalar SIMD&FP) | SIMD | Floating-point convert to unsigned integer, rounding toward minus infinity (scalar SIMD&FP).
 | FCVTMU (scalar) | SIMD | Floating-point convert to unsigned integer, rounding toward minus infinity (scalar).
 | FCVTMU (vector) | SIMD | Floating-point convert to unsigned integer, rounding toward minus infinity (vector).
-| FCVTN | SIMD | Floating-point convert to lower precision narrow (vector).
-| FCVTN | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
 | FCVTN | SVE | Half-precision convert, narrow and interleave to 8-bit floating-point.
 | FCVTN (FP32 to FP16) | SME | Multi-vector floating-point convert from single-precision to interleaved half-precision.
 | FCVTN (FP32 to FP8) | SME | Multi-vector floating-point convert from single-precision to interleaved 8-bit floating-point format.
+| FCVTN (double to single-precision, single to half-precision) | SIMD | Floating-point convert to lower precision narrow (vector).
 | FCVTN (half-precision to 8-bit floating-point) | SIMD | Half-precision to 8-bit floating-point convert and narrow (vector).
+| FCVTN (single-precision to 8-bit floating-point) | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
 | FCVTN2 (double to single-precision, single to half-precision) | SIMD | Floating-point convert to lower precision narrow (vector).
 | FCVTN2 (single-precision to 8-bit floating-point) | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
 | FCVTNB | SVE | Single-precision convert, narrow and interleave to 8-bit floating-point (bottom).
@@ -769,36 +769,36 @@ Version: 2024-09
 | FMLA (multiple vectors) | SME | Multi-vector floating-point fused multiply-add.
 | FMLA (vector) | SIMD | Floating-point fused multiply-add to accumulator (vector).
 | FMLA (vectors) | SVE | Floating-point fused multiply-add vectors (predicated), writing addend [Zda = Zda + Zn * Zm].
-| FMLAL | SIMD | Floating-point fused multiply-add long to accumulator (by element).
-| FMLAL | SIMD | Floating-point fused multiply-add long to accumulator (vector).
+| FMLAL (by element) | SIMD | Floating-point fused multiply-add long to accumulator (by element).
 | FMLAL (multiple and indexed vector, FP16 to FP32) | SME | Multi-vector floating-point multiply-add long by indexed element.
 | FMLAL (multiple and indexed vector, FP8 to FP16) | SME | Multi-vector 8-bit floating-point multiply-add long by indexed element to half-precision.
 | FMLAL (multiple and single vector, FP16 to FP32) | SME | Multi-vector floating-point multiply-add long by vector.
 | FMLAL (multiple and single vector, FP8 to FP16) | SME | Multi-vector 8-bit floating-point multiply-add long by vector to half-precision.
 | FMLAL (multiple vectors, FP16 to FP32) | SME | Multi-vector floating-point multiply-add long.
 | FMLAL (multiple vectors, FP8 to FP16) | SME | Multi-vector 8-bit floating-point multiply-add long to half-precision.
+| FMLAL (vector) | SIMD | Floating-point fused multiply-add long to accumulator (vector).
 | FMLAL2 (by element) | SIMD | Floating-point fused multiply-add long to accumulator (by element).
 | FMLAL2 (vector) | SIMD | Floating-point fused multiply-add long to accumulator (vector).
-| FMLALB | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
-| FMLALB | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
+| FMLALB (by element) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
 | FMLALB (indexed, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (bottom, indexed).
 | FMLALB (indexed, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom, indexed).
+| FMLALB (vector) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
 | FMLALB (vectors, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (bottom).
 | FMLALB (vectors, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom).
 | FMLALL (multiple and indexed vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by indexed element to single-precision.
 | FMLALL (multiple and single vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by vector to single-precision.
 | FMLALL (multiple vectors) | SME | Multi-vector 8-bit floating-point multiply-add long-long to single-precision.
-| FMLALLBB | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
-| FMLALLBB | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLBB (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
 | FMLALLBB (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom bottom, indexed).
+| FMLALLBB (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
 | FMLALLBB (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom bottom).
-| FMLALLBT | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
-| FMLALLBT | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLBT (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
 | FMLALLBT (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom top, indexed).
+| FMLALLBT (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
 | FMLALLBT (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom top).
-| FMLALLTB | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
-| FMLALLTB | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLTB (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
 | FMLALLTB (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (top bottom, indexed).
+| FMLALLTB (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
 | FMLALLTB (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (top bottom).
 | FMLALLTT (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
 | FMLALLTT (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (top top, indexed).
@@ -817,11 +817,11 @@ Version: 2024-09
 | FMLS (multiple vectors) | SME | Multi-vector floating-point fused multiply-subtract.
 | FMLS (vector) | SIMD | Floating-point fused multiply-subtract from accumulator (vector).
 | FMLS (vectors) | SVE | Floating-point fused multiply-subtract vectors (predicated), writing addend [Zda = Zda + -Zn * Zm].
-| FMLSL | SIMD | Floating-point fused multiply-subtract long from accumulator (by element).
-| FMLSL | SIMD | Floating-point fused multiply-subtract long from accumulator (vector).
+| FMLSL (by element) | SIMD | Floating-point fused multiply-subtract long from accumulator (by element).
 | FMLSL (multiple and indexed vector) | SME | Multi-vector floating-point multiply-subtract long by indexed element.
 | FMLSL (multiple and single vector) | SME | Multi-vector floating-point multiply-subtract long by vector.
 | FMLSL (multiple vectors) | SME | Multi-vector floating-point multiply-subtract long.
+| FMLSL (vector) | SIMD | Floating-point fused multiply-subtract long from accumulator (vector).
 | FMLSL2 (by element) | SIMD | Floating-point fused multiply-subtract long from accumulator (by element).
 | FMLSL2 (vector) | SIMD | Floating-point fused multiply-subtract long from accumulator (vector).
 | FMLSLB (indexed) | SVE | Half-precision floating-point multiply-subtract long from single-precision (bottom, indexed).
@@ -962,11 +962,11 @@ Version: 2024-09
 | HLT | Base | Halt instruction.
 | HVC | Base | Hypervisor call.
 | IC | Base | Instruction cache operation: an alias of SYS.
-| INCB | SVE | Increment scalar by multiple of predicate constraint element count.
-| INCD | SVE | Increment scalar by multiple of predicate constraint element count.
-| INCD | SVE | Increment vector by multiple of predicate constraint element count.
-| INCH | SVE | Increment scalar by multiple of predicate constraint element count.
-| INCH | SVE | Increment vector by multiple of predicate constraint element count.
+| INCB (scalar) | SVE | Increment scalar by multiple of predicate constraint element count.
+| INCD (scalar) | SVE | Increment scalar by multiple of predicate constraint element count.
+| INCD (vector) | SVE | Increment vector by multiple of predicate constraint element count.
+| INCH (scalar) | SVE | Increment scalar by multiple of predicate constraint element count.
+| INCH (vector) | SVE | Increment vector by multiple of predicate constraint element count.
 | INCP (scalar) | SVE | Increment scalar by count of true predicate elements.
 | INCP (vector) | SVE | Increment vector by count of true predicate elements.
 | INCW (scalar) | SVE | Increment scalar by multiple of predicate constraint element count.
@@ -1878,11 +1878,11 @@ Version: 2024-09
 | SMINQV | SVE | Signed minimum reduction of quadword vector segments.
 | SMINV | SIMD | Signed minimum across vector.
 | SMINV | SVE | Signed minimum reduction to scalar.
-| SMLAL | SIMD | Signed multiply-add long (vector, by element).
-| SMLAL | SIMD | Signed multiply-add long (vector).
+| SMLAL (by element) | SIMD | Signed multiply-add long (vector, by element).
 | SMLAL (multiple and indexed vector) | SME | Multi-vector signed integer multiply-add long by indexed element.
 | SMLAL (multiple and single vector) | SME | Multi-vector signed integer multiply-add long by vector.
 | SMLAL (multiple vectors) | SME | Multi-vector signed integer multiply-add long.
+| SMLAL (vector) | SIMD | Signed multiply-add long (vector).
 | SMLAL2 (by element) | SIMD | Signed multiply-add long (vector, by element).
 | SMLAL2 (vector) | SIMD | Signed multiply-add long (vector).
 | SMLALB (indexed) | SVE | Signed multiply-add long to accumulator (bottom, indexed).
@@ -1892,11 +1892,11 @@ Version: 2024-09
 | SMLALL (multiple vectors) | SME | Multi-vector signed integer multiply-add long-long.
 | SMLALT (indexed) | SVE | Signed multiply-add long to accumulator (top, indexed).
 | SMLALT (vectors) | SVE | Signed multiply-add long to accumulator (top).
-| SMLSL | SIMD | Signed multiply-subtract long (vector, by element).
-| SMLSL | SIMD | Signed multiply-subtract long (vector).
+| SMLSL (by element) | SIMD | Signed multiply-subtract long (vector, by element).
 | SMLSL (multiple and indexed vector) | SME | Multi-vector signed integer multiply-subtract long by indexed element.
 | SMLSL (multiple and single vector) | SME | Multi-vector signed integer multiply-subtract long by vector.
 | SMLSL (multiple vectors) | SME | Multi-vector signed integer multiply-subtract long.
+| SMLSL (vector) | SIMD | Signed multiply-subtract long (vector).
 | SMLSL2 (by element) | SIMD | Signed multiply-subtract long (vector, by element).
 | SMLSL2 (vector) | SIMD | Signed multiply-subtract long (vector).
 | SMLSLB (indexed) | SVE | Signed multiply-subtract long from accumulator (bottom, indexed).
@@ -1925,8 +1925,8 @@ Version: 2024-09
 | SMULH (predicated) | SVE | Signed multiply returning high half (predicated).
 | SMULH (unpredicated) | SVE | Signed multiply returning high half (unpredicated).
 | SMULL | Base | Signed multiply long: an alias of SMADDL.
-| SMULL | SIMD | Signed multiply long (vector, by element).
-| SMULL | SIMD | Signed multiply long (vector).
+| SMULL (by element) | SIMD | Signed multiply long (vector, by element).
+| SMULL (vector) | SIMD | Signed multiply long (vector).
 | SMULL2 (by element) | SIMD | Signed multiply long (vector, by element).
 | SMULL2 (vector) | SIMD | Signed multiply long (vector).
 | SMULLB (indexed) | SVE | Signed multiply long (bottom, indexed).
@@ -1958,8 +1958,8 @@ Version: 2024-09
 | SQDECP (vector) | SVE | Signed saturating decrement vector by count of true predicate elements.
 | SQDECW (scalar) | SVE | Signed saturating decrement scalar by multiple of 32-bit predicate constraint element count.
 | SQDECW (vector) | SVE | Signed saturating decrement vector by multiple of 32-bit predicate constraint element count.
-| SQDMLAL | SIMD | Signed saturating doubling multiply-add long (by element).
-| SQDMLAL | SIMD | Signed saturating doubling multiply-add long.
+| SQDMLAL (by element) | SIMD | Signed saturating doubling multiply-add long (by element).
+| SQDMLAL (vector) | SIMD | Signed saturating doubling multiply-add long.
 | SQDMLAL2 (by element) | SIMD | Signed saturating doubling multiply-add long (by element).
 | SQDMLAL2 (vector) | SIMD | Signed saturating doubling multiply-add long.
 | SQDMLALB (indexed) | SVE | Signed saturating doubling multiply-add long to accumulator (bottom, indexed).
@@ -1967,8 +1967,8 @@ Version: 2024-09
 | SQDMLALBT | SVE | Signed saturating doubling multiply-add long to accumulator (bottom × top).
 | SQDMLALT (indexed) | SVE | Signed saturating doubling multiply-add long to accumulator (top, indexed).
 | SQDMLALT (vectors) | SVE | Signed saturating doubling multiply-add long to accumulator (top).
-| SQDMLSL | SIMD | Signed saturating doubling multiply-subtract long (by element).
-| SQDMLSL | SIMD | Signed saturating doubling multiply-subtract long.
+| SQDMLSL (by element) | SIMD | Signed saturating doubling multiply-subtract long (by element).
+| SQDMLSL (vector) | SIMD | Signed saturating doubling multiply-subtract long.
 | SQDMLSL2 (by element) | SIMD | Signed saturating doubling multiply-subtract long (by element).
 | SQDMLSL2 (vector) | SIMD | Signed saturating doubling multiply-subtract long.
 | SQDMLSLB (indexed) | SVE | Signed saturating doubling multiply-subtract long from accumulator (bottom, indexed).
@@ -1982,8 +1982,8 @@ Version: 2024-09
 | SQDMULH (multiple vectors) | SME | Multi-vector signed saturating doubling multiply high.
 | SQDMULH (vector) | SIMD | Signed saturating doubling multiply returning high half.
 | SQDMULH (vectors) | SVE | Signed saturating doubling multiply high (unpredicated).
-| SQDMULL | SIMD | Signed saturating doubling multiply long (by element).
-| SQDMULL | SIMD | Signed saturating doubling multiply long.
+| SQDMULL (by element) | SIMD | Signed saturating doubling multiply long (by element).
+| SQDMULL (vector) | SIMD | Signed saturating doubling multiply long.
 | SQDMULL2 (by element) | SIMD | Signed saturating doubling multiply long (by element).
 | SQDMULL2 (vector) | SIMD | Signed saturating doubling multiply long.
 | SQDMULLB (indexed) | SVE | Signed saturating doubling multiply long (bottom, indexed).
@@ -2424,8 +2424,8 @@ Version: 2024-09
 | TLBIP | Base | TLB invalidate pair operation: an alias of SYSP.
 | TRCIT | Base | Trace instrumentation: an alias of SYS.
 | TRN1 | SIMD | Transpose vectors (primary).
-| TRN1 | SVE | Interleave even or odd elements from two predicates.
-| TRN1 | SVE | Interleave even or odd elements from two vectors.
+| TRN1 (predicates) | SVE | Interleave even or odd elements from two predicates.
+| TRN1 (vectors) | SVE | Interleave even or odd elements from two vectors.
 | TRN2 | SIMD | Transpose vectors (secondary).
 | TRN2 (predicates) | SVE | Interleave even or odd elements from two predicates.
 | TRN2 (vectors) | SVE | Interleave even or odd elements from two vectors.
@@ -2517,11 +2517,11 @@ Version: 2024-09
 | UMINQV | SVE | Unsigned minimum reduction of quadword vector segments.
 | UMINV | SIMD | Unsigned minimum across vector.
 | UMINV | SVE | Unsigned minimum reduction to scalar.
-| UMLAL | SIMD | Unsigned multiply-add long (vector, by element).
-| UMLAL | SIMD | Unsigned multiply-add long (vector).
+| UMLAL (by element) | SIMD | Unsigned multiply-add long (vector, by element).
 | UMLAL (multiple and indexed vector) | SME | Multi-vector unsigned integer multiply-add long by indexed element.
 | UMLAL (multiple and single vector) | SME | Multi-vector unsigned integer multiply-add long by vector.
 | UMLAL (multiple vectors) | SME | Multi-vector unsigned integer multiply-add long.
+| UMLAL (vector) | SIMD | Unsigned multiply-add long (vector).
 | UMLAL2 (by element) | SIMD | Unsigned multiply-add long (vector, by element).
 | UMLAL2 (vector) | SIMD | Unsigned multiply-add long (vector).
 | UMLALB (indexed) | SVE | Unsigned multiply-add long to accumulator (bottom, indexed).
@@ -2531,11 +2531,11 @@ Version: 2024-09
 | UMLALL (multiple vectors) | SME | Multi-vector unsigned integer multiply-add long-long.
 | UMLALT (indexed) | SVE | Unsigned multiply-add long to accumulator (top, indexed).
 | UMLALT (vectors) | SVE | Unsigned multiply-add long to accumulator (top).
-| UMLSL | SIMD | Unsigned multiply-subtract long (vector, by element).
-| UMLSL | SIMD | Unsigned multiply-subtract long (vector).
+| UMLSL (by element) | SIMD | Unsigned multiply-subtract long (vector, by element).
 | UMLSL (multiple and indexed vector) | SME | Multi-vector unsigned integer multiply-subtract long by indexed element.
 | UMLSL (multiple and single vector) | SME | Multi-vector unsigned integer multiply-subtract long by vector.
 | UMLSL (multiple vectors) | SME | Multi-vector unsigned integer multiply-subtract long.
+| UMLSL (vector) | SIMD | Unsigned multiply-subtract long (vector).
 | UMLSL2 (by element) | SIMD | Unsigned multiply-subtract long (vector, by element).
 | UMLSL2 (vector) | SIMD | Unsigned multiply-subtract long (vector).
 | UMLSLB (indexed) | SVE | Unsigned multiply-subtract long from accumulator (bottom, indexed).
@@ -2562,8 +2562,8 @@ Version: 2024-09
 | UMULH (predicated) | SVE | Unsigned multiply returning high half (predicated).
 | UMULH (unpredicated) | SVE | Unsigned multiply returning high half (unpredicated).
 | UMULL | Base | Unsigned multiply long: an alias of UMADDL.
-| UMULL | SIMD | Unsigned multiply long (vector, by element).
-| UMULL | SIMD | Unsigned multiply long (vector).
+| UMULL (by element) | SIMD | Unsigned multiply long (vector, by element).
+| UMULL (vector) | SIMD | Unsigned multiply long (vector).
 | UMULL2 (by element) | SIMD | Unsigned multiply long (vector, by element).
 | UMULL2 (vector) | SIMD | Unsigned multiply long (vector).
 | UMULLB (indexed) | SVE | Unsigned multiply long (bottom, indexed).
@@ -2693,8 +2693,8 @@ Version: 2024-09
 | UZP (four registers) | SME | Concatenate elements from four vectors.
 | UZP (two registers) | SME | Concatenate elements from two vectors.
 | UZP1 | SIMD | Unzip vectors (primary).
-| UZP1 | SVE | Concatenate even or odd elements from two predicates.
-| UZP1 | SVE | Concatenate even or odd elements from two vectors.
+| UZP1 (predicates) | SVE | Concatenate even or odd elements from two predicates.
+| UZP1 (vectors) | SVE | Concatenate even or odd elements from two vectors.
 | UZP2 | SIMD | Unzip vectors (secondary).
 | UZP2 (predicates) | SVE | Concatenate even or odd elements from two predicates.
 | UZP2 (vectors) | SVE | Concatenate even or odd elements from two vectors.
@@ -2748,8 +2748,8 @@ Version: 2024-09
 | ZIP (four registers) | SME | Interleave elements from four vectors.
 | ZIP (two registers) | SME | Interleave elements from two vectors.
 | ZIP1 | SIMD | Zip vectors (primary).
-| ZIP1 | SVE | Interleave elements from two half predicates.
-| ZIP1 | SVE | Interleave elements from two half vectors.
+| ZIP1 (predicates) | SVE | Interleave elements from two half predicates.
+| ZIP1 (vectors) | SVE | Interleave elements from two half vectors.
 | ZIP2 | SIMD | Zip vectors (secondary).
 | ZIP2 (predicates) | SVE | Interleave elements from two half predicates.
 | ZIP2 (vectors) | SVE | Interleave elements from two half vectors.

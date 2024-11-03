@@ -211,20 +211,19 @@ class Instruction:
 
     # Static method: Split a string containing a list of instructions.
     def splitnames(s):
-        # Names are separated with commas. But commas can be in description between parentheses.
         result = []
-        parts = [p.strip() for p in ('' if s is None else s).split(',')]
-        for part in [p for p in parts if p != '']:
-            # Check if previous name contains an open parenthesis.
-            append = False
-            if len(result) > 0:
-                opar = result[-1].rfind('(')
-                cpar = result[-1].rfind(')')
-                append = opar >= 0 and cpar < opar
-            if append:
-                result[-1] += ', ' + part
+        if isinstance(s, str):
+            # Locate description between parenthesis.
+            match = re.fullmatch(r'([^(]+)( \(.*\))', s.strip())
+            if match is None:
+                list = s
+                suffix = ''
             else:
-                result.append(part)
+                list = match.group(1)
+                suffix = match.group(2)
+            for name in [n.strip() for n in list.split(',')]:
+                if name != '':
+                    result.append(name + suffix)
         return result
 
 #----------------------------------------------------------------------------
@@ -305,7 +304,7 @@ def is_executable(filename):
 
 # Extract the "version" in a file name.
 def file_version(filename, prefix='', suffix=''):
-    if type(filename) is str:
+    if isinstance(filename, str):
         match = re.match(r'.*([0-9]{4}-[0-9]{2})', os.path.basename(filename).removeprefix(prefix).removesuffix(suffix))
         if match is not None:
             return match.group(1)
