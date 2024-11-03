@@ -298,6 +298,14 @@ def last_file(wildcard):
 def is_executable(filename):
     return os.path.exists(filename) and os.access(filename, os.X_OK)
 
+# Extract the "version" in a file name.
+def file_version(filename, prefix='', suffix=''):
+    if type(filename) is str:
+        match = re.match(r'.*([0-9]{4}-[0-9]{2})', os.path.basename(filename).removeprefix(prefix).removesuffix(suffix))
+        if match is not None:
+            return match.group(1)
+    return ''
+
 # Try to locate Chrome browser.
 # Return None if not found.
 def get_chrome():
@@ -421,6 +429,10 @@ SYSREG_DIR, REGINDEX_FILE = expand(SYSREG_TARBALL, REGINDEX_FILE, FORCE_DOWNLOAD
 ENCINDEX_FILE = ENCINDEX_FILE.replace('@', os.path.dirname(REGINDEX_FILE))
 for iclass in InstructionClass.all:
     iclass.indexfile = iclass.indexfile.replace('@', os.path.dirname(ISAINDEX_FILE))
+
+ISA_VERSION = file_version(ISA_DIR, ISA_PREFIX)
+FEATURES_VERSION = file_version(FEATURES_DIR, FEATURES_PREFIX)
+SYSREG_VERSION = file_version(SYSREG_DIR, SYSREG_PREFIX)
 
 if DOWNLOAD_ONLY:
     exit(0)
@@ -692,6 +704,8 @@ desc_width = len(feat_headers.description)
 detectable = len([f for f in Feature.byname.values() if f.sysregs == 'X'])
 removed = len([f for f in Feature.byname.values() if f.removed()])
 with file_features_md.rewrite() as output:
+    print('Version: %s' % FEATURES_VERSION, file=output)
+    print(file=output)
     print('Total: %d features, %d detectable, %d removed.' % (len(Feature.byname), detectable, removed), file=output)
     print(file=output)
     print('| %-*s | %-*s | %-*s | %-*s | %s' %
@@ -715,6 +729,8 @@ name_width = max(len(header[0]), max([len(r.name) for r in Register.byname.value
 sr_width = len(header[1])
 readable = len([f for f in Register.byname.values() if f.cpusysregs])
 with file_registers_md.rewrite() as output:
+    print('Version: %s' % SYSREG_VERSION, file=output)
+    print(file=output)
     print('Total: %d system registers, %d can be accessed by cpusysregs.' % (len(Register.byname), readable), file=output)
     print(file=output)
     print('| %-*s | %s | %s' % (name_width, header[0], header[1], header[2]), file=output)
@@ -751,6 +767,7 @@ with file_bitfields_md.rewrite() as output:
 
 # Update list of instructions
 with file_instructions_md.rewrite() as output:
+    print('Version: %s' % ISA_VERSION, file=output)
     print(file=output)
     print('## Number of instructions per class', file=output)
     print(file=output)

@@ -18,6 +18,8 @@ Arm architecture for existing features.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
+Version: 2024-09
+
 Total: 354 features, 325 detectable, 18 removed.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description

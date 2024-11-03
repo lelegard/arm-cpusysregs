@@ -8,6 +8,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
+Version: 2024-09
 
 ## Number of instructions per class
 
