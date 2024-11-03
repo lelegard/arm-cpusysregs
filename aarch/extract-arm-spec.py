@@ -17,7 +17,7 @@
 #
 #----------------------------------------------------------------------------
 
-import re, os, sys, glob, shutil, subprocess, tarfile, json
+import re, os, sys, glob, shutil, subprocess, tarfile, json, contextlib
 import urllib.request, urllib.parse
 import xml.etree.ElementTree as etree
 
@@ -271,17 +271,21 @@ class AutoGenFile:
     def name(self):
         return os.path.basename(self.filename)
 
-    # Save the initial part of the file and return the file object.
+    # Context manager to rewrite the file.
+    # Only the content part is rewritten by the application.
+    @contextlib.contextmanager
     def rewrite(self):
         output = open(self.filename, 'w')
+        # Print initial part of the file.
         for line in self.before:
             print(line, file=output)
-        return output
-
-    # Write the trailer part of the file.
-    def complete(self, output):
-        for line in self.after:
-            print(line, file=output)
+        # Let the application rewrite the content.
+        try:
+            yield output
+        # Rewrite last part of the file.
+        finally:
+            for line in self.after:
+                print(line, file=output)
 
 #----------------------------------------------------------------------------
 # General-purpose functions
@@ -721,7 +725,6 @@ with file_features_md.rewrite() as output:
               (name_width, feat.name, opt_width, feat.optional,
                mand_width, feat.mandatory, feat.sysregs.center(sys_width), feat.description)).rstrip(),
               file=output)
-    file_features_md.complete(output)
 
 # Update list of system registers.
 header = ('System Register', 'sysregs', 'Description')
@@ -739,7 +742,6 @@ with file_registers_md.rewrite() as output:
         reg = Register.byname[key]
         sr = 'X' if reg.cpusysregs else ''
         print(('| %-*s | %s | %s' % (name_width, reg.name, sr.center(sr_width), reg.description)).rstrip(), file=output)
-    file_registers_md.complete(output)
 
 # Update lists of bitfields in system registers.
 header = ('Bitfield', 'msb:lsb', 'Size', 'Description')
@@ -763,7 +765,6 @@ with file_bitfields_md.rewrite() as output:
                        (name_width, bf.name, len(header[1]), pos, len(header[2]), bf.bits,
                         bf.description.replace('|', '\\|').replace('\n', ' '))).rstrip(),
                       file=output)
-    file_bitfields_md.complete(output)
 
 # Update list of instructions
 with file_instructions_md.rewrite() as output:
@@ -787,7 +788,6 @@ with file_instructions_md.rewrite() as output:
     for key in sorted(Instruction.byname.keys()):
         for inst in Instruction.byname[key]:
             print('| %s | %s | %s' % (inst.name, inst.iclass.name, inst.description), file=output)
-    file_instructions_md.complete(output)
 
 # Update the C/C++ definitions of the register encodings.
 name_width = max([len(name) for name in Register.byname])
@@ -798,7 +798,6 @@ with file_cpusysregs_h.rewrite() as output:
             print('--- Undefined encoding for register %s' % name)
         else:
             print('#define CSR_SREG_%-*s  CSR_SREG(%s)' % (name_width, name, reg.encoding), file=output)
-    file_cpusysregs_h.complete(output)
 
 # Update the C/C++ definitions for armfeatures.h.
 cppregs = [reg for reg in Register.byname.values() if reg.cppfield is not None and reg.bitfields is not None]
@@ -813,7 +812,6 @@ with file_armfeatures_h.rewrite() as output:
                   (typename, reg.name, bf.name, typename, reg.cppfield, shift, mask), file=output)
         if reg.name != cppregs[-1].name:
             print(file=output)
-    file_armfeatures_h.complete(output)
 
 # Generate the C/C++ template data structure for regview.cpp.
 cppregs = [reg for reg in Register.byname.values() if reg.cpusysregs]
