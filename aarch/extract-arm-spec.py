@@ -286,6 +286,7 @@ class AutoGenFile:
         finally:
             for line in self.after:
                 print(line, file=output)
+            output.close()
 
 #----------------------------------------------------------------------------
 # General-purpose functions
