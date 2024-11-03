@@ -47,11 +47,12 @@ FORCE_DOWNLOAD = '--force' in sys.argv[1:] or '-f' in sys.argv[1:]
 OUTPUT_DIR = SCRIPTDIR + '/downloads'
 
 # Existing files to update in the project.
-FEATURES_MD   = ROOTDIR + '/docs/features.md'
-REGISTERS_MD  = ROOTDIR + '/docs/registers.md'
-BITFIELDS_MD  = ROOTDIR + '/docs/registers-fields.md'
-ARMFEATURES_H = ROOTDIR + '/apps/armfeatures.h'
-CPUSYSREGS_H  = ROOTDIR + '/kernel/cpusysregs.h'
+FEATURES_MD     = ROOTDIR + '/docs/features.md'
+REGISTERS_MD    = ROOTDIR + '/docs/registers.md'
+BITFIELDS_MD    = ROOTDIR + '/docs/registers-fields.md'
+INSTRUCTIONS_MD = ROOTDIR + '/docs/instructions.md'
+ARMFEATURES_H   = ROOTDIR + '/apps/armfeatures.h'
+CPUSYSREGS_H    = ROOTDIR + '/kernel/cpusysregs.h'
 
 # Generated files inside output directory.
 REGVIEW_CPP_OUT = SCRIPTDIR + '/partial_regview.cpp'
@@ -166,6 +167,65 @@ class Register:
             print('--- Conflicting encodings for register %s: %s vs. %s' % (self.name, self.encoding, enc))
         else:
             self.encoding = enc
+
+#----------------------------------------------------------------------------
+# Description of a class of instructions.
+#----------------------------------------------------------------------------
+
+class InstructionClass:
+    # Constructor.
+    def __init__(self, name, indexfile='', count=0):
+        self.name = name
+        self.indexfile = indexfile
+        self.count = count
+
+# Constant static field: all known instruction classes.
+InstructionClass.all = [
+    InstructionClass('Base', '@/index.xml'),
+    InstructionClass('SIMD', '@/fpsimdindex.xml'),
+    InstructionClass('SVE',  '@/sveindex.xml'),
+    InstructionClass('SME',  '@/mortlachindex.xml')]
+
+#----------------------------------------------------------------------------
+# Description of an instruction.
+#----------------------------------------------------------------------------
+
+class Instruction:
+    # Constructor.
+    def __init__(self, name, description, iclass):
+        self.name = name
+        self.description = description
+        self.iclass = iclass
+
+    # Static field: Dictionary of all instructions, indexed by name.
+    # Each entry is a list of instructions with that name.
+    byname = dict()
+
+    # Static method: add a new instruction, resolve name conflicts.
+    def addnew(name, description, iclass):
+        inst = Instruction(name, description, iclass)
+        if name in Instruction.byname:
+            Instruction.byname[name].append(inst)
+        else:
+            Instruction.byname[name] = [inst]
+
+    # Static method: Split a string containing a list of instructions.
+    def splitnames(s):
+        # Names are separated with commas. But commas can be in description between parentheses.
+        result = []
+        parts = [p.strip() for p in ('' if s is None else s).split(',')]
+        for part in [p for p in parts if p != '']:
+            # Check if previous name contains an open parenthesis.
+            append = False
+            if len(result) > 0:
+                opar = result[-1].rfind('(')
+                cpar = result[-1].rfind(')')
+                append = opar >= 0 and cpar < opar
+            if append:
+                result[-1] += ', ' + part
+            else:
+                result.append(part)
+        return result
 
 #----------------------------------------------------------------------------
 # Description of a text file with an automatically generated part.
@@ -354,11 +414,13 @@ def expand(tarball, reffile=None, force=False):
             tar.extractall(outdir, filter='data')
         return outdir, reffile
 
-# Expand all archives.
+# Expand all archives, resolve path of reference files.
 ISA_DIR, ISAINDEX_FILE = expand(ISA_TARBALL, ISAINDEX_FILE, FORCE_DOWNLOAD)
 FEATURES_DIR, FEATINDEX_FILE = expand(FEATURES_TARBALL, FEATINDEX_FILE, FORCE_DOWNLOAD)
 SYSREG_DIR, REGINDEX_FILE = expand(SYSREG_TARBALL, REGINDEX_FILE, FORCE_DOWNLOAD)
 ENCINDEX_FILE = ENCINDEX_FILE.replace('@', os.path.dirname(REGINDEX_FILE))
+for iclass in InstructionClass.all:
+    iclass.indexfile = iclass.indexfile.replace('@', os.path.dirname(ISAINDEX_FILE))
 
 if DOWNLOAD_ONLY:
     exit(0)
@@ -367,11 +429,12 @@ if DOWNLOAD_ONLY:
 # Load files to be automatically updated.
 #----------------------------------------------------------------------------
 
-file_features_md   = AutoGenFile(FEATURES_MD, False)
-file_registers_md  = AutoGenFile(REGISTERS_MD, True)
-file_bitfields_md  = AutoGenFile(BITFIELDS_MD, True)
-file_armfeatures_h = AutoGenFile(ARMFEATURES_H, True)
-file_cpusysregs_h  = AutoGenFile(CPUSYSREGS_H, True)
+file_features_md     = AutoGenFile(FEATURES_MD, False)
+file_registers_md    = AutoGenFile(REGISTERS_MD, True)
+file_bitfields_md    = AutoGenFile(BITFIELDS_MD, True)
+file_instructions_md = AutoGenFile(INSTRUCTIONS_MD, True)
+file_armfeatures_h   = AutoGenFile(ARMFEATURES_H, True)
+file_cpusysregs_h    = AutoGenFile(CPUSYSREGS_H, True)
 
 # Extract the definition of Arm features, potentially previously manually edited.
 removed = 0
@@ -603,6 +666,20 @@ for line in file_cpusysregs_h.before:
             Register.byname[name_lo].cpusysregs = True
 
 #----------------------------------------------------------------------------
+# Extract list of instructions from downloaded tarballs.
+#----------------------------------------------------------------------------
+
+for iclass in InstructionClass.all:
+    xmltree = etree.parse(iclass.indexfile)
+    for iform in xmltree.findall('.//iform'):
+        for name in Instruction.splitnames(iform.get('heading')):
+            iclass.count += 1
+            Instruction.addnew(name, iform.text, iclass)
+    print('Number of %s instruction: %d' % (iclass.name, iclass.count))
+
+print('Total number of instruction: %d' % sum([c.count for c in InstructionClass.all]))
+
+#----------------------------------------------------------------------------
 # Generate output files.
 #----------------------------------------------------------------------------
 
@@ -613,8 +690,9 @@ mand_width = max(len(feat_headers.mandatory), max([len(f.mandatory) for f in Fea
 sys_width = max(len(feat_headers.sysregs), max([len(f.sysregs) for f in Feature.byname.values()]))
 desc_width = len(feat_headers.description)
 detectable = len([f for f in Feature.byname.values() if f.sysregs == 'X'])
+removed = len([f for f in Feature.byname.values() if f.removed()])
 with file_features_md.rewrite() as output:
-    print('Total: %d features, %d detectable.' % (len(Feature.byname), detectable), file=output)
+    print('Total: %d features, %d detectable, %d removed.' % (len(Feature.byname), detectable, removed), file=output)
     print(file=output)
     print('| %-*s | %-*s | %-*s | %-*s | %s' %
           (name_width, feat_headers.name, opt_width, feat_headers.optional,
@@ -667,9 +745,32 @@ with file_bitfields_md.rewrite() as output:
                 pos = '%d:%d' % (bf.lsb + bf.bits - 1, bf.lsb)
                 print(('| %-*s | %*s | %*d | %s' %
                        (name_width, bf.name, len(header[1]), pos, len(header[2]), bf.bits,
-                        bf.description.replace('|', '\|').replace('\n', ' '))).rstrip(),
+                        bf.description.replace('|', '\\|').replace('\n', ' '))).rstrip(),
                       file=output)
     file_bitfields_md.complete(output)
+
+# Update list of instructions
+with file_instructions_md.rewrite() as output:
+    print(file=output)
+    print('## Number of instructions per class', file=output)
+    print(file=output)
+    header = ('Class', 'Instructions')
+    list = InstructionClass.all + [InstructionClass('Total', '', sum([c.count for c in InstructionClass.all]))]
+    name_width = max(len(header[0]), max([len(c.name) for c in list]))
+    print('| %-*s | %s' % (name_width, header[0], header[1]), file=output)
+    print('| %s | %s' % (name_width * '-', len(header[1]) * '-'), file=output)
+    for iclass in list:
+        print('| %-*s | %d' % (name_width, iclass.name, iclass.count), file=output)
+
+    print(file=output)
+    print('## All instructions', file=output)
+    print(file=output)
+    print('| Opcode | Class | Description', file=output)
+    print('| ------ | ----- | -----------', file=output)
+    for key in sorted(Instruction.byname.keys()):
+        for inst in Instruction.byname[key]:
+            print('| %s | %s | %s' % (inst.name, inst.iclass.name, inst.description), file=output)
+    file_instructions_md.complete(output)
 
 # Update the C/C++ definitions of the register encodings.
 name_width = max([len(name) for name in Register.byname])
