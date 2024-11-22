@@ -20,6 +20,9 @@
 - [The QARMA-64 algorithm](https://eprint.iacr.org/2016/444.pdf) (used in pointer authentication codes)
 - [QARMA-64 reference implementation](https://github.com/Phantom1003/QARMA64) (shared by Phantom1003 on GitHub)
 - [In-Kernel Control-Flow Integrity on Commodity OSes using ARM Pointer Authentication](https://arxiv.org/pdf/2112.07213.pdf)
+- [ARM Pointer Authentication based Forward-Edge and Backward-Edge Control Flow Integrity for Kernels](https://arxiv.org/pdf/1912.10666.pdf) (Zhejiang University)
+- [Examining Pointer Authentication on the iPhone XS](https://googleprojectzero.blogspot.com/2019/02/examining-pointer-authentication-on.html) (Google Project Zero)
+- [Demystifying Pointer Authentication on Apple M1](https://www.usenix.org/system/files/usenixsecurity23-cai-zechao.pdf) (32nd USENIX Security Symposium, August 2023)
 
 ## Bug reports
 
