@@ -18,9 +18,9 @@ Arm architecture for existing features.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-09
+Version: 2024-12
 
-Total: 354 features, 325 detectable, 18 removed.
+Total: 361 features, 325 detectable, 18 removed.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------
@@ -45,6 +45,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_AMU_EXT             |          |           |   n/a   | External Activity Monitors extension
 | FEAT_AMU_EXT32           |          |           |   n/a   | AArch32 External Activity Monitors
 | FEAT_AMU_EXT64           |          |           |   n/a   | AArch64 External Activity Monitors
+| FEAT_AMU_EXTACR          | Armv8.4  |           |   n/a   | Activity Monitors External Control Register
 | FEAT_AMUv1               | Armv8.3  |           |    X    | Activity Monitors Extension
 | FEAT_AMUv1p1             | Armv8.5  |           |    X    | Activity Monitors Extension version 1.1
 | FEAT_ANERR               | Armv8.8  |           |    X    | Asynchronous Normal Error Exceptions
@@ -101,6 +102,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_EBF16               | Armv8.2  |           |    X    | AArch64 Extended BFloat16 instructions
 | FEAT_ECBHB               | Armv8.0  | Armv8.9   |    X    | Exploitative control using branch history information
 | FEAT_ECV                 | Armv8.5  | Armv8.6   |    X    | Enhanced counter virtualization
+| FEAT_ECV_POFF            | Armv8.5  |           |    X    | Enhanced Counter Virtualization Physical Offset
 | FEAT_EDHSR               |          |           |   n/a   | External Debug Halting Syndrome Register
 | FEAT_EL0                 |          | Armv8.0   |    X    | Support for execution at EL0
 | FEAT_EL1                 |          | Armv8.0   |    X    | Support for execution at EL1
@@ -169,7 +171,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_IDTE3               | Armv9.0  |           |    X    | Trapping ID register accesses to EL3
 | FEAT_IESB                | Armv8.1  |           |    X    | Implicit Error synchronization event
 | FEAT_ITE                 | Armv9.3  |           |    X    | Instrumentation trace extension
-| FEAT_IVIPT               | Armv8.0  |           |   n/a   | The IVIPT Extension
+| FEAT_IVIPT               | Armv8.0  | Armv8.0   |   n/a   | The IVIPT Extension
 | FEAT_JSCVT               | Armv8.2  |           |    X    | JavaScript FJCVTS conversion instruction
 | FEAT_LOR                 | Armv8.0  | Armv8.1   |    X    | Limited ordering regions
 | FEAT_LPA                 | Armv8.1  |           |    X    | Large PA and IPA support
@@ -184,7 +186,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_LSE                 | Armv8.0  | Armv8.1   |    X    | Large System Extensions
 | FEAT_LSE128              | Armv9.3  |           |    X    | 128-bit Atomics
 | FEAT_LSE2                | Armv8.2  | Armv8.4   |    X    | Large System Extensions version 2
-| FEAT_LSFE                | Armv9.5  |           |    X    | Large System Float Extension
+| FEAT_LSFE                | Armv9.3  |           |    X    | Large System Float Extension
 | FEAT_LSMAOC              | Armv8.1  |           |    X    | Load/Store instruction multiple atomicity and ordering controls
 | FEAT_LSUI                | Armv9.5  | Armv9.6   |    X    | Unprivileged Load Store
 | FEAT_LUT                 | Armv9.2  |           |    X    | Lookup table instructions with 2-bit and 4-bit indices
@@ -197,7 +199,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_MPAM                | Armv8.2  |           |    X    | Memory Partitioning and Monitoring
 | FEAT_MPAM_MSC_DCTRL      | Armv9.5  |           |   n/a   | MPAM Default Resource Control
 | FEAT_MPAM_MSC_DOMAINS    | Armv9.5  |           |   n/a   | MPAM Domains PARTID translation
-| FEAT_MPAM_PE_BW_CTRL     | Armv9.5  |           |    X    | MPAM PE-side Bandwidth Controls
+| FEAT_MPAM_PE_BW_CTRL     | Armv9.3  |           |    X    | MPAM PE-side Bandwidth Controls
 | FEAT_MPAMv0p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 0.1
 | FEAT_MPAMv1p0            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.0 (removed)
 | FEAT_MPAMv1p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.1
@@ -224,7 +226,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_PACQARMA5           | Armv8.2  |           |    X    | Pointer authentication - QARMA5 algorithm
 | FEAT_PAN                 | Armv8.0  | Armv8.1   |    X    | Privileged access-never
 | FEAT_PAN2                | Armv8.1  | Armv8.2   |    X    | AT S1E1R and AT S1E1W instruction variants for PAN
-| FEAT_PAN3                | Armv8.0  | Armv8.7   |    X    | Support for SCTLR_ELx.EPAN
+| FEAT_PAN3                | Armv8.1  | Armv8.7   |    X    | Support for SCTLR_ELx.EPAN
 | FEAT_PAuth               | Armv8.2  | Armv8.3   |    X    | Pointer authentication
 | FEAT_PAuth2              | Armv8.2  | Armv8.6   |    X    | Enhancements to pointer authentication
 | FEAT_PAuth_LR            | Armv9.4  |           |    X    | PSTATE.PACM (?)
@@ -256,6 +258,8 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_PoPS                | Armv9.5  |           |    X    | Point of Physical Storage
 | FEAT_PRFMSLC             | Armv8.0  |           |    X    | SLC target support for PRFM instructions
 | FEAT_RAS                 | Armv8.0  | Armv8.2   |    X    | Reliability, Availability, and Serviceability (RAS) Extension
+| FEAT_RASSA_ACR           |          |           |   n/a   | Access Control Register
+| FEAT_RASSA_GRP           |          |           |   n/a   | RAS groups
 | FEAT_RASSAv1             |          |           |   n/a   | RAS System Architecture version 1
 | FEAT_RASSAv1p1           | Armv8.2  |           |   n/a   | RAS System Architecture version 1.1
 | FEAT_RASSAv2             | Armv8.8  |           |   n/a   | RAS System Architecture Extension v2
@@ -301,6 +305,8 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_SME_FA64            | Armv9.2  |           |    X    | Additional instructions for the SME Extension
 | FEAT_SME_I16I64          | Armv9.2  |           |    X    | Additional instructions for the SME Extension
 | FEAT_SME_LUTv2           | Armv9.2  |           |    X    | Lookup table instructions with 4-bit indices and 8-bit elements
+| FEAT_SME_MOP4            | Armv9.4  |           |    X    | Quarter-tile outer product instructions
+| FEAT_SME_TMOP            | Armv9.4  |           |    X    | Structured sparsity outer product instructions
 | FEAT_SPE                 | Armv8.1  |           |    X    | Statistical Profiling Extension
 | FEAT_SPE_ALTCLK          | Armv9.4  |           |    X    | Statistical Profiling alternate clock domain extension
 | FEAT_SPE_CRR             |          |           |    X    | Call Return Branch Records
@@ -312,7 +318,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_SPE_FPF             | Armv9.4  |           |    X    | Statistical Profiling floating-point flag extension
 | FEAT_SPE_nVM             | Armv9.5  |           |    X    | Statistical Profiling physical addressing mode extension
 | FEAT_SPE_PBT             |          |           |    X    | Statistical Profiling previous branch target
-| FEAT_SPE_SME             | Armv9.4  |           |    X    | Statistical Profiling extensions for SME
+| FEAT_SPE_SME             | Armv9.2  |           |    X    | Statistical Profiling extensions for SME
 | FEAT_SPECRES             | Armv8.0  | Armv8.5   |    X    | Speculation restriction instructions
 | FEAT_SPECRES2            | Armv8.0  | Armv8.9   |    X    | Adds new Clear Other Speculative Predictions instruction
 | FEAT_SpecSEI             | Armv8.5  |           |    X    | SError interrupt exceptions from speculative reads of memory
@@ -327,6 +333,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_SSBS                | Armv8.0  |           |    X    | Speculative Store Bypass Safe Instruction
 | FEAT_SSBS2               | Armv8.0  |           |    X    | MRS and MSR instructions for SSBS
 | FEAT_SSVE_AES            | Armv9.5  |           |    X    | Streaming SVE Mode AES and 128-bit polynomial multiply long instructions
+| FEAT_SSVE_BitPerm        | Armv9.4  |           |    X    | Streaming Scalable Vector Bit Permutes instructions
 | FEAT_SSVE_F8F16MM        | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode
 | FEAT_SSVE_F8F32MM        | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode
 | FEAT_SSVE_FP8DOT2        | Armv9.2  |           |    X    | SVE FP8 2-way dot product to half-precision inst in Streaming SVE
@@ -371,7 +378,7 @@ Total: 354 features, 325 detectable, 18 removed.
 | FEAT_TTST                | Armv8.3  |           |    X    | Small translation tables
 | FEAT_TWED                | Armv8.5  |           |    X    | Delayed trapping of WFE
 | FEAT_UAO                 | Armv8.1  | Armv8.2   |    X    | Unprivileged Access Override control
-| FEAT_UINJ                | Armv9.5  | Armv9.6   |    X    | Injection of Undefined Instruction exceptions
+| FEAT_UINJ                | Armv9.0  | Armv9.6   |    X    | Injection of Undefined Instruction exceptions
 | FEAT_VHE                 | Armv8.0  |           |    X    | Virtualization Host Extensions
 | FEAT_VMID16              | Armv8.0  |           |    X    | 16-bit VMID
 | FEAT_VPIPT               | Armv8.2  |           |    X    | VMID-aware PIPT instruction cache (removed)

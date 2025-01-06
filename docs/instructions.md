@@ -8,7 +8,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-09
+Version: 2024-12
 
 ## Number of instructions per class
 
@@ -128,7 +128,7 @@ Version: 2024-09
 | B.cond | Base | Branch conditionally.
 | BC.cond | Base | Branch consistent conditionally.
 | BCAX | SIMD | Bit clear and exclusive-OR.
-| BCAX | SVE | Bitwise clear and exclusive OR.
+| BCAX | SVE | Bitwise clear and exclusive-OR.
 | BDEP | SVE | Scatter lower bits into positions selected by bitmask.
 | BEXT | SVE | Gather lower bits from positions selected by bitmask.
 | BF1CVT | SVE | 8-bit floating-point convert to BFloat16.
@@ -530,22 +530,22 @@ Version: 2024-09
 | DUPM | SVE | Broadcast logical bitmask immediate to vector (unpredicated).
 | DUPQ | SVE | Broadcast indexed element within each quadword vector segment (unpredicated).
 | DVP | Base | Data value prediction restriction by context: an alias of SYS.
-| EON | SVE | Bitwise exclusive OR with inverted immediate (unpredicated): an alias of EOR (immediate).
+| EON | SVE | Bitwise exclusive-OR with inverted immediate (unpredicated): an alias of EOR (immediate).
 | EON (shifted register) | Base | Bitwise exclusive-OR NOT (shifted register).
 | EOR (immediate) | Base | Bitwise exclusive-OR (immediate).
-| EOR (immediate) | SVE | Bitwise exclusive OR with immediate (unpredicated).
-| EOR (predicates) | SVE | Bitwise exclusive OR predicates.
+| EOR (immediate) | SVE | Bitwise exclusive-OR with immediate (unpredicated).
+| EOR (predicates) | SVE | Bitwise exclusive-OR predicates.
 | EOR (shifted register) | Base | Bitwise exclusive-OR (shifted register).
 | EOR (vector) | SIMD | Bitwise exclusive-OR (vector).
-| EOR (vectors, predicated) | SVE | Bitwise exclusive OR vectors (predicated).
-| EOR (vectors, unpredicated) | SVE | Bitwise exclusive OR vectors (unpredicated).
+| EOR (vectors, predicated) | SVE | Bitwise exclusive-OR vectors (predicated).
+| EOR (vectors, unpredicated) | SVE | Bitwise exclusive-OR vectors (unpredicated).
 | EOR3 | SIMD | Three-way exclusive-OR.
-| EOR3 | SVE | Bitwise exclusive OR of three vectors.
-| EORBT | SVE | Interleaving exclusive OR (bottom, top).
-| EORQV | SVE | Bitwise exclusive OR reduction of quadword vector segments.
-| EORS | SVE | Bitwise exclusive OR predicates, setting the condition flags.
-| EORTB | SVE | Interleaving exclusive OR (top, bottom).
-| EORV | SVE | Bitwise exclusive OR reduction to scalar.
+| EOR3 | SVE | Bitwise exclusive-OR of three vectors.
+| EORBT | SVE | Interleaving exclusive-OR (bottom, top).
+| EORQV | SVE | Bitwise exclusive-OR reduction of quadword vector segments.
+| EORS | SVE | Bitwise exclusive-OR predicates, setting the condition flags.
+| EORTB | SVE | Interleaving exclusive-OR (top, bottom).
+| EORV | SVE | Bitwise exclusive-OR reduction to scalar.
 | ERET | Base | Exception return.
 | ERETAA | Base | Exception return, with pointer authentication.
 | ERETAB | Base | Exception return, with pointer authentication.
@@ -1445,12 +1445,12 @@ Version: 2024-09
 | MOV (bitmask immediate) | Base | Move bitmask immediate value: an alias of ORR (immediate).
 | MOV (element) | SIMD | Move vector element to another vector element: an alias of INS (element).
 | MOV (from general) | SIMD | Move general-purpose register to a vector element: an alias of INS (general).
-| MOV (immediate, predicated, merging) | SVE | Move signed integer immediate to vector elements (merging): an alias of CPY (immediate, merging).
-| MOV (immediate, predicated, zeroing) | SVE | Move signed integer immediate to vector elements (zeroing): an alias of CPY (immediate, zeroing).
+| MOV (immediate, merging) | SVE | Move signed integer immediate to vector elements (merging): an alias of CPY (immediate, merging).
 | MOV (immediate, unpredicated) | SVE | Move signed immediate to vector elements (unpredicated): an alias of DUP (immediate).
+| MOV (immediate, zeroing) | SVE | Move signed integer immediate to vector elements (zeroing): an alias of CPY (immediate, zeroing).
 | MOV (inverted wide immediate) | Base | Move inverted wide immediate value: an alias of MOVN.
-| MOV (predicate, predicated, merging) | SVE | Move predicates (merging): an alias of SEL (predicates).
-| MOV (predicate, predicated, zeroing) | SVE | Move predicates (zeroing): an alias of AND (predicates).
+| MOV (predicate, merging) | SVE | Move predicates (merging): an alias of SEL (predicates).
+| MOV (predicate, zeroing) | SVE | Move predicates (zeroing): an alias of AND (predicates).
 | MOV (register) | Base | Move register value: an alias of ORR (shifted register).
 | MOV (scalar) | SIMD | Move vector element to scalar: an alias of DUP (element).
 | MOV (scalar, predicated) | SVE | Move general-purpose register to vector elements (predicated): an alias of CPY (scalar).
@@ -1617,7 +1617,7 @@ Version: 2024-09
 | RADDHNB | SVE | Rounding add narrow high part (bottom).
 | RADDHNT | SVE | Rounding add narrow high part (top).
 | RAX1 | SIMD | Rotate and exclusive-OR.
-| RAX1 | SVE | Bitwise rotate left by 1 and exclusive OR.
+| RAX1 | SVE | Bitwise rotate left by 1 and exclusive-OR.
 | RBIT | Base | Reverse bits.
 | RBIT | SVE | Reverse bits (predicated).
 | RBIT (vector) | SIMD | Reverse bit order (vector).
@@ -1692,11 +1692,11 @@ Version: 2024-09
 | RDVL | SVE | Read multiple of vector register size to scalar register.
 | RET | Base | Return from subroutine.
 | RETAA | Base | Return from subroutine, with pointer authentication.
-| RETAASPPC | Base | Return from subroutine, with enhanced pointer authentication return using an immediate offset.
-| RETAASPPCR | Base | Return from subroutine, with enhanced pointer authentication return using a register.
+| RETAASPPC | Base | Return from subroutine, with enhanced pointer authentication using an immediate offset.
+| RETAASPPCR | Base | Return from subroutine, with enhanced pointer authentication using a register.
 | RETAB | Base | Return from subroutine, with pointer authentication.
-| RETABSPPC | Base | Return from subroutine, with enhanced pointer authentication return using an immediate offset.
-| RETABSPPCR | Base | Return from subroutine, with enhanced pointer authentication return using a register.
+| RETABSPPC | Base | Return from subroutine, with enhanced pointer authentication using an immediate offset.
+| RETABSPPCR | Base | Return from subroutine, with enhanced pointer authentication using a register.
 | REV | Base | Reverse bytes.
 | REV (predicate) | SVE | Reverse all elements in a predicate.
 | REV (vector) | SVE | Reverse all elements in a vector (unpredicated).
@@ -2733,7 +2733,7 @@ Version: 2024-09
 | WRFFR | SVE | Write the first-fault register.
 | XAFLAG | Base | Convert floating-point condition flags from external format to Arm format.
 | XAR | SIMD | Exclusive-OR and rotate.
-| XAR | SVE | Bitwise exclusive OR and rotate right by immediate.
+| XAR | SVE | Bitwise exclusive-OR and rotate right by immediate.
 | XPACD | Base | Strip Pointer Authentication Code.
 | XPACI | Base | Strip Pointer Authentication Code.
 | XPACLRI | Base | Strip Pointer Authentication Code.

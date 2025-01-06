@@ -594,8 +594,6 @@ const std::list<RegView::Register> RegView::AllRegisters {
             {"SF8FMA",   30, 30, {}},
             {"SF8DP4",   29, 29, {}},
             {"SF8DP2",   28, 28, {}},
-            {"SF8MM8",   27, 27, {}},
-            {"SF8MM4",   26, 26, {}},
             {"SBitPerm", 25, 25, {}},
             {"AES",      24, 24, {}},
             {"SFEXPA",   23, 23, {}},

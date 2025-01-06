@@ -11,7 +11,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-09
+Version: 2024-12
 
 Total: 604 system registers, 83 can be accessed by cpusysregs.
 
@@ -255,7 +255,7 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | ID_AA64AFR1_EL1   |    X    | AArch64 Auxiliary Feature Register 1
 | ID_AA64DFR0_EL1   |    X    | AArch64 Debug Feature Register 0
 | ID_AA64DFR1_EL1   |    X    | AArch64 Debug Feature Register 1
-| ID_AA64DFR2_EL1   |    X    | Debug Feature Register 2
+| ID_AA64DFR2_EL1   |    X    | AArch64 Debug Feature Register 2
 | ID_AA64FPFR0_EL1  |    X    | AArch64 Floating-point Feature Register 0
 | ID_AA64ISAR0_EL1  |    X    | AArch64 Instruction Set Attribute Register 0
 | ID_AA64ISAR1_EL1  |    X    | AArch64 Instruction Set Attribute Register 1
@@ -273,7 +273,7 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | ID_AA64ZFR0_EL1   |    X    | SVE Feature ID Register 0
 | ID_AFR0_EL1       |         | AArch32 Auxiliary Feature Register 0
 | ID_DFR0_EL1       |         | AArch32 Debug Feature Register 0
-| ID_DFR1_EL1       |         | Debug Feature Register 1
+| ID_DFR1_EL1       |         | AArch32 Debug Feature Register 1
 | ID_ISAR0_EL1      |    X    | AArch32 Instruction Set Attribute Register 0
 | ID_ISAR1_EL1      |    X    | AArch32 Instruction Set Attribute Register 1
 | ID_ISAR2_EL1      |    X    | AArch32 Instruction Set Attribute Register 2
@@ -611,7 +611,7 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | VMPIDR_EL2        |         | Virtualization Multiprocessor ID Register
 | VNCR_EL2          |         | Virtual Nested Control Register
 | VPIDR_EL2         |         | Virtualization Processor ID Register
-| VSESR_EL2         |         | Virtual SError Exception Syndrome Register
+| VSESR_EL2         |         | Virtual SError Exception Syndrome Register (EL2)
 | VSESR_EL3         |         | Virtual SError Exception Syndrome Register (EL3)
 | VSTCR_EL2         |         | Virtualization Secure Translation Control Register
 | VSTTBR_EL2        |         | Virtualization Secure Translation Table Base Register
