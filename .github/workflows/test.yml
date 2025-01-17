@@ -1,0 +1,42 @@
+#-----------------------------------------------------------------------------
+#
+#  Arm64 CPU system registers tools
+#  Copyright (c) 2025, Thierry Lelegard
+#  BSD-2-Clause license, see the LICENSE file.
+#
+#  GitHub Actions configuration file : Test on Arm64 runner
+#
+#-----------------------------------------------------------------------------
+
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04-arm
+    steps:
+    - uses: actions/checkout@master
+    - name: Build
+      run: make -j8
+    - name: Load driver
+      run: |
+        make install
+        make load
+        make show
+    - name: Get Arm features
+      run: |
+        lsb_release -a
+        uname -a
+        apps/sysregs -s
+    - name: Collect test information
+      run: |
+        collect/collect.sh tmp/cobalt100-vm-ubuntu
+        tar czf cobalt100-vm-ubuntu.tgz -C tmp cobalt100-vm-ubuntu
+    - name: Upload test information
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: cobalt100-vm-ubuntu.tgz
