@@ -1,0 +1,709 @@
+
+APDAKEY_EL1: 1010 1101 1000 1111 0110 1111 1100 0000 - 0000 1011 1001 0110 0001 0011 1000 0100
+             1111 0001 0011 1110 0001 0101 0001 1100 - 1101 0110 1110 1111 0010 1000 0000 0010
+
+  Value: AD8F6FC0-0B961384-F13E151C-D6EF2802
+
+APDBKEY_EL1: 0011 0110 1100 1000 0101 0101 1010 0000 - 1000 0110 0001 0001 1001 0001 1011 1010
+             1011 1101 0010 1101 0000 1110 0010 0011 - 0110 0000 0001 0011 1000 1000 0000 1110
+
+  Value: 36C855A0-861191BA-BD2D0E23-6013880E
+
+APGAKEY_EL1: 1100 1001 0000 1011 1101 1111 0000 0000 - 0101 1011 0011 1011 0010 0000 1011 0110
+             1011 0100 0101 0011 1001 0101 0101 1010 - 1011 1100 1110 1001 1111 1100 1111 1001
+
+  Value: C90BDF00-5B3B20B6-B453955A-BCE9FCF9
+
+APIAKEY_EL1: 1100 0010 0000 0101 0100 1101 1011 0011 - 0101 0010 0100 1000 0010 0000 1000 1111
+             0001 0010 1010 1010 0101 1011 1010 0110 - 0011 0010 0110 0100 1001 0110 0010 1000
+
+  Value: C2054DB3-5248208F-12AA5BA6-32649628
+
+APIBKEY_EL1: 0101 1110 0100 1001 0001 1001 1001 1111 - 1001 0010 1010 0010 1010 1110 0011 0010
+             0110 0011 1010 0100 0101 0101 1000 0011 - 1101 0011 0111 1110 1000 0100 0011 1011
+
+  Value: 5E49199F-92A2AE32-63A45583-D37E843B
+
+CNTFRQ_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0011 1011 1001 1010 1100 1010 0000 0000
+
+  Clock frequency: 0x3B9ACA00 (1000000000)
+
+CNTKCTL_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 1111 0110
+
+  CNTPMASK: 0x0 (0)
+  CNTVMASK: 0x0 (0)
+  EVNTIS:   0x0 (0)
+  EL1NVVCT: 0x0 (0)
+  EL1NVPCT: 0x0 (0)
+  EL1TVCT:  0x0 (0)
+  EL1TVT:   0x0 (0)
+  ECV:      0x0 (0)
+  EL1PTEN:  0x0 (0)
+  EL1PCTEN: 0x0 (0)
+  EL0PTEN:  0x0 (0)
+  EL0VTEN:  0x0 (0)
+  EVNTI:    0xF (15)
+  EVNTDIR:  0x0 (0)
+  EVNTEN:   0x1 (1)
+  EL0VCTEN: 0x1 (1)
+  EL0PCTEN: 0x0 (0)
+
+CNTPCT_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Value: 00000000-00000000
+
+CNTVCT_EL0: 0000 0000 0000 0000 0010 0111 0110 1101 - 1101 0111 1100 1111 1000 1001 1101 0000
+
+  Value: 0000276D-D7CF89D0
+
+CTR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 1011 0100 0100 0100 1100 0000 0000 0100
+
+  TminLine: 0x00 (0)
+  DIC:      0x1 (1)
+  IDC:      0x1 (1)
+  CWG:      0x4 (4)
+  ERG:      0x4 (4)
+  DminLine: 0x4 (4)
+  L1Ip:     0x3 (PIPT)
+  IminLine: 0x4 (4)
+
+ID_AA64AFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Value: 00000000-00000000
+
+ID_AA64AFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Value: 00000000-00000000
+
+ID_AA64DFR0_EL1: 0000 0000 0000 0000 0000 0000 1111 0000 - 0001 0000 0011 0000 0101 0100 0000 1000
+
+  HPMN0:       0x0 (none)
+  ExtTrcBuff:  0x0 (0)
+  BRBE:        0x0 (none)
+  MTPMU:       0x0 (0)
+  TraceBuffer: 0x0 (none)
+  TraceFilt:   0x0 (none)
+  DoubleLock:  0xF (none)
+  PMSVer:      0x0 (0)
+  CTX_CMPs:    0x1 (1)
+  SEBEP:       0x0 (0)
+  WRPs:        0x3 (3)
+  PMSS:        0x0 (0)
+  BRPs:        0x5 (5)
+  PMUVer:      0x4 (4)
+  TraceVer:    0x0 (0)
+  DebugVer:    0x8 (8)
+
+ID_AA64DFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  ABL_CMPs: 0x00 (0)
+  DPFZS:    0x0 (0)
+  EBEP:     0x0 (0)
+  ITE:      0x0 (0)
+  ABLE:     0x0 (0)
+  PMICNTR:  0x0 (0)
+  SPMU:     0x0 (0)
+  CTX_CMPs: 0x00 (0)
+  WRPs:     0x00 (0)
+  BRPs:     0x00 (0)
+  SYSPMUID: 0x00 (0)
+
+ID_AA64DFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  TRBE_EXC: 0x0 (0)
+  SPE_nVM:  0x0 (0)
+  SPE_EXC:  0x0 (0)
+  BWE:      0x0 (0)
+  STEP:     0x0 (0)
+
+ID_AA64FPFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  F8CVT:  0x0 (0)
+  F8FMA:  0x0 (0)
+  F8DP4:  0x0 (0)
+  F8DP2:  0x0 (0)
+  F8MM8:  0x0 (0)
+  F8MM4:  0x0 (0)
+  F8E4M3: 0x0 (0)
+  F8E5M2: 0x0 (0)
+
+ID_AA64ISAR0_EL1: 0000 0010 0010 0001 0001 0001 0001 0001 - 0001 0000 0010 0001 0010 0001 0010 0000
+
+  RNDR:   0x0 (none)
+  TLB:    0x2 (TLBIOS+TLBIRANGE)
+  TS:     0x2 (FlagM2)
+  FHM:    0x1 (FHM)
+  DP:     0x1 (DotProd)
+  SM4:    0x1 (SM4)
+  SM3:    0x1 (SM3)
+  SHA3:   0x1 (SHA3)
+  RDM:    0x1 (RDM)
+  TME:    0x0 (none)
+  Atomic: 0x2 (LSE)
+  CRC32:  0x1 (CRC32)
+  SHA2:   0x2 (SHA256+SHA512)
+  SHA1:   0x1 (SHA1)
+  AES:    0x2 (AES+PMULL)
+
+ID_AA64ISAR1_EL1: 0000 0000 0001 0000 0001 0001 0001 0001 - 0000 0001 0010 0001 0001 0000 0101 0010
+
+  LS64:    0x0 (none)
+  XS:      0x0 (none)
+  I8MM:    0x1 (I8MM)
+  DGH:     0x0 (none)
+  BF16:    0x1 (AMUv1p1)
+  SPECRES: 0x1 (SHA256v1)
+  SB:      0x1 (SB)
+  FRINTTS: 0x1 (FRINTTS)
+  GPI:     0x0 (none)
+  GPA:     0x1 (PACQARMA5)
+  LRCPC:   0x2 (LRCPC2)
+  FCMA:    0x1 (FCMA)
+  JSCVT:   0x1 (JSCVT)
+  API:     0x0 (none)
+  APA:     0x5 (QARMA5 PAuth+EPAC+PAuth2+FPAC+FPACCOMBINE)
+  DPB:     0x2 (DPB2)
+
+ID_AA64ISAR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  ATS1A:        0x0 (none)
+  LUT:          0x0 (none)
+  CSSC:         0x0 (none)
+  RPRFM:        0x0 (none)
+  PCDPHINT:     0x0 (none)
+  PRFMSLC:      0x0 (none)
+  SYSINSTR_128: 0x0 (none)
+  SYSREG_128:   0x0 (none)
+  CLRBHB:       0x0 (none)
+  PAC_frac:     0x0 (none)
+  BC:           0x0 (none)
+  MOPS:         0x0 (none)
+  APA3:         0x0 (none)
+  GPA3:         0x0 (none)
+  RPRES:        0x0 (none)
+  WFxT:         0x0 (none)
+
+ID_AA64ISAR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  FPRCVT:   0x0 (0)
+  LSUI:     0x0 (0)
+  OCCMO:    0x0 (0)
+  LSFE:     0x0 (0)
+  PACM:     0x0 (none)
+  TLBIW:    0x0 (none)
+  FAMINMAX: 0x0 (none)
+  CPA:      0x0 (none)
+
+ID_AA64MMFR0_EL1: 0000 0000 0000 0000 0000 0001 0001 0001 - 0000 0000 0001 0000 0001 0000 0010 0101
+
+  ECV:       0x0 (none)
+  FGT:       0x0 (none)
+  ExS:       0x0 (none)
+  TGran4_2:  0x1 (reserved)
+  TGran64_2: 0x1 (reserved)
+  TGran16_2: 0x1 (reserved)
+  TGran4:    0x0 (none)
+  TGran64:   0x0 (none)
+  TGran16:   0x1 (reserved)
+  BigEndEL0: 0x0 (none)
+  SNSMem:    0x1 (distinct)
+  BigEnd:    0x0 (none)
+  ASIDBits:  0x2 (reserved)
+  PARange:   0x5 (48 bits, 256TB)
+
+ID_AA64MMFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0010 0000 0001 0000 0000 0010
+
+  ECBHB:    0x0 (none)
+  CMOW:     0x0 (none)
+  TIDCP1:   0x0 (none)
+  nTLBPA:   0x0 (0)
+  AFP:      0x0 (none)
+  HCX:      0x0 (none)
+  ETS:      0x0 (none)
+  TWED:     0x0 (none)
+  XNX:      0x0 (none)
+  SpecSEI:  0x0 (0)
+  PAN:      0x2 (PAN2)
+  LO:       0x0 (none)
+  HPDS:     0x1 (HPDS)
+  VH:       0x0 (none)
+  VMIDBits: 0x0 (8 bits)
+  HAFDBS:   0x2 (reserved)
+
+ID_AA64MMFR2_EL1: 0000 0000 0000 0000 0000 0000 0001 0001 - 0000 0000 0001 0000 0001 0000 0001 0001
+
+  E0PD:    0x0 (none)
+  EVT:     0x0 (none)
+  BBM:     0x0 (0)
+  TTL:     0x0 (none)
+  FWB:     0x0 (none)
+  IDS:     0x1 (IDST)
+  AT:      0x1 (LSE2)
+  ST:      0x0 (0)
+  NV:      0x0 (0)
+  CCIDX:   0x1 (64-bit)
+  VARange: 0x0 (48-bit VA)
+  IESB:    0x1 (IESB)
+  LSM:     0x0 (none)
+  UAO:     0x1 (UAO)
+  CnP:     0x1 (TTCNP)
+
+ID_AA64MMFR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Spec_FPACC: 0x0 (0)
+  ADERR:      0x0 (0)
+  SDERR:      0x0 (0)
+  ANERR:      0x0 (0)
+  SNERR:      0x0 (0)
+  D128_2:     0x0 (0)
+  D128:       0x0 (0)
+  MEC:        0x0 (0)
+  AIE:        0x0 (0)
+  S2POE:      0x0 (0)
+  S1POE:      0x0 (0)
+  S2PIE:      0x0 (0)
+  S1PIE:      0x0 (0)
+  SCTLRX:     0x0 (0)
+  TCRX:       0x0 (0)
+
+ID_AA64MMFR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  SRMASK:  0x0 (0)
+  E3DSE:   0x0 (0)
+  RMEGDI:  0x0 (0)
+  E2H0:    0x0 (0)
+  NV_frac: 0x0 (0)
+  FGWTE3:  0x0 (0)
+  HACDBS:  0x0 (0)
+  ASID2:   0x0 (0)
+  EIESB:   0x0 (0)
+  PoPS:    0x0 (0)
+
+ID_AA64PFR0_EL1: 0001 0001 0000 0000 0000 0000 0000 0001 - 0000 0001 0001 0001 0001 0001 0001 0010
+
+  CSV3:    0x1 (safe)
+  CSV2:    0x1 (CSV2)
+  RME:     0x0 (none)
+  DIT:     0x0 (none)
+  AMU:     0x0 (none)
+  MPAM:    0x0 (v0)
+  SEL2:    0x0 (none)
+  SVE:     0x1 (SVE)
+  RAS:     0x0 (none)
+  GIC:     0x1 (3.0+4.0)
+  AdvSIMD: 0x1 (basic+FP16)
+  FP:      0x1 (FP+FP16)
+  EL3:     0x1 (AArch64-only)
+  EL2:     0x1 (AArch64-only)
+  EL1:     0x1 (AArch64-only)
+  EL0:     0x2 (AArch64+32)
+
+ID_AA64PFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0010 0000
+
+  PFAR:      0x0 (none)
+  DF2:       0x0 (none)
+  MTEX:      0x0 (0)
+  THE:       0x0 (none)
+  GCS:       0x0 (none)
+  MTE_frac:  0x0 (0)
+  NMI:       0x0 (none)
+  CSV2_frac: 0x0 (none)
+  RNDR_trap: 0x0 (none)
+  SME:       0x0 (none)
+  MPAM_frac: 0x0 (v.0)
+  RAS_frac:  0x0 (none)
+  MTE:       0x0 (none)
+  SSBS:      0x2 (SSBS2)
+  BT:        0x0 (none)
+
+ID_AA64PFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  FPMR:         0x0 (none)
+  UINJ:         0x0 (0)
+  MTEFAR:       0x0 (none)
+  MTESTOREONLY: 0x0 (none)
+  MTEPERM:      0x0 (none)
+
+ID_AA64ZFR0_EL1: 0000 0000 0000 0000 0001 0001 0000 0001 - 0000 0000 0001 0001 0000 0000 0001 0001
+
+  F64MM:   0x0 (none)
+  F32MM:   0x0 (none)
+  F16MM:   0x0 (0)
+  I8MM:    0x1 (I8MM)
+  SM4:     0x1 (SVE_SM4)
+  SHA3:    0x1 (SVE_SHA3)
+  B16B16:  0x0 (0)
+  BF16:    0x1 (BF16)
+  BitPerm: 0x1 (SVE_BitPerm)
+  EltPerm: 0x0 (0)
+  AES:     0x1 (SVE_AES)
+  SVEver:  0x1 (SVE2)
+
+ID_ISAR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0010 0001 0000 0001 0001 0001 0000
+
+  Divide:    0x2 (2)
+  Debug:     0x1 (1)
+  Coproc:    0x0 (0)
+  CmpBranch: 0x1 (1)
+  BitField:  0x1 (1)
+  BitCount:  0x1 (1)
+  Swap:      0x0 (0)
+
+ID_ISAR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0011 0001 0001 0010 0001 0001 0000
+
+  Jazelle:   0x1 (1)
+  Interwork: 0x3 (3)
+  Immediate: 0x1 (1)
+  IfThen:    0x1 (1)
+  Extend:    0x2 (2)
+  Except_AR: 0x1 (1)
+  Except:    0x1 (1)
+  Endian:    0x0 (0)
+
+ID_ISAR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0010 0001 0010 0011 0010 0000 0100 0010
+
+  Reversal:       0x2 (2)
+  PSR_AR:         0x1 (1)
+  MultU:          0x2 (2)
+  MultS:          0x3 (3)
+  Mult:           0x2 (2)
+  MultiAccessInt: 0x0 (0)
+  MemHint:        0x4 (4)
+  LoadStore:      0x2 (2)
+
+ID_ISAR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0001 0001 0001 0010 0001 0011 0001
+
+  T32EE:     0x0 (0)
+  TrueNOP:   0x1 (1)
+  T32Copy:   0x1 (1)
+  TabBranch: 0x1 (1)
+  SynchPrim: 0x2 (2)
+  SVC:       0x1 (1)
+  SIMD:      0x3 (3)
+  Saturate:  0x1 (1)
+
+ID_ISAR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0001 0000 0001 0100 0010
+
+  SWP_frac:       0x0 (0)
+  PSR_M:          0x0 (0)
+  SynchPrim_frac: 0x0 (0)
+  Barrier:        0x1 (1)
+  SMC:            0x0 (0)
+  Writeback:      0x1 (1)
+  WithShifts:     0x4 (4)
+  Unpriv:         0x2 (2)
+
+ID_ISAR5_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0001 0000 0001 0001 0001 0010 0001
+
+  VCMA:  0x0 (0)
+  RDM:   0x1 (1)
+  CRC32: 0x1 (1)
+  SHA2:  0x1 (1)
+  SHA1:  0x1 (1)
+  AES:   0x2 (2)
+  SEVL:  0x1 (1)
+
+ID_ISAR6_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  I8MM:    0x0 (0)
+  BF16:    0x0 (0)
+  SPECRES: 0x0 (0)
+  SB:      0x0 (0)
+  FHM:     0x0 (0)
+  DP:      0x0 (0)
+  JSCVT:   0x0 (0)
+
+ID_MMFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0010 0000 0001 0001 0000 0101
+
+  InnerShr: 0x1 (1)
+  FCSE:     0x0 (0)
+  AuxReg:   0x2 (2)
+  TCM:      0x0 (0)
+  ShareLvl: 0x1 (1)
+  OuterShr: 0x1 (1)
+  PMSA:     0x0 (0)
+  VMSA:     0x5 (5)
+
+ID_MMFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0100 0000 0000 0000 0000 0000 0000 0000
+
+  BPred:    0x4 (4)
+  L1TstCln: 0x0 (0)
+  L1Uni:    0x0 (0)
+  L1Hvd:    0x0 (0)
+  L1UniSW:  0x0 (0)
+  L1HvdSW:  0x0 (0)
+  L1UniVA:  0x0 (0)
+  L1HvdVA:  0x0 (0)
+
+ID_MMFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0001 0010 0110 0000 0000 0000 0000
+
+  HWAccFlg: 0x0 (0)
+  WFIStall: 0x1 (1)
+  MemBarr:  0x2 (2)
+  UniTLB:   0x6 (6)
+  HvdTLB:   0x0 (0)
+  L1HvdRng: 0x0 (0)
+  L1HvdBG:  0x0 (0)
+  L1HvdFG:  0x0 (0)
+
+ID_MMFR3_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0010 0001 0010 0010 0010 0001 0001
+
+  Supersec:  0x0 (0)
+  CMemSz:    0x2 (2)
+  CohWalk:   0x1 (1)
+  PAN:       0x2 (2)
+  MaintBcst: 0x2 (2)
+  BPMaint:   0x2 (2)
+  CMaintSW:  0x1 (1)
+  CMaintVA:  0x1 (1)
+
+ID_MMFR4_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  EVT:     0x0 (0)
+  CCIDX:   0x0 (0)
+  LSM:     0x0 (0)
+  HPDS:    0x0 (0)
+  CnP:     0x0 (0)
+  XNX:     0x0 (0)
+  AC2:     0x0 (0)
+  SpecSEI: 0x0 (0)
+
+ID_MMFR5_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  nTLBPA: 0x0 (0)
+  ETS:    0x0 (0)
+
+ID_PFR0_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0001 0011 0001
+
+  RAS:    0x0 (0)
+  DIT:    0x0 (0)
+  AMU:    0x0 (0)
+  CSV2:   0x0 (0)
+  State3: 0x0 (0)
+  State2: 0x1 (1)
+  State1: 0x3 (3)
+  State0: 0x1 (1)
+
+ID_PFR1_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0001 0000 0000 0001 0000 0000 0000 0000
+
+  GIC:            0x1 (1)
+  Virt_frac:      0x0 (0)
+  Sec_frac:       0x0 (0)
+  GenTimer:       0x1 (1)
+  Virtualization: 0x0 (0)
+  MProgMod:       0x0 (0)
+  Security:       0x0 (0)
+  ProgMod:        0x0 (0)
+
+ID_PFR2_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  RAS_frac: 0x0 (0)
+  SSBS:     0x0 (0)
+  CSV3:     0x0 (0)
+
+MAIR_EL1: 0000 0000 0000 0000 0000 0000 0000 0100 - 0000 0000 0100 0100 1111 1111 1111 1111
+
+  Attr7: 0x00 (0)
+  Attr6: 0x00 (0)
+  Attr5: 0x00 (0)
+  Attr4: 0x04 (4)
+  Attr3: 0x00 (0)
+  Attr2: 0x44 (68)
+  Attr1: 0xFF (255)
+  Attr0: 0xFF (255)
+
+MIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0100 0001 0000 1111 1101 0100 1001 0000
+
+  Implementer:  0x41 (Arm)
+  Variant:      0x0 (0)
+  Architecture: 0xF (By features)
+  PartNum:      0xD49 (3401)
+  Revision:     0x0 (0)
+
+MPIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 1000 0000 0000 0000 0000 0000 0000 0010
+
+  Aff3: 0x00 (0)
+  U:    0x0 (Multiprocessor)
+  MT:   0x0 (Independent perf.)
+  Aff2: 0x00 (0)
+  Aff1: 0x00 (0)
+  Aff0: 0x02 (2)
+
+PMCCFILTR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  VS:  0x0 (0)
+  P:   0x0 (0)
+  U:   0x0 (0)
+  NSK: 0x0 (0)
+  NSU: 0x0 (0)
+  NSH: 0x0 (0)
+  M:   0x0 (0)
+  SH:  0x0 (0)
+  T:   0x0 (0)
+  RLK: 0x0 (0)
+  RLU: 0x0 (0)
+  RLH: 0x0 (0)
+
+PMCCNTR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Value: 00000000-00000000
+
+PMCR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0011 0000 0100 0000
+
+  FZS:    0x0 (0)
+  IMP:    0x00 (0)
+  IDCODE: 0x00 (0)
+  N:      0x06 (6)
+  FZO:    0x0 (0)
+  LP:     0x0 (0)
+  LC:     0x1 (1)
+  DP:     0x0 (0)
+  X:      0x0 (0)
+  D:      0x0 (0)
+  C:      0x0 (0)
+  P:      0x0 (0)
+  E:      0x0 (0)
+
+PMUSERENR_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  TID: 0x0 (0)
+  IR:  0x0 (0)
+  UEN: 0x0 (0)
+  ER:  0x0 (0)
+  CR:  0x0 (0)
+  SW:  0x0 (0)
+  EN:  0x0 (0)
+
+REVIDR_EL1: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0001
+
+  Value: 00000000-00000001
+
+SCTLR_EL1: 0000 0000 0000 0000 0000 0000 0010 0000 - 1111 1100 0111 0100 1111 1001 0001 1101
+
+  TIDCP:     0x0 (none)
+  SPINTMASK: 0x0 (none)
+  NMI:       0x0 (none)
+  EnTP2:     0x0 (none)
+  TCSO:      0x0 (none)
+  TCSO0:     0x0 (none)
+  EPAN:      0x0 (none)
+  EnALS:     0x0 (none)
+  EnAS0:     0x0 (none)
+  EnASR:     0x0 (none)
+  TME:       0x0 (none)
+  TME0:      0x0 (none)
+  TMT:       0x0 (none)
+  TMT0:      0x0 (none)
+  TWEDEL:    0x0 (none)
+  TWEDEn:    0x0 (none)
+  DSSBS:     0x0 (none)
+  ATA:       0x0 (none)
+  ATA0:      0x0 (none)
+  TCF:       0x0 (none)
+  TCF0:      0x0 (none)
+  ITFSB:     0x1 (ITFSB)
+  BT1:       0x0 (BTI at EL1: PACIxSP is compatible with BTYPE:11)
+  BT0:       0x0 (BTI at EL0: PACIxSP is compatible with BTYPE:11)
+  MSCEn:     0x0 (none)
+  CMOW:      0x0 (none)
+  EnIA:      0x1 (PACIA key enabled)
+  EnIB:      0x1 (PACIB key enabled)
+  LSMAOE:    0x1 (LSMAOE)
+  nTLSMD:    0x1 (nTLSMD)
+  EnDA:      0x1 (PACDA key enabled)
+  UCI:       0x1 (UCI)
+  EE:        0x0 (TT EL1 is little endian)
+  E0E:       0x0 (EL0 data access is little endian)
+  SPAN:      0x0 (none)
+  EIS:       0x1 (EIS)
+  IESB:      0x1 (IESB)
+  TSCTX:     0x1 (TSCTX)
+  WXN:       0x0 (none)
+  nTWE:      0x1 (nTWE)
+  nTWI:      0x0 (none)
+  UCT:       0x1 (UCT)
+  DZE:       0x1 (DZE)
+  EnDB:      0x1 (PACDB key enabled)
+  I:         0x1 (I)
+  EOS:       0x1 (EOS)
+  EnRCTX:    0x0 (none)
+  UMA:       0x0 (none)
+  SED:       0x1 (SED)
+  ITD:       0x0 (none)
+  nAA:       0x0 (none)
+  CP15BEN:   0x0 (none)
+  SA0:       0x1 (SA0)
+  SA:        0x1 (SA)
+  C:         0x1 (C)
+  A:         0x0 (none)
+  M:         0x1 (M)
+
+TCR_EL1: 0000 0000 0101 0000 0000 0001 1111 0101 - 1011 0101 0101 0000 0011 0101 0001 0000
+
+  MTX1:   0x0 (none)
+  MTX0:   0x0 (none)
+  DS:     0x0 (48-bit addresses)
+  TCMA1:  0x0 (none)
+  TCMA0:  0x0 (none)
+  E0PD1:  0x0 (none)
+  E0PD0:  0x0 (none)
+  NFD1:   0x1 (stage 1 disabled)
+  NFD0:   0x0 (none)
+  TBID1:  0x1 (data)
+  TBID0:  0x0 (instr+data)
+  HWU162: 0x0 (bit62-reserved)
+  HWU161: 0x0 (bit61-reserved)
+  HWU160: 0x0 (bit60-reserved)
+  HWU159: 0x0 (bit59-reserved)
+  HWU062: 0x0 (bit62-reserved)
+  HWU061: 0x0 (bit61-reserved)
+  HWU060: 0x0 (bit60-reserved)
+  HWU059: 0x0 (bit59-reserved)
+  HPD1:   0x0 (enabled)
+  HPD0:   0x0 (enabled)
+  HD:     0x1 (enabled)
+  HA:     0x1 (enabled)
+  TBI1:   0x1 (ignored)
+  TBI0:   0x1 (ignored)
+  AS:     0x1 (used)
+  IPS:    0x5 (48 bits, 256 TB)
+  TG1:    0x2 (4 kB)
+  SH1:    0x3 (Inner shareable)
+  ORGN1:  0x1 (Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable)
+  IRGN1:  0x1 (Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable)
+  EPD1:   0x0 (Translation table walks using TTBR1_EL1)
+  A1:     0x1 (TTBR1_EL1.ASID defines the ASID)
+  T1SZ:   0x10 (16)
+  TG0:    0x0 (4 kB)
+  SH0:    0x3 (Inner shareable)
+  ORGN0:  0x1 (Normal memory, Outer Write-Back Read-Allocate Write-Allocate Cacheable)
+  IRGN0:  0x1 (Normal memory, Inner Write-Back Read-Allocate Write-Allocate Cacheable)
+  EPD0:   0x0 (Translation table walks using TTBR0_EL1)
+  T0SZ:   0x10 (16)
+
+TPIDRRO_EL0: 0000 0000 0000 0000 0000 0000 0000 0000 - 0000 0000 0000 0000 0000 0000 0000 0000
+
+  Value: 00000000-00000000
+
+TPIDR_EL0: 0000 0000 0000 0000 1111 1111 0110 1111 - 0000 1011 1010 1100 1010 0010 0100 0000
+
+  Value: 0000FF6F-0BACA240
+
+TPIDR_EL1: 1111 1111 1111 1111 0101 1010 1100 0101 - 0110 0100 1110 0001 1010 0000 0000 0000
+
+  Value: FFFF5AC5-64E1A000
+
+TTBR0_EL1: 0011 0100 1001 0000 0000 0000 0000 0001 - 0001 1011 0100 1000 0011 0000 0000 0001
+
+  ASID:  0x3490 (13456)
+  BADDR: 0x00008DA4180 (148521344)
+  SKL:   0x0 (0)
+  CnP:   0x1 (common)
+
+TTBR1_EL1: 0011 0100 1001 0000 0000 0000 0000 0100 - 0011 0001 1010 1011 1101 0000 0000 0001
+
+  ASID:  0x3490 (13456)
+  BADDR: 0x000218D5E80 (562912896)
+  SKL:   0x0 (0)
+  CnP:   0x1 (common)
+

@@ -1,0 +1,18 @@
+Kernel
+------
+Linux 6.8.0-1017-azure #20-Ubuntu SMP Tue Oct 22 04:28:23 UTC 2024 aarch64 aarch64
+
+Operating system
+----------------
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04.1 LTS
+Release:        24.04
+Codename:       noble
+
+Compiler
+--------
+gcc (Ubuntu 13.2.0-23ubuntu4) 13.2.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
