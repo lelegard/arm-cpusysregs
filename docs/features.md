@@ -20,7 +20,7 @@ Arm architecture for existing features.
 <!-- @AUTOGEN-BEGIN -->
 Version: 2024-12
 
-Total: 361 features, 325 detectable, 18 removed.
+Total: 361 features, 329 detectable, 18 removed.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------
