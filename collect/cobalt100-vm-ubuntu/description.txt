@@ -1,0 +1,3 @@
+cpu: Microsoft Cobalt-100
+core: Neoverse N2
+machine: Azure GitHub runner
