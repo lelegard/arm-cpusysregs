@@ -542,7 +542,7 @@ public:
 
     // Processor features, using same names as Arm Architecture Reference Manual.
 
-    bool FEAT_AArch32() const { return ID_AA64PFR0_EL1_EL1() >= 2 || ID_AA64PFR0_EL1_EL0() >= 2; }
+    bool FEAT_AA32() const { return FEAT_AA32EL0() || FEAT_AA32EL1() || FEAT_AA32EL2() || FEAT_AA32EL3(); }
     bool FEAT_AA32BF16() const { return ID_ISAR6_EL1_BF16() >= 1; }
     bool FEAT_AA32EL0() const { return ID_AA64PFR0_EL1_EL0() == 2; }
     bool FEAT_AA32EL1() const { return ID_AA64PFR0_EL1_EL1() == 2; }
@@ -550,6 +550,7 @@ public:
     bool FEAT_AA32EL3() const { return ID_AA64PFR0_EL1_EL3() == 2; }
     bool FEAT_AA32HPD() const { return ID_MMFR4_EL1_HPDS() >= 1; }
     bool FEAT_AA32I8MM() const { return ID_ISAR6_EL1_I8MM() >= 1; }
+    bool FEAT_AA64() const { return FEAT_AA64EL0() || FEAT_AA64EL1() || FEAT_AA64EL2() || FEAT_AA64EL3(); }
     bool FEAT_AA64EL0() const { return ID_AA64PFR0_EL1_EL0() > 0; }
     bool FEAT_AA64EL1() const { return ID_AA64PFR0_EL1_EL1() > 0; }
     bool FEAT_AA64EL2() const { return ID_AA64PFR0_EL1_EL2() > 0; }
@@ -822,9 +823,10 @@ public:
     bool FEAT_SSBS2() const { return ID_AA64PFR1_EL1_SSBS() >= 2; }
     bool FEAT_SSVE_AES() const { return ID_AA64SMFR0_EL1_AES() >= 1; }
     bool FEAT_SSVE_BitPerm() const { return ID_AA64SMFR0_EL1_SBitPerm() != 0; }
-    bool FEAT_SSVE_FP8FMA() const { return ID_AA64SMFR0_EL1_SF8FMA() == 1; }
+    bool FEAT_SSVE_FEXPA() const { return ID_AA64SMFR0_EL1_SFEXPA() == 1; }
     bool FEAT_SSVE_FP8DOT2() const { return ID_AA64SMFR0_EL1_SF8DP2() == 1; }
     bool FEAT_SSVE_FP8DOT4() const { return ID_AA64SMFR0_EL1_SF8DP4() == 1; }
+    bool FEAT_SSVE_FP8FMA() const { return ID_AA64SMFR0_EL1_SF8FMA() == 1; }
     bool FEAT_STEP2() const { return ID_AA64DFR2_EL1_STEP() == 1; }
     bool FEAT_SVE() const { return ID_AA64PFR0_EL1_SVE() >= 1; }
     bool FEAT_SVE2() const { return ID_AA64ZFR0_EL1_SVEver() >= 1; }

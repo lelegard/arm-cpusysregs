@@ -8,7 +8,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-12
+Version: 2025-03
 
 ## Number of instructions per class
 
@@ -55,7 +55,7 @@ Version: 2024-12
 | ADDPT | Base | Add checked pointer.
 | ADDPT (predicated) | SVE | Add checked pointer vectors (predicated).
 | ADDPT (unpredicated) | SVE | Add checked pointer vectors (unpredicated).
-| ADDQV | SVE | Unsigned add reduction of quadword vector segments.
+| ADDQV | SVE | Add reduction of quadword vector segments.
 | ADDS (extended register) | Base | Add extended and scaled register, setting flags.
 | ADDS (immediate) | Base | Add immediate value, setting flags.
 | ADDS (shifted register) | Base | Add optionally-shifted register, setting flags.
@@ -132,105 +132,105 @@ Version: 2024-12
 | BDEP | SVE | Scatter lower bits into positions selected by bitmask.
 | BEXT | SVE | Gather lower bits from positions selected by bitmask.
 | BF1CVT | SVE | 8-bit floating-point convert to BFloat16.
-| BF1CVT | SME | Multi-vector floating-point convert from 8-bit floating-point to BFloat16 (in-order).
+| BF1CVT | SME | Multi-vector convert from 8-bit floating-point to BFloat16 (in-order).
 | BF1CVTL | SIMD | 8-bit floating-point convert to BFloat16 (vector).
-| BF1CVTL | SME | Multi-vector floating-point convert from 8-bit floating-point to deinterleaved BFloat16.
+| BF1CVTL | SME | Multi-vector convert from 8-bit floating-point to deinterleaved BFloat16.
 | BF1CVTL2 | SIMD | 8-bit floating-point convert to BFloat16 (vector).
 | BF1CVTLT | SVE | 8-bit floating-point convert to BFloat16 (top).
 | BF2CVT | SVE | 8-bit floating-point convert to BFloat16.
-| BF2CVT | SME | Multi-vector floating-point convert from 8-bit floating-point to BFloat16 (in-order).
+| BF2CVT | SME | Multi-vector convert from 8-bit floating-point to BFloat16 (in-order).
 | BF2CVTL | SIMD | 8-bit floating-point convert to BFloat16 (vector).
-| BF2CVTL | SME | Multi-vector floating-point convert from 8-bit floating-point to deinterleaved BFloat16.
+| BF2CVTL | SME | Multi-vector convert from 8-bit floating-point to deinterleaved BFloat16.
 | BF2CVTL2 | SIMD | 8-bit floating-point convert to BFloat16 (vector).
 | BF2CVTLT | SVE | 8-bit floating-point convert to BFloat16 (top).
-| BFADD | SME | BFloat16 floating-point add multi-vector to ZA array vector accumulators.
-| BFADD (predicated) | SVE | BFloat16 floating-point add vectors (predicated).
-| BFADD (unpredicated) | SVE | BFloat16 floating-point add vectors (unpredicated).
+| BFADD | SME | BFloat16 add multi-vector to ZA array vector accumulators.
+| BFADD (predicated) | SVE | BFloat16 add vectors (predicated).
+| BFADD (unpredicated) | SVE | BFloat16 add vectors (unpredicated).
 | BFC | Base | Bitfield clear: an alias of BFM.
-| BFCLAMP | SVE | BFloat16 floating-point clamp to minimum/maximum number.
-| BFCLAMP | SME | Multi-vector BFloat16 floating-point clamp to minimum/maximum number.
+| BFCLAMP | SVE | BFloat16 clamp to minimum/maximum number.
+| BFCLAMP | SME | Multi-vector BFloat16 clamp to minimum/maximum number.
 | BFCVT | SIMD | Floating-point convert from single-precision to BFloat16 format (scalar).
-| BFCVT | SVE | Floating-point down convert to BFloat16 format (predicated).
-| BFCVT | SME | Multi-vector floating-point convert from single-precision to packed BFloat16 format.
-| BFCVT | SME | Multi-vector floating-point convert from BFloat16 to packed 8-bit floating-point format.
+| BFCVT | SVE | Single-precision down convert to BFloat16 format (predicated).
+| BFCVT (BFloat16 to 8-bit floating-point) | SME | Multi-vector convert from BFloat16 to packed 8-bit floating-point format.
+| BFCVT (single-precision to BFloat16) | SME | Multi-vector convert from single-precision to packed BFloat16 format.
 | BFCVTN | SIMD | Floating-point convert from single-precision to BFloat16 format (vector).
 | BFCVTN | SVE | BFloat16 convert, narrow and interleave to 8-bit floating-point.
-| BFCVTN | SME | Multi-vector floating-point convert from single-precision to interleaved BFloat16 format.
+| BFCVTN | SME | Multi-vector convert from single-precision to interleaved BFloat16 format.
 | BFCVTN2 | SIMD | Floating-point convert from single-precision to BFloat16 format (vector).
-| BFCVTNT | SVE | Floating-point down convert and narrow to BFloat16 (top, predicated).
+| BFCVTNT | SVE | Single-precision down convert and narrow to BFloat16 (top, predicated).
 | BFDOT (by element) | SIMD | BFloat16 floating-point dot product (vector, by element).
-| BFDOT (indexed) | SVE | BFloat16 floating-point indexed dot product.
-| BFDOT (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point dot-product by indexed element.
-| BFDOT (multiple and single vector) | SME | Multi-vector BFloat16 floating-point dot-product by vector.
-| BFDOT (multiple vectors) | SME | Multi-vector BFloat16 floating-point dot-product.
+| BFDOT (indexed) | SVE | BFloat16 indexed dot product to single-precision.
+| BFDOT (multiple and indexed vector) | SME | Multi-vector BFloat16 dot-product by indexed element.
+| BFDOT (multiple and single vector) | SME | Multi-vector BFloat16 dot-product by vector.
+| BFDOT (multiple vectors) | SME | Multi-vector BFloat16 dot-product.
 | BFDOT (vector) | SIMD | BFloat16 floating-point dot product (vector).
-| BFDOT (vectors) | SVE | BFloat16 floating-point dot product.
+| BFDOT (vectors) | SVE | BFloat16 dot product to single-precision.
 | BFI | Base | Bitfield insert: an alias of BFM.
 | BFM | Base | Bitfield move.
-| BFMAX | SVE | BFloat16 floating-point maximum (predicated).
-| BFMAX (multiple and single vector) | SME | Multi-vector BFloat16 floating-point maximum by vector.
-| BFMAX (multiple vectors) | SME | Multi-vector BFloat16 floating-point maximum.
-| BFMAXNM | SVE | BFloat16 floating-point maximum number (predicated).
-| BFMAXNM (multiple and single vector) | SME | Multi-vector BFloat16 floating-point maximum number by vector.
-| BFMAXNM (multiple vectors) | SME | Multi-vector BFloat16 floating-point maximum number.
-| BFMIN | SVE | BFloat16 floating-point minimum (predicated).
-| BFMIN (multiple and single vector) | SME | Multi-vector BFloat16 floating-point minimum by vector.
-| BFMIN (multiple vectors) | SME | Multi-vector BFloat16 floating-point minimum.
-| BFMINNM | SVE | BFloat16 floating-point minimum number (predicated).
-| BFMINNM (multiple and single vector) | SME | Multi-vector BFloat16 floating-point minimum number by vector.
-| BFMINNM (multiple vectors) | SME | Multi-vector BFloat16 floating-point minimum number.
-| BFMLA (indexed) | SVE | BFloat16 floating-point fused multiply-add vectors by indexed elements.
-| BFMLA (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point fused multiply-add by indexed element.
-| BFMLA (multiple and single vector) | SME | Multi-vector BFloat16 floating-point fused multiply-add by vector.
-| BFMLA (multiple vectors) | SME | Multi-vector BFloat16 floating-point fused multiply-add.
-| BFMLA (vectors) | SVE | BFloat16 floating-point fused multiply-add vectors.
-| BFMLAL (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point multiply-add long by indexed element.
-| BFMLAL (multiple and single vector) | SME | Multi-vector BFloat16 floating-point multiply-add long by vector.
-| BFMLAL (multiple vectors) | SME | Multi-vector BFloat16 floating-point multiply-add long.
+| BFMAX | SVE | BFloat16 maximum (predicated).
+| BFMAX (multiple and single vector) | SME | Multi-vector BFloat16 maximum by vector.
+| BFMAX (multiple vectors) | SME | Multi-vector BFloat16 maximum.
+| BFMAXNM | SVE | BFloat16 maximum number (predicated).
+| BFMAXNM (multiple and single vector) | SME | Multi-vector BFloat16 maximum number by vector.
+| BFMAXNM (multiple vectors) | SME | Multi-vector BFloat16 maximum number.
+| BFMIN | SVE | BFloat16 minimum (predicated).
+| BFMIN (multiple and single vector) | SME | Multi-vector BFloat16 minimum by vector.
+| BFMIN (multiple vectors) | SME | Multi-vector BFloat16 minimum.
+| BFMINNM | SVE | BFloat16 minimum number (predicated).
+| BFMINNM (multiple and single vector) | SME | Multi-vector BFloat16 minimum number by vector.
+| BFMINNM (multiple vectors) | SME | Multi-vector BFloat16 minimum number.
+| BFMLA (indexed) | SVE | BFloat16 fused multiply-add vectors by indexed elements.
+| BFMLA (multiple and indexed vector) | SME | Multi-vector BFloat16 fused multiply-add by indexed element.
+| BFMLA (multiple and single vector) | SME | Multi-vector BFloat16 fused multiply-add by vector.
+| BFMLA (multiple vectors) | SME | Multi-vector BFloat16 fused multiply-add.
+| BFMLA (vectors) | SVE | BFloat16 fused multiply-add vectors.
+| BFMLAL (multiple and indexed vector) | SME | Multi-vector BFloat16 multiply-add long by indexed element.
+| BFMLAL (multiple and single vector) | SME | Multi-vector BFloat16 multiply-add long by vector.
+| BFMLAL (multiple vectors) | SME | Multi-vector BFloat16 multiply-add long.
 | BFMLALB (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
-| BFMLALB (indexed) | SVE | BFloat16 floating-point multiply-add long to single-precision (bottom, indexed).
+| BFMLALB (indexed) | SVE | BFloat16 multiply-add long to single-precision (bottom, indexed).
 | BFMLALB (vector) | SIMD | BFloat16 floating-point widening multiply-add long (vector).
-| BFMLALB (vectors) | SVE | BFloat16 floating-point multiply-add long to single-precision (bottom).
+| BFMLALB (vectors) | SVE | BFloat16 multiply-add long to single-precision (bottom).
 | BFMLALT (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
-| BFMLALT (indexed) | SVE | BFloat16 floating-point multiply-add long to single-precision (top, indexed).
+| BFMLALT (indexed) | SVE | BFloat16 multiply-add long to single-precision (top, indexed).
 | BFMLALT (vector) | SIMD | BFloat16 floating-point widening multiply-add long (vector).
-| BFMLALT (vectors) | SVE | BFloat16 floating-point multiply-add long to single-precision (top).
-| BFMLS (indexed) | SVE | BFloat16 floating-point fused multiply-subtract vectors by indexed elements.
-| BFMLS (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point fused multiply-subtract by indexed element.
-| BFMLS (multiple and single vector) | SME | Multi-vector BFloat16 floating-point fused multiply-subtract by vector.
-| BFMLS (multiple vectors) | SME | Multi-vector BFloat16 floating-point fused multiply-subtract.
-| BFMLS (vectors) | SVE | BFloat16 floating-point fused multiply-subtract vectors.
-| BFMLSL (multiple and indexed vector) | SME | Multi-vector BFloat16 floating-point multiply-subtract long by indexed element.
-| BFMLSL (multiple and single vector) | SME | Multi-vector BFloat16 floating-point multiply-subtract long by vector.
-| BFMLSL (multiple vectors) | SME | Multi-vector BFloat16 floating-point multiply-subtract long.
-| BFMLSLB (indexed) | SVE | BFloat16 floating-point multiply-subtract long from single-precision (bottom, indexed).
-| BFMLSLB (vectors) | SVE | BFloat16 floating-point multiply-subtract long from single-precision (bottom).
-| BFMLSLT (indexed) | SVE | BFloat16 floating-point multiply-subtract long from single-precision (top, indexed).
-| BFMLSLT (vectors) | SVE | BFloat16 floating-point multiply-subtract long from single-precision (top).
-| BFMMLA | SIMD | BFloat16 floating-point matrix multiply-accumulate into 2x2 matrix.
-| BFMMLA | SVE | BFloat16 floating-point matrix multiply-accumulate into 2×2 matrices.
+| BFMLALT (vectors) | SVE | BFloat16 multiply-add long to single-precision (top).
+| BFMLS (indexed) | SVE | BFloat16 fused multiply-subtract vectors by indexed elements.
+| BFMLS (multiple and indexed vector) | SME | Multi-vector BFloat16 fused multiply-subtract by indexed element.
+| BFMLS (multiple and single vector) | SME | Multi-vector BFloat16 fused multiply-subtract by vector.
+| BFMLS (multiple vectors) | SME | Multi-vector BFloat16 fused multiply-subtract.
+| BFMLS (vectors) | SVE | BFloat16 fused multiply-subtract vectors.
+| BFMLSL (multiple and indexed vector) | SME | Multi-vector BFloat16 multiply-subtract long by indexed element.
+| BFMLSL (multiple and single vector) | SME | Multi-vector BFloat16 multiply-subtract long by vector.
+| BFMLSL (multiple vectors) | SME | Multi-vector BFloat16 multiply-subtract long.
+| BFMLSLB (indexed) | SVE | BFloat16 multiply-subtract long from single-precision (bottom, indexed).
+| BFMLSLB (vectors) | SVE | BFloat16 multiply-subtract long from single-precision (bottom).
+| BFMLSLT (indexed) | SVE | BFloat16 multiply-subtract long from single-precision (top, indexed).
+| BFMLSLT (vectors) | SVE | BFloat16 multiply-subtract long from single-precision (top).
+| BFMMLA (widening) | SIMD | BFloat16 matrix multiply-accumulate to single-precision.
+| BFMMLA (widening) | SVE | BFloat16 matrix multiply-accumulate to single-precision.
 | BFMOP4A (non-widening) | SME | BFloat16 quarter-tile outer products, accumulating.
 | BFMOP4A (widening) | SME | BFloat16 quarter-tile sums of two outer products, accumulating.
 | BFMOP4S (non-widening) | SME | BFloat16 quarter-tile outer products, subtracting.
 | BFMOP4S (widening) | SME | BFloat16 quarter-tile sums of two outer products, subtracting.
-| BFMOPA (non-widening) | SME | BFloat16 floating-point outer product and accumulate.
+| BFMOPA (non-widening) | SME | BFloat16 outer product and accumulate.
 | BFMOPA (widening) | SME | BFloat16 sum of outer products and accumulate.
-| BFMOPS (non-widening) | SME | BFloat16 floating-point outer product and subtract.
+| BFMOPS (non-widening) | SME | BFloat16 outer product and subtract.
 | BFMOPS (widening) | SME | BFloat16 sum of outer products and subtract.
-| BFMUL (indexed) | SVE | BFloat16 floating-point multiply vectors by indexed elements.
-| BFMUL (multiple and single vector) | SME | Multi-vector BFloat16 floating-point multiply by vector.
-| BFMUL (multiple vectors) | SME | Multi-vector BFloat16 floating-point multiply.
-| BFMUL (vectors, predicated) | SVE | BFloat16 floating-point multiply vectors (predicated).
-| BFMUL (vectors, unpredicated) | SVE | BFloat16 floating-point multiply vectors (unpredicated).
+| BFMUL (indexed) | SVE | BFloat16 multiply vectors by indexed elements.
+| BFMUL (multiple and single vector) | SME | Multi-vector BFloat16 multiply by vector.
+| BFMUL (multiple vectors) | SME | Multi-vector BFloat16 multiply.
+| BFMUL (vectors, predicated) | SVE | BFloat16 multiply vectors (predicated).
+| BFMUL (vectors, unpredicated) | SVE | BFloat16 multiply vectors (unpredicated).
 | BFSCALE | SVE | BFloat16 adjust exponent by vector (predicated).
 | BFSCALE (multiple and single vector) | SME | Multi-vector BFloat16 adjust exponent by vector.
 | BFSCALE (multiple vectors) | SME | Multi-vector BFloat16 adjust exponent.
-| BFSUB | SME | BFloat16 floating-point subtract multi-vector from ZA array vector accumulators.
-| BFSUB (predicated) | SVE | BFloat16 floating-point subtract vectors (predicated).
-| BFSUB (unpredicated) | SVE | BFloat16 floating-point subtract vectors (unpredicated).
+| BFSUB | SME | BFloat16 subtract multi-vector from ZA array vector accumulators.
+| BFSUB (predicated) | SVE | BFloat16 subtract vectors (predicated).
+| BFSUB (unpredicated) | SVE | BFloat16 subtract vectors (unpredicated).
 | BFTMOPA (non-widening) | SME | BFloat16 sparse outer product, accumulating.
 | BFTMOPA (widening) | SME | BFloat16 sparse sum of two outer products, accumulating.
-| BFVDOT | SME | Multi-vector BFloat16 floating-point vertical dot-product by indexed element.
+| BFVDOT | SME | Multi-vector BFloat16 vertical dot-product by indexed element.
 | BFXIL | Base | Bitfield extract and insert at low end: an alias of BFM.
 | BGRP | SVE | Group bits to right or left as selected by bitmask.
 | BIC (immediate) | SVE | Bitwise clear bits using immediate (unpredicated): an alias of AND (immediate).
@@ -556,15 +556,15 @@ Version: 2024-12
 | EXTQ | SVE | Extract vector segment from each pair of quadword vector segments.
 | EXTR | Base | Extract register.
 | F1CVT | SVE | 8-bit floating-point convert to half-precision.
-| F1CVT | SME | Multi-vector floating-point convert from 8-bit floating-point to half-precision (in-order).
+| F1CVT | SME | Multi-vector convert from 8-bit floating-point to half-precision (in-order).
 | F1CVTL | SIMD | 8-bit floating-point convert to half-precision (vector).
-| F1CVTL | SME | Multi-vector floating-point convert from 8-bit floating-point to deinterleaved half-precision.
+| F1CVTL | SME | Multi-vector convert from 8-bit floating-point to deinterleaved half-precision.
 | F1CVTL2 | SIMD | 8-bit floating-point convert to half-precision (vector).
 | F1CVTLT | SVE | 8-bit floating-point convert to half-precision (top).
 | F2CVT | SVE | 8-bit floating-point convert to half-precision.
-| F2CVT | SME | Multi-vector floating-point convert from 8-bit floating-point to half-precision (in-order).
+| F2CVT | SME | Multi-vector convert from 8-bit floating-point to half-precision (in-order).
 | F2CVTL | SIMD | 8-bit floating-point convert to half-precision (vector).
-| F2CVTL | SME | Multi-vector floating-point convert from 8-bit floating-point to deinterleaved half-precision.
+| F2CVTL | SME | Multi-vector convert from 8-bit floating-point to deinterleaved half-precision.
 | F2CVTL2 | SIMD | 8-bit floating-point convert to half-precision (vector).
 | F2CVTLT | SVE | 8-bit floating-point convert to half-precision (top).
 | FABD | SIMD | Floating-point absolute difference (vector).
@@ -623,10 +623,10 @@ Version: 2024-12
 | FCSEL | SIMD | Floating-point conditional select (scalar).
 | FCVT | SIMD | Floating-point convert precision (scalar).
 | FCVT | SVE | Floating-point convert precision (predicated).
-| FCVT (narrowing, FP16 to FP8) | SME | Multi-vector floating-point convert from half-precision to packed 8-bit floating-point format.
-| FCVT (narrowing, FP32 to FP16) | SME | Multi-vector floating-point convert from single-precision to packed half-precision.
-| FCVT (narrowing, FP32 to FP8) | SME | Multi-vector floating-point convert from single-precision to packed 8-bit floating-point format.
-| FCVT (widening) | SME | Multi-vector floating-point convert from half-precision to single-precision (in-order).
+| FCVT (narrowing, FP16 to FP8) | SME | Multi-vector convert from half-precision to packed 8-bit floating-point format.
+| FCVT (narrowing, FP32 to FP16) | SME | Multi-vector convert from single-precision to packed half-precision.
+| FCVT (narrowing, FP32 to FP8) | SME | Multi-vector convert from single-precision to packed 8-bit floating-point format.
+| FCVT (widening) | SME | Multi-vector convert from half-precision to single-precision (in-order).
 | FCVTAS (scalar SIMD&FP) | SIMD | Floating-point convert to signed integer, rounding to nearest with ties to away (scalar SIMD&FP).
 | FCVTAS (scalar) | SIMD | Floating-point convert to signed integer, rounding to nearest with ties to away (scalar).
 | FCVTAS (vector) | SIMD | Floating-point convert to signed integer, rounding to nearest with ties to away (vector).
@@ -634,7 +634,7 @@ Version: 2024-12
 | FCVTAU (scalar) | SIMD | Floating-point convert to unsigned integer, rounding to nearest with ties to away (scalar).
 | FCVTAU (vector) | SIMD | Floating-point convert to unsigned integer, rounding to nearest with ties to away (vector).
 | FCVTL | SIMD | Floating-point convert to higher precision long (vector).
-| FCVTL | SME | Multi-vector floating-point convert from half-precision to deinterleaved single-precision.
+| FCVTL | SME | Multi-vector convert from half-precision to deinterleaved single-precision.
 | FCVTL2 | SIMD | Floating-point convert to higher precision long (vector).
 | FCVTLT | SVE | Floating-point up convert long (top, predicated).
 | FCVTMS (scalar SIMD&FP) | SIMD | Floating-point convert to signed integer, rounding toward minus infinity (scalar SIMD&FP).
@@ -644,8 +644,8 @@ Version: 2024-12
 | FCVTMU (scalar) | SIMD | Floating-point convert to unsigned integer, rounding toward minus infinity (scalar).
 | FCVTMU (vector) | SIMD | Floating-point convert to unsigned integer, rounding toward minus infinity (vector).
 | FCVTN | SVE | Half-precision convert, narrow and interleave to 8-bit floating-point.
-| FCVTN (FP32 to FP16) | SME | Multi-vector floating-point convert from single-precision to interleaved half-precision.
-| FCVTN (FP32 to FP8) | SME | Multi-vector floating-point convert from single-precision to interleaved 8-bit floating-point format.
+| FCVTN (FP32 to FP16) | SME | Multi-vector convert from single-precision to interleaved half-precision.
+| FCVTN (FP32 to FP8) | SME | Multi-vector convert from single-precision to interleaved 8-bit floating-point format.
 | FCVTN (double to single-precision, single to half-precision) | SIMD | Floating-point convert to lower precision narrow (vector).
 | FCVTN (half-precision to 8-bit floating-point) | SIMD | Half-precision to 8-bit floating-point convert and narrow (vector).
 | FCVTN (single-precision to 8-bit floating-point) | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
@@ -666,10 +666,10 @@ Version: 2024-12
 | FCVTPU (scalar SIMD&FP) | SIMD | Floating-point convert to unsigned integer, rounding toward plus infinity (scalar SIMD&FP).
 | FCVTPU (scalar) | SIMD | Floating-point convert to unsigned integer, rounding toward plus infinity (scalar).
 | FCVTPU (vector) | SIMD | Floating-point convert to unsigned integer, rounding toward plus infinity (vector).
-| FCVTX | SVE | Floating-point down convert, rounding to odd (predicated).
+| FCVTX | SVE | Double-precision down convert to single-precision, rounding to odd (predicated).
 | FCVTXN | SIMD | Floating-point convert to lower precision narrow, rounding to odd (vector).
 | FCVTXN2 | SIMD | Floating-point convert to lower precision narrow, rounding to odd (vector).
-| FCVTXNT | SVE | Floating-point down convert, rounding to odd (top, predicated).
+| FCVTXNT | SVE | Double-precision down convert to single-precision, rounding to odd (top, predicated).
 | FCVTZS | SVE | Floating-point convert to signed integer, rounding toward zero (predicated).
 | FCVTZS | SME | Multi-vector floating-point convert to signed integer, rounding toward zero.
 | FCVTZS (scalar SIMD&FP) | SIMD | Floating-point convert to signed integer, rounding toward zero (scalar SIMD&FP).
@@ -688,15 +688,15 @@ Version: 2024-12
 | FDIV (scalar) | SIMD | Floating-point divide (scalar).
 | FDIV (vector) | SIMD | Floating-point divide (vector).
 | FDIVR | SVE | Floating-point reversed divide by vector (predicated).
-| FDOT (2-way, indexed, FP16 to FP32) | SVE | Half-precision floating-point indexed dot product.
+| FDOT (2-way, indexed, FP16 to FP32) | SVE | Half-precision indexed dot product to single-precision.
 | FDOT (2-way, indexed, FP8 to FP16) | SVE | 8-bit floating-point indexed dot product to half-precision.
-| FDOT (2-way, multiple and indexed vector, FP16 to FP32) | SME | Multi-vector half-precision floating-point dot-product by indexed element.
+| FDOT (2-way, multiple and indexed vector, FP16 to FP32) | SME | Multi-vector half-precision dot-product by indexed element.
 | FDOT (2-way, multiple and indexed vector, FP8 to FP16) | SME | Multi-vector 8-bit floating-point dot-product by indexed element to half-precision.
-| FDOT (2-way, multiple and single vector, FP16 to FP32) | SME | Multi-vector half-precision floating-point dot-product by vector.
+| FDOT (2-way, multiple and single vector, FP16 to FP32) | SME | Multi-vector half-precision dot-product by vector.
 | FDOT (2-way, multiple and single vector, FP8 to FP16) | SME | Multi-vector 8-bit floating-point dot-product by vector to half-precision.
-| FDOT (2-way, multiple vectors, FP16 to FP32) | SME | Multi-vector half-precision floating-point dot-product.
+| FDOT (2-way, multiple vectors, FP16 to FP32) | SME | Multi-vector half-precision dot-product.
 | FDOT (2-way, multiple vectors, FP8 to FP16) | SME | Multi-vector 8-bit floating-point dot-product to half-precision.
-| FDOT (2-way, vectors, FP16 to FP32) | SVE | Half-precision floating-point dot product.
+| FDOT (2-way, vectors, FP16 to FP32) | SVE | Half-precision dot product to single-precision.
 | FDOT (2-way, vectors, FP8 to FP16) | SVE | 8-bit floating-point dot product to half-precision.
 | FDOT (4-way, indexed) | SVE | 8-bit floating-point indexed dot product to single-precision.
 | FDOT (4-way, multiple and indexed vector) | SME | Multi-vector 8-bit floating-point dot-product by indexed element to single-precision.
@@ -780,10 +780,10 @@ Version: 2024-12
 | FMLAL2 (by element) | SIMD | Floating-point fused multiply-add long to accumulator (by element).
 | FMLAL2 (vector) | SIMD | Floating-point fused multiply-add long to accumulator (vector).
 | FMLALB (by element) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
-| FMLALB (indexed, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (bottom, indexed).
+| FMLALB (indexed, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (bottom, indexed).
 | FMLALB (indexed, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom, indexed).
 | FMLALB (vector) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
-| FMLALB (vectors, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (bottom).
+| FMLALB (vectors, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (bottom).
 | FMLALB (vectors, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom).
 | FMLALL (multiple and indexed vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by indexed element to single-precision.
 | FMLALL (multiple and single vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by vector to single-precision.
@@ -805,10 +805,10 @@ Version: 2024-12
 | FMLALLTT (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
 | FMLALLTT (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (top top).
 | FMLALT (by element) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
-| FMLALT (indexed, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (top, indexed).
+| FMLALT (indexed, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (top, indexed).
 | FMLALT (indexed, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (top, indexed).
 | FMLALT (vector) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
-| FMLALT (vectors, FP16 to FP32) | SVE | Half-precision floating-point multiply-add long to single-precision (top).
+| FMLALT (vectors, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (top).
 | FMLALT (vectors, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (top).
 | FMLS (by element) | SIMD | Floating-point fused multiply-subtract from accumulator (by element).
 | FMLS (indexed) | SVE | Floating-point fused multiply-subtract by indexed elements (Zda = Zda + -Zn * Zm[indexed]).
@@ -824,14 +824,14 @@ Version: 2024-12
 | FMLSL (vector) | SIMD | Floating-point fused multiply-subtract long from accumulator (vector).
 | FMLSL2 (by element) | SIMD | Floating-point fused multiply-subtract long from accumulator (by element).
 | FMLSL2 (vector) | SIMD | Floating-point fused multiply-subtract long from accumulator (vector).
-| FMLSLB (indexed) | SVE | Half-precision floating-point multiply-subtract long from single-precision (bottom, indexed).
-| FMLSLB (vectors) | SVE | Half-precision floating-point multiply-subtract long from single-precision (bottom).
-| FMLSLT (indexed) | SVE | Half-precision floating-point multiply-subtract long from single-precision (top, indexed).
-| FMLSLT (vectors) | SVE | Half-precision floating-point multiply-subtract long from single-precision (top).
-| FMMLA (8-bit floating-point to half-precision) | SIMD | 8-bit floating-point matrix multiply-accumulate into 2x2 half-precision matrix.
-| FMMLA (8-bit floating-point to single-precision) | SIMD | 8-bit floating-point matrix multiply-accumulate into 2x2 single-precision matrix.
+| FMLSLB (indexed) | SVE | Half-precision multiply-subtract long from single-precision (bottom, indexed).
+| FMLSLB (vectors) | SVE | Half-precision multiply-subtract long from single-precision (bottom).
+| FMLSLT (indexed) | SVE | Half-precision multiply-subtract long from single-precision (top, indexed).
+| FMLSLT (vectors) | SVE | Half-precision multiply-subtract long from single-precision (top).
 | FMMLA (non-widening) | SVE | Floating-point matrix multiply-accumulate.
-| FMMLA (widening, FP16 to FP32) | SVE | Half-precision floating-point matrix multiply-accumulate to single-precision.
+| FMMLA (widening, 8-bit floating-point to half-precision) | SIMD | 8-bit floating-point matrix multiply-accumulate to half-precision.
+| FMMLA (widening, 8-bit floating-point to single-precision) | SIMD | 8-bit floating-point matrix multiply-accumulate to single-precision.
+| FMMLA (widening, FP16 to FP32) | SVE | Half-precision matrix multiply-accumulate to single-precision.
 | FMMLA (widening, FP8 to FP16) | SVE | 8-bit floating-point matrix multiply-accumulate to half-precision.
 | FMMLA (widening, FP8 to FP32) | SVE | 8-bit floating-point matrix multiply-accumulate to single-precision.
 | FMOP4A (non-widening) | SME | Floating-point quarter-tile outer products, accumulating.
@@ -841,11 +841,11 @@ Version: 2024-12
 | FMOP4S (non-widening) | SME | Floating-point quarter-tile outer products, subtracting.
 | FMOP4S (widening) | SME | Half-precision quarter-tile sums of two outer products, subtracting.
 | FMOPA (non-widening) | SME | Floating-point outer product and accumulate.
-| FMOPA (widening, 2-way, FP16 to FP32) | SME | Half-precision floating-point sum of outer products and accumulate.
+| FMOPA (widening, 2-way, FP16 to FP32) | SME | Half-precision sum of outer products and accumulate.
 | FMOPA (widening, 2-way, FP8 to FP16) | SME | 8-bit floating-point sum of outer products and accumulate.
 | FMOPA (widening, 4-way) | SME | 8-bit floating-point sum of outer products and accumulate.
 | FMOPS (non-widening) | SME | Floating-point outer product and subtract.
-| FMOPS (widening) | SME | Half-precision floating-point sum of outer products and subtract.
+| FMOPS (widening) | SME | Half-precision sum of outer products and subtract.
 | FMOV (general) | SIMD | Floating-point move to or from general-purpose register without conversion.
 | FMOV (immediate, predicated) | SVE | Move 8-bit floating-point immediate to vector elements (predicated): an alias of FCPY.
 | FMOV (immediate, unpredicated) | SVE | Move 8-bit floating-point immediate to vector elements (unpredicated): an alias of FDUP.
@@ -941,7 +941,7 @@ Version: 2024-12
 | FTMOPA (widening, 4-way) | SME | 8-bit floating-point sparse sum of four outer products, accumulating.
 | FTSMUL | SVE | Floating-point trigonometric starting value.
 | FTSSEL | SVE | Floating-point trigonometric select coefficient.
-| FVDOT (FP16 to FP32) | SME | Multi-vector half-precision floating-point vertical dot-product by indexed element.
+| FVDOT (FP16 to FP32) | SME | Multi-vector half-precision vertical dot-product by indexed element.
 | FVDOT (FP8 to FP16) | SME | Multi-vector 8-bit floating-point vertical dot-product by indexed element to half-precision.
 | FVDOTB | SME | Multi-vector 8-bit floating-point vertical dot-product by indexed element to single-precision (bottom).
 | FVDOTT | SME | Multi-vector 8-bit floating-point vertical dot-product by indexed element to single-precision (top).
@@ -1411,16 +1411,16 @@ Version: 2024-12
 | LSRR | SVE | Reversed logical shift right by vector (predicated).
 | LSRV | Base | Logical shift right variable.
 | LUTI2 | SIMD | Lookup table read with 2-bit indices.
-| LUTI2 | SVE | Lookup table read with 2-bit indices.
-| LUTI2 (four registers) | SME | Lookup table read with 2-bit indexes.
-| LUTI2 (single) | SME | Lookup table read with 2-bit indexes.
-| LUTI2 (two registers) | SME | Lookup table read with 2-bit indexes.
+| LUTI2 (8-bit and 16-bit) | SVE | Lookup table read with 2-bit indices (8-bit and 16-bit).
+| LUTI2 (four registers) | SME | Lookup table read with 2-bit indexes (four registers).
+| LUTI2 (single) | SME | Lookup table read with 2-bit indexes (single).
+| LUTI2 (two registers) | SME | Lookup table read with 2-bit indexes (two registers).
 | LUTI4 | SIMD | Lookup table read with 4-bit indices.
-| LUTI4 | SVE | Lookup table read with 4-bit indices.
-| LUTI4 (four registers, 16-bit & 32-bit) | SME | Lookup table read with 4-bit indexes.
-| LUTI4 (four registers, 8-bit) | SME | Lookup table read with 4-bit indexes and 8-bit elements.
-| LUTI4 (single) | SME | Lookup table read with 4-bit indexes.
-| LUTI4 (two registers) | SME | Lookup table read with 4-bit indexes.
+| LUTI4 (8-bit and 16-bit) | SVE | Lookup table read with 4-bit indicess (8-bit and 16-bit).
+| LUTI4 (four registers, 16-bit and 32-bit) | SME | Lookup table read with 4-bit indexes (four registers).
+| LUTI4 (four registers, 8-bit) | SME | Lookup table read with 4-bit indexes and 8-bit elements (four registers).
+| LUTI4 (single) | SME | Lookup table read with 4-bit indexes (single).
+| LUTI4 (two registers) | SME | Lookup table read with 4-bit indexes (two registers).
 | MAD | SVE | Multiply-add vectors (predicated), writing multiplicand [Zdn = Za + Zdn * Zm].
 | MADD | Base | Multiply-add.
 | MADDPT | Base | Multiply-add checked pointer.
@@ -1759,8 +1759,8 @@ Version: 2024-12
 | SBFX | Base | Signed bitfield extract: an alias of SBFM.
 | SCLAMP | SVE | Signed clamp to minimum/maximum vector.
 | SCLAMP | SME | Multi-vector signed clamp to minimum/maximum vector.
-| SCVTF | SVE | Signed integer convert to floating-point (predicated).
 | SCVTF | SME | Multi-vector signed integer convert to floating-point.
+| SCVTF (predicated) | SVE | Signed integer convert to floating-point (predicated).
 | SCVTF (scalar SIMD&FP) | SIMD | Signed integer convert to floating-point (scalar SIMD&FP).
 | SCVTF (scalar, fixed-point) | SIMD | Signed fixed-point convert to floating-point (scalar).
 | SCVTF (scalar, integer) | SIMD | Signed integer convert to floating-point (scalar).
@@ -1906,7 +1906,7 @@ Version: 2024-12
 | SMLSLL (multiple vectors) | SME | Multi-vector signed integer multiply-subtract long-long.
 | SMLSLT (indexed) | SVE | Signed multiply-subtract long from accumulator (top, indexed).
 | SMLSLT (vectors) | SVE | Signed multiply-subtract long from accumulator (top).
-| SMMLA | SVE | Signed integer matrix multiply-accumulate.
+| SMMLA | SVE | Signed 8-bit integer matrix multiply-accumulate to 32-bit integer.
 | SMMLA (vector) | SIMD | Signed 8-bit integer matrix multiply-accumulate (vector).
 | SMNEGL | Base | Signed multiply-negate long: an alias of SMSUBL.
 | SMOP4A (2-way) | SME | Signed integer quarter-tile sums of two outer products, accumulating.
@@ -1943,11 +1943,11 @@ Version: 2024-12
 | SQCADD | SVE | Saturating complex integer add with rotate.
 | SQCVT (four registers) | SME | Multi-vector signed saturating extract narrow.
 | SQCVT (two registers) | SME | Multi-vector signed saturating extract narrow.
-| SQCVTN | SVE | Signed saturating extract narrow and interleave.
+| SQCVTN | SVE | Signed 32-bit integer saturating extract narrow and interleave to 16-bit integer.
 | SQCVTN | SME | Multi-vector signed saturating extract narrow and interleave.
 | SQCVTU (four registers) | SME | Multi-vector signed saturating unsigned extract narrow.
 | SQCVTU (two registers) | SME | Multi-vector signed saturating unsigned extract narrow.
-| SQCVTUN | SVE | Signed saturating unsigned extract narrow and interleave.
+| SQCVTUN | SVE | Signed 32-bit integer saturating unsigned extract narrow and interleave to 16-bit integer.
 | SQCVTUN | SME | Multi-vector signed saturating unsigned extract narrow and interleave.
 | SQDECB | SVE | Signed saturating decrement scalar by multiple of 8-bit predicate constraint element count.
 | SQDECD (scalar) | SVE | Signed saturating decrement scalar by multiple of 64-bit predicate constraint element count.
@@ -2359,15 +2359,15 @@ Version: 2024-12
 | SUBS (extended register) | Base | Subtract extended and scaled register, setting flags.
 | SUBS (immediate) | Base | Subtract immediate value, setting flags.
 | SUBS (shifted register) | Base | Subtract optionally-shifted register, setting flags.
-| SUDOT | SVE | Signed by unsigned integer indexed dot product.
+| SUDOT | SVE | Signed by unsigned 8-bit integer indexed dot product to 32-bit integer.
+| SUDOT (4-way, multiple and indexed vector) | SME | Multi-vector signed by unsigned integer dot-product by indexed elements.
+| SUDOT (4-way, multiple and single vector) | SME | Multi-vector signed by unsigned integer dot-product by vector.
 | SUDOT (by element) | SIMD | Dot product with signed and unsigned integers (vector, by element).
-| SUDOT (multiple and indexed vector) | SME | Multi-vector signed by unsigned integer dot-product by indexed elements.
-| SUDOT (multiple and single vector) | SME | Multi-vector signed by unsigned integer dot-product by vector.
 | SUMLALL (multiple and indexed vector) | SME | Multi-vector signed by unsigned integer multiply-add long-long by indexed element.
 | SUMLALL (multiple and single vector) | SME | Multi-vector signed by unsigned integer multiply-add long-long by vector.
 | SUMOP4A | SME | Signed by unsigned integer quarter-tile sums of four outer products, accumulating.
 | SUMOP4S | SME | Signed by unsigned integer quarter-tile sums of four outer products, subtracting.
-| SUMOPA | SME | Signed by unsigned integer sum of outer products and accumulate.
+| SUMOPA (4-way) | SME | Signed by unsigned integer sum of outer products and accumulate.
 | SUMOPS | SME | Signed by unsigned integer sum of outer products and subtract.
 | SUNPK | SME | Unpack and sign-extend multi-vector elements.
 | SUNPKHI | SVE | Signed unpack and extend half of vector.
@@ -2464,8 +2464,8 @@ Version: 2024-12
 | UBFX | Base | Unsigned bitfield extract: an alias of UBFM.
 | UCLAMP | SVE | Unsigned clamp to minimum/maximum vector.
 | UCLAMP | SME | Multi-vector unsigned clamp to minimum/maximum vector.
-| UCVTF | SVE | Unsigned integer convert to floating-point (predicated).
 | UCVTF | SME | Multi-vector unsigned integer convert to floating-point.
+| UCVTF (predicated) | SVE | Unsigned integer convert to floating-point (predicated).
 | UCVTF (scalar SIMD&FP) | SIMD | Unsigned integer convert to floating-point (scalar SIMD&FP).
 | UCVTF (scalar, fixed-point) | SIMD | Unsigned fixed-point convert to floating-point (scalar).
 | UCVTF (scalar, integer) | SIMD | Unsigned integer convert to floating-point (scalar).
@@ -2545,7 +2545,7 @@ Version: 2024-12
 | UMLSLL (multiple vectors) | SME | Multi-vector unsigned integer multiply-subtract long-long.
 | UMLSLT (indexed) | SVE | Unsigned multiply-subtract long from accumulator (top, indexed).
 | UMLSLT (vectors) | SVE | Unsigned multiply-subtract long from accumulator (top).
-| UMMLA | SVE | Unsigned integer matrix multiply-accumulate.
+| UMMLA | SVE | Unsigned 8-bit integer matrix multiply-accumulate to 32-bit integer.
 | UMMLA (vector) | SIMD | Unsigned 8-bit integer matrix multiply-accumulate (vector).
 | UMNEGL | Base | Unsigned multiply-negate long: an alias of UMSUBL.
 | UMOP4A (2-way) | SME | Unsigned integer quarter-tile sums of two outer products, accumulating.
@@ -2576,7 +2576,7 @@ Version: 2024-12
 | UQADD (vectors, unpredicated) | SVE | Unsigned saturating add vectors (unpredicated).
 | UQCVT (four registers) | SME | Multi-vector unsigned saturating extract narrow.
 | UQCVT (two registers) | SME | Multi-vector unsigned saturating extract narrow.
-| UQCVTN | SVE | Unsigned saturating extract narrow and interleave.
+| UQCVTN | SVE | Unsigned 32-bit integer saturating extract narrow and interleave to 16-bit integer.
 | UQCVTN | SME | Multi-vector unsigned saturating extract narrow and interleave.
 | UQDECB | SVE | Unsigned saturating decrement scalar by multiple of 8-bit predicate constraint element count.
 | UQDECD (scalar) | SVE | Unsigned saturating decrement scalar by multiple of 64-bit predicate constraint element count.
@@ -2640,13 +2640,13 @@ Version: 2024-12
 | URSQRTE | SVE | Unsigned reciprocal square root estimate (predicated).
 | URSRA | SIMD | Unsigned rounding shift right and accumulate (immediate).
 | URSRA | SVE | Unsigned rounding shift right and accumulate (immediate).
+| USDOT (4-way, multiple and indexed vector) | SME | Multi-vector unsigned by signed integer dot-product by indexed element.
+| USDOT (4-way, multiple and single vector) | SME | Multi-vector unsigned by signed integer dot-product by vector.
+| USDOT (4-way, multiple vectors) | SME | Multi-vector unsigned by signed integer dot-product.
 | USDOT (by element) | SIMD | Dot product with unsigned and signed integers (vector, by element).
-| USDOT (indexed) | SVE | Unsigned by signed integer indexed dot product.
-| USDOT (multiple and indexed vector) | SME | Multi-vector unsigned by signed integer dot-product by indexed element.
-| USDOT (multiple and single vector) | SME | Multi-vector unsigned by signed integer dot-product by vector.
-| USDOT (multiple vectors) | SME | Multi-vector unsigned by signed integer dot-product.
+| USDOT (indexed) | SVE | Unsigned by signed 8-bit integer indexed dot product to 32-bit integer.
 | USDOT (vector) | SIMD | Dot product with unsigned and signed integers (vector).
-| USDOT (vectors) | SVE | Unsigned by signed integer dot product.
+| USDOT (vectors) | SVE | Unsigned by signed 8-bit integer dot product to 32-bit integer.
 | USHL | SIMD | Unsigned shift left (register).
 | USHLL | SIMD | Unsigned shift left long (immediate).
 | USHLL2 | SIMD | Unsigned shift left long (immediate).
@@ -2656,11 +2656,11 @@ Version: 2024-12
 | USMLALL (multiple and indexed vector) | SME | Multi-vector unsigned by signed integer multiply-add long-long by indexed element.
 | USMLALL (multiple and single vector) | SME | Multi-vector unsigned by signed integer multiply-add long-long by vector.
 | USMLALL (multiple vectors) | SME | Multi-vector unsigned by signed integer multiply-add long-long.
-| USMMLA | SVE | Unsigned by signed integer matrix multiply-accumulate.
+| USMMLA | SVE | Unsigned by signed 8-bit integer matrix multiply-accumulate to 32-bit integer.
 | USMMLA (vector) | SIMD | Unsigned and signed 8-bit integer matrix multiply-accumulate (vector).
 | USMOP4A | SME | Unsigned by signed integer quarter-tile sums of four outer products, accumulating.
 | USMOP4S | SME | Unsigned by signed integer quarter-tile sums of four outer products, subtracting.
-| USMOPA | SME | Unsigned by signed integer sum of outer products and accumulate.
+| USMOPA (4-way) | SME | Unsigned by signed integer sum of outer products and accumulate.
 | USMOPS | SME | Unsigned by signed integer sum of outer products and subtract.
 | USQADD | SIMD | Unsigned saturating accumulate of signed value.
 | USQADD | SVE | Unsigned saturating addition of signed value.

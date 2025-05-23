@@ -11,7 +11,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-12
+Version: 2025-03
 
 Total: 604 system registers, 83 can be accessed by cpusysregs.
 

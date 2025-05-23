@@ -453,13 +453,13 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| CLAIM    |     7:0 |    8 | Read or clear CLAIM tag bits. Reading this field returns the current value of the CLAIM tag bits. Writing a 1 to one of these bits clears the corresponding CLAIM tag bit to 0. This is an indirect write to the CLAIM tag bits. A single write operation can clear multiple CLAIM tag bits to 0. Writing 0 to one of these bits has no effect.
+| CLAIM<m> |     7:0 |    8 | Claim Tag Clear. Indicates the current status of Claim Tag bit <m>, and is used to clear Claim Tag bit <m> to 0.
 
 ## DBGCLAIMSET_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| CLAIM    |     7:0 |    8 | Set CLAIM tag bits. This field is RAO. Writing a 1 to one of these bits sets the corresponding CLAIM tag bit to 1. This is an indirect write to the CLAIM tag bits. A single write operation can set multiple CLAIM tag bits to 1. Writing 0 to one of these bits has no effect.
+| CLAIM<m> |     7:0 |    8 | Claim Tag Set. Used to set Claim Tag bit <m>  to 1.
 
 ## DBGDTR_EL0 bitfields
 
@@ -1144,7 +1144,39 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield          | msb:lsb | Size | Description
 | ----------------- | ------: | ---: | -----------
 | AMEVTYPER1<x>_EL0 |   49:49 |    1 | Trap MRS reads of AMEVTYPER1<x>_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER1<x> at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER115_EL0  |   49:49 |    1 | Trap MRS reads of AMEVTYPER115_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER115 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
 | AMEVCNTR1<x>_EL0  |   48:48 |    1 | Trap MRS reads of AMEVCNTR1<x>_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR1<x> at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR115_EL0   |   48:48 |    1 | Trap MRS reads of AMEVCNTR115_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR115 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER114_EL0  |   47:47 |    1 | Trap MRS reads of AMEVTYPER114_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER114 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR114_EL0   |   46:46 |    1 | Trap MRS reads of AMEVCNTR114_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR114 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER113_EL0  |   45:45 |    1 | Trap MRS reads of AMEVTYPER113_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER113 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR113_EL0   |   44:44 |    1 | Trap MRS reads of AMEVCNTR113_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR113 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER112_EL0  |   43:43 |    1 | Trap MRS reads of AMEVTYPER112_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER112 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR112_EL0   |   42:42 |    1 | Trap MRS reads of AMEVCNTR112_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR112 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER111_EL0  |   41:41 |    1 | Trap MRS reads of AMEVTYPER111_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER111 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR111_EL0   |   40:40 |    1 | Trap MRS reads of AMEVCNTR111_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR111 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER110_EL0  |   39:39 |    1 | Trap MRS reads of AMEVTYPER110_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER110 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR110_EL0   |   38:38 |    1 | Trap MRS reads of AMEVCNTR110_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR110 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER19_EL0   |   37:37 |    1 | Trap MRS reads of AMEVTYPER19_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER19 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR19_EL0    |   36:36 |    1 | Trap MRS reads of AMEVCNTR19_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR19 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER18_EL0   |   35:35 |    1 | Trap MRS reads of AMEVTYPER18_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER18 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR18_EL0    |   34:34 |    1 | Trap MRS reads of AMEVCNTR18_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR18 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER17_EL0   |   33:33 |    1 | Trap MRS reads of AMEVTYPER17_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER17 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR17_EL0    |   32:32 |    1 | Trap MRS reads of AMEVCNTR17_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR17 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER16_EL0   |   31:31 |    1 | Trap MRS reads of AMEVTYPER16_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER16 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR16_EL0    |   30:30 |    1 | Trap MRS reads of AMEVCNTR16_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR16 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER15_EL0   |   29:29 |    1 | Trap MRS reads of AMEVTYPER15_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER15 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR15_EL0    |   28:28 |    1 | Trap MRS reads of AMEVCNTR15_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR15 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER14_EL0   |   27:27 |    1 | Trap MRS reads of AMEVTYPER14_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER14 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR14_EL0    |   26:26 |    1 | Trap MRS reads of AMEVCNTR14_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR14 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER13_EL0   |   25:25 |    1 | Trap MRS reads of AMEVTYPER13_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER13 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR13_EL0    |   24:24 |    1 | Trap MRS reads of AMEVCNTR13_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR13 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER12_EL0   |   23:23 |    1 | Trap MRS reads of AMEVTYPER12_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER12 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR12_EL0    |   22:22 |    1 | Trap MRS reads of AMEVCNTR12_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR12 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER11_EL0   |   21:21 |    1 | Trap MRS reads of AMEVTYPER11_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER11 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR11_EL0    |   20:20 |    1 | Trap MRS reads of AMEVCNTR11_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR11 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVTYPER10_EL0   |   19:19 |    1 | Trap MRS reads of AMEVTYPER10_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVTYPER10 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
+| AMEVCNTR10_EL0    |   18:18 |    1 | Trap MRS reads of AMEVCNTR10_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR10 at EL0 using AArch32 when EL1 is using AArch64 to EL2.
 | AMCNTEN<x>        |   17:17 |    1 | Trap MRS reads and MRC reads of multiple System registers. Enables a trap to EL2 the following operations: At EL1 and EL0 using AArch64: MRS reads of AMCNTENCLR<x>_EL0 and AMCNTENSET<x>_EL0. At EL0 using AArch32 when EL1 is using AArch64: MRC reads of AMCNTENCLR<x> and AMCNTENSET<x>.
 | AMCNTEN1          |   17:17 |    1 | Trap MRS reads and MRC reads of multiple System registers. Enables a trap to EL2 the following operations: At EL1 and EL0 using AArch64: MRS reads of AMCNTENCLR1_EL0 and AMCNTENSET1_EL0. At EL0 using AArch32 when EL1 is using AArch64: MRC reads of AMCNTENCLR1 and AMCNTENSET1.
 | AMEVCNTR0<x>_EL0  |     4:1 |    4 | Trap MRS reads of AMEVCNTR0<x>_EL0 at EL1 and EL0 using AArch64 and MRC reads of AMEVCNTR0<x> at EL0 using AArch32 when EL1 is using AArch64 to EL2.
@@ -1176,22 +1208,21 @@ be executed each time an update of the Arm architecture is published.
 | API      |   41:41 |    1 | Controls the use of instructions related to Pointer Authentication: PACGA. AUTDA, AUTDB, AUTDZA, AUTDZB, AUTIA, AUTIA1716, AUTIASP, AUTIAZ, AUTIB, AUTIB1716, AUTIBSP, AUTIBZ, AUTIZA, AUTIZB. PACDA, PACDB, PACDZA, PACDZB, PACIA, PACIA1716, PACIASP, PACIAZ, PACIB, PACIB1716, PACIBSP, PACIBZ, PACIZA, PACIZB. RETAA, RETAB, BRAA, BRAB, BLRAA, BLRAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ. ERETAA, ERETAB, LDRAA, and LDRAB. When FEAT_PAuth_LR is implemented, AUTIASPPC, AUTIASPPCR, AUTIA171615, AUTIBSPPC, AUTIBSPPCR, AUTIB171615, PACIASPPC, PACNBIASPPC, PACIA171615, PACIBSPPC, PACNBIBSPPC, PACIB171615, RETAASPPC, RETAASPPCR, RETABSPPC, RETABSPPCR. This field is ignored if the instruction is disabled as a result of the SCTLR_ELx.{EnIB, EnIA, EnDA, EnDB} fields.
 | APK      |   40:40 |    1 | Trap registers holding "key" values for Pointer Authentication. Traps accesses to the following registers from EL1 to EL2, when EL2 is enabled in the current Security state, reported using EC syndrome value 0x18 : APIAKeyLo_EL1 , APIAKeyHi_EL1 , APIBKeyLo_EL1 , APIBKeyHi_EL1 , APDAKeyLo_EL1 , APDAKeyHi_EL1 , APDBKeyLo_EL1 , APDBKeyHi_EL1 , APGAKeyLo_EL1 , and APGAKeyHi_EL1 .
 | TME      |   39:39 |    1 | Enables access to the TSTART, TCOMMIT, TTEST, and TCANCEL instructions at EL0 and EL1.
-| MIOCNCE  |   38:38 |    1 | Mismatched Inner/Outer Cacheable Non-Coherency Enable, for the EL1&0 translation regimes.
 | TEA      |   37:37 |    1 | Route synchronous External abort exceptions to EL2.
 | TERR     |   36:36 |    1 | Trap accesses of Error Record registers. Enables a trap to EL2 on accesses of Error Record registers.
-| TLOR     |   35:35 |    1 | Trap LOR registers. Traps Non-secure EL1 accesses to LORSA_EL1 , LOREA_EL1 , LORN_EL1 , LORC_EL1 , and LORID_EL1 registers to EL2.
+| TLOR     |   35:35 |    1 | Trap LOR registers. Traps Non-secure and Realm EL1 accesses to LORSA_EL1 , LOREA_EL1 , LORN_EL1 , LORC_EL1 , and LORID_EL1 registers to EL2.
 | E2H      |   34:34 |    1 | EL2 Host. Enables a configuration where a Host Operating System is running in EL2, and the Host Operating System's applications are running in EL0.
 | ID       |   33:33 |    1 | Stage 2 Instruction access cacheability disable. For the EL1&0 translation regime, when EL2 is enabled in the current Security state and HCR_EL2.VM==1, this control forces all stage 2 translations for instruction accesses to Normal memory to be Non-cacheable.
 | CD       |   32:32 |    1 | Stage 2 Data access cacheability disable. For the EL1&0 translation regime, when EL2 is enabled in the current Security state and HCR_EL2.VM==1, this control forces all stage 2 translations for data accesses and translation table walks to Normal memory to be Non-cacheable.
 | RW       |   31:31 |    1 | Execution state control for lower Exception levels:
 | TRVM     |   30:30 |    1 | Trap Reads of Virtual Memory controls. Traps reads of the virtual memory control registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, EL1 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MRS and 0x14 for MRRS : SCTLR_EL1 , TTBR0_EL1 , TTBR1_EL1 , TCR_EL1 , ESR_EL1 , FAR_EL1 , AFSR0_EL1 , AFSR1_EL1 , MAIR_EL1 , AMAIR_EL1 , and CONTEXTIDR_EL1 . If FEAT_AIE is implemented, MAIR2_EL1 and AMAIR2_EL1 . If FEAT_S1PIE is implemented, PIRE0_EL1 and PIR_EL1 . If FEAT_S1POE is implemented, POR_EL0 and POR_EL1 . If FEAT_S2POE is implemented, S2POR_EL1 . If FEAT_TCR2 is implemented, TCR2_EL1 . If FEAT_SCTLR2 is implemented, SCTLR2_EL1 . If the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, and EL0 is using AArch64, EL0 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MRS : If FEAT_S1POE is implemented, POR_EL0 . If EL1 is using AArch32, EL1 accesses using MRC to the following registers are trapped to EL2 and reported using EC syndrome value 0x03 , accesses using MRRC are trapped to EL2 and reported using EC syndrome value 0x04 : SCTLR , TTBR0 , TTBR1 , TTBCR , TTBCR2 , DACR , DFSR , IFSR , DFAR , IFAR , ADFSR , AIFSR , PRRR , NMRR , MAIR0 , MAIR1 , AMAIR0 , AMAIR1 , and CONTEXTIDR .
-| HCD      |   29:29 |    1 | HVC instruction disable. Disables EL1 execution of HVC instructions, from both Execution states, when EL2 is enabled in the current Security state, reported using EC syndrome value 0x00 .
+| HCD      |   29:29 |    1 | HVC instruction disable. Disables EL1 and EL2 execution of HVC instructions, from both Execution states, when EL2 is enabled in the current Security state, reported using EC syndrome value 0x00 .
 | TDZ      |   28:28 |    1 | Trap DC ZVA instructions. Traps EL0 and EL1 execution of DC ZVA instructions to EL2, when EL2 is enabled in the current Security state, from AArch64 state only, reported using EC syndrome value 0x18 . If FEAT_MTE is implemented, this trap also applies to DC GVA and DC GZVA .
 | TGE      |   27:27 |    1 | Trap General Exceptions, from EL0.
 | TVM      |   26:26 |    1 | Trap Virtual Memory controls. Traps writes to the virtual memory control registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MSR and 0x14 for MSRR : SCTLR_EL1 , TTBR0_EL1 , TTBR1_EL1 , TCR_EL1 , ESR_EL1 , FAR_EL1 , AFSR0_EL1 , AFSR1_EL1 , MAIR_EL1 , AMAIR_EL1 , and CONTEXTIDR_EL1 . If FEAT_AIE is implemented, MAIR2_EL1 and AMAIR2_EL1 . If FEAT_S1PIE is implemented, PIRE0_EL1 and PIR_EL1 . If FEAT_S1POE is implemented, POR_EL0 and POR_EL1 . If FEAT_S2POE is implemented, S2POR_EL1 . If FEAT_TCR2 is implemented, TCR2_EL1 . If FEAT_SCTLR2 is implemented, SCTLR2_EL1 . If the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, and EL0 is using AArch64, EL0 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MSR : If FEAT_S1POE is implemented, POR_EL0 . If EL1 is using AArch32, EL1 accesses using MCR to the following registers are trapped to EL2 and reported using EC syndrome value 0x03 , accesses using MCRR are trapped to EL2 and reported using EC syndrome value 0x04 : SCTLR , TTBR0 , TTBR1 , TTBCR , TTBCR2 , DACR , DFSR , IFSR , DFAR , IFAR , ADFSR , AIFSR , PRRR , NMRR , MAIR0 , MAIR1 , AMAIR0 , AMAIR1 , and CONTEXTIDR .
 | TTLB     |   25:25 |    1 | Trap TLB maintenance instructions. Traps execution of TLB maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported using EC syndrome value 0x18 : TLBI VMALLE1 , TLBI VAE1 , TLBI ASIDE1 , TLBI VAAE1 , TLBI VALE1 , and TLBI VAALE1 . TLBI VMALLE1IS , TLBI VAE1IS , TLBI ASIDE1IS , TLBI VAAE1IS , TLBI VALE1IS , and TLBI VAALE1IS . If FEAT_TLBIOS is implemented, TLBI VMALLE1OS , TLBI VAE1OS , TLBI ASIDE1OS , TLBI VAAE1OS , TLBI VALE1OS , and TLBI VAALE1OS . If FEAT_TLBIRANGE is implemented, TLBI RVAE1 , TLBI RVAAE1 , TLBI RVALE1 , TLBI RVAALE1 , TLBI RVAE1IS , TLBI RVAAE1IS , TLBI RVALE1IS , and TLBI RVAALE1IS . If FEAT_TLBIOS and FEAT_TLBIRANGE are implemented, TLBI RVAE1OS , TLBI RVAAE1OS , TLBI RVALE1OS , and TLBI RVAALE1OS . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported using EC syndrome value 0x03 : TLBIALLIS , TLBIMVAIS , TLBIASIDIS , TLBIMVAAIS , TLBIMVALIS , and TLBIMVAALIS . TLBIALL , TLBIMVA , TLBIASID , TLBIMVAA , TLBIMVAL , and TLBIMVAAL ITLBIALL , ITLBIMVA , and ITLBIASID . DTLBIALL , DTLBIMVA , and DTLBIASID .
 | TPU      |   24:24 |    1 | Trap cache maintenance instructions that operate to the Point of Unification. Traps execution of those cache maintenance instructions at EL0 and EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL0 is using AArch64 and the value of SCTLR_EL1 .UCI is 1, then the following instructions at EL0 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU and DC CVAU . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU , IC IALLU , IC IALLUIS , and DC CVAU . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : ICIMVAU , ICIALLU , ICIALLUIS , and DCCMVAU . When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: IC IALLUIS and IC IALLU are always UNDEFINED at EL0 using AArch64. ICIMVAU , ICIALLU , ICIALLUIS , and DCCMVAU are always UNDEFINED at EL0 using AArch32.
-| TPCP     |   23:23 |    1 | Trap data or unified cache maintenance instructions that operate to the Point of Coherency, Persistence, or Physical Storage. When EL2 is enabled in the current Security state, traps execution of cache maintenance instructions at EL0 and EL1 to EL2 as follows: If EL0 is using AArch64 and the value of SCTLR_EL1 .UCI is 1, then the following instructions at EL0 are trapped to EL2 and reported using EC syndrome value 0x18 : DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x18 : DC IVAC , DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC IGVAC , DC IGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_PoPS is implemented, DC CIVAPS . If FEAT_PoPS and FEAT_MTE2 are implemented, DC CIGDVAPS . If EL1 is using AArch32, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x03 : DCIMVAC , DCCIMVAC , and DCCMVAC . This field was previously named TPC. When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: AArch64 instructions which invalidate by VA to the Point of Coherency or Physical Storage are always UNDEFINED at EL0 using AArch64. DCIMVAC , DCCIMVAC , and DCCMVAC are always UNDEFINED at EL0 using AArch32.
+| TPCP     |   23:23 |    1 | Trap data or unified cache maintenance instructions that operate to the Point of Coherency, Persistence, or Physical Storage. When EL2 is enabled in the current Security state, traps execution of cache maintenance instructions at EL0 and EL1 to EL2 as follows: If EL0 is using AArch64 and the value of SCTLR_EL1 .UCI is 1, then the following instructions at EL0 are trapped to EL2 and reported using EC syndrome value 0x18 : DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x18 : DC IVAC , DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC IGVAC , DC IGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_PoPS is implemented, DC CIVAPS . If FEAT_PoPS and FEAT_MTE2 are implemented, DC CIGDVAPS . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC . If EL1 is using AArch32, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x03 : DCIMVAC , DCCIMVAC , and DCCMVAC . This field was previously named TPC. When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: AArch64 instructions which invalidate by VA to the Point of Coherency or Physical Storage are always UNDEFINED at EL0 using AArch64. DCIMVAC , DCCIMVAC , and DCCMVAC are always UNDEFINED at EL0 using AArch32.
 | TSW      |   22:22 |    1 | Trap data or unified cache maintenance instructions that operate by Set/Way. Traps execution of those cache maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x18 : DC ISW , DC CSW , and DC CISW . If FEAT_MTE2 is implemented, DC IGSW , DC IGDSW , DC CGSW , DC CGDW , DC CIGSW , and DC CIGDSW . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : DCISW , DCCSW , and DCCISW . An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2, and these instructions are always UNDEFINED at EL0.
 | TACR     |   21:21 |    1 | Trap Auxiliary Control Registers. Traps EL1 accesses to the Auxiliary Control Registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, accesses to ACTLR_EL1 to EL2, are trapped to EL2 and reported using EC syndrome value 0x18 . If EL1 is using AArch32, accesses to ACTLR and, if implemented, ACTLR2 are trapped to EL2 and reported using EC syndrome value 0x03 .
 | TIDCP    |   20:20 |    1 | Trap IMPLEMENTATION DEFINED functionality. Traps EL1 accesses to the encodings reserved for IMPLEMENTATION DEFINED functionality to EL2, when EL2 is enabled in the current Security state as follows: In AArch64 state, EL0 access to the encodings in the following reserved encoding spaces are trapped: IMPLEMENTATION DEFINED System instructions, which are accessed using SYS and SYSL, with CRn == {11, 15}, and are reported using EC syndrome value 0x18 . IMPLEMENTATION DEFINED System instructions, which are accessed using SYSP, with CRn == {11, 15}, and are reported using EC syndrome value 0x14 . IMPLEMENTATION DEFINED System registers, which are accessed using MRS and MSR with the S3_<op1>_<Cn>_<Cm>_<op2> register name, and are reported using EC syndrome 0x18 . IMPLEMENTATION DEFINED System registers, which are accessed using MRRS and MSRR with the S3_<op1>_<Cn>_<Cm>_<op2> register name, and are reported using EC syndrome 0x14 . In AArch32 state, MCR and MRC access to instructions with the following encodings are trapped and reported using EC syndrome value 0x03 : All coproc==p15, CRn==c9, opc1 == {0-7}, CRm == {c0-c2, c5-c8}, opc2 == {0-7}. All coproc==p15, CRn==c10, opc1 =={0-7}, CRm == {c0, c1, c4, c8}, opc2 == {0-7}. All coproc==p15, CRn==c11, opc1=={0-7}, CRm == {c0-c8, c15}, opc2 == {0-7}. When this functionality is accessed from EL0: If FEAT_TIDCP1 is implemented and the Effective value of SCTLR_EL1 .TIDCP is 1, any accesses from EL0 are trapped to EL1. Otherwise, if FEAT_TIDCP1 is implemented and the Effective value of SCTLR_EL2 .TIDCP is 1, any accesses from EL0 are trapped to EL2. Otherwise: If HCR_EL2.TIDCP is 1, it is IMPLEMENTATION DEFINED whether any accesses from EL0 are trapped to EL2. If HCR_EL2.TIDCP is 0, any accesses from EL0 are UNDEFINED and generate an exception that is taken to EL1 or EL2.
@@ -2180,7 +2211,7 @@ be executed each time an update of the Arm architecture is published.
 | MOPS         |   19:16 |    4 | Indicates support for the Memory Copy and Memory Set instructions in AArch64 state.
 | APA3         |   15:12 |    4 | Indicates whether the QARMA3 algorithm is implemented in the PE for address authentication in AArch64 state. This applies to all Pointer Authentication instructions other than the PACGA instruction.
 | GPA3         |    11:8 |    4 | Indicates whether the QARMA3 algorithm is implemented in the PE for generic code authentication in AArch64 state.
-| RPRES        |     7:4 |    4 | Indicates support for 12 bits of mantissa in reciprocal and reciprocal square root instructions in AArch64 state, when FPCR .AH is 1.
+| RPRES        |     7:4 |    4 | Indicates support for 12 bits of mantissa in single-precision reciprocal and reciprocal square root instructions in AArch64 state, when FPCR .AH is 1.
 | WFxT         |     3:0 |    4 | Indicates support for the WFET and WFIT instructions in AArch64 state.
 
 ## ID_AA64ISAR3_EL1 bitfields
@@ -2245,7 +2276,7 @@ be executed each time an update of the Arm architecture is published.
 | BBM      |   55:52 |    4 | Allows identification of the requirements of the hardware to have break-before-make sequences when changing block size for a translation.
 | TTL      |   51:48 |    4 | Indicates support for TTL field in address operations.
 | FWB      |   43:40 |    4 | Indicates support for HCR_EL2 .FWB.
-| IDS      |   39:36 |    4 | Indicates the value of ESR_ELx .EC that reports an exception generated by a read access to the feature ID space.
+| IDS      |   39:36 |    4 | Indicates the EC syndrome value in ESR_ELx .EC that is reported if an exception is generated by a read access to the feature ID space.
 | AT       |   35:32 |    4 | Identifies support for unaligned single-copy atomicity and atomic functions.
 | ST       |   31:28 |    4 | Identifies support for small translation tables.
 | NV       |   27:24 |    4 | Nested Virtualization. If EL2 is implemented, indicates support for the use of nested virtualization.
@@ -2374,15 +2405,15 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F64MM    |   59:56 |    4 | Indicates support for the following SVE FP64 double-precision variant of the FMMLA instruction, the LD1RO* instructions, the 128-bit element variants of the SVE TRN1 , TRN2 , UZP1 , UZP2 , ZIP1 , and ZIP2 instructions.
-| F32MM    |   55:52 |    4 | Indicates support for the SVE FP32 single-precision floating-point matrix multiplication instruction.
-| F16MM    |   51:48 |    4 | Indicates support for the SVE half-precision to single-precision matrix multiply instruction FMMLA (widening, FP16 to FP32).
-| I8MM     |   47:44 |    4 | Indicates support for the following SVE Int8 matrix multiplication instructions SVE SMMLA , SUDOT , UMMLA , USMMLA , and USDOT .
+| F64MM    |   59:56 |    4 | Indicates support for the SVE double-precision floating-point matrix multiply-accumulate instruction FMMLA , the LD1RO* instructions, the 128-bit element variants of the SVE TRN1 , TRN2 , UZP1 , UZP2 , ZIP1 , and ZIP2 instructions.
+| F32MM    |   55:52 |    4 | Indicates support for the SVE single-precision floating-point matrix multiply-accumulate instruction FMMLA .
+| F16MM    |   51:48 |    4 | Indicates support for the SVE half-precision floating-point matrix multiply-accumulate to single-precision instruction FMMLA (widening, FP16 to FP32).
+| I8MM     |   47:44 |    4 | Indicates support for the following SVE 8-bit integer sum-of-products and accumulate to 32-bit integer instructions SMMLA , SUDOT , UMMLA , USMMLA , and USDOT .
 | SM4      |   43:40 |    4 | Indicates support for SVE SM4 instructions.
 | SHA3     |   35:32 |    4 | Indicates support for the SVE SHA3 instructions.
 | B16B16   |   27:24 |    4 | Indicates support for SVE non-widening BFloat16 instructions and SME multi-vector Z-targeting non-widening BFloat16 instructions.
 | BF16     |   23:20 |    4 | Indicates support for SVE BFloat16 instructions.
-| BitPerm  |   19:16 |    4 | Indicates support for the following SVE bit permute instructions SVE BDEP , BEXT , and BGRP .
+| BitPerm  |   19:16 |    4 | Indicates support for the SVE bit permute instructions BDEP , BEXT , and BGRP .
 | EltPerm  |   15:12 |    4 | If FEAT_SVE2p2 is implemented, the following SVE instructions are implemented when the PE is not in Streaming SVE mode: 8-bit and 16-bit element COMPACT . 8-bit, 16-bit, 32-bit, and 64-bit element EXPAND . If FEAT_SME2p2 is implemented, the following SVE instructions are implemented when the PE is in Streaming SVE mode: 8-bit, 16-bit, 32-bit, and 64-bit element COMPACT and EXPAND .
 | AES      |     7:4 |    4 | Indicates support for SVE Advanced Encryption Standard instructions and 128-bit polynomial multiply long instructions.
 | SVEver   |     3:0 |    4 | Indicates support for SVE instructions when FEAT_SME or FEAT_SVE is implemented.
@@ -2882,7 +2913,7 @@ be executed each time an update of the Arm architecture is published.
 | ALTSP_HFC    |   56:56 |    1 | Hierarchical force of alternative PARTID space controls. When MPAM3_EL3 .ALTSP_HEN is 0, ALTSP controls in MPAM2_EL2 have no effect.  When MPAM3_EL3 .ALTSP_HEN is 1, this bit selects whether the PARTIDs in MPAM1_EL1 and MPAM0_EL1 are in the primary (0) or alternative (1) PARTID space for the security state.
 | ALTSP_EL2    |   55:55 |    1 | Select alternative PARTID space for PARTIDs in MPAM2_EL2 when MPAM3_EL3 .ALTSP_HEN is 1.
 | ALTSP_FRCD   |   54:54 |    1 | Alternative PARTID forced for PARTIDs in this register.
-| EnMPAMSM     |   50:50 |    1 | Traps execution at EL1 of instructions that directly access the MPAMSM_EL1 register to EL2. The exception is reported using ESR_ELx .EC value 0x18 .
+| EnMPAMSM     |   50:50 |    1 | Traps execution at EL1 of instructions that directly access the MPAMSM_EL1 register to EL2. The exception is reported using ESR_ELx .EC syndrome value 0x18 .
 | TRAPMPAM0EL1 |   49:49 |    1 | Trap accesses from EL1 to the MPAM0_EL1 register trap to EL2.
 | TRAPMPAM1EL1 |   48:48 |    1 | Trap accesses from EL1 to the MPAM1_EL1 register trap to EL2.
 | PMG_D        |   47:40 |    8 | Performance monitoring group for data accesses.
@@ -3342,7 +3373,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Fixed-function counter <m> disable. On writes, allows software to disable fixed-function counter <m>. On reads, returns the fixed-function counter <m> enable status.
+| F0       |   32:32 |    1 | PMICNTR_EL0 disable. On writes, allows software to disable PMICNTR_EL0 . On reads, returns the PMICNTR_EL0 enable status.
 | C        |   31:31 |    1 | PMCCNTR_EL0 disable. On writes, allows software to disable PMCCNTR_EL0 . On reads, returns the PMCCNTR_EL0 enable status.
 | P<m>     |    30:0 |   31 | PMEVCNTR<m>_EL0 disable. On writes, allows software to disable PMEVCNTR<m>_EL0 . On reads, returns the PMEVCNTR<m>_EL0 enable status.
 
@@ -3350,7 +3381,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Fixed-function counter <m> enable. On writes, allows software to enable fixed-function counter <m>. On reads, returns the fixed-function counter <m> enable status.
+| F0       |   32:32 |    1 | PMICNTR_EL0 enable. On writes, allows software to enable PMICNTR_EL0 . On reads, returns the PMICNTR_EL0 enable status.
 | C        |   31:31 |    1 | PMCCNTR_EL0 enable. On writes, allows software to enable PMCCNTR_EL0 . On reads, returns the PMCCNTR_EL0 enable status.
 | P<m>     |    30:0 |   31 | PMEVCNTR<m>_EL0 enable. On writes, allows software to enable PMEVCNTR<m>_EL0 . On reads, returns the PMEVCNTR<m>_EL0 enable status.
 
@@ -3403,7 +3434,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m> disable. On writes, allows software to disable the interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m>. On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m> enable status.
+| F0       |   32:32 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 disable. On writes, allows software to disable the interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 enable status.
 | C        |   31:31 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 disable. On writes, allows software to disable the interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 enable status.
 | P<m>     |    30:0 |   31 | Interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 disable. On writes, allows software to disable the interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 enable status.
 
@@ -3411,7 +3442,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m> enable. On writes, allows software to enable the interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m>. On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of fixed-function counter <m> enable status.
+| F0       |   32:32 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 enable. On writes, allows software to enable the interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMICNTR_EL0 enable status.
 | C        |   31:31 |    1 | Interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 enable. On writes, allows software to enable the interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMCCNTR_EL0 enable status.
 | P<m>     |    30:0 |   31 | Interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 enable. On writes, allows software to enable the interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 . On reads, returns the interrupt request or PMU Profiling exception on unsigned overflow of PMEVCNTR<m>_EL0 enable status.
 
@@ -3430,7 +3461,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Unsigned overflow flag for fixed-function counter <m> clear. On writes, allows software to clear the unsigned overflow flag for fixed-function counter <m> to 0. On reads, returns the unsigned overflow flag for fixed-function counter <m> overflow status.
+| F0       |   32:32 |    1 | Unsigned overflow flag for PMICNTR_EL0 clear. On writes, allows software to clear the unsigned overflow flag for PMICNTR_EL0 to 0. On reads, returns the unsigned overflow flag for PMICNTR_EL0 overflow status.
 | C        |   31:31 |    1 | Unsigned overflow flag for PMCCNTR_EL0 clear. On writes, allows software to clear the unsigned overflow flag for PMCCNTR_EL0 to 0. On reads, returns the unsigned overflow flag for PMCCNTR_EL0 overflow status.
 | P<m>     |    30:0 |   31 | Unsigned overflow flag for PMEVCNTR<m>_EL0 clear. On writes, allows software to clear the unsigned overflow flag for PMEVCNTR<m>_EL0 to 0. On reads, returns the unsigned overflow flag for PMEVCNTR<m>_EL0 overflow status.
 
@@ -3438,7 +3469,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Unsigned overflow flag for fixed-function counter <m> set. On writes, allows software to set the unsigned overflow flag for fixed-function counter <m> to 1. On reads, returns the unsigned overflow flag for fixed-function counter <m> overflow status.
+| F0       |   32:32 |    1 | Unsigned overflow flag for PMICNTR_EL0 set. On writes, allows software to set the unsigned overflow flag for PMICNTR_EL0 to 1. On reads, returns the unsigned overflow flag for PMICNTR_EL0 overflow status.
 | C        |   31:31 |    1 | Unsigned overflow flag for PMCCNTR_EL0 set. On writes, allows software to set the unsigned overflow flag for PMCCNTR_EL0 to 1. On reads, returns the unsigned overflow flag for PMCCNTR_EL0 overflow status.
 | P<m>     |    30:0 |   31 | Unsigned overflow flag for PMEVCNTR<m>_EL0 set. On writes, allows software to set the unsigned overflow flag for PMEVCNTR<m>_EL0 to 1. On reads, returns the unsigned overflow flag for PMEVCNTR<m>_EL0 overflow status.
 
@@ -3450,9 +3481,9 @@ be executed each time an update of the Arm architecture is published.
 | KE       |   10:10 |    1 | Kernel exception enable for SPE Profiling exceptions taken to EL1.
 | EE       |     9:8 |    2 | Exception Enable.
 | PCT      |     7:6 |    2 | Physical Timestamp. If timestamp sampling is enabled and the Profiling Buffer is owned by EL1, requests which timestamp counter value is collected. If FEAT_ECV is implemented, this is a two-bit field as shown. Otherwise, bit[7] is RES0 .
-| TS       |     5:5 |    1 | Timestamp enable.
+| TS       |     5:5 |    1 | Timestamp sample enable. Enables recording of a Timestamp packet when the owning Exception level is EL1.
 | PA       |     4:4 |    1 | Physical Address sample enable.
-| CX       |     3:3 |    1 | CONTEXTIDR_EL1 sample enable.
+| CX       |     3:3 |    1 | CONTEXTIDR_EL1 sample enable. Enables recording of a Context packet containing the value of CONTEXTIDR_EL1 .
 | E1SPE    |     1:1 |    1 | EL1 Statistical Profiling Enable.
 | E0SPE    |     0:0 |    1 | EL0 Statistical Profiling Enable. Controls sampling at EL0 when HCR_EL2 .TGE == 0 or if EL2 is disabled or not implemented.
 
@@ -3464,9 +3495,9 @@ be executed each time an update of the Arm architecture is published.
 | KE       |   10:10 |    1 | Kernel exception enable for SPE Profiling exceptions taken to EL2.
 | EE       |     9:8 |    2 | Exception Enable.
 | PCT      |     7:6 |    2 | Physical Timestamp. If timestamp sampling is enabled, determines which counter is collected. The behavior depends on the Profiling Buffer owning Exception level. If FEAT_ECV is implemented, this is a two-bit field as shown. Otherwise, bit[7] is RES0 .
-| TS       |     5:5 |    1 | Timestamp Enable.
+| TS       |     5:5 |    1 | Timestamp sample enable. Enables recording of a Timestamp packet when the owning Exception level is EL2.
 | PA       |     4:4 |    1 | Physical Address Sample Enable.
-| CX       |     3:3 |    1 | CONTEXTIDR_EL2 Sample Enable.
+| CX       |     3:3 |    1 | CONTEXTIDR_EL2 sample enable. Enables recording of a Context packet containing the value of CONTEXTIDR_EL2 .
 | E2SPE    |     1:1 |    1 | EL2 Statistical Profiling Enable.
 | E0HSPE   |     0:0 |    1 | EL0 Statistical Profiling Enable.
 
@@ -3502,7 +3533,7 @@ be executed each time an update of the Arm architecture is published.
 | E[28]    |   28:28 |    1 | Filter on IMPLEMENTATION DEFINED event 28.
 | E[27]    |   27:27 |    1 | Filter on IMPLEMENTATION DEFINED event 27.
 | E[26]    |   26:26 |    1 | Filter on IMPLEMENTATION DEFINED event 26.
-| E[25]    |   25:25 |    1 | Filter on  SMCU or external coprocessor operation  event.
+| E[25]    |   25:25 |    1 | Filter on  SMCU or other shared resource operation  event.
 | E[24]    |   24:24 |    1 | Filter on  Streaming SVE mode  event.
 | E[23]    |   23:23 |    1 | Filter on  Data snooped  event.
 | E[22]    |   22:22 |    1 | Filter on  Recently fetched  event.
@@ -3617,7 +3648,7 @@ be executed each time an update of the Arm architecture is published.
 | E[28]    |   28:28 |    1 | Filter on IMPLEMENTATION DEFINED event 28.
 | E[27]    |   27:27 |    1 | Filter on IMPLEMENTATION DEFINED event 27.
 | E[26]    |   26:26 |    1 | Filter on IMPLEMENTATION DEFINED event 26.
-| E[25]    |   25:25 |    1 | Filter on  Not SMCU or coprocessor operation  event.
+| E[25]    |   25:25 |    1 | Filter on  Not SMCU or other shared resource operation  event.
 | E[24]    |   24:24 |    1 | Filter on  Non-streaming SVE mode  event.
 | E[23]    |   23:23 |    1 | Filter on  Data not snooped  event.
 | E[22]    |   22:22 |    1 | Filter on  Not recently fetched  event.
@@ -3660,7 +3691,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | EL0 accesses to fixed-function counter <m> enable.
+| F0       |   32:32 |    1 | EL0 accesses to PMICNTR_EL0 enable.
 | C        |   31:31 |    1 | EL0 accesses to PMCCNTR_EL0 enable.
 | P<m>     |    30:0 |   31 | EL0 accesses to PMEVCNTR<m>_EL0 enable.
 
@@ -3680,7 +3711,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| F<m>     |   32:32 |    1 | Zero fixed-function counter <m>.
+| F0       |   32:32 |    1 | Zero PMICNTR_EL0 .
 | C        |   31:31 |    1 | Zero PMCCNTR_EL0 .
 | P<m>     |    30:0 |   31 | Zero PMEVCNTR<m>_EL0 .
 
@@ -3688,7 +3719,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| SEED     |    23:8 |   16 | Seed register used for generating values returned by RandomAllocationTag().
+| SEED     |    23:8 |   16 | Seed register used for generating values returned by RandomTag().
 | TAG      |     3:0 |    4 | Tag generated by the most recent IRG instruction.
 
 ## RMR_EL1 bitfields
@@ -3759,7 +3790,7 @@ be executed each time an update of the Arm architecture is published.
 | API       |   17:17 |    1 | Controls the use of the following instructions related to Pointer Authentication. PACGA. AUTDA, AUTDB, AUTDZA, AUTDZB, AUTIA, AUTIA1716, AUTIASP, AUTIAZ, AUTIB, AUTIB1716, AUTIBSP, AUTIBZ, AUTIZA, AUTIZB, PACDA, PACDB, PACDZA, PACDZB, PACIA, PACIA1716, PACIASP, PACIAZ, PACIB, PACIB1716, PACIBSP, PACIBZ, PACIZA, PACIZB, RETAA, RETAB, BRAA, BRAB, BLRAA, BLRAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ, ERETAA, ERETAB, LDRAA and LDRAB, when any of the following are true: In EL0, when the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, and the associated SCTLR_EL1 .En<N><M> == 1. In EL0, when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}, and the associated SCTLR_EL2 .En<N><M> == 1. In EL1, when the associated SCTLR_EL1 .En<N><M> == 1. In EL2, when the associated SCTLR_EL2 .En<N><M> == 1. When FEAT_PAuth_LR is implemented, AUTIASPPC, AUTIASPPCR, AUTIA171615, AUTIBSPPC, AUTIBSPPCR, AUTIB171615, PACIASPPC, PACNBIASPPC, PACIA171615, PACIBSPPC, PACNBIBSPPC, PACIB171615, RETAASPPC, RETAASPPCR, RETABSPPC, RETABSPPCR, when any of the following are true: In EL0, when the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, and the associated SCTLR_EL1 .En<N><M> == 1. In EL0, when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}, and the associated SCTLR_EL2 .En<N><M> == 1. In EL1, when the associated SCTLR_EL1 .En<N><M> == 1. In EL2, when the associated SCTLR_EL2 .En<N><M> == 1.
 | APK       |   16:16 |    1 | Trap registers holding "key" values for Pointer Authentication. Traps accesses to the following registers, using EC syndrome value 0x18 , from EL1 or EL2 to EL3 unless they are trapped to EL2 as a result of the HCR_EL2.APK bit or other traps: APIAKeyLo_EL1 , APIAKeyHi_EL1 , APIBKeyLo_EL1 , APIBKeyHi_EL1 . APDAKeyLo_EL1 , APDAKeyHi_EL1 , APDBKeyLo_EL1 , APDBKeyHi_EL1 . APGAKeyLo_EL1 , and APGAKeyHi_EL1 .
 | TERR      |   15:15 |    1 | Trap accesses of Error Record registers. Enables a trap to EL3 on accesses of Error Record registers.
-| TLOR      |   14:14 |    1 | Trap LOR registers. Traps accesses to the LORSA_EL1 , LOREA_EL1 , LORN_EL1 , LORC_EL1 , and LORID_EL1 registers from EL1 and EL2 to EL3, unless the access has been trapped to EL2.
+| TLOR      |   14:14 |    1 | Trap LOR registers. Traps Non-secure and Realm accesses to the LORSA_EL1 , LOREA_EL1 , LORN_EL1 , LORC_EL1 , and LORID_EL1 registers from EL1 and EL2 to EL3, unless the access has been trapped to EL2.
 | TWE       |   13:13 |    1 | Traps EL2, EL1, and EL0 execution of WFE instructions to EL3, from any Security state and both Execution states, reported using EC syndrome value 0x01 . When FEAT_WFxT is implemented, this trap also applies to the WFET instruction.
 | TWI       |   12:12 |    1 | Traps EL2, EL1, and EL0 execution of WFI instructions to EL3, from any Security state and both Execution states, reported using EC syndrome value 0x01 . When FEAT_WFxT is implemented, this trap also applies to the WFIT instruction.
 | ST        |   11:11 |    1 | Traps Secure EL1 accesses to the Counter-timer Physical Secure timer registers to EL3, from AArch64 state only, reported using EC syndrome value 0x18 .
@@ -3885,7 +3916,7 @@ be executed each time an update of the Arm architecture is published.
 | LSMAOE    |   29:29 |    1 | Load Multiple and Store Multiple Atomicity and Ordering Enable.
 | nTLSMD    |   28:28 |    1 | No Trap Load Multiple and Store Multiple to Device-nGRE/Device-nGnRE/Device-nGnRnE memory.
 | EnDA      |   27:27 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APDAKey_EL1 key, in the EL1&0 translation regime.
-| UCI       |   26:26 |    1 | Traps EL0 execution of cache maintenance instructions, to EL1, or to EL2 when it is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 , as follows: DC CVAU , DC CIVAC , DC CVAC , and IC IVAU . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP .
+| UCI       |   26:26 |    1 | Traps EL0 execution of cache maintenance instructions, to EL1, or to EL2 when it is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 , as follows: DC CVAU , DC CIVAC , DC CVAC , and IC IVAU . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC .
 | EE        |   25:25 |    1 | Endianness of data accesses at EL1, and stage 1 translation table walks in the EL1&0 translation regime.
 | E0E       |   24:24 |    1 | Endianness of data accesses at EL0.
 | SPAN      |   23:23 |    1 | Set Privileged Access Never, on taking an exception to EL1.
@@ -3948,7 +3979,7 @@ be executed each time an update of the Arm architecture is published.
 | LSMAOE    |   29:29 |    1 | Load Multiple and Store Multiple Atomicity and Ordering Enable.
 | nTLSMD    |   28:28 |    1 | No Trap Load Multiple and Store Multiple to Device-nGRE/Device-nGnRE/Device-nGnRnE memory.
 | EnDA      |   27:27 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APDAKey_EL1 key, in the EL2 or EL2&0 translation regime.
-| UCI       |   26:26 |    1 | Traps execution of cache maintenance instructions at EL0 to EL2, from AArch64 state only, reported using EC syndrome value 0x18 , as follows: DC CVAU , DC CIVAC , DC CVAC , and IC IVAU . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP .
+| UCI       |   26:26 |    1 | Traps execution of cache maintenance instructions at EL0 to EL2, from AArch64 state only, reported using EC syndrome value 0x18 , as follows: DC CVAU , DC CIVAC , DC CVAC , and IC IVAU . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC .
 | EE        |   25:25 |    1 | Endianness of data accesses at EL2, stage 1 translation table walks in the EL2 or EL2&0 translation regime, and stage 2 translation table walks in the EL1&0 translation regime.
 | E0E       |   24:24 |    1 | Endianness of data accesses at EL0.
 | SPAN      |   23:23 |    1 | Set Privileged Access Never, on taking an exception to EL2.
@@ -4147,7 +4178,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
+| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction  at EL1  is considered legal when executed in Streaming SVE mode. When the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, controls whether execution of an A64 instruction at EL0 is considered legal when executed in Streaming SVE mode.
 | EZT0     |   30:30 |    1 | Traps execution at EL1 and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using ESR_EL1 .EC or ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
 | LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL1 of (LEN+1)*128 bits. This field also defines the Effective Streaming SVE vector length at EL0 when EL2 is not implemented, or EL2 is not enabled in the current Security state, or the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL1 . For all purposes other than returning the result of a direct read of SMCR_EL1, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL2 is implemented and enabled in the current Security state, and the requested length is greater than the Effective length at EL2, then the Effective length at EL2 is used. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL1.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
@@ -4155,7 +4186,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
+| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction  at EL2, EL1, and EL0 when EL2 is implemented and enabled in the current Security state  is considered legal when executed in Streaming SVE mode.
 | EZT0     |   30:30 |    1 | Traps execution at EL2, EL1, and EL0 of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL2, when EL2 is enabled in the current Security state. The exception is reported using ESR_EL2 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
 | LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL2 of (LEN+1)*128 bits. This field also defines the Effective Streaming SVE vector length at EL0 when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL2 . For all purposes other than returning the result of a direct read of SMCR_EL2, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. If EL3 is implemented and the requested length is greater than the Effective length at EL3, then the Effective length at EL3 is used. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL2.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
@@ -4163,7 +4194,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction is considered legal when the PE is in Streaming SVE mode.
+| FA64     |   31:31 |    1 | Controls whether execution of an A64 instruction  is considered legal when executed in Streaming SVE mode.
 | EZT0     |   30:30 |    1 | Traps execution at all Exception levels of the LDR, LUTI2, LUTI4, MOVT, STR, and ZERO instructions that access the ZT0 register to  EL3. The exception is reported using ESR_EL3 .EC value 0x1D , with an ISS code of 0x0000004 , at a lower priority than a trap due to PSTATE.SM or PSTATE.ZA.
 | LEN      |     3:0 |    4 | Requests an Effective Streaming SVE vector length (SVL) at EL3 of (LEN+1)*128 bits. The Streaming SVE vector length can be any power of two from 128 bits to 2048 bits inclusive. An implementation can support any subset of the architecturally permitted lengths. When the PE is in Streaming SVE mode, the Effective SVE vector length (VL) is equal to SVL. When FEAT_SVE is implemented, and the PE is not in Streaming SVE mode, VL is equal to the Effective Non-streaming SVE vector length. See ZCR_EL3 . For all purposes other than returning the result of a direct read of SMCR_EL3, the PE selects the Effective Streaming SVE vector length by performing checks in the following order: If the requested length is less than the minimum implemented Streaming SVE vector length, then the Effective length is the minimum implemented Streaming SVE vector length. Otherwise, the Effective length is the highest supported Streaming SVE vector length that is less than or equal to the requested length. An indirect read of SMCR_EL3.LEN appears to occur in program order relative to a direct write of the same register, without the need for explicit synchronization.
 
@@ -4413,7 +4444,7 @@ be executed each time an update of the Arm architecture is published.
 | POE      |     3:3 |    1 | Enables Permission Overlays for privileged accesses from EL1&0 translation regime.
 | E0POE    |     2:2 |    1 | Enables Permission Overlays for unprivileged accesses from EL1&0 translation regime.
 | PIE      |     1:1 |    1 | Enables usage of Indirect Permission Scheme.
-| PnCH     |     0:0 |    1 | Protected attribute enable.Indicates use of bit[52] of the stage 1 translation table entry.
+| PnCH     |     0:0 |    1 | Protected attribute enable. Enables use of bit[52] of the stage 1 translation table entries as the Protected bit, for translations using TTBRn_EL1.
 
 ## TCR2_EL2 bitfields
 
@@ -4425,7 +4456,7 @@ be executed each time an update of the Arm architecture is published.
 | AIE      |     4:4 |    1 | Enable Attribute Indexing Extension.
 | POE      |     3:3 |    1 | Enables Permission Overlay for EL2 accesses.
 | PIE      |     1:1 |    1 | Enables usage of Indirect Permission Scheme.
-| PnCH     |     0:0 |    1 | Protected attribute enable.Indicates use of bit[52] of the stage 1 translation table entry.
+| PnCH     |     0:0 |    1 | Protected attribute enable. Enables use of bit[52] of stage 1 translation table entries as the Protected bit, for translations using TTBR0_EL2 when HCR_EL2.E2H is 0.
 
 ## TCR2MASK_EL1 bitfields
 
@@ -4468,7 +4499,7 @@ be executed each time an update of the Arm architecture is published.
 | DS       |   59:59 |    1 | This field affects: Whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules. The minimum value of TCR_EL1.{T0SZ,T1SZ}. How and where shareability for Block and Page descriptors are encoded.
 | TCMA1    |   58:58 |    1 | Controls the generation of Unchecked accesses at EL1, and at EL0 if the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, when address[59:55] = 0b11111 .
 | TCMA0    |   57:57 |    1 | Controls the generation of Unchecked accesses at EL1, and at EL0 if the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, when address[59:55] = 0b00000 .
-| E0PD1    |   56:56 |    1 | Faulting control for unprivileged access to any address translated by TTBR0_EL1 .
+| E0PD1    |   56:56 |    1 | Faulting control for unprivileged access to any address translated by TTBR1_EL1 .
 | E0PD0    |   55:55 |    1 | Faulting control for unprivileged access to any address translated by TTBR0_EL1 .
 | NFD1     |   54:54 |    1 | Non-Fault translation timing Disable when using TTBR1_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR1_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible. If FEAT_TME is implemented, the affected access types include all accesses generated by a load or store instruction in Transactional state.
 | NFD0     |   53:53 |    1 | Non-Fault translation timing Disable when using TTBR0_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR0_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible. If FEAT_TME is implemented, the affected access types include all accesses generated by a load or store instruction in Transactional state.
@@ -4538,7 +4569,7 @@ be executed each time an update of the Arm architecture is published.
 | AIE      |   37:37 |    1 | Enable Attribute Indexing Extension.
 | POE      |   36:36 |    1 | Enables Permission Overlay for EL3 accesses.
 | PIE      |   35:35 |    1 | Enables usage of Indirect Permission Scheme.
-| PnCH     |   34:34 |    1 | Protected attribute enable. Indicates use of bit[52] of the stage 1 translation table entry for translations using TTBR0_EL3 .
+| PnCH     |   34:34 |    1 | Protected attribute enable. Enables use of bit[52] of the stage 1 translation table entries as the Protected bit, for translations using TTBR0_EL3 .
 | MTX      |   33:33 |    1 | Extended memory tag checking. This field controls address generation and tag checking when EL3 is using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL3 . This control has an effect regardless of whether stage 1 of the EL3 translation regime is enabled or not.
 | DS       |   32:32 |    1 | This field affects: Whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules. The minimum value of TCR_EL3.T0SZ. How and where shareability for Block and Page descriptors are encoded.
 | TCMA     |   30:30 |    1 | Controls the generation of Unchecked accesses at EL3 when address [59:56] = 0b0000 .
@@ -5318,7 +5349,7 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | RESS     |   63:57 |    7 | Reserved, Sign extended. If the bits marked as RESS do not all have the same value, then there is a CONSTRAINED UNPREDICTABLE choice between: Generating an EL2 translation regime Translation abort on use of the VNCR_EL2 register. If FEAT_D128 is implemented: If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56] for all purposes other than reading back the register. If the virtual address space for EL2 supports 56 bits, bits[63:57] of VNCR_EL2 are treated as the same value as bit[56]. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52] for all purposes other than reading back the register. If the virtual address space for EL2 supports 52 bits, bits[63:53] of VNCR_EL2 are treated as the same value as bit[52]. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes other than reading back the register. Bits[63:49] of VNCR_EL2 are treated as the same value as bit[48] for all purposes. Where the EL2 translation regime has upper and lower address ranges, bit[56] is used to select between those address ranges to determine the number of bits supported by the address space.
-| BADDR    |   56:12 |   45 | Base Address. If the virtual address space for EL2 does not support more than 48 bits, then bits [56:49] are RESS. If the virtual address space for EL2 does not support more than 52 bits, then bits [56:53] are RESS
+| BADDR    |   56:12 |   45 | Base Address. If the virtual address space for EL2 does not support more than 48 bits, then bits [56:49] are RESS. If the virtual address space for EL2 does not support more than 52 bits, then bits [56:53] are RESS.
 
 ## VPIDR_EL2 bitfields
 

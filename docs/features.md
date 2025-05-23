@@ -18,12 +18,13 @@ Arm architecture for existing features.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2024-12
+Version: 2025-03
 
-Total: 361 features, 329 detectable, 18 removed.
+Total: 364 features, 329 detectable, 18 removed.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------
+| FEAT_AA32                |          |           |    X    | PE supports AArch32.
 | FEAT_AA32BF16            | Armv8.2  |           |    X    | AArch32 BFloat16 instructions
 | FEAT_AA32EL0             | Armv8.0  |           |    X    | Support for AArch32 at EL0
 | FEAT_AA32EL1             | Armv8.0  |           |    X    | Support for AArch32 at EL1, removed in Armv9.0
@@ -31,11 +32,11 @@ Total: 361 features, 329 detectable, 18 removed.
 | FEAT_AA32EL3             | Armv8.0  |           |    X    | Support for AArch32 at EL3, removed in Armv9.0
 | FEAT_AA32HPD             | Armv8.1  |           |    X    | AArch32 Hierarchical permission disables
 | FEAT_AA32I8MM            | Armv8.1  |           |    X    | AArch32 Int8 Matrix Multiplication
+| FEAT_AA64                |          |           |    X    | PE uses AArch64 after last reboot
 | FEAT_AA64EL0             | Armv8.0  | Armv9.0   |    X    | Support for AArch64 at EL0
 | FEAT_AA64EL1             | Armv8.0  | Armv9.0   |    X    | Support for AArch64 at EL1
 | FEAT_AA64EL2             | Armv8.0  |           |    X    | Support for AArch64 at EL2
 | FEAT_AA64EL3             | Armv8.0  |           |    X    | Support for AArch64 at EL3
-| FEAT_AArch32             | Armv8.0  |           |    X    | Support for AArch32 (removed)
 | FEAT_ABLE                | Armv9.3  |           |    X    | Address Breakpoint Linking extension
 | FEAT_ADERR               | Armv8.8  |           |    X    | Asynchronous Device Error Exceptions~
 | FEAT_AdvSIMD             | Armv8.0  |           |    X    | Advanced SIMD Extension
@@ -122,7 +123,7 @@ Total: 361 features, 329 detectable, 18 removed.
 | FEAT_ETMv4p6             |          |           |    X    | Embedded Trace Macrocell version 4.5 (removed)
 | FEAT_ETS                 | Armv8.0  | Armv8.7   |    X    | Enhanced Translation Synchronization (removed)
 | FEAT_ETS2                | Armv8.0  | Armv8.8   |    X    | Enhanced Translation Synchronization v2
-| FEAT_ETS3                | Armv9.4  | Armv9.5   |    X    | Enhanced Translation Synchronization
+| FEAT_ETS3                | Armv8.0  | Armv9.5   |    X    | Enhanced Translation Synchronization
 | FEAT_EVT                 | Armv8.2  |           |    X    | Enhanced Virtualization Traps
 | FEAT_ExS                 | Armv8.4  |           |    X    | Disabling context synchronizing exception entry and exit
 | FEAT_F32MM               | Armv8.2  |           |    X    | SVE single-precision floating-point matrix multiply instruction
@@ -230,7 +231,7 @@ Total: 361 features, 329 detectable, 18 removed.
 | FEAT_PAuth               | Armv8.2  | Armv8.3   |    X    | Pointer authentication
 | FEAT_PAuth2              | Armv8.2  | Armv8.6   |    X    | Enhancements to pointer authentication
 | FEAT_PAuth_LR            | Armv9.4  |           |    X    | PSTATE.PACM (?)
-| FEAT_PCDPHINT            | Armv9.5  |           |    X    | Producer-Consumer Data Placement Hints
+| FEAT_PCDPHINT            | Armv9.0  |           |    X    | Producer-Consumer Data Placement Hints
 | FEAT_PCSRv8              | Armv8.0  |           |   n/a   | PC Sample-base Profiling extension (not EL3 and EL2)
 | FEAT_PCSRv8p2            | Armv8.1  |           |   n/a   | PC Sample-based profiling version 8.2
 | FEAT_PCSRv8p9            | Armv8.8  |           |   n/a   | PCSR disable control
@@ -267,7 +268,7 @@ Total: 361 features, 329 detectable, 18 removed.
 | FEAT_RASv2               | Armv8.8  |           |    X    | Reliability, Availability, and Serviceability (RAS) Extension version 2
 | FEAT_RDM                 | Armv8.0  |           |    X    | Rounding double multiply accumulate
 | FEAT_RME                 | Armv9.1  |           |    X    | Realm Management Extension
-| FEAT_RME_GDI             | Armv9.5  |           |    X    | RME Granular Data Isolation extension
+| FEAT_RME_GDI             | Armv9.4  |           |    X    | RME Granular Data Isolation extension
 | FEAT_RME_GPC2            | Armv9.4  |           |    X    | RME Granule Protection Check 2 Extension
 | FEAT_RME_GPC3            | Armv9.5  |           |    X    | RME Granule Protection Check 3 Extension
 | FEAT_RNG                 | Armv8.4  |           |    X    | Random number generator
@@ -336,6 +337,7 @@ Total: 361 features, 329 detectable, 18 removed.
 | FEAT_SSVE_BitPerm        | Armv9.4  |           |    X    | Streaming Scalable Vector Bit Permutes instructions
 | FEAT_SSVE_F8F16MM        | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode
 | FEAT_SSVE_F8F32MM        | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode
+| FEAT_SSVE_FEXPA          | Armv9.4  |           |    X    | Streaming FEXPA instruction
 | FEAT_SSVE_FP8DOT2        | Armv9.2  |           |    X    | SVE FP8 2-way dot product to half-precision inst in Streaming SVE
 | FEAT_SSVE_FP8DOT4        | Armv9.2  |           |    X    | SVE2 FP8 4-way dot product to single-precision inst in Streaming SVE
 | FEAT_SSVE_FP8FMA         | Armv9.2  |           |    X    | SVE2 FP8 multiply-accumulate to half-precision and single-precision inst in Streaming SVE
