@@ -8,7 +8,7 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2025-03
+Version: 2025-06
 
 ## Number of instructions per class
 
@@ -40,8 +40,8 @@ Version: 2025-03
 | ADD (shifted register) | Base | Add optionally-shifted register.
 | ADD (to vector) | SME | Add replicated single vector to multi-vector with multi-vector result.
 | ADD (vector) | SIMD | Add (vector).
-| ADD (vectors, predicated) | SVE | Add vectors (predicated).
-| ADD (vectors, unpredicated) | SVE | Add vectors (unpredicated).
+| ADD (vectors, predicated) | SVE | Add (predicated).
+| ADD (vectors, unpredicated) | SVE | Add (unpredicated).
 | ADDG | Base | Add with tag.
 | ADDHA | SME | Add horizontally vector elements to ZA tile.
 | ADDHN | SIMD | Add returning high narrow.
@@ -84,8 +84,8 @@ Version: 2025-03
 | AND (predicates) | SVE | Bitwise AND predicates.
 | AND (shifted register) | Base | Bitwise AND (shifted register).
 | AND (vector) | SIMD | Bitwise AND (vector).
-| AND (vectors, predicated) | SVE | Bitwise AND vectors (predicated).
-| AND (vectors, unpredicated) | SVE | Bitwise AND vectors (unpredicated).
+| AND (vectors, predicated) | SVE | Bitwise AND (predicated).
+| AND (vectors, unpredicated) | SVE | Bitwise AND (unpredicated).
 | ANDQV | SVE | Bitwise AND reduction of quadword vector segments.
 | ANDS | SVE | Bitwise AND predicates, setting the condition flags.
 | ANDS (immediate) | Base | Bitwise AND (immediate), setting flags.
@@ -144,26 +144,26 @@ Version: 2025-03
 | BF2CVTL2 | SIMD | 8-bit floating-point convert to BFloat16 (vector).
 | BF2CVTLT | SVE | 8-bit floating-point convert to BFloat16 (top).
 | BFADD | SME | BFloat16 add multi-vector to ZA array vector accumulators.
-| BFADD (predicated) | SVE | BFloat16 add vectors (predicated).
-| BFADD (unpredicated) | SVE | BFloat16 add vectors (unpredicated).
+| BFADD (predicated) | SVE | BFloat16 add (predicated).
+| BFADD (unpredicated) | SVE | BFloat16 add (unpredicated).
 | BFC | Base | Bitfield clear: an alias of BFM.
 | BFCLAMP | SVE | BFloat16 clamp to minimum/maximum number.
 | BFCLAMP | SME | Multi-vector BFloat16 clamp to minimum/maximum number.
-| BFCVT | SIMD | Floating-point convert from single-precision to BFloat16 format (scalar).
+| BFCVT | SIMD | Single-precision convert to BFloat16 (scalar).
 | BFCVT | SVE | Single-precision down convert to BFloat16 format (predicated).
 | BFCVT (BFloat16 to 8-bit floating-point) | SME | Multi-vector convert from BFloat16 to packed 8-bit floating-point format.
 | BFCVT (single-precision to BFloat16) | SME | Multi-vector convert from single-precision to packed BFloat16 format.
-| BFCVTN | SIMD | Floating-point convert from single-precision to BFloat16 format (vector).
+| BFCVTN | SIMD | Single-precision convert to BFloat16 (vector).
 | BFCVTN | SVE | BFloat16 convert, narrow and interleave to 8-bit floating-point.
 | BFCVTN | SME | Multi-vector convert from single-precision to interleaved BFloat16 format.
-| BFCVTN2 | SIMD | Floating-point convert from single-precision to BFloat16 format (vector).
+| BFCVTN2 | SIMD | Single-precision convert to BFloat16 (vector).
 | BFCVTNT | SVE | Single-precision down convert and narrow to BFloat16 (top, predicated).
-| BFDOT (by element) | SIMD | BFloat16 floating-point dot product (vector, by element).
+| BFDOT (by element) | SIMD | BFloat16 dot product to single-precision (vector, by element).
 | BFDOT (indexed) | SVE | BFloat16 indexed dot product to single-precision.
 | BFDOT (multiple and indexed vector) | SME | Multi-vector BFloat16 dot-product by indexed element.
 | BFDOT (multiple and single vector) | SME | Multi-vector BFloat16 dot-product by vector.
 | BFDOT (multiple vectors) | SME | Multi-vector BFloat16 dot-product.
-| BFDOT (vector) | SIMD | BFloat16 floating-point dot product (vector).
+| BFDOT (vector) | SIMD | BFloat16 dot product to single-precision (vector).
 | BFDOT (vectors) | SVE | BFloat16 dot product to single-precision.
 | BFI | Base | Bitfield insert: an alias of BFM.
 | BFM | Base | Bitfield move.
@@ -183,23 +183,23 @@ Version: 2025-03
 | BFMLA (multiple and indexed vector) | SME | Multi-vector BFloat16 fused multiply-add by indexed element.
 | BFMLA (multiple and single vector) | SME | Multi-vector BFloat16 fused multiply-add by vector.
 | BFMLA (multiple vectors) | SME | Multi-vector BFloat16 fused multiply-add.
-| BFMLA (vectors) | SVE | BFloat16 fused multiply-add vectors.
+| BFMLA (vectors) | SVE | BFloat16 fused multiply-add.
 | BFMLAL (multiple and indexed vector) | SME | Multi-vector BFloat16 multiply-add long by indexed element.
 | BFMLAL (multiple and single vector) | SME | Multi-vector BFloat16 multiply-add long by vector.
 | BFMLAL (multiple vectors) | SME | Multi-vector BFloat16 multiply-add long.
-| BFMLALB (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
+| BFMLALB (by element) | SIMD | BFloat16 multiply-add to single-precision (by element).
 | BFMLALB (indexed) | SVE | BFloat16 multiply-add long to single-precision (bottom, indexed).
-| BFMLALB (vector) | SIMD | BFloat16 floating-point widening multiply-add long (vector).
+| BFMLALB (vector) | SIMD | BFloat16 multiply-add to single-precision (vector).
 | BFMLALB (vectors) | SVE | BFloat16 multiply-add long to single-precision (bottom).
-| BFMLALT (by element) | SIMD | BFloat16 floating-point widening multiply-add long (by element).
+| BFMLALT (by element) | SIMD | BFloat16 multiply-add to single-precision (by element).
 | BFMLALT (indexed) | SVE | BFloat16 multiply-add long to single-precision (top, indexed).
-| BFMLALT (vector) | SIMD | BFloat16 floating-point widening multiply-add long (vector).
+| BFMLALT (vector) | SIMD | BFloat16 multiply-add to single-precision (vector).
 | BFMLALT (vectors) | SVE | BFloat16 multiply-add long to single-precision (top).
 | BFMLS (indexed) | SVE | BFloat16 fused multiply-subtract vectors by indexed elements.
 | BFMLS (multiple and indexed vector) | SME | Multi-vector BFloat16 fused multiply-subtract by indexed element.
 | BFMLS (multiple and single vector) | SME | Multi-vector BFloat16 fused multiply-subtract by vector.
 | BFMLS (multiple vectors) | SME | Multi-vector BFloat16 fused multiply-subtract.
-| BFMLS (vectors) | SVE | BFloat16 fused multiply-subtract vectors.
+| BFMLS (vectors) | SVE | BFloat16 fused multiply-subtract.
 | BFMLSL (multiple and indexed vector) | SME | Multi-vector BFloat16 multiply-subtract long by indexed element.
 | BFMLSL (multiple and single vector) | SME | Multi-vector BFloat16 multiply-subtract long by vector.
 | BFMLSL (multiple vectors) | SME | Multi-vector BFloat16 multiply-subtract long.
@@ -220,14 +220,14 @@ Version: 2025-03
 | BFMUL (indexed) | SVE | BFloat16 multiply vectors by indexed elements.
 | BFMUL (multiple and single vector) | SME | Multi-vector BFloat16 multiply by vector.
 | BFMUL (multiple vectors) | SME | Multi-vector BFloat16 multiply.
-| BFMUL (vectors, predicated) | SVE | BFloat16 multiply vectors (predicated).
-| BFMUL (vectors, unpredicated) | SVE | BFloat16 multiply vectors (unpredicated).
-| BFSCALE | SVE | BFloat16 adjust exponent by vector (predicated).
-| BFSCALE (multiple and single vector) | SME | Multi-vector BFloat16 adjust exponent by vector.
+| BFMUL (vectors, predicated) | SVE | BFloat16 multiply (predicated).
+| BFMUL (vectors, unpredicated) | SVE | BFloat16 multiply (unpredicated).
+| BFSCALE | SVE | BFloat16 adjust exponent (predicated).
+| BFSCALE (multiple and single vector) | SME | Multi-vector BFloat16 adjust exponent.
 | BFSCALE (multiple vectors) | SME | Multi-vector BFloat16 adjust exponent.
 | BFSUB | SME | BFloat16 subtract multi-vector from ZA array vector accumulators.
-| BFSUB (predicated) | SVE | BFloat16 subtract vectors (predicated).
-| BFSUB (unpredicated) | SVE | BFloat16 subtract vectors (unpredicated).
+| BFSUB (predicated) | SVE | BFloat16 subtract (predicated).
+| BFSUB (unpredicated) | SVE | BFloat16 subtract (unpredicated).
 | BFTMOPA (non-widening) | SME | BFloat16 sparse outer product, accumulating.
 | BFTMOPA (widening) | SME | BFloat16 sparse sum of two outer products, accumulating.
 | BFVDOT | SME | Multi-vector BFloat16 vertical dot-product by indexed element.
@@ -238,8 +238,8 @@ Version: 2025-03
 | BIC (shifted register) | Base | Bitwise bit clear (shifted register).
 | BIC (vector, immediate) | SIMD | Bitwise bit clear (vector, immediate).
 | BIC (vector, register) | SIMD | Bitwise bit clear (vector, register).
-| BIC (vectors, predicated) | SVE | Bitwise clear vectors (predicated).
-| BIC (vectors, unpredicated) | SVE | Bitwise clear vectors (unpredicated).
+| BIC (vectors, predicated) | SVE | Bitwise clear (predicated).
+| BIC (vectors, unpredicated) | SVE | Bitwise clear (unpredicated).
 | BICS | SVE | Bitwise clear predicates, setting the condition flags.
 | BICS (shifted register) | Base | Bitwise bit clear (shifted register), setting flags.
 | BIF | SIMD | Bitwise insert if false.
@@ -374,7 +374,7 @@ Version: 2025-03
 | CMPP | Base | Compare with tag: an alias of SUBPS.
 | CMTST | SIMD | Compare bitwise test bits nonzero (vector).
 | CNEG | Base | Conditional negate: an alias of CSNEG.
-| CNOT | SVE | Logically invert boolean condition in vector (predicated).
+| CNOT | SVE | Logically invert boolean condition (predicated).
 | CNT | Base | Count bits.
 | CNT | SIMD | Population count per byte.
 | CNT | SVE | Count non-zero bits (predicated).
@@ -384,7 +384,7 @@ Version: 2025-03
 | CNTP (predicate as counter) | SVE | Set scalar to count from predicate-as-counter.
 | CNTP (predicate) | SVE | Set scalar to count of true predicate elements.
 | CNTW | SVE | Set scalar to multiple of predicate constraint element count.
-| COMPACT | SVE | Copy active vector elements to lower-numbered elements.
+| COMPACT | SVE | Copy Active vector elements to lower-numbered elements.
 | COSP | Base | Clear other speculative prediction restriction by context: an alias of SYS.
 | CPP | Base | Cache prefetch prediction restriction by context: an alias of SYS.
 | CPY (SIMD&FP scalar) | SVE | Copy SIMD&FP scalar register to vector elements (predicated).
@@ -537,8 +537,8 @@ Version: 2025-03
 | EOR (predicates) | SVE | Bitwise exclusive-OR predicates.
 | EOR (shifted register) | Base | Bitwise exclusive-OR (shifted register).
 | EOR (vector) | SIMD | Bitwise exclusive-OR (vector).
-| EOR (vectors, predicated) | SVE | Bitwise exclusive-OR vectors (predicated).
-| EOR (vectors, unpredicated) | SVE | Bitwise exclusive-OR vectors (unpredicated).
+| EOR (vectors, predicated) | SVE | Bitwise exclusive-OR (predicated).
+| EOR (vectors, unpredicated) | SVE | Bitwise exclusive-OR (unpredicated).
 | EOR3 | SIMD | Three-way exclusive-OR.
 | EOR3 | SVE | Bitwise exclusive-OR of three vectors.
 | EORBT | SVE | Interleaving exclusive-OR (bottom, top).
@@ -550,7 +550,7 @@ Version: 2025-03
 | ERETAA | Base | Exception return, with pointer authentication.
 | ERETAB | Base | Exception return, with pointer authentication.
 | ESB | Base | Error synchronization barrier.
-| EXPAND | SVE | Copy lower-numbered vector elements to active elements.
+| EXPAND | SVE | Copy lower-numbered vector elements to Active elements.
 | EXT | SIMD | Extract vector from pair of vectors.
 | EXT | SVE | Extract vector from pair of vectors.
 | EXTQ | SVE | Extract vector segment from each pair of quadword vector segments.
@@ -572,7 +572,7 @@ Version: 2025-03
 | FABS | SVE | Floating-point absolute value (predicated).
 | FABS (scalar) | SIMD | Floating-point absolute value (scalar).
 | FABS (vector) | SIMD | Floating-point absolute value (vector).
-| FAC<cc> | SVE | Floating-point absolute compare vectors.
+| FAC<cc> | SVE | Floating-point absolute compare.
 | FACGE | SIMD | Floating-point absolute compare greater than or equal (vector).
 | FACGT | SIMD | Floating-point absolute compare greater than (vector).
 | FACLE | SVE | Floating-point absolute compare less than or equal: an alias of FAC<cc>.
@@ -581,8 +581,8 @@ Version: 2025-03
 | FADD (immediate) | SVE | Floating-point add immediate (predicated).
 | FADD (scalar) | SIMD | Floating-point add (scalar).
 | FADD (vector) | SIMD | Floating-point add (vector).
-| FADD (vectors, predicated) | SVE | Floating-point add vector (predicated).
-| FADD (vectors, unpredicated) | SVE | Floating-point add vector (unpredicated).
+| FADD (vectors, predicated) | SVE | Floating-point add (predicated).
+| FADD (vectors, unpredicated) | SVE | Floating-point add (unpredicated).
 | FADDA | SVE | Floating-point add strictly-ordered reduction, accumulating in scalar.
 | FADDP | SVE | Floating-point add pairwise.
 | FADDP (scalar) | SIMD | Floating-point add pair of elements (scalar).
@@ -601,8 +601,8 @@ Version: 2025-03
 | FCCMPE | SIMD | Floating-point conditional signaling compare (scalar).
 | FCLAMP | SVE | Floating-point clamp to minimum/maximum number.
 | FCLAMP | SME | Multi-vector floating-point clamp to minimum/maximum number.
-| FCM<cc> (vectors) | SVE | Floating-point compare vectors.
-| FCM<cc> (zero) | SVE | Floating-point compare vector with zero.
+| FCM<cc> (vectors) | SVE | Floating-point compare.
+| FCM<cc> (zero) | SVE | Floating-point compare with zero.
 | FCMEQ (register) | SIMD | Floating-point compare equal (vector).
 | FCMEQ (zero) | SIMD | Floating-point compare equal to zero (vector).
 | FCMGE (register) | SIMD | Floating-point compare greater than or equal (vector).
@@ -647,10 +647,10 @@ Version: 2025-03
 | FCVTN (FP32 to FP16) | SME | Multi-vector convert from single-precision to interleaved half-precision.
 | FCVTN (FP32 to FP8) | SME | Multi-vector convert from single-precision to interleaved 8-bit floating-point format.
 | FCVTN (double to single-precision, single to half-precision) | SIMD | Floating-point convert to lower precision narrow (vector).
-| FCVTN (half-precision to 8-bit floating-point) | SIMD | Half-precision to 8-bit floating-point convert and narrow (vector).
-| FCVTN (single-precision to 8-bit floating-point) | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
+| FCVTN (half-precision to 8-bit floating-point) | SIMD | Half-precision convert to 8-bit floating-point (vector).
+| FCVTN (single-precision to 8-bit floating-point) | SIMD | Single-precision convert to 8-bit floating-point (vector).
 | FCVTN2 (double to single-precision, single to half-precision) | SIMD | Floating-point convert to lower precision narrow (vector).
-| FCVTN2 (single-precision to 8-bit floating-point) | SIMD | Single-precision to 8-bit floating-point convert and narrow (vector).
+| FCVTN2 (single-precision to 8-bit floating-point) | SIMD | Single-precision convert to 8-bit floating-point (vector).
 | FCVTNB | SVE | Single-precision convert, narrow and interleave to 8-bit floating-point (bottom).
 | FCVTNS (scalar SIMD&FP) | SIMD | Floating-point convert to signed integer, rounding to nearest with ties to even (scalar SIMD&FP).
 | FCVTNS (scalar) | SIMD | Floating-point convert to signed integer, rounding to nearest with ties to even (scalar).
@@ -684,10 +684,10 @@ Version: 2025-03
 | FCVTZU (scalar, integer) | SIMD | Floating-point convert to unsigned integer, rounding toward zero (scalar).
 | FCVTZU (vector, fixed-point) | SIMD | Floating-point convert to unsigned fixed-point, rounding toward zero (vector).
 | FCVTZU (vector, integer) | SIMD | Floating-point convert to unsigned integer, rounding toward zero (vector).
-| FDIV | SVE | Floating-point divide by vector (predicated).
+| FDIV | SVE | Floating-point divide (predicated).
 | FDIV (scalar) | SIMD | Floating-point divide (scalar).
 | FDIV (vector) | SIMD | Floating-point divide (vector).
-| FDIVR | SVE | Floating-point reversed divide by vector (predicated).
+| FDIVR | SVE | Floating-point reversed divide (predicated).
 | FDOT (2-way, indexed, FP16 to FP32) | SVE | Half-precision indexed dot product to single-precision.
 | FDOT (2-way, indexed, FP8 to FP16) | SVE | 8-bit floating-point indexed dot product to half-precision.
 | FDOT (2-way, multiple and indexed vector, FP16 to FP32) | SME | Multi-vector half-precision dot-product by indexed element.
@@ -779,35 +779,35 @@ Version: 2025-03
 | FMLAL (vector) | SIMD | Floating-point fused multiply-add long to accumulator (vector).
 | FMLAL2 (by element) | SIMD | Floating-point fused multiply-add long to accumulator (by element).
 | FMLAL2 (vector) | SIMD | Floating-point fused multiply-add long to accumulator (vector).
-| FMLALB (by element) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
+| FMLALB (by element) | SIMD | 8-bit floating-point multiply-add to half-precision (vector, by element).
 | FMLALB (indexed, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (bottom, indexed).
 | FMLALB (indexed, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom, indexed).
-| FMLALB (vector) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
+| FMLALB (vector) | SIMD | 8-bit floating-point multiply-add to half-precision (vector).
 | FMLALB (vectors, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (bottom).
 | FMLALB (vectors, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (bottom).
 | FMLALL (multiple and indexed vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by indexed element to single-precision.
 | FMLALL (multiple and single vector) | SME | Multi-vector 8-bit floating-point multiply-add long-long by vector to single-precision.
 | FMLALL (multiple vectors) | SME | Multi-vector 8-bit floating-point multiply-add long-long to single-precision.
-| FMLALLBB (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
+| FMLALLBB (by element) | SIMD | 8-bit floating-point multiply-add to single-precision (vector, by element).
 | FMLALLBB (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom bottom, indexed).
-| FMLALLBB (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLBB (vector) | SIMD | 8-bit floating-point multiply-add to single-precision (vector).
 | FMLALLBB (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom bottom).
-| FMLALLBT (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
+| FMLALLBT (by element) | SIMD | 8-bit floating-point multiply-add to single-precision (vector, by element).
 | FMLALLBT (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom top, indexed).
-| FMLALLBT (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLBT (vector) | SIMD | 8-bit floating-point multiply-add to single-precision (vector).
 | FMLALLBT (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (bottom top).
-| FMLALLTB (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
+| FMLALLTB (by element) | SIMD | 8-bit floating-point multiply-add to single-precision (vector, by element).
 | FMLALLTB (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (top bottom, indexed).
-| FMLALLTB (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLTB (vector) | SIMD | 8-bit floating-point multiply-add to single-precision (vector).
 | FMLALLTB (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (top bottom).
-| FMLALLTT (by element) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector, by element).
+| FMLALLTT (by element) | SIMD | 8-bit floating-point multiply-add to single-precision (vector, by element).
 | FMLALLTT (indexed) | SVE | 8-bit floating-point multiply-add long long to single-precision (top top, indexed).
-| FMLALLTT (vector) | SIMD | 8-bit floating-point multiply-add long-long to single-precision (vector).
+| FMLALLTT (vector) | SIMD | 8-bit floating-point multiply-add to single-precision (vector).
 | FMLALLTT (vectors) | SVE | 8-bit floating-point multiply-add long long to single-precision (top top).
-| FMLALT (by element) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector, by element).
+| FMLALT (by element) | SIMD | 8-bit floating-point multiply-add to half-precision (vector, by element).
 | FMLALT (indexed, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (top, indexed).
 | FMLALT (indexed, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (top, indexed).
-| FMLALT (vector) | SIMD | 8-bit floating-point multiply-add long to half-precision (vector).
+| FMLALT (vector) | SIMD | 8-bit floating-point multiply-add to half-precision (vector).
 | FMLALT (vectors, FP16 to FP32) | SVE | Half-precision multiply-add long to single-precision (top).
 | FMLALT (vectors, FP8 to FP16) | SVE | 8-bit floating-point multiply-add long to half-precision (top).
 | FMLS (by element) | SIMD | Floating-point fused multiply-subtract from accumulator (by element).
@@ -863,8 +863,8 @@ Version: 2025-03
 | FMUL (multiple vectors) | SME | Multi-vector floating-point multiply.
 | FMUL (scalar) | SIMD | Floating-point multiply (scalar).
 | FMUL (vector) | SIMD | Floating-point multiply (vector).
-| FMUL (vectors, predicated) | SVE | Floating-point multiply vectors (predicated).
-| FMUL (vectors, unpredicated) | SVE | Floating-point multiply vectors (unpredicated).
+| FMUL (vectors, predicated) | SVE | Floating-point multiply (predicated).
+| FMUL (vectors, unpredicated) | SVE | Floating-point multiply (unpredicated).
 | FMULX | SIMD | Floating-point multiply extended.
 | FMULX | SVE | Floating-point multiply-extended vectors (predicated).
 | FMULX (by element) | SIMD | Floating-point multiply extended (by element).
@@ -920,8 +920,8 @@ Version: 2025-03
 | FRSQRTS | SIMD | Floating-point reciprocal square root step.
 | FRSQRTS | SVE | Floating-point reciprocal square root step (unpredicated).
 | FSCALE | SIMD | Floating-point adjust exponent by vector.
-| FSCALE | SVE | Floating-point adjust exponent by vector (predicated).
-| FSCALE (multiple and single vector) | SME | Multi-vector floating-point adjust exponent by vector.
+| FSCALE | SVE | Floating-point adjust exponent (predicated).
+| FSCALE (multiple and single vector) | SME | Multi-vector floating-point adjust exponent.
 | FSCALE (multiple vectors) | SME | Multi-vector floating-point adjust exponent.
 | FSQRT | SVE | Floating-point square root (predicated).
 | FSQRT (scalar) | SIMD | Floating-point square root (scalar).
@@ -930,10 +930,10 @@ Version: 2025-03
 | FSUB (immediate) | SVE | Floating-point subtract immediate (predicated).
 | FSUB (scalar) | SIMD | Floating-point subtract (scalar).
 | FSUB (vector) | SIMD | Floating-point subtract (vector).
-| FSUB (vectors, predicated) | SVE | Floating-point subtract vectors (predicated).
-| FSUB (vectors, unpredicated) | SVE | Floating-point subtract vectors (unpredicated).
+| FSUB (vectors, predicated) | SVE | Floating-point subtract (predicated).
+| FSUB (vectors, unpredicated) | SVE | Floating-point subtract (unpredicated).
 | FSUBR (immediate) | SVE | Floating-point reversed subtract from immediate (predicated).
-| FSUBR (vectors) | SVE | Floating-point reversed subtract vectors (predicated).
+| FSUBR (vectors) | SVE | Floating-point reversed subtract (predicated).
 | FTMAD | SVE | Floating-point trigonometric multiply-add coefficient.
 | FTMOPA (non-widening) | SME | Floating-point sparse outer product, accumulating.
 | FTMOPA (widening, 2-way, FP16 to FP32) | SME | Half-precision sparse sum of two outer products, accumulating.
@@ -1133,26 +1133,26 @@ Version: 2025-03
 | LDAXR | Base | Load-acquire exclusive register.
 | LDAXRB | Base | Load-acquire exclusive register byte.
 | LDAXRH | Base | Load-acquire exclusive register halfword.
-| LDBFADD | SIMD | BFloat16 floating-point add in memory.
-| LDBFADDA | SIMD | BFloat16 floating-point add in memory.
-| LDBFADDAL | SIMD | BFloat16 floating-point add in memory.
-| LDBFADDL | SIMD | BFloat16 floating-point add in memory.
-| LDBFMAX | SIMD | BFloat16 floating-point atomic maximum in memory.
-| LDBFMAXA | SIMD | BFloat16 floating-point atomic maximum in memory.
-| LDBFMAXAL | SIMD | BFloat16 floating-point atomic maximum in memory.
-| LDBFMAXL | SIMD | BFloat16 floating-point atomic maximum in memory.
-| LDBFMAXNM | SIMD | BFloat16 floating-point atomic maximum number in memory.
-| LDBFMAXNMA | SIMD | BFloat16 floating-point atomic maximum number in memory.
-| LDBFMAXNMAL | SIMD | BFloat16 floating-point atomic maximum number in memory.
-| LDBFMAXNML | SIMD | BFloat16 floating-point atomic maximum number in memory.
-| LDBFMIN | SIMD | BFloat16 floating-point atomic minimum in memory.
-| LDBFMINA | SIMD | BFloat16 floating-point atomic minimum in memory.
-| LDBFMINAL | SIMD | BFloat16 floating-point atomic minimum in memory.
-| LDBFMINL | SIMD | BFloat16 floating-point atomic minimum in memory.
-| LDBFMINNM | SIMD | BFloat16 floating-point atomic minimum number in memory.
-| LDBFMINNMA | SIMD | BFloat16 floating-point atomic minimum number in memory.
-| LDBFMINNMAL | SIMD | BFloat16 floating-point atomic minimum number in memory.
-| LDBFMINNML | SIMD | BFloat16 floating-point atomic minimum number in memory.
+| LDBFADD | SIMD | BFloat16 atomic add in memory.
+| LDBFADDA | SIMD | BFloat16 atomic add in memory.
+| LDBFADDAL | SIMD | BFloat16 atomic add in memory.
+| LDBFADDL | SIMD | BFloat16 atomic add in memory.
+| LDBFMAX | SIMD | BFloat16 atomic maximum in memory.
+| LDBFMAXA | SIMD | BFloat16 atomic maximum in memory.
+| LDBFMAXAL | SIMD | BFloat16 atomic maximum in memory.
+| LDBFMAXL | SIMD | BFloat16 atomic maximum in memory.
+| LDBFMAXNM | SIMD | BFloat16 atomic maximum number in memory.
+| LDBFMAXNMA | SIMD | BFloat16 atomic maximum number in memory.
+| LDBFMAXNMAL | SIMD | BFloat16 atomic maximum number in memory.
+| LDBFMAXNML | SIMD | BFloat16 atomic maximum number in memory.
+| LDBFMIN | SIMD | BFloat16 atomic minimum in memory.
+| LDBFMINA | SIMD | BFloat16 atomic minimum in memory.
+| LDBFMINAL | SIMD | BFloat16 atomic minimum in memory.
+| LDBFMINL | SIMD | BFloat16 atomic minimum in memory.
+| LDBFMINNM | SIMD | BFloat16 atomic minimum number in memory.
+| LDBFMINNMA | SIMD | BFloat16 atomic minimum number in memory.
+| LDBFMINNMAL | SIMD | BFloat16 atomic minimum number in memory.
+| LDBFMINNML | SIMD | BFloat16 atomic minimum number in memory.
 | LDCLR | Base | Atomic bit clear on word or doubleword in memory.
 | LDCLRA | Base | Atomic bit clear on word or doubleword in memory.
 | LDCLRAB | Base | Atomic bit clear on byte in memory.
@@ -1416,7 +1416,7 @@ Version: 2025-03
 | LUTI2 (single) | SME | Lookup table read with 2-bit indexes (single).
 | LUTI2 (two registers) | SME | Lookup table read with 2-bit indexes (two registers).
 | LUTI4 | SIMD | Lookup table read with 4-bit indices.
-| LUTI4 (8-bit and 16-bit) | SVE | Lookup table read with 4-bit indicess (8-bit and 16-bit).
+| LUTI4 (8-bit and 16-bit) | SVE | Lookup table read with 4-bit indices (8-bit and 16-bit).
 | LUTI4 (four registers, 16-bit and 32-bit) | SME | Lookup table read with 4-bit indexes (four registers).
 | LUTI4 (four registers, 8-bit) | SME | Lookup table read with 4-bit indexes and 8-bit elements (four registers).
 | LUTI4 (single) | SME | Lookup table read with 4-bit indexes (single).
@@ -1508,8 +1508,8 @@ Version: 2025-03
 | MUL (immediate) | SVE | Multiply by immediate (unpredicated).
 | MUL (indexed) | SVE | Multiply (indexed).
 | MUL (vector) | SIMD | Multiply (vector).
-| MUL (vectors, predicated) | SVE | Multiply vectors (predicated).
-| MUL (vectors, unpredicated) | SVE | Multiply vectors (unpredicated).
+| MUL (vectors, predicated) | SVE | Multiply (predicated).
+| MUL (vectors, unpredicated) | SVE | Multiply (unpredicated).
 | MVN | Base | Bitwise NOT: an alias of ORN (shifted register).
 | MVN | SIMD | Bitwise NOT (vector): an alias of NOT.
 | MVNI | SIMD | Move inverted immediate (vector).
@@ -1528,7 +1528,7 @@ Version: 2025-03
 | NORS | SVE | Bitwise NOR predicates, setting the condition flags.
 | NOT | SIMD | Bitwise NOT (vector).
 | NOT (predicate) | SVE | Bitwise invert predicate: an alias of EOR (predicates).
-| NOT (vector) | SVE | Bitwise invert vector (predicated).
+| NOT (vector) | SVE | Bitwise invert (predicated).
 | NOTS | SVE | Bitwise invert predicate, setting the condition flags: an alias of EORS.
 | ORN (immediate) | SVE | Bitwise inclusive OR with inverted immediate (unpredicated): an alias of ORR (immediate).
 | ORN (predicates) | SVE | Bitwise inclusive OR inverted predicate.
@@ -1542,8 +1542,8 @@ Version: 2025-03
 | ORR (shifted register) | Base | Bitwise OR (shifted register).
 | ORR (vector, immediate) | SIMD | Bitwise inclusive OR (vector, immediate).
 | ORR (vector, register) | SIMD | Bitwise inclusive OR (vector, register).
-| ORR (vectors, predicated) | SVE | Bitwise inclusive OR vectors (predicated).
-| ORR (vectors, unpredicated) | SVE | Bitwise inclusive OR vectors (unpredicated).
+| ORR (vectors, predicated) | SVE | Bitwise inclusive OR (predicated).
+| ORR (vectors, unpredicated) | SVE | Bitwise inclusive OR (unpredicated).
 | ORRS | SVE | Bitwise inclusive OR predicates, setting the condition flags.
 | ORV | SVE | Bitwise inclusive OR reduction to scalar.
 | PACDA | Base | Pointer Authentication Code for data address, using key A.
@@ -1571,12 +1571,12 @@ Version: 2025-03
 | PEXT (predicate pair) | SVE | Predicate extract pair from predicate-as-counter.
 | PEXT (predicate) | SVE | Predicate extract from predicate-as-counter.
 | PFALSE | SVE | Set all predicate elements to false.
-| PFIRST | SVE | Set the first active predicate element to true.
-| PMLAL | SVE | Multi-vector polynomial multiply long and accumulate vectors.
+| PFIRST | SVE | Set the First active predicate element to true.
+| PMLAL | SVE | Multi-vector polynomial multiply long and accumulate.
 | PMOV (to predicate) | SVE | Move predicate from vector.
 | PMOV (to vector) | SVE | Move predicate to vector.
 | PMUL | SIMD | Polynomial multiply.
-| PMUL | SVE | Polynomial multiply vectors (unpredicated).
+| PMUL | SVE | Polynomial multiply (unpredicated).
 | PMULL | SIMD | Polynomial multiply long.
 | PMULL | SVE | Multi-vector polynomial multiply long.
 | PMULL2 | SIMD | Polynomial multiply long.
@@ -1607,9 +1607,9 @@ Version: 2025-03
 | PSEL | SVE | Predicate select between predicate register or all-false.
 | PSSBB | Base | Physical speculative store bypass barrier: an alias of DSB.
 | PTEST | SVE | Set condition flags for predicate.
-| PTRUE (predicate as counter) | SVE | Initialise predicate-as-counter to all active.
-| PTRUE (predicate) | SVE | Initialise predicate from named constraint.
-| PTRUES | SVE | Initialise predicate from named constraint and set the condition flags.
+| PTRUE (predicate as counter) | SVE | Initialize predicate-as-counter to all active.
+| PTRUE (predicate) | SVE | Initialize predicate from named constraint.
+| PTRUES | SVE | Initialize predicate from named constraint and set the condition flags.
 | PUNPKHI | SVE | Unpack and widen half of predicate.
 | PUNPKLO | SVE | Unpack and widen half of predicate.
 | RADDHN | SIMD | Rounding add returning high narrow.
@@ -1757,8 +1757,8 @@ Version: 2025-03
 | SBFIZ | Base | Signed bitfield insert in zeros: an alias of SBFM.
 | SBFM | Base | Signed bitfield move.
 | SBFX | Base | Signed bitfield extract: an alias of SBFM.
-| SCLAMP | SVE | Signed clamp to minimum/maximum vector.
-| SCLAMP | SME | Multi-vector signed clamp to minimum/maximum vector.
+| SCLAMP | SVE | Signed clamp to minimum/maximum.
+| SCLAMP | SME | Multi-vector signed clamp to minimum/maximum.
 | SCVTF | SME | Multi-vector signed integer convert to floating-point.
 | SCVTF (predicated) | SVE | Signed integer convert to floating-point (predicated).
 | SCVTF (scalar SIMD&FP) | SIMD | Signed integer convert to floating-point (scalar SIMD&FP).
@@ -1790,7 +1790,7 @@ Version: 2025-03
 | SETETN | Base | Memory set, unprivileged and non-temporal.
 | SETF16 | Base | Evaluation of 8-bit or 16-bit flag values.
 | SETF8 | Base | Evaluation of 8-bit or 16-bit flag values.
-| SETFFR | SVE | Initialise the first-fault register to all true.
+| SETFFR | SVE | Initialize the first-fault register to all true.
 | SETGE | Base | Memory set with tag setting.
 | SETGEN | Base | Memory set with tag setting, non-temporal.
 | SETGET | Base | Memory set with tag setting, unprivileged.
@@ -1838,7 +1838,7 @@ Version: 2025-03
 | SHRNT | SVE | Shift right narrow by immediate (top).
 | SHSUB | SIMD | Signed halving subtract.
 | SHSUB | SVE | Signed halving subtract.
-| SHSUBR | SVE | Signed halving subtract reversed vectors.
+| SHSUBR | SVE | Signed halving subtract reversed.
 | SLI | SIMD | Shift left and insert (immediate).
 | SLI | SVE | Shift left and insert (immediate).
 | SM3PARTW1 | SIMD | SM3PARTW1.
@@ -1859,7 +1859,7 @@ Version: 2025-03
 | SMAX (multiple and single vector) | SME | Multi-vector signed maximum by vector.
 | SMAX (multiple vectors) | SME | Multi-vector signed maximum.
 | SMAX (register) | Base | Signed maximum (register).
-| SMAX (vectors) | SVE | Signed maximum vectors (predicated).
+| SMAX (vectors) | SVE | Signed maximum (predicated).
 | SMAXP | SIMD | Signed maximum pairwise.
 | SMAXP | SVE | Signed maximum pairwise.
 | SMAXQV | SVE | Signed maximum reduction of quadword vector segments.
@@ -1872,7 +1872,7 @@ Version: 2025-03
 | SMIN (multiple and single vector) | SME | Multi-vector signed minimum by vector.
 | SMIN (multiple vectors) | SME | Multi-vector signed minimum.
 | SMIN (register) | Base | Signed minimum (register).
-| SMIN (vectors) | SVE | Signed minimum vectors (predicated).
+| SMIN (vectors) | SVE | Signed minimum (predicated).
 | SMINP | SIMD | Signed minimum pairwise.
 | SMINP | SVE | Signed minimum pairwise.
 | SMINQV | SVE | Signed minimum reduction of quadword vector segments.
@@ -1907,7 +1907,7 @@ Version: 2025-03
 | SMLSLT (indexed) | SVE | Signed multiply-subtract long from accumulator (top, indexed).
 | SMLSLT (vectors) | SVE | Signed multiply-subtract long from accumulator (top).
 | SMMLA | SVE | Signed 8-bit integer matrix multiply-accumulate to 32-bit integer.
-| SMMLA (vector) | SIMD | Signed 8-bit integer matrix multiply-accumulate (vector).
+| SMMLA (vector) | SIMD | Signed 8-bit integer matrix multiply-accumulate to 32-bit integer (vector).
 | SMNEGL | Base | Signed multiply-negate long: an alias of SMSUBL.
 | SMOP4A (2-way) | SME | Signed integer quarter-tile sums of two outer products, accumulating.
 | SMOP4A (4-way) | SME | Signed integer quarter-tile sums of four outer products, accumulating.
@@ -1939,7 +1939,7 @@ Version: 2025-03
 | SQADD | SIMD | Signed saturating add.
 | SQADD (immediate) | SVE | Signed saturating add immediate (unpredicated).
 | SQADD (vectors, predicated) | SVE | Signed saturating addition (predicated).
-| SQADD (vectors, unpredicated) | SVE | Signed saturating add vectors (unpredicated).
+| SQADD (vectors, unpredicated) | SVE | Signed saturating add (unpredicated).
 | SQCADD | SVE | Saturating complex integer add with rotate.
 | SQCVT (four registers) | SME | Multi-vector signed saturating extract narrow.
 | SQCVT (two registers) | SME | Multi-vector signed saturating extract narrow.
@@ -2016,8 +2016,8 @@ Version: 2025-03
 | SQRDMULH (vector) | SIMD | Signed saturating rounding doubling multiply returning high half.
 | SQRDMULH (vectors) | SVE | Signed saturating rounding doubling multiply high (unpredicated).
 | SQRSHL | SIMD | Signed saturating rounding shift left (register).
-| SQRSHL | SVE | Signed saturating rounding shift left by vector (predicated).
-| SQRSHLR | SVE | Signed saturating rounding shift left reversed vectors (predicated).
+| SQRSHL | SVE | Signed saturating rounding shift left (predicated).
+| SQRSHLR | SVE | Signed saturating rounding shift left reversed (predicated).
 | SQRSHR (four registers) | SME | Multi-vector signed saturating rounding shift right narrow by immediate.
 | SQRSHR (two registers) | SME | Multi-vector signed saturating rounding shift right narrow by immediate.
 | SQRSHRN | SIMD | Signed saturating rounded shift right narrow (immediate).
@@ -2037,8 +2037,8 @@ Version: 2025-03
 | SQSHL (immediate) | SIMD | Signed saturating shift left (immediate).
 | SQSHL (immediate) | SVE | Signed saturating shift left by immediate.
 | SQSHL (register) | SIMD | Signed saturating shift left (register).
-| SQSHL (vectors) | SVE | Signed saturating shift left by vector (predicated).
-| SQSHLR | SVE | Signed saturating shift left reversed vectors (predicated).
+| SQSHL (vectors) | SVE | Signed saturating shift left (predicated).
+| SQSHLR | SVE | Signed saturating shift left reversed (predicated).
 | SQSHLU | SIMD | Signed saturating shift left unsigned (immediate).
 | SQSHLU | SVE | Signed saturating shift left unsigned by immediate.
 | SQSHRN | SIMD | Signed saturating shift right narrow (immediate).
@@ -2052,8 +2052,8 @@ Version: 2025-03
 | SQSUB | SIMD | Signed saturating subtract.
 | SQSUB (immediate) | SVE | Signed saturating subtract immediate (unpredicated).
 | SQSUB (vectors, predicated) | SVE | Signed saturating subtraction (predicated).
-| SQSUB (vectors, unpredicated) | SVE | Signed saturating subtract vectors (unpredicated).
-| SQSUBR | SVE | Signed saturating subtraction reversed vectors (predicated).
+| SQSUB (vectors, unpredicated) | SVE | Signed saturating subtract (unpredicated).
+| SQSUBR | SVE | Signed saturating subtraction reversed (predicated).
 | SQXTN | SIMD | Signed saturating extract narrow.
 | SQXTN2 | SIMD | Signed saturating extract narrow.
 | SQXTNB | SVE | Signed saturating extract narrow (bottom).
@@ -2067,10 +2067,10 @@ Version: 2025-03
 | SRI | SIMD | Shift right and insert (immediate).
 | SRI | SVE | Shift right and insert (immediate).
 | SRSHL | SIMD | Signed rounding shift left (register).
-| SRSHL | SVE | Signed rounding shift left by vector (predicated).
-| SRSHL (multiple and single vector) | SME | Multi-vector signed rounding shift left by vector.
+| SRSHL | SVE | Signed rounding shift left (predicated).
+| SRSHL (multiple and single vector) | SME | Multi-vector signed rounding shift left.
 | SRSHL (multiple vectors) | SME | Multi-vector signed rounding shift left.
-| SRSHLR | SVE | Signed rounding shift left reversed vectors (predicated).
+| SRSHLR | SVE | Signed rounding shift left reversed (predicated).
 | SRSHR | SIMD | Signed rounding shift right (immediate).
 | SRSHR | SVE | Signed rounding shift right by immediate.
 | SRSRA | SIMD | Signed rounding shift right and accumulate (immediate).
@@ -2342,8 +2342,8 @@ Version: 2025-03
 | SUB (immediate) | SVE | Subtract immediate (unpredicated).
 | SUB (shifted register) | Base | Subtract optionally-shifted register.
 | SUB (vector) | SIMD | Subtract (vector).
-| SUB (vectors, predicated) | SVE | Subtract vectors (predicated).
-| SUB (vectors, unpredicated) | SVE | Subtract vectors (unpredicated).
+| SUB (vectors, predicated) | SVE | Subtract (predicated).
+| SUB (vectors, unpredicated) | SVE | Subtract (unpredicated).
 | SUBG | Base | Subtract with tag.
 | SUBHN | SIMD | Subtract returning high narrow.
 | SUBHN2 | SIMD | Subtract returning high narrow.
@@ -2355,7 +2355,7 @@ Version: 2025-03
 | SUBPT (predicated) | SVE | Subtract checked pointer vectors (predicated).
 | SUBPT (unpredicated) | SVE | Subtract checked pointer vectors (unpredicated).
 | SUBR (immediate) | SVE | Reversed subtract from immediate (unpredicated).
-| SUBR (vectors) | SVE | Reversed subtract vectors (predicated).
+| SUBR (vectors) | SVE | Reversed subtract (predicated).
 | SUBS (extended register) | Base | Subtract extended and scaled register, setting flags.
 | SUBS (immediate) | Base | Subtract immediate value, setting flags.
 | SUBS (shifted register) | Base | Subtract optionally-shifted register, setting flags.
@@ -2462,8 +2462,8 @@ Version: 2025-03
 | UBFIZ | Base | Unsigned bitfield insert in zeros: an alias of UBFM.
 | UBFM | Base | Unsigned bitfield move.
 | UBFX | Base | Unsigned bitfield extract: an alias of UBFM.
-| UCLAMP | SVE | Unsigned clamp to minimum/maximum vector.
-| UCLAMP | SME | Multi-vector unsigned clamp to minimum/maximum vector.
+| UCLAMP | SVE | Unsigned clamp to minimum/maximum.
+| UCLAMP | SME | Multi-vector unsigned clamp to minimum/maximum.
 | UCVTF | SME | Multi-vector unsigned integer convert to floating-point.
 | UCVTF (predicated) | SVE | Unsigned integer convert to floating-point (predicated).
 | UCVTF (scalar SIMD&FP) | SIMD | Unsigned integer convert to floating-point (scalar SIMD&FP).
@@ -2491,7 +2491,7 @@ Version: 2025-03
 | UHADD | SVE | Unsigned halving addition.
 | UHSUB | SIMD | Unsigned halving subtract.
 | UHSUB | SVE | Unsigned halving subtract.
-| UHSUBR | SVE | Unsigned halving subtract reversed vectors.
+| UHSUBR | SVE | Unsigned halving subtract reversed.
 | UMADDL | Base | Unsigned multiply-add long.
 | UMAX | SIMD | Unsigned maximum (vector).
 | UMAX (immediate) | Base | Unsigned maximum (immediate).
@@ -2499,7 +2499,7 @@ Version: 2025-03
 | UMAX (multiple and single vector) | SME | Multi-vector unsigned maximum by vector.
 | UMAX (multiple vectors) | SME | Multi-vector unsigned maximum.
 | UMAX (register) | Base | Unsigned maximum (register).
-| UMAX (vectors) | SVE | Unsigned maximum vectors (predicated).
+| UMAX (vectors) | SVE | Unsigned maximum (predicated).
 | UMAXP | SIMD | Unsigned maximum pairwise.
 | UMAXP | SVE | Unsigned maximum pairwise.
 | UMAXQV | SVE | Unsigned maximum reduction of quadword vector segments.
@@ -2511,7 +2511,7 @@ Version: 2025-03
 | UMIN (multiple and single vector) | SME | Multi-vector unsigned minimum by vector.
 | UMIN (multiple vectors) | SME | Multi-vector unsigned minimum.
 | UMIN (register) | Base | Unsigned minimum (register).
-| UMIN (vectors) | SVE | Unsigned minimum vectors (predicated).
+| UMIN (vectors) | SVE | Unsigned minimum (predicated).
 | UMINP | SIMD | Unsigned minimum pairwise.
 | UMINP | SVE | Unsigned minimum pairwise.
 | UMINQV | SVE | Unsigned minimum reduction of quadword vector segments.
@@ -2546,7 +2546,7 @@ Version: 2025-03
 | UMLSLT (indexed) | SVE | Unsigned multiply-subtract long from accumulator (top, indexed).
 | UMLSLT (vectors) | SVE | Unsigned multiply-subtract long from accumulator (top).
 | UMMLA | SVE | Unsigned 8-bit integer matrix multiply-accumulate to 32-bit integer.
-| UMMLA (vector) | SIMD | Unsigned 8-bit integer matrix multiply-accumulate (vector).
+| UMMLA (vector) | SIMD | Unsigned 8-bit integer matrix multiply-accumulate to 32-bit integer (vector).
 | UMNEGL | Base | Unsigned multiply-negate long: an alias of UMSUBL.
 | UMOP4A (2-way) | SME | Unsigned integer quarter-tile sums of two outer products, accumulating.
 | UMOP4A (4-way) | SME | Unsigned integer quarter-tile sums of four outer products, accumulating.
@@ -2573,7 +2573,7 @@ Version: 2025-03
 | UQADD | SIMD | Unsigned saturating add.
 | UQADD (immediate) | SVE | Unsigned saturating add immediate (unpredicated).
 | UQADD (vectors, predicated) | SVE | Unsigned saturating addition (predicated).
-| UQADD (vectors, unpredicated) | SVE | Unsigned saturating add vectors (unpredicated).
+| UQADD (vectors, unpredicated) | SVE | Unsigned saturating add (unpredicated).
 | UQCVT (four registers) | SME | Multi-vector unsigned saturating extract narrow.
 | UQCVT (two registers) | SME | Multi-vector unsigned saturating extract narrow.
 | UQCVTN | SVE | Unsigned 32-bit integer saturating extract narrow and interleave to 16-bit integer.
@@ -2597,8 +2597,8 @@ Version: 2025-03
 | UQINCW (scalar) | SVE | Unsigned saturating increment scalar by multiple of 32-bit predicate constraint element count.
 | UQINCW (vector) | SVE | Unsigned saturating increment vector by multiple of 32-bit predicate constraint element count.
 | UQRSHL | SIMD | Unsigned saturating rounding shift left (register).
-| UQRSHL | SVE | Unsigned saturating rounding shift left by vector (predicated).
-| UQRSHLR | SVE | Unsigned saturating rounding shift left reversed vectors (predicated).
+| UQRSHL | SVE | Unsigned saturating rounding shift left (predicated).
+| UQRSHLR | SVE | Unsigned saturating rounding shift left reversed (predicated).
 | UQRSHR (four registers) | SME | Multi-vector unsigned saturating rounding shift right narrow by immediate.
 | UQRSHR (two registers) | SME | Multi-vector unsigned saturating rounding shift right narrow by immediate.
 | UQRSHRN | SIMD | Unsigned saturating rounded shift right narrow (immediate).
@@ -2610,8 +2610,8 @@ Version: 2025-03
 | UQSHL (immediate) | SIMD | Unsigned saturating shift left (immediate).
 | UQSHL (immediate) | SVE | Unsigned saturating shift left by immediate.
 | UQSHL (register) | SIMD | Unsigned saturating shift left (register).
-| UQSHL (vectors) | SVE | Unsigned saturating shift left by vector (predicated).
-| UQSHLR | SVE | Unsigned saturating shift left reversed vectors (predicated).
+| UQSHL (vectors) | SVE | Unsigned saturating shift left (predicated).
+| UQSHLR | SVE | Unsigned saturating shift left reversed (predicated).
 | UQSHRN | SIMD | Unsigned saturating shift right narrow (immediate).
 | UQSHRN2 | SIMD | Unsigned saturating shift right narrow (immediate).
 | UQSHRNB | SVE | Unsigned saturating shift right narrow by immediate (bottom).
@@ -2619,8 +2619,8 @@ Version: 2025-03
 | UQSUB | SIMD | Unsigned saturating subtract.
 | UQSUB (immediate) | SVE | Unsigned saturating subtract immediate (unpredicated).
 | UQSUB (vectors, predicated) | SVE | Unsigned saturating subtraction (predicated).
-| UQSUB (vectors, unpredicated) | SVE | Unsigned saturating subtract vectors (unpredicated).
-| UQSUBR | SVE | Unsigned saturating subtraction reversed vectors (predicated).
+| UQSUB (vectors, unpredicated) | SVE | Unsigned saturating subtract (unpredicated).
+| UQSUBR | SVE | Unsigned saturating subtraction reversed (predicated).
 | UQXTN | SIMD | Unsigned saturating extract narrow.
 | UQXTN2 | SIMD | Unsigned saturating extract narrow.
 | UQXTNB | SVE | Unsigned saturating extract narrow (bottom).
@@ -2630,10 +2630,10 @@ Version: 2025-03
 | URHADD | SIMD | Unsigned rounding halving add.
 | URHADD | SVE | Unsigned rounding halving addition.
 | URSHL | SIMD | Unsigned rounding shift left (register).
-| URSHL | SVE | Unsigned rounding shift left by vector (predicated).
-| URSHL (multiple and single vector) | SME | Multi-vector unsigned rounding shift left by vector.
+| URSHL | SVE | Unsigned rounding shift left (predicated).
+| URSHL (multiple and single vector) | SME | Multi-vector unsigned rounding shift left.
 | URSHL (multiple vectors) | SME | Multi-vector unsigned rounding shift left.
-| URSHLR | SVE | Unsigned rounding shift left reversed vectors (predicated).
+| URSHLR | SVE | Unsigned rounding shift left reversed (predicated).
 | URSHR | SIMD | Unsigned rounding shift right (immediate).
 | URSHR | SVE | Unsigned rounding shift right by immediate.
 | URSQRTE | SIMD | Unsigned reciprocal square root estimate.
@@ -2657,7 +2657,7 @@ Version: 2025-03
 | USMLALL (multiple and single vector) | SME | Multi-vector unsigned by signed integer multiply-add long-long by vector.
 | USMLALL (multiple vectors) | SME | Multi-vector unsigned by signed integer multiply-add long-long.
 | USMMLA | SVE | Unsigned by signed 8-bit integer matrix multiply-accumulate to 32-bit integer.
-| USMMLA (vector) | SIMD | Unsigned and signed 8-bit integer matrix multiply-accumulate (vector).
+| USMMLA (vector) | SIMD | Unsigned and signed 8-bit integer matrix multiply-accumulate to 32-bit integer (vector).
 | USMOP4A | SME | Unsigned by signed integer quarter-tile sums of four outer products, accumulating.
 | USMOP4S | SME | Unsigned by signed integer quarter-tile sums of four outer products, subtracting.
 | USMOPA (4-way) | SME | Unsigned by signed integer sum of outer products and accumulate.

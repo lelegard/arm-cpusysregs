@@ -569,6 +569,8 @@ public:
     bool FEAT_ASID2() const { return ID_AA64MMFR4_EL1_ASID2() >= 1; }
     bool FEAT_ATS1A() const { return ID_AA64ISAR2_EL1_ATS1A() == 1; }
     bool FEAT_BBM() const { return ID_AA64MMFR2_EL1_BBM() >= 1; }
+    bool FEAT_BBML1() const { return ID_AA64MMFR2_EL1_BBM() >= 1; }
+    bool FEAT_BBML2() const { return ID_AA64MMFR2_EL1_BBM() >= 2; }
     bool FEAT_BF16() const { return ID_AA64ISAR1_EL1_BF16() >= 1 || ID_AA64ZFR0_EL1_BF16() >= 1; }
     bool FEAT_BRBE() const { return ID_AA64DFR0_EL1_BRBE() >= 1; }
     bool FEAT_BRBEv1p1() const { return ID_AA64DFR0_EL1_BRBE() >= 2; }

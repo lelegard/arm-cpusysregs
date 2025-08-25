@@ -1,3 +1,4 @@
+FEAT_AA32 ................ no
 FEAT_AA32BF16 ............ no
 FEAT_AA32EL0 ............. no
 FEAT_AA32EL1 ............. no
@@ -5,11 +6,11 @@ FEAT_AA32EL2 ............. no
 FEAT_AA32EL3 ............. no
 FEAT_AA32HPD ............. no
 FEAT_AA32I8MM ............ no
+FEAT_AA64 ................ yes
 FEAT_AA64EL0 ............. yes
 FEAT_AA64EL1 ............. yes
 FEAT_AA64EL2 ............. yes
 FEAT_AA64EL3 ............. no
-FEAT_AArch32 ............. no
 FEAT_ABLE ................ no
 FEAT_ADERR ............... no
 FEAT_AdvSIMD ............. yes
@@ -24,6 +25,8 @@ FEAT_ASID16 .............. no
 FEAT_ASID2 ............... no
 FEAT_ATS1A ............... no
 FEAT_BBM ................. no
+FEAT_BBML1 ............... no
+FEAT_BBML2 ............... no
 FEAT_BF16 ................ no
 FEAT_BRBE ................ no
 FEAT_BRBEv1p1 ............ no
@@ -277,6 +280,7 @@ FEAT_SSBS ................ yes
 FEAT_SSBS2 ............... yes
 FEAT_SSVE_AES ............ no
 FEAT_SSVE_BitPerm ........ no
+FEAT_SSVE_FEXPA .......... no
 FEAT_SSVE_FP8DOT2 ........ no
 FEAT_SSVE_FP8DOT4 ........ no
 FEAT_SSVE_FP8FMA ......... no

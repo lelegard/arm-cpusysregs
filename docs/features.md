@@ -18,9 +18,9 @@ Arm architecture for existing features.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2025-03
+Version: 2025-06
 
-Total: 364 features, 329 detectable, 18 removed.
+Total: 366 features, 331 detectable, 19 removed.
 
 | Feature Name             | Optional | Mandatory | sysregs | Short description
 | ------------------------ | -------- | --------- | :-----: | -----------------
@@ -55,7 +55,9 @@ Total: 364 features, 329 detectable, 18 removed.
 | FEAT_ASID2               | Armv9.4  | Armv9.5   |    X    | Support for concurrent use of two ASIDs
 | FEAT_ASMv8p2             | Armv8.1  | Armv8.2   |   n/a   | BDC and REV64 alias instructions
 | FEAT_ATS1A               | Armv8.8  |           |    X    | Address Translate Stage 1 instructions without Permissions Checks
-| FEAT_BBM                 | Armv8.3  | Armv8.4   |    X    | Translation table break before make levels
+| FEAT_BBM                 | Armv8.3  | Armv8.4   |    X    | Translation table break before make levels (removed)
+| FEAT_BBML1               | Armv8.3  |           |    X    | Translation table break-before-make level 1
+| FEAT_BBML2               | Armv8.3  |           |    X    | Translation table break-before-make level 2
 | FEAT_BF16                | Armv8.2  | Armv8.6   |    X    | AARch64 BFloat16 instructions
 | FEAT_BRBE                | Armv9.1  |           |    X    | Branch Record Buffer Extensions
 | FEAT_BRBEv1p1            | Armv9.2  |           |    X    | Branch Record Buffer Extensions version 1.1
@@ -202,7 +204,7 @@ Total: 364 features, 329 detectable, 18 removed.
 | FEAT_MPAM_MSC_DOMAINS    | Armv9.5  |           |   n/a   | MPAM Domains PARTID translation
 | FEAT_MPAM_PE_BW_CTRL     | Armv9.3  |           |    X    | MPAM PE-side Bandwidth Controls
 | FEAT_MPAMv0p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 0.1
-| FEAT_MPAMv1p0            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.0 (removed)
+| FEAT_MPAMv1p0            | Armv8.2  |           |    X    | Memory Partitioning and Monitoring version 1.0
 | FEAT_MPAMv1p1            | Armv8.5  |           |    X    | Memory Partitioning and Monitoring version 1.1
 | FEAT_MTE                 | Armv8.4  |           |    X    | Instruction-only Memory Tagging Extension
 | FEAT_MTE2                | Armv8.4  |           |    X    | Full Memory Tagging Extension
@@ -220,7 +222,7 @@ Total: 364 features, 329 detectable, 18 removed.
 | FEAT_nTLBPA              | Armv8.0  |           |    X    | No intermediate caching by output address in TLB
 | FEAT_NV                  | Armv8.2  |           |    X    | Nested virtualization
 | FEAT_NV2                 | Armv8.3  |           |    X    | Enhanced support for nested virtualization
-| FEAT_NV2p1               | Armv9.5  |           |    X    | Enhanced nested virtualization support
+| FEAT_NV2p1               | Armv8.4  |           |    X    | Enhanced nested virtualization support
 | FEAT_OCCMO               | Armv9.5  | Armv9.6   |    X    | Outer Cacheable Cache Maintenance Operation
 | FEAT_PACIMP              | Armv8.2  |           |    X    | Pointer authentication - IMPLEMENTATION DEFINED algorithm
 | FEAT_PACQARMA3           | Armv8.2  |           |    X    | Pointer authentication - QARMA3 algorithm
@@ -317,12 +319,13 @@ Total: 364 features, 329 detectable, 18 removed.
 | FEAT_SPE_FDS             | Armv8.8  |           |    X    | SPE filtering by data source
 | FEAT_SPE_FnE             |          |           |    X    | Statistical Profiling inverse event filter
 | FEAT_SPE_FPF             | Armv9.4  |           |    X    | Statistical Profiling floating-point flag extension
+| FEAT_SPE_LDS             |          |           |   ???   | Statistical Profiling data source packet generation
 | FEAT_SPE_nVM             | Armv9.5  |           |    X    | Statistical Profiling physical addressing mode extension
 | FEAT_SPE_PBT             |          |           |    X    | Statistical Profiling previous branch target
 | FEAT_SPE_SME             | Armv9.2  |           |    X    | Statistical Profiling extensions for SME
 | FEAT_SPECRES             | Armv8.0  | Armv8.5   |    X    | Speculation restriction instructions
 | FEAT_SPECRES2            | Armv8.0  | Armv8.9   |    X    | Adds new Clear Other Speculative Predictions instruction
-| FEAT_SpecSEI             | Armv8.5  |           |    X    | SError interrupt exceptions from speculative reads of memory
+| FEAT_SpecSEI             | Armv8.0  |           |    X    | SError interrupt exceptions from speculative reads of memory
 | FEAT_SPEv1p1             | Armv8.2  |           |    X    | Statistical Profiling Extensions version 1.1
 | FEAT_SPEv1p2             | Armv8.6  |           |    X    | Statistical Profiling Extensions version 1.2
 | FEAT_SPEv1p3             | Armv8.7  |           |    X    | Armv8.8 Statistical Profiling Extensions
@@ -335,8 +338,8 @@ Total: 364 features, 329 detectable, 18 removed.
 | FEAT_SSBS2               | Armv8.0  |           |    X    | MRS and MSR instructions for SSBS
 | FEAT_SSVE_AES            | Armv9.5  |           |    X    | Streaming SVE Mode AES and 128-bit polynomial multiply long instructions
 | FEAT_SSVE_BitPerm        | Armv9.4  |           |    X    | Streaming Scalable Vector Bit Permutes instructions
-| FEAT_SSVE_F8F16MM        | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode
-| FEAT_SSVE_F8F32MM        | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode
+| FEAT_SSVE_F8F16MM        | Armv9.2  |           |    X    | FP8 to Half-Precision Matrix Multiplication in Streaming SVE mode (removed)
+| FEAT_SSVE_F8F32MM        | Armv9.2  |           |    X    | FP8 to Single-Precision Matrix Multiplication in Streaming SVE mode (removed)
 | FEAT_SSVE_FEXPA          | Armv9.4  |           |    X    | Streaming FEXPA instruction
 | FEAT_SSVE_FP8DOT2        | Armv9.2  |           |    X    | SVE FP8 2-way dot product to half-precision inst in Streaming SVE
 | FEAT_SSVE_FP8DOT4        | Armv9.2  |           |    X    | SVE2 FP8 4-way dot product to single-precision inst in Streaming SVE
