@@ -21,7 +21,7 @@ FEAT_JSCVT ... yes
 FEAT_LRCPC ... yes
 FEAT_LRCPC2 .. yes
 FEAT_LSE ..... yes
-FEAT_LSE2 .... no
+FEAT_LSE2 .... yes
 FEAT_PAuth ... yes
 FEAT_PAuth2 .. no
 FEAT_PMULL ... yes

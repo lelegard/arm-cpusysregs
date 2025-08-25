@@ -5,13 +5,13 @@
 |                      |                 |
 | **PAC size**         |                 |
 | data, lower          | 7 bits          |
-| data, upper          | 15 bits         |
+| data, upper          | 7 bits          |
 | instruction, lower   | 7 bits          |
 | instruction, upper   | 15 bits         |
 |                      |                 |
 | **PAC position**     |                 |
 | data, lower          | 54:48           |
-| data, upper          | 63:56,54:48     |
+| data, upper          | 54:48           |
 | instruction, lower   | 54:48           |
 | instruction, upper   | 63:56,54:48     |
 |                      |                 |
@@ -32,6 +32,6 @@
 | TBI0                 | 1               |
 | TBID0                | 0               |
 | T0SZ                 | 16              |
-| TBI1                 | 0               |
-| TBID1                | 0               |
+| TBI1                 | 1               |
+| TBID1                | 1               |
 | T1SZ                 | 16              |

@@ -1,18 +1,18 @@
 Kernel
 ------
-Linux 5.10.0-23-arm64 #1 SMP Debian 5.10.179-1 (2023-05-12) aarch64 unknown
+Linux 6.12.33+deb13-arm64 #1 SMP Debian 6.12.33-1 (2025-06-19) aarch64 unknown
 
 Operating system
 ----------------
 Distributor ID: Debian
-Description:    Debian GNU/Linux 11 (bullseye)
-Release:        11
-Codename:       bullseye
+Description:    Debian GNU/Linux 13 (trixie)
+Release:        13
+Codename:       trixie
 
 Compiler
 --------
-gcc (Debian 10.2.1-6) 10.2.1 20210110
-Copyright (C) 2020 Free Software Foundation, Inc.
+gcc (Debian 14.2.0-19) 14.2.0
+Copyright (C) 2024 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
