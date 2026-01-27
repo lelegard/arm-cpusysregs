@@ -1,18 +1,18 @@
 Kernel
 ------
-Linux 6.14.0-27-generic #27-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:34:18 UTC 2025 aarch64 aarch64
+Linux 6.17.0-5-generic #5-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 22 09:50:31 UTC 2025 aarch64 unknown
 
 Operating system
 ----------------
 Distributor ID: Ubuntu
-Description:    Ubuntu 25.04
-Release:        25.04
-Codename:       plucky
+Description:    Ubuntu 25.10
+Release:        25.10
+Codename:       questing
 
 Compiler
 --------
-gcc (Ubuntu 14.2.0-19ubuntu2) 14.2.0
-Copyright (C) 2024 Free Software Foundation, Inc.
+gcc (Ubuntu 15.2.0-4ubuntu4) 15.2.0
+Copyright (C) 2025 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
