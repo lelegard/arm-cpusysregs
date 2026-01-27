@@ -18,7 +18,7 @@
 
 void ArmFeatures::clear()
 {
-    _loaded = false;
+    _loaded = _le_el0 = _le_el1 = false;
     _aa64isar0 = _aa64isar1 = _aa64isar2 = _aa64isar3 = _aa64pfr0 = _aa64pfr1 = _aa64pfr2 = 0;
     _aa64dfr0 = _aa64dfr1 = _aa64dfr2 = _aa64fpfr0 = 0;
     _aa64mmfr0 = _aa64mmfr1 = _aa64mmfr2 = _aa64mmfr3 = _aa64mmfr4 = _aa64smfr0 = _aa64zfr0 = 0;
@@ -75,7 +75,7 @@ int ArmFeatures::pacQARMA() const
 //----------------------------------------------------------------------------
 
 bool ArmFeatures::load(RegAccess& reg)
-{
+{    
     clear();
     _loaded =
         reg.read(CSR_REGID_ID_AA64ISAR0_EL1, _aa64isar0) &&
@@ -118,7 +118,7 @@ bool ArmFeatures::load(RegAccess& reg)
         (!csr_has_pmuv3p4(_aa64dfr0) || reg.read(CSR_REGID_PMMIR_EL1, _pmmir)) &&
         (!csr_has_mpam(_aa64pfr0, _aa64pfr1) || reg.read(CSR_REGID_MPAMIDR_EL1, _mpamidr)) &&
         (!csr_has_trbe(_aa64dfr0) || reg.read(CSR_REGID_TRBIDR_EL1, _trbidr));
-
+    
 #if !defined(CSR_AVOID_CTR_EL0)
     _loaded = _loaded &&
         reg.read(CSR_REGID_CTR_EL0, _ctr);
@@ -128,6 +128,17 @@ bool ArmFeatures::load(RegAccess& reg)
     _loaded = _loaded &&
         (!csr_has_spe(_aa64dfr0) || reg.read(CSR_REGID_PMSIDR_EL1, _pmsidr));
 #endif
+
+    // Check usage of little endian at EL1.
+    if (_loaded) {
+        csr_instr_t le = {0, 0};
+        _loaded = reg.executeInstr(CSR_INSTR_LE_EL1, le);
+        if (_loaded) {
+            static const csr_u64_t one = 1;
+            _le_el0 = *(const char*)(&one) != 0;
+            _le_el1 = le.value != 0;
+        }
+    }
 
     return _loaded;
 }

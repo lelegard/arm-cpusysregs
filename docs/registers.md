@@ -11,9 +11,9 @@ be executed each time an update of the Arm architecture is published.
 
 <!-- Do not remove the markers AUTOGEN-BEGIN and AUTOGEN-END. -->
 <!-- @AUTOGEN-BEGIN -->
-Version: 2025-06
+Version: 2025-12
 
-Total: 604 system registers, 83 can be accessed by cpusysregs.
+Total: 700 system registers, 83 can be accessed by cpusysregs.
 
 | System Register   | sysregs | Description
 | ----------------- | :-----: | -----------
@@ -140,6 +140,14 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | DISR_EL1          |         | Deferred Interrupt Status Register
 | DIT               |         | Data Independent Timing
 | DLR_EL0           |         | Debug Link Register
+| DPOCR_EL0         |         | Debug Permissions Overlays Control Register
+| DPOTBR0_EL1       |         | Data Permission Overlay Table Register 0 (EL1)
+| DPOTBR0_EL12      |         | Data Permission Overlay Table Register 0 (EL1&2)
+| DPOTBR0_EL2       |         | Data Permission Overlay Table Register 0 (EL2)
+| DPOTBR0_EL3       |         | Data Permission Overlay Table Register 0 (EL3)
+| DPOTBR1_EL1       |         | Data Permission Overlay Table Register 1 (EL1)
+| DPOTBR1_EL12      |         | Data Permission Overlay Table Register 1 (EL1&2)
+| DPOTBR1_EL2       |         | Data Permission Overlay Table Register 1 (EL2)
 | DSPSR_EL0         |         | Debug Saved Program Status Register
 | ELR_EL1           |         | Exception Link Register (EL1)
 | ELR_EL12          |         | Exception Link Register (EL1&2)
@@ -192,7 +200,9 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | HACR_EL2          |         | Hypervisor Auxiliary Control Register
 | HAFGRTR_EL2       |         | Hypervisor Activity Monitors Fine-Grained Read Trap Register
 | HCR_EL2           |    X    | Hypervisor Configuration Register
+| HCRMASK_EL2       |         | Hypervisor Configuration Masking Register
 | HCRX_EL2          |         | Extended Hypervisor Configuration Register
+| HCRXMASK_EL2      |         | Extended Hypervisor Configuration Masking Register
 | HDBSSBR_EL2       |         | Hardware Dirty State Tracking Structure Base Register
 | HDBSSPROD_EL2     |         | Hardware Dirty State Tracking Structure Producer Register
 | HDFGRTR2_EL2      |         | Hypervisor Debug Fine-Grained Read Trap Register 2
@@ -207,22 +217,35 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | HFGWTR_EL2        |         | Hypervisor Fine-Grained Write Trap Register
 | HPFAR_EL2         |         | Hypervisor IPA Fault Address Register
 | HSTR_EL2          |         | Hypervisor System Trap Register
+| ICC_APR_EL1       |         | Interrupt Controller Physical Active Priorities Register (EL1)
+| ICC_APR_EL3       |         | Interrupt Controller Physical Active Priorities Register for EL3
 | ICC_ASGI1R_EL1    |         | Interrupt Controller Alias Software Generated Interrupt Group 1 Register
 | ICC_BPR0_EL1      |         | Interrupt Controller Binary Point Register 0
 | ICC_BPR1_EL1      |         | Interrupt Controller Binary Point Register 1
+| ICC_CR0_EL1       |         | Interrupt Controller Physical Control Register (EL1)
+| ICC_CR0_EL3       |         | Interrupt Controller Physical Control Register (EL3)
 | ICC_CTLR_EL1      |         | Interrupt Controller Control Register (EL1)
 | ICC_CTLR_EL3      |         | Interrupt Controller Control Register (EL3)
 | ICC_DIR_EL1       |         | Interrupt Controller Deactivate Interrupt Register
+| ICC_DOMHPPIR_EL3  |         | Interrupt Controller Domain Highest Priority Pending Interrupt Register
 | ICC_EOIR0_EL1     |         | Interrupt Controller End Of Interrupt Register 0
 | ICC_EOIR1_EL1     |         | Interrupt Controller End Of Interrupt Register 1
+| ICC_HAPR_EL1      |         | Interrupt Controller Physical Highest Active Priority Register
 | ICC_HPPIR0_EL1    |         | Interrupt Controller Highest Priority Pending Interrupt Register 0
 | ICC_HPPIR1_EL1    |         | Interrupt Controller Highest Priority Pending Interrupt Register 1
+| ICC_HPPIR_EL1     |         | Interrupt Controller Physical Highest Priority Pending Interrupt Register (EL1)
+| ICC_HPPIR_EL3     |         | Interrupt Controller Physical Highest Priority Pending Interrupt Register (EL3)
+| ICC_IAFFIDR_EL1   |         | Interrupt Controller PE Interrupt Affinity ID Register
 | ICC_IAR0_EL1      |         | Interrupt Controller Interrupt Acknowledge Register 0
 | ICC_IAR1_EL1      |         | Interrupt Controller Interrupt Acknowledge Register 1
+| ICC_ICSR_EL1      |         | Interrupt Controller Interrupt Configuration and State Register
+| ICC_IDR0_EL1      |         | Interrupt Controller ID Register 0
 | ICC_IGRPEN0_EL1   |         | Interrupt Controller Interrupt Group 0 Enable Register
 | ICC_IGRPEN1_EL1   |         | Interrupt Controller Interrupt Group 1 Enable Register
 | ICC_IGRPEN1_EL3   |         | Interrupt Controller Interrupt Group 1 Enable Register (EL3)
 | ICC_NMIAR1_EL1    |         | Interrupt Controller Non-maskable Interrupt Acknowledge Register 1
+| ICC_PCR_EL1       |         | Interrupt Controller Physical Interrupt Priority Control Register (EL1)
+| ICC_PCR_EL3       |         | Interrupt Controller Interrupt Priority Control Register (EL3)
 | ICC_PMR_EL1       |         | Interrupt Controller Interrupt Priority Mask Register
 | ICC_RPR_EL1       |         | Interrupt Controller Running Priority Register
 | ICC_SGI0R_EL1     |         | Interrupt Controller Software Generated Interrupt Group 0 Register
@@ -230,25 +253,37 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | ICC_SRE_EL1       |         | Interrupt Controller System Register Enable Register (EL1)
 | ICC_SRE_EL2       |         | Interrupt Controller System Register Enable Register (EL2)
 | ICC_SRE_EL3       |         | Interrupt Controller System Register Enable Register (EL3)
+| ICH_APR_EL2       |         | Interrupt Controller Active Virtual Priorities Register
+| ICH_CONTEXTR_EL2  |         | Interrupt Controller Virtual Context Register
 | ICH_EISR_EL2      |         | Interrupt Controller End of Interrupt Status Register
 | ICH_ELRSR_EL2     |         | Interrupt Controller Empty List Register Status Register
 | ICH_HCR_EL2       |         | Interrupt Controller Hyp Control Register
+| ICH_HFGITR_EL2    |         | Hypervisor GIC Fine-Grained Instruction Trap Register
+| ICH_HFGRTR_EL2    |         | Hypervisor GIC Fine-Grained Read Trap Register
+| ICH_HFGWTR_EL2    |         | Hypervisor GIC Fine-Grained Write Trap Register
+| ICH_HPPIR_EL2     |         | Interrupt Controller Hypervisor Highest Priority Pending Interrupt Register
 | ICH_MISR_EL2      |         | Interrupt Controller Maintenance Interrupt State Register
+| ICH_VCTLR_EL2     |         | Interrupt Controller Virtual CPU interface Control Register
 | ICH_VMCR_EL2      |         | Interrupt Controller Virtual Machine Control Register
 | ICH_VTR_EL2       |         | Interrupt Controller VGIC Type Register
+| ICV_APR_EL1       |         | Interrupt Controller Virtual Active Priorities Register
 | ICV_BPR0_EL1      |         | Interrupt Controller Virtual Binary Point Register 0
 | ICV_BPR1_EL1      |         | Interrupt Controller Virtual Binary Point Register 1
+| ICV_CR0_EL1       |         | Interrupt Controller EL1 Virtual Control Register
 | ICV_CTLR_EL1      |         | Interrupt Controller Virtual Control Register
 | ICV_DIR_EL1       |         | Interrupt Controller Deactivate Virtual Interrupt Register
 | ICV_EOIR0_EL1     |         | Interrupt Controller Virtual End Of Interrupt Register 0
 | ICV_EOIR1_EL1     |         | Interrupt Controller Virtual End Of Interrupt Register 1
+| ICV_HAPR_EL1      |         | Interrupt Controller Virtual Highest Active Priority Register
 | ICV_HPPIR0_EL1    |         | Interrupt Controller Virtual Highest Priority Pending Interrupt Register 0
 | ICV_HPPIR1_EL1    |         | Interrupt Controller Virtual Highest Priority Pending Interrupt Register 1
+| ICV_HPPIR_EL1     |         | Interrupt Controller Virtual Highest Priority Pending Interrupt Register
 | ICV_IAR0_EL1      |         | Interrupt Controller Virtual Interrupt Acknowledge Register 0
 | ICV_IAR1_EL1      |         | Interrupt Controller Virtual Interrupt Acknowledge Register 1
 | ICV_IGRPEN0_EL1   |         | Interrupt Controller Virtual Interrupt Group 0 Enable Register
 | ICV_IGRPEN1_EL1   |         | Interrupt Controller Virtual Interrupt Group 1 Enable Register
 | ICV_NMIAR1_EL1    |         | Interrupt Controller Virtual Non-maskable Interrupt Acknowledge Register 1
+| ICV_PCR_EL1       |         | Interrupt Controller Virtual Interrupt Priority Control Register
 | ICV_PMR_EL1       |         | Interrupt Controller Virtual Interrupt Priority Mask Register
 | ICV_RPR_EL1       |         | Interrupt Controller Virtual Running Priority Register
 | ID_AA64AFR0_EL1   |    X    | AArch64 Auxiliary Feature Register 0
@@ -291,7 +326,17 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | ID_PFR1_EL1       |    X    | AArch32 Processor Feature Register 1
 | ID_PFR2_EL1       |    X    | AArch32 Processor Feature Register 2
 | IFSR32_EL2        |         | Instruction Fault Status Register (EL2)
+| IRTBRP_EL1        |         | Instruction Region Table Base Register, Privileged (EL1)
+| IRTBRP_EL12       |         | Instruction Region Table Base Register, Privileged (EL1&2)
+| IRTBRP_EL2        |         | Instruction Region Table Base Register, Privileged (EL2)
+| IRTBRP_EL3        |         | Instruction Region Table Base Register, Privileged (EL3)
+| IRTBRU_EL1        |         | Instruction Region Table Base Register, Unprivileged (EL1)
+| IRTBRU_EL12       |         | Instruction Region Table Base Register, Unprivileged (EL1&2)
+| IRTBRU_EL2        |         | Instruction Region Table Base Register, Unprivileged (EL2)
 | ISR_EL1           |         | Interrupt Status Register
+| LDSTT_EL1         |         | Load and Store Unprivileged Context register (EL1)
+| LDSTT_EL12        |         | Load and Store Unprivileged Context register (EL1&2)
+| LDSTT_EL2         |         | Load and Store Unprivileged Context register (EL2)
 | LORC_EL1          |         | LORegion Control (EL1)
 | LOREA_EL1         |         | LORegion End Address (EL1)
 | LORID_EL1         |         | LORegionID (EL1)
@@ -334,9 +379,16 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | MPAMBWCAP_EL2     |         | MPAM PE-side Maximum-bandwidth Limit Virtualization Register
 | MPAMBWIDR_EL1     |         | MPAM PE-side Bandwidth Controls ID Register
 | MPAMBWSM_EL1      |         | MPAM Streaming Mode Bandwidth Control Register (EL1)
+| MPAMCTL_EL1       |         | MPAM Control Register (EL1)
+| MPAMCTL_EL12      |         | MPAM Control Register (EL1&2)
+| MPAMCTL_EL2       |         | MPAM Control Register (EL2)
+| MPAMCTL_EL3       |         | MPAM Control Register (EL3)
 | MPAMHCR_EL2       |         | MPAM Hypervisor Control Register (EL2)
 | MPAMIDR_EL1       |    X    | MPAM ID Register (EL1)
 | MPAMSM_EL1        |         | MPAM Streaming Mode Register
+| MPAMVIDCR_EL2     |         | MPAM Virtual Identifier Control Register
+| MPAMVIDSR_EL2     |         | MPAM Virtual Identifier Status Register
+| MPAMVIDSR_EL3     |         | MPAM Virtual Identifier Status Register
 | MPAMVPM0_EL2      |         | MPAM Virtual PARTID Mapping Register 0
 | MPAMVPM1_EL2      |         | MPAM Virtual PARTID Mapping Register 1
 | MPAMVPM2_EL2      |         | MPAM Virtual PARTID Mapping Register 2
@@ -350,6 +402,10 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | MVFR0_EL1         |         | AArch32 Media and VFP Feature Register 0
 | MVFR1_EL1         |         | AArch32 Media and VFP Feature Register 1
 | MVFR2_EL1         |         | AArch32 Media and VFP Feature Register 2
+| NVHCR_EL2         |         | Nested Virtual Hypervisor Configuration Register
+| NVHCRMASK_EL2     |         | Nested Virtual Hypervisor Configuration Masking Register
+| NVHCRX_EL2        |         | Nested Virtual Extended Hypervisor Configuration Register
+| NVHCRXMASK_EL2    |         | Nested Virtual Extended Hypervisor Configuration Masking Register
 | NZCV              |         | Condition Flags
 | OSDLR_EL1         |         | OS Double Lock Register
 | OSDTRRX_EL1       |         | OS Lock Data Transfer Register, Receive
@@ -434,6 +490,7 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | RVBAR_EL3         |         | Reset Vector Base Address Register (if EL3 implemented)
 | S2PIR_EL2         |         | Stage 2 Permission Indirection Register (EL2)
 | S2POR_EL1         |         | Stage 2 Permission Overlay Register (EL1)
+| SCR2_EL3          |         | Secure Configuration Register
 | SCR_EL3           |    X    | Secure Configuration Register
 | SCTLR2_EL1        |    X    | System Control Register (EL1)
 | SCTLR2_EL12       |         | System Control Register (EL1&2)
@@ -498,6 +555,10 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | SPSR_IRQ          |         | Saved Program Status Register (IRQ mode)
 | SPSR_UND          |         | Saved Program Status Register (Undefined mode)
 | SSBS              |         | Speculative Store Bypass Safe
+| STINDEX_EL1       |         | Saved TIndex (EL1)
+| STINDEX_EL12      |         | Saved TIndex (EL1&2)
+| STINDEX_EL2       |         | Saved TIndex (EL2)
+| STINDEX_EL3       |         | Saved TIndex (EL3)
 | SVCR              |         | Streaming Vector Control Register
 | SVCRSM            |         |
 | SVCRSMZA          |         |
@@ -523,12 +584,39 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | TFSR_EL2          |         | Tag Fault Status Register (EL2)
 | TFSR_EL3          |         | Tag Fault Status Register (EL3)
 | TFSRE0_EL1        |         | Tag Fault Status Register (EL0).
+| TINDEX_EL0        |         | TIndex (EL0)
+| TINDEX_EL1        |         | TIndex (EL1)
+| TINDEX_EL12       |         | TIndex (EL1&2)
+| TINDEX_EL2        |         | TIndex (EL2)
+| TINDEX_EL3        |         | TIndex (EL3)
+| TLBIDIDR_EL1      |         | TLBI Domains Identification Register (EL1)
 | TPIDR2_EL0        |         | EL0 Read/Write Software Thread ID Register 2
+| TPIDR3_EL0        |         | EL0 Read/Write Software Thread ID Register 3
+| TPIDR3_EL1        |         | EL1 Software Thread ID Register 3
+| TPIDR3_EL12       |         | EL1&2 Software Thread ID Register 3
+| TPIDR3_EL2        |         | EL2 Software Thread ID Register 3
+| TPIDR3_EL3        |         | EL3 Software Thread ID Register 3
 | TPIDR_EL0         |    X    | EL0 Read/Write Software Thread ID Register
 | TPIDR_EL1         |    X    | EL1 Software Thread ID Register
 | TPIDR_EL2         |         | EL2 Software Thread ID Register
 | TPIDR_EL3         |         | EL3 Software Thread ID Register
 | TPIDRRO_EL0       |    X    | EL0 Read-Only Software Thread ID Register
+| TPMAX0_EL0        |         | Thread-Private State Upper Limit 0 (EL0)
+| TPMAX0_EL1        |         | Thread-Private State Upper Limit 0 (EL1)
+| TPMAX0_EL12       |         | Thread-Private State Upper Limit 0 (EL1&2)
+| TPMAX0_EL2        |         | Thread-Private State Upper Limit 0 (EL2)
+| TPMAX1_EL0        |         | Thread-Private State Upper Limit 1 (EL0)
+| TPMAX1_EL1        |         | Thread-Private State Upper Limit 1 (EL1)
+| TPMAX1_EL12       |         | Thread-Private State Upper Limit 1 (EL1&2)
+| TPMAX1_EL2        |         | Thread-Private State Upper Limit 1 (EL2)
+| TPMIN0_EL0        |         | Thread-Private State Lower Limit 0 (EL0)
+| TPMIN0_EL1        |         | Thread-Private State Lower Limit 0 (EL1)
+| TPMIN0_EL12       |         | Thread-Private State Lower Limit 0 (EL1&2)
+| TPMIN0_EL2        |         | Thread-Private State Lower Limit 0 (EL2)
+| TPMIN1_EL0        |         | Thread-Private State Lower Limit 1 (EL0)
+| TPMIN1_EL1        |         | Thread-Private State Lower Limit 1 (EL1)
+| TPMIN1_EL12       |         | Thread-Private State Lower Limit 1 (EL1&2)
+| TPMIN1_EL2        |         | Thread-Private State Lower Limit 1 (EL2)
 | TRBBASER_EL1      |         | Trace Buffer Base Address Register
 | TRBIDR_EL1        |    X    | Trace Buffer ID Register
 | TRBLIMITR_EL1     |         | Trace Buffer Limit Address Register
@@ -599,6 +687,13 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | TTBR1_EL1         |    X    | Translation Table Base Register 1 (EL1)
 | TTBR1_EL12        |         | Translation Table Base Register 1 (EL1&2)
 | TTBR1_EL2         |         | Translation Table Base Register 1 (EL2)
+| TTTBRP_EL1        |         | TIndex Transition Table Base Register Privileged (EL1)
+| TTTBRP_EL12       |         | TIndex Transition Table Base Register Privileged (EL1&2)
+| TTTBRP_EL2        |         | TIndex Transition Table Base Register Privileged (EL2)
+| TTTBRP_EL3        |         | TIndex Transition Table Base Register Privileged (EL3)
+| TTTBRU_EL1        |         | TIndex Transition Table Base Register Unprivileged (EL1)
+| TTTBRU_EL12       |         | TIndex Transition Table Base Register Unprivileged (EL1&2)
+| TTTBRU_EL2        |         | TIndex Transition Table Base Register Unprivileged (EL2)
 | UAO               |         | User Access Override
 | VBAR_EL1          |         | Vector Base Address Register (EL1)
 | VBAR_EL12         |         | Vector Base Address Register (EL1&2)
@@ -609,6 +704,7 @@ Total: 604 system registers, 83 can be accessed by cpusysregs.
 | VMECID_A_EL2      |         | Alternate MECID for EL1&0 stage 2 translation regime
 | VMECID_P_EL2      |         | Primary MECID for EL1&0 stage 2 translation regime
 | VMPIDR_EL2        |         | Virtualization Multiprocessor ID Register
+| VNCCR_EL2         |         | Virtual Nested Context Control Register
 | VNCR_EL2          |         | Virtual Nested Control Register
 | VPIDR_EL2         |         | Virtualization Processor ID Register
 | VSESR_EL2         |         | Virtual SError Exception Syndrome Register (EL2)

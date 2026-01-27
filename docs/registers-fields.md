@@ -116,18 +116,17 @@ be executed each time an update of the Arm architecture is published.
 
 ## BRBFCR_EL1 bitfields
 
-| Bitfield   | msb:lsb | Size | Description
-| ---------- | ------: | ---: | -----------
-| BANK       |   29:28 |    2 | Branch record buffer bank access control.
-| CONDDIR    |   22:22 |    1 | Match on conditional direct branch instructions.
-| DIRCALL    |   21:21 |    1 | Match on direct branch with link instructions.
-| INDCALL    |   20:20 |    1 | Match on indirect branch with link instructions.
-| RTN        |   19:19 |    1 | Match on function return instructions.
-| INDIRECT   |   18:18 |    1 | Match on indirect branch instructions.
-| DIRECT     |   17:17 |    1 | Match on unconditional direct branch instructions.
-| EnI        |   16:16 |    1 | Include or exclude matches.
-| PAUSED     |     7:7 |    1 | Branch recording Paused status.
-| LASTFAILED |     6:6 |    1 | Indicates transaction failure or cancellation.
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BANK     |   29:28 |    2 | Branch record buffer bank access control.
+| CONDDIR  |   22:22 |    1 | Match on conditional direct branch instructions.
+| DIRCALL  |   21:21 |    1 | Match on direct branch with link instructions.
+| INDCALL  |   20:20 |    1 | Match on indirect branch with link instructions.
+| RTN      |   19:19 |    1 | Match on function return instructions.
+| INDIRECT |   18:18 |    1 | Match on indirect branch instructions.
+| DIRECT   |   17:17 |    1 | Match on unconditional direct branch instructions.
+| EnI      |   16:16 |    1 | Include or exclude matches.
+| PAUSED   |     7:7 |    1 | Branch recording Paused status.
 
 ## BRBIDR0_EL1 bitfields
 
@@ -139,16 +138,14 @@ be executed each time an update of the Arm architecture is published.
 
 ## BRBINFINJ_EL1 bitfields
 
-| Bitfield   | msb:lsb | Size | Description
-| ---------- | ------: | ---: | -----------
-| CCU        |   46:46 |    1 | The number of PE clock cycles since the last Branch record entry is UNKNOWN .
-| CC         |   45:32 |   14 | The number of PE clock cycles since the last Branch record entry. The format of this field uses a mantissa and exponent to express the cycle count value, as follows: CC bits[7:0] indicate the mantissa M. CC bits[13:8] indicate the exponent E. The cycle count is expressed using the following function: if IsZero(E) then UInt(M) else UInt('1':M:Zeros(UInt(E)-1)) If required, the cycle count is rounded to a multiple of 2 (E-1) towards zero before being encoded. A value of all ones in both the mantissa and exponent indicates the cycle count value exceeded the size of the cycle counter.
-| LASTFAILED |   17:17 |    1 | Indicates transaction failure or cancellation.
-| T          |   16:16 |    1 | Transactional state.
-| TYPE       |    13:8 |    6 | Branch type.
-| EL         |     7:6 |    2 | The Exception level at the target address.
-| MPRED      |     5:5 |    1 | Branch mispredict.
-| VALID      |     1:0 |    2 | The Branch record is valid.
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| CCU      |   46:46 |    1 | The number of PE clock cycles since the last Branch record entry is UNKNOWN .
+| CC       |   45:32 |   14 | The number of PE clock cycles since the last Branch record entry. The format of this field uses a mantissa and exponent to express the cycle count value, as follows: CC bits[7:0] indicate the mantissa M. CC bits[13:8] indicate the exponent E. The cycle count is expressed using the following function: if IsZero(E), then UInt(M) else UInt('1':M:Zeros(UInt(E)-1)) If required, the cycle count is rounded to a multiple of 2 (E-1) towards zero before being encoded. A value of all ones in both the mantissa and exponent indicates the cycle count value exceeded the size of the cycle counter.
+| TYPE     |    13:8 |    6 | Branch type.
+| EL       |     7:6 |    2 | The Exception level at the target address.
+| MPRED    |     5:5 |    1 | Branch mispredict.
+| VALID    |     1:0 |    2 | The Branch record is valid.
 
 ## CCSIDR2_EL1 bitfields
 
@@ -179,7 +176,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
-| ClockFreq |    31:0 |   32 | Clock frequency. Indicates the system counter clock frequency, in Hz.
+| ClockFreq |    31:0 |   32 | Clock frequency. Indicates the effective frequency of the system counter, in Hz.
 
 ## CNTHCTL_EL2 bitfields
 
@@ -339,6 +336,8 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| E0TP1E   |   33:33 |    1 | Enables direct EL0 accesses to TPMAX1_EL0 and TPMIN1_EL0 to EL1. The exception is reported using EC syndrome value 0x18 .
+| E0TP0E   |   32:32 |    1 | Enables direct EL0 accesses to TPMAX0_EL0 and TPMIN0_EL0 to EL1. The exception is reported using EC syndrome value 0x18 .
 | TCPAC    |   31:31 |    1 | Reserved for software use in nested virtualization.
 | TAM      |   30:30 |    1 | Reserved for software use in nested virtualization.
 | E0POE    |   29:29 |    1 | Enable access to POR_EL0 . Traps EL0 accesses to POR_EL0 , from AArch64 state only to EL1, or to EL2 when it is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. The exception is reported using EC syndrome value 0x18 .
@@ -351,6 +350,8 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| E0TP1E   |   33:33 |    1 | Mask bit for E0TP1E.
+| E0TP0E   |   32:32 |    1 | Mask bit for E0TP0E.
 | TCPAC    |   31:31 |    1 | Mask bit for TCPAC.
 | TAM      |   30:30 |    1 | Mask bit for TAM.
 | E0POE    |   29:29 |    1 | Mask bit for E0POE.
@@ -363,6 +364,8 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| E0TP1E   |   33:33 |    1 | Enables direct EL0 accesses to TPMAX1_EL0 and TPMIN1_EL0 . Traps EL0 accesses to EL2, from AArch64 state only. The exception is reported using EC syndrome value 0x18 .
+| E0TP0E   |   32:32 |    1 | Enables direct EL0 accesses to TPMAX0_EL0 and TPMIN0_EL0 . Traps EL0 accesses to EL2, from AArch64 state only. The exception is reported using EC syndrome value 0x18 .
 | TCPAC    |   31:31 |    1 | In AArch64 state, traps accesses to CPACR_EL1 from EL1 to EL2, when EL2 is enabled in the current Security state. The exception is reported using EC syndrome value 0x18 . In AArch32 state, traps accesses to CPACR from EL1 to EL2, when EL2 is enabled in the current Security state. The exception is reported using EC syndrome value 0x03 .
 | TAM      |   30:30 |    1 | Trap Activity Monitor access. Traps EL1 and EL0 accesses to all Activity Monitor registers to EL2, as follows: In AArch64 state, accesses to the following registers are trapped to EL2, reported using EC syndrome value 0x18 : AMUSERENR_EL0 , AMCFGR_EL0 , AMCGCR_EL0 , AMCNTENCLR0_EL0 , AMCNTENCLR1_EL0 , AMCNTENSET0_EL0 , AMCNTENSET1_EL0 , AMCR_EL0 , AMEVCNTR0<n>_EL0 , AMEVCNTR1<n>_EL0 , AMEVTYPER0<n>_EL0 , and AMEVTYPER1<n>_EL0 . In AArch32 state, MRC or MCR accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x03 : AMUSERENR , AMCFGR , AMCGCR , AMCNTENCLR0 , AMCNTENCLR1 , AMCNTENSET0 , AMCNTENSET1 , AMCR , AMEVTYPER0<n> , and AMEVTYPER1<n> . In AArch32 state, MRRC or MCRR accesses to AMEVCNTR0<n> and AMEVCNTR1<n> , are trapped to EL2, reported using EC syndrome value 0x04 .
 | E0POE    |   29:29 |    1 | Enable access to POR_EL0 . Traps EL0 accesses to POR_EL0 to EL2, from AArch64 state only. The exception is reported using EC syndrome value 0x18 .
@@ -386,6 +389,8 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| E0TP1E   |   33:33 |    1 | Mask bit for E0TP1E.
+| E0TP0E   |   32:32 |    1 | Mask bit for E0TP0E.
 | TCPAC    |   31:31 |    1 | Mask bit for TCPAC.
 | TAM      |   30:30 |    1 | Mask bit for TAM.
 | E0POE    |   29:29 |    1 | Mask bit for E0POE.
@@ -410,7 +415,7 @@ be executed each time an update of the Arm architecture is published.
 | DIC      |   29:29 |    1 | Instruction cache invalidation requirements for data to instruction coherence.
 | IDC      |   28:28 |    1 | Data cache clean requirements for instruction to data coherence. The meaning of this bit is:
 | CWG      |   27:24 |    4 | Cache writeback granule. Log 2 of the number of words of the maximum size of memory that can be overwritten as a result of the eviction of a cache entry that has had a memory location in it modified. A value of 0b0000 indicates that this register does not provide Cache writeback granule information and either: The architectural maximum of 512 words (2KB) must be assumed. The Cache writeback granule can be determined from maximum cache line size encoded in the Cache Size ID Registers. Values greater than 0b1001 are reserved. Arm recommends that an implementation that does not support cache write-back implements this field as 0b0001 . This applies, for example, to an implementation that supports only write-through caches.
-| ERG      |   23:20 |    4 | Exclusives reservation granule, and, if FEAT_TME is implemented, transactional reservation granule. Log 2 of the number of words of the maximum size of the reservation granule for the Load-Exclusive and Store-Exclusive instructions, and, if FEAT_TME is implemented, for detecting transactional conflicts. A value of 0b0000 indicates that this register does not provide granule information and the architectural maximum of 512 words (2KB) must be assumed. Value 0b0001 and values greater than 0b1001 are reserved.
+| ERG      |   23:20 |    4 | Exclusives reservation granule. Log 2 of the number of words of the maximum size of the reservation granule that has been implemented for the Load-Exclusive and Store-Exclusive instructions. The use of the value 0b0000 is deprecated. The value 0b0001 and values greater than 0b1001 are reserved.
 | DminLine |   19:16 |    4 | Log 2 of the number of words in the smallest cache line of all the data caches and unified caches that are controlled by the PE.
 | L1Ip     |   15:14 |    2 | Level 1 instruction cache policy. Indicates the indexing and tagging policy for the L1 instruction cache.
 | IminLine |     3:0 |    4 | Log 2 of the number of words in the smallest cache line of all the instruction caches that are controlled by the PE.
@@ -507,8 +512,9 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| DZP      |     4:4 |    1 | Data Zero Prohibited. This field indicates whether use of DC ZVA instructions is permitted or prohibited. If FEAT_MTE is implemented, this field also indicates whether use of the DC GVA and DC GZVA instructions are permitted or prohibited.
-| BS       |     3:0 |    4 | Log 2 of the block size in words. The maximum size supported is 2KB, indicated by value 0b1001 . If FEAT_MTE2 is implemented, the minimum size supported is 16 bytes, indicated by value 0b0010 .
+| TBS      |     8:5 |    4 | Log 2 of the block size in words written by a DC ZGBVA or DC GBVA instruction. The maximum size supported is 2KB, indicated by value 0b1001 . The minimum supported size is 16B (1 Allocation tag) indicated by the value 0b0010 .
+| DZP      |     4:4 |    1 | Data Zero Prohibited. This field indicates whether use of DC ZVA instructions is permitted or prohibited. If FEAT_MTE is implemented, this field indicates whether use of the DC GVA and DC GZVA instructions are permitted or prohibited. If FEAT_MTETC is implemented, this field indicates whether use of the DC GBVA and DC ZGBVA instructions are permitted or prohibited.
+| BS       |     3:0 |    4 | Log 2 of the block size in words written by a DC ZVA instruction. The maximum size supported is 2KB, indicated by value 0b1001 . If FEAT_MTE2 is implemented, then this field determines the block size written by a DC GVA or DC GZVA instruction and the minimum size supported is 16 bytes, indicated by value 0b0010 .
 
 ## DISR_EL1 bitfields
 
@@ -528,6 +534,52 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | DIT      |   24:24 |    1 | Data Independent Timing.
+
+## DPOCR_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FPOIndex |     7:1 |    7 | FPOIndex to use for IRT lookups for checking data access permissions. Bits of this field above the configured POIndex size in TCR2_ELx.POIW are RES0 .
+| DPOE2    |     0:0 |    1 | Enable POE2 data access permissions in Debug state.
+
+## DPOTBR0_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:9 |   55 | Base address of Permission Overlays Tables.
+| FNG      |     1:1 |    1 | Force non-global.
+| DPOTD    |     0:0 |    1 | Permission Overlay Table disable.
+
+## DPOTBR0_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:9 |   55 | Base address of Permission Overlays Tables.
+| FNG      |     1:1 |    1 | Force non-global.
+| DPOTD    |     0:0 |    1 | Permission Overlay Table disable.
+
+## DPOTBR0_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:9 |   55 | Base address of Permission Overlays Tables.
+| DPOTD    |     0:0 |    1 | Permission Overlay Table disable.
+
+## DPOTBR1_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:9 |   55 | Base address of Permission Overlays Tables.
+| FNG      |     1:1 |    1 | Force non-global.
+| DPOTD    |     0:0 |    1 | Permission Overlay Table disable.
+
+## DPOTBR1_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:9 |   55 | Base address of Permission Overlays Tables.
+| FNG      |     1:1 |    1 | Force non-global.
+| DPOTD    |     0:0 |    1 | Permission Overlay Table disable.
 
 ## DSPSR_EL0 bitfields
 
@@ -577,10 +629,13 @@ be executed each time an update of the Arm architecture is published.
 | IL           |   25:25 |    1 | Instruction Length for synchronous exceptions. Possible values of this bit are:
 | CV           |   24:24 |    1 | Condition code valid.
 | MemInst      |   24:24 |    1 | Indicates the memory instruction class causing the exception.
+| FGDT         |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
 | ISV          |   24:24 |    1 | Instruction Syndrome Valid. Indicates whether the syndrome information in ISS[23:14] is valid.
+| FGDT         |   24:24 |    1 | Exception was the result of FGDT configuration.
 | IDS          |   24:24 |    1 | IMPLEMENTATION DEFINED syndrome.
 | ISV          |   24:24 |    1 | Instruction syndrome valid. Indicates whether the EX bit, ISS[6], is valid, as follows:
-| isSETG       |   23:23 |    1 | Indicates whether the instruction belongs to SETGM* or SETGE* class of instruction.
+| FGDT         |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
+| isSETG       |   23:23 |    1 | Indicates whether the instruction belongs to one of the following instruction classes: SETGE*, SETGM*. If FEAT_MOPS_GO is implemented, SETGOE*, SETGOM*.
 | TFV          |   23:23 |    1 | Trapped Fault Valid bit. Indicates whether the IDF, IXF, UFF, OFF, DZF, and IOF bits hold valid information about trapped floating-point exceptions.
 | SAS          |   23:22 |    2 | Syndrome Access Size. Indicates the size of the access attempted by the faulting operation.
 | SSE          |   21:21 |    1 | Syndrome Sign Extend. For a byte, halfword, or word load operation, indicates whether the data item must be sign extended.
@@ -588,12 +643,15 @@ be executed each time an update of the Arm architecture is published.
 | Op0          |   21:20 |    2 | The Op0 value from the issued instruction.
 | ExType       |   23:20 |    4 | The first level classification of GCS exceptions.
 | Options      |   22:19 |    4 | Options : the Options field of the instruction.
-| FromEpilogue |   18:18 |    1 | Indicates whether the instruction belongs to the epilogue class of Memory Copy or Memory Set instructions.
+| FromEpilogue |   18:18 |    1 | Indicates whether the instruction belongs to one of the following epilogue classes of Memory Copy or Memory Set instructions: CPYE*, CPYFE*. SETE*, SETGE*. If FEAT_MOPS_GO is implemented, SETGOE.
 | ELS          |   18:18 |    1 | Meaning of ELR_ELx.
 | WPT          |   23:18 |    6 | Watchpoint number.
+| DPOIndex     |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the DPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
+| FPOIndex     |   23:17 |    7 | FPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the FPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
 | Opc2         |   19:17 |    3 | The Opc2 value from the issued instruction. For a trapped VMRS access, holds the value 0b000 .
 | Op2          |   19:17 |    3 | The Op2 value from the issued instruction.
 | WPTV         |   17:17 |    1 | Watchpoint number Valid.
+| OverlayFetch |   16:16 |    1 | Fetch of POE2 table. Indicates whether a fetch of IRT, DPOT, or TTT information generated the fault.
 | Opc1         |   19:16 |    4 | The Opc1 value from the issued instruction.
 | FormatOption |   17:16 |    2 | Reports the Option used to encode the initial Xs, Xd, and Xn register values provided to the instruction that generated the exception.
 | SRT          |   20:16 |    5 |
@@ -608,8 +666,11 @@ be executed each time an update of the Arm architecture is published.
 | PFV          |   14:14 |    1 | PFAR Valid. Describes whether the PFAR_EL1 register is valid.
 | AR           |   14:14 |    1 | Acquire/Release.
 | PFV          |   14:14 |    1 | PFAR Valid. Describes whether the PFAR_EL1 register is valid.
+| LST2         |   15:13 |    3 | Load/Store type 2. Reports the properties of the instruction that caused the Data Abort.
 | IESB         |   13:13 |    1 | Implicit error synchronization event.
+| Unpriv       |   12:12 |    1 | Unprivileged memory access. Reports whether the Data Abort was caused by the execution of an instruction at an Exception level above EL0 that generates an unprivileged memory access.
 | imm8         |   19:12 |    8 | The immediate value from the issued instruction.
+| TPLIM        |   11:11 |    1 | Indicates that a stage 1 Permission fault was as a result of TPLIM checks.
 | HDBSSF       |   11:11 |    1 | Indicates that the fault was caused by the HDBSS. When DFSC indicates a Permission fault, this field indicates whether that fault was caused by the HDBSS being full. When DFSC indicates a synchronous External abort on translation table walk or hardware update of translation table, this field indicates whether the fault was caused by a write to the HDBSS. When DFSC indicates a Granule Protection Fault on translation table walk or hardware update of translation table, this field indicates whether the fault was caused by a write to the HDBSS.
 | SET          |   12:11 |    2 | Synchronous Error Type. Describes the PE error state after taking the Instruction Abort exception.
 | LST          |   12:11 |    2 | Load/Store Type. Used when a Translation fault, Access flag fault, or Permission fault generates a Data Abort.
@@ -621,15 +682,16 @@ be executed each time an update of the Arm architecture is published.
 | CRn          |   13:10 |    4 | The CRn value from the issued instruction.
 | FnV          |   10:10 |    1 | FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.
 | Raddr        |   14:10 |    5 | Indicates the data address register number supplied in the instruction that has been trapped.
+| TOOR         |   10:10 |    1 | TIndex Out Of Range.
 | AET          |   12:10 |    3 | Asynchronous Error Type. Describes the PE error state after taking the SError exception.
 | FnV          |   10:10 |    1 | FAR not Valid.
-| TagAccess    |     9:9 |    1 | NoTagAccess fault. When EL2 provides information to EL1 regarding a Stage 2 Data Abort, this field indicates whether the fault is due to the NoTagAccess memory attribute.
+| TagAccess    |     9:9 |    1 | NoTagAccess fault. If FEAT_MTE_PERM is implemented, when EL2 provides information to EL1 regarding a Stage 2 Permission fault, this field indicates whether the fault is due to the NoTagAccess memory attribute. If FEAT_VMTE is implemented, for a Stage 1 Data abort this field indicates whether the fault is due to an access using a Tag VA.
 | EA           |     9:9 |    1 | External abort type. This bit can provide an IMPLEMENTATION DEFINED classification of External aborts. For any abort other than an External abort this bit returns a value of 0.
 | GCS          |     8:8 |    1 | Guarded Control Stack data access. If a memory access generates a Data Abort, this field indicates whether the fault is due to a Guarded Control Stack data access.
 | CM           |     8:8 |    1 | Cache maintenance. Indicates whether the Data Abort came from a cache maintenance or address translation instruction:
 | VECITR       |    10:8 |    3 | For a trapped floating-point exception from an instruction executed in AArch32 state this field is RES1 . For a trapped floating-point exception from an instruction executed in AArch64 state this field is UNKNOWN .
 | CM           |     8:8 |    1 | Cache maintenance. Indicates whether the Watchpoint exception came from a cache maintenance instruction:
-| AssuredOnly  |     7:7 |    1 | AssuredOnly flag. If EL2 provides information regarding a stage 2 Data Abort to EL1, then this field holds information about the fault. If this field is 1 and ESR_EL1.GCS is also 1 then the AssuredOnly check might have been the result of VTCR_EL2.GCSH configuration.
+| AssuredOnly  |     7:7 |    1 | AssuredOnly flag. If EL2 provides information regarding a stage 2 Data Abort to EL1, then this field holds information about the fault. If this field is 1 and ESR_EL1.GCS is also 1, then the AssuredOnly check might have been the result of VTCR_EL2.GCSH configuration.
 | S1PTW        |     7:7 |    1 | For a stage 2 fault, indicates whether the fault was a stage 2 fault on an access made for a stage 1 translation table walk:
 | IDF          |     7:7 |    1 | Input Denormal floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | WnRV         |     7:7 |    1 | ESR_EL1.WnR valid.
@@ -642,14 +704,14 @@ be executed each time an update of the Arm architecture is published.
 | RN           |     9:5 |    5 | Register Number. Indicates the register number supplied for a WFET or WFIT instruction.
 | Rt           |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. If the Rt value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rt value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' .
 | Rn           |     9:5 |    5 | The Rn value from the issued instruction, the general-purpose register used for the transfer. If the Rn value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rn value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' . This field is valid only when AM[2] is 0, indicating an immediate form of the LDC or STC instruction. When AM[2] is 1, indicating a literal form of the LDC or STC instruction, this field is UNKNOWN .
-| srcreg       |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data.
+| srcreg       |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data. If FEAT_MOPS_GO the instruction belongs to the SETGO* instruction class, this field is RES1 .
 | Rt           |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. For system instructions which require that the opcode Rt field is set to 0b11111 , but where the trapped instruction has a different value of Rt, an implementation is permitted to return the value 0b11111 , instead of the value of Rt from the trapped instruction.
 | Rn           |     9:5 |    5 | Indicates a register number used by the instruction that caused the Guarded Control Stack Data Check Exception.
 | Rvalue       |     9:5 |    5 | Indicates the data value register number supplied in the instruction that has been trapped.
-| Rd           |     9:5 |    5 | The Rd value from the issued instruction, the general purpose register used for the destination.
 | Offset       |     4:4 |    1 | Indicates whether the offset is added or subtracted:
 | IXF          |     4:4 |    1 | Inexact floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | UFF          |     3:3 |    1 | Underflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
+| TT           |     9:3 |    7 | Target TIndex.
 | RV           |     2:2 |    1 | Register field Valid. If TI[1] == 1, then this field indicates whether RN holds a valid register number for the register argument to the trapped WFET or WFIT instruction.
 | OFF          |     2:2 |    1 | Overflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | CRm          |     4:1 |    4 | The CRm value from the issued instruction. For a trapped VMRS access, holds the value 0b0000 .
@@ -674,12 +736,13 @@ be executed each time an update of the Arm architecture is published.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | IOF          |     0:0 |    1 | Invalid Operation floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | IT           |     4:0 |    5 | Type of the instruction that caused the Guarded Control Stack Data Check Exception.
+| TCT          |     2:0 |    3 | TIndex change type.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | IFSC         |     5:0 |    6 | Instruction Fault Status Code.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | Comment      |    15:0 |   16 | Set to the instruction comment field value, zero extended as necessary. For the AArch32 BKPT instructions, the comment field is described as the immediate field.
 | ERETA        |     0:0 |    1 | Indicates whether an ERETAA or ERETAB instruction was trapped to EL1.
-| BTYPE        |     1:0 |    2 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
+| BTYPE        |     2:0 |    3 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
 | BnA          |     0:0 |    1 | This field indicates whether the exception is as a result of an A key or a B key.
 
 ## ESR_EL2 bitfields
@@ -691,11 +754,15 @@ be executed each time an update of the Arm architecture is published.
 | IL           |   25:25 |    1 | Instruction Length for synchronous exceptions. Possible values of this bit are:
 | CV           |   24:24 |    1 | Condition code valid.
 | MemInst      |   24:24 |    1 | Indicates the memory instruction class causing the exception.
+| FGDT         |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
 | CV           |   24:24 |    1 | Condition code valid.
+| FGDT         |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
 | ISV          |   24:24 |    1 | Instruction Syndrome Valid. Indicates whether the syndrome information in ISS[23:14] is valid.
+| FGDT         |   24:24 |    1 | Exception was the result of FGDT configuration.
 | IDS          |   24:24 |    1 | IMPLEMENTATION DEFINED syndrome.
 | ISV          |   24:24 |    1 | Instruction syndrome valid. Indicates whether the EX bit, ISS[6], is valid, as follows:
-| isSETG       |   23:23 |    1 | Indicates whether the instruction belongs to SETGM* or SETGE* class of instruction.
+| FGDT         |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
+| isSETG       |   23:23 |    1 | Indicates whether the instruction belongs to one of the following instruction classes: SETGE*, SETGM*. If FEAT_MOPS_GO is implemented, SETGOE*, SETGOM*.
 | TFV          |   23:23 |    1 | Trapped Fault Valid bit. Indicates whether the IDF, IXF, UFF, OFF, DZF, and IOF bits hold valid information about trapped floating-point exceptions.
 | SAS          |   23:22 |    2 | Syndrome Access Size. Indicates the size of the access attempted by the faulting operation.
 | TopLevel     |   21:21 |    1 | Indicates if the fault was due to TopLevel.
@@ -706,12 +773,15 @@ be executed each time an update of the Arm architecture is published.
 | ExType       |   23:20 |    4 | The first level classification of GCS exceptions.
 | Options      |   22:19 |    4 | Options : the Options field of the instruction.
 | CCKNOWNPASS  |   19:19 |    1 | Indicates whether the instruction might have failed its condition code check.
-| FromEpilogue |   18:18 |    1 | Indicates whether the instruction belongs to the epilogue class of Memory Copy or Memory Set instructions.
+| FromEpilogue |   18:18 |    1 | Indicates whether the instruction belongs to one of the following epilogue classes of Memory Copy or Memory Set instructions: CPYE*, CPYFE*. SETE*, SETGE*. If FEAT_MOPS_GO is implemented, SETGOE.
 | ELS          |   18:18 |    1 | Meaning of ELR_ELx.
 | WPT          |   23:18 |    6 | Watchpoint number.
+| DPOIndex     |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the DPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
+| FPOIndex     |   23:17 |    7 | FPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the FPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
 | Opc2         |   19:17 |    3 | The Opc2 value from the issued instruction. For a trapped VMRS access, holds the value 0b000 .
 | Op2          |   19:17 |    3 | The Op2 value from the issued instruction.
 | WPTV         |   17:17 |    1 | Watchpoint number Valid.
+| OverlayFetch |   16:16 |    1 | Fetch of POE2 table. Indicates whether a fetch of IRT, DPOT, or TTT information generated the fault.
 | Opc1         |   19:16 |    4 | The Opc1 value from the issued instruction.
 | FormatOption |   17:16 |    2 | Reports the Option used to encode the initial Xs, Xd, and Xn register values provided to the instruction that generated the exception.
 | SRT          |   20:16 |    5 |
@@ -726,10 +796,13 @@ be executed each time an update of the Arm architecture is published.
 | PFV          |   14:14 |    1 | PFAR Valid. Describes whether the PFAR_EL2 register is valid.
 | AR           |   14:14 |    1 | Acquire/Release.
 | PFV          |   14:14 |    1 | PFAR Valid. Describes whether the PFAR_EL2 register is valid.
+| LST2         |   15:13 |    3 | Load/Store type 2. Reports the properties of the instruction that caused the Data Abort.
 | VNCR         |   13:13 |    1 | Indicates that the fault came from use of VNCR_EL2 register by EL1 code.
 | IESB         |   13:13 |    1 | Implicit error synchronization event.
 | VNCR         |   13:13 |    1 | Indicates that the watchpoint came from use of VNCR_EL2 register by EL1 code.
+| Unpriv       |   12:12 |    1 | Unprivileged memory access. Reports whether the Data Abort was caused by the execution of an instruction at an Exception level above EL0 that generates an unprivileged memory access.
 | imm8         |   19:12 |    8 | The immediate value from the issued instruction.
+| TPLIM        |   11:11 |    1 | Indicates that a stage 1 Permission fault was as a result of TPLIM checks.
 | HDBSSF       |   11:11 |    1 | When DFSC indicates a stage 2 Permission fault, this field indicates whether that fault was caused by the HDBSS being full. When DFSC indicates a synchronous External abort on translation table walk or hardware update of translation table, this field indicates whether the fault was caused by a write to the HDBSS. When DFSC indicates a Granule Protection Fault on translation table walk or hardware update of translation table, this field indicates whether the fault was caused by a write to the HDBSS.
 | SET          |   12:11 |    2 | Synchronous Error Type. When IFSC is 0b010000 , describes the PE error state after taking the Instruction Abort exception.
 | LST          |   12:11 |    2 | Load/Store Type. Used when a Translation fault, Access flag fault, or Permission fault generates a Data Abort.
@@ -741,9 +814,10 @@ be executed each time an update of the Arm architecture is published.
 | CRn          |   13:10 |    4 | The CRn value from the issued instruction.
 | FnV          |   10:10 |    1 | FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.
 | Raddr        |   14:10 |    5 | Indicates the data address register number supplied in the instruction that has been trapped.
+| TOOR         |   10:10 |    1 | TIndex Out Of Range.
 | AET          |   12:10 |    3 | Asynchronous Error Type. Describes the PE error state after taking the SError exception.
 | FnV          |   10:10 |    1 | FAR not Valid.
-| TagAccess    |     9:9 |    1 | NoTagAccess fault. If a memory access generates a Data Abort for a Permission fault, this field indicates whether the fault is due to the NoTagAccess memory attribute.
+| TagAccess    |     9:9 |    1 | NoTagAccess fault. If FEAT_MTE_PERM is implemented, for a Stage 2 Permission fault this field indicates whether the fault is due to the NoTagAccess memory attribute. If FEAT_VMTE is implemented, for a Stage 1 Data abort this field indicates whether the fault is due to an access using a Tag VA.
 | EA           |     9:9 |    1 | External abort type. This bit can provide an IMPLEMENTATION DEFINED classification of External aborts. For any abort other than an External abort this bit returns a value of 0.
 | GCS          |     8:8 |    1 | Guarded Control Stack data access. If a memory access generates a Data Abort, this field indicates whether the fault is due to a Guarded Control Stack data access.
 | CM           |     8:8 |    1 | Cache maintenance. Indicates whether the Data Abort came from a cache maintenance or address translation instruction:
@@ -762,14 +836,14 @@ be executed each time an update of the Arm architecture is published.
 | RN           |     9:5 |    5 | Register Number. Indicates the register number supplied for a WFET or WFIT instruction.
 | Rt           |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. If the Rt value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rt value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' .
 | Rn           |     9:5 |    5 | The Rn value from the issued instruction, the general-purpose register used for the transfer. If the Rn value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rn value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' . This field is valid only when AM[2] is 0, indicating an immediate form of the LDC or STC instruction. When AM[2] is 1, indicating a literal form of the LDC or STC instruction, this field is UNKNOWN .
-| srcreg       |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data.
+| srcreg       |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data. If FEAT_MOPS_GO the instruction belongs to the SETGO* instruction class, this field is RES1 .
 | Rt           |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. For system instructions which require that the opcode Rt field is set to 0b11111 , but where the trapped instruction has a different value of Rt, an implementation is permitted to return the value 0b11111 , instead of the value of Rt from the trapped instruction.
 | Rn           |     9:5 |    5 | Indicates a register number used by the instruction that caused the Guarded Control Stack Data Check Exception.
 | Rvalue       |     9:5 |    5 | Indicates the data value register number supplied in the instruction that has been trapped.
-| Rd           |     9:5 |    5 | The Rd value from the issued instruction, the general purpose register used for the destination.
 | Offset       |     4:4 |    1 | Indicates whether the offset is added or subtracted:
 | IXF          |     4:4 |    1 | Inexact floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | UFF          |     3:3 |    1 | Underflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
+| TT           |     9:3 |    7 | Target TIndex.
 | RV           |     2:2 |    1 | Register field Valid. If TI[1] == 1, then this field indicates whether RN holds a valid register number for the register argument to the trapped WFET or WFIT instruction.
 | OFF          |     2:2 |    1 | Overflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | CRm          |     4:1 |    4 | The CRm value from the issued instruction. For a trapped VMRS access, holds the value 0b0000 .
@@ -794,12 +868,13 @@ be executed each time an update of the Arm architecture is published.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | IOF          |     0:0 |    1 | Invalid Operation floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | IT           |     4:0 |    5 | Type of the instruction that caused the Guarded Control Stack Data Check Exception.
+| TCT          |     2:0 |    3 | TIndex change type.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | IFSC         |     5:0 |    6 | Instruction Fault Status Code.
 | DFSC         |     5:0 |    6 | Data Fault Status Code.
 | Comment      |    15:0 |   16 | Set to the instruction comment field value, zero extended as necessary. For the AArch32 BKPT instructions, the comment field is described as the immediate field.
 | ERETA        |     0:0 |    1 | Indicates whether an ERETAA or ERETAB instruction was trapped to EL2.
-| BTYPE        |     1:0 |    2 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
+| BTYPE        |     2:0 |    3 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
 | BnA          |     0:0 |    1 | This field indicates whether the exception is as a result of an A key or a B key.
 
 ## ESR_EL3 bitfields
@@ -811,10 +886,14 @@ be executed each time an update of the Arm architecture is published.
 | IL                     |   25:25 |    1 | Instruction Length for synchronous exceptions. Possible values of this bit are:
 | CV                     |   24:24 |    1 | Condition code valid.
 | MemInst                |   24:24 |    1 | Indicates the memory instruction class causing the exception.
+| FGDT                   |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
 | CV                     |   24:24 |    1 | Condition code valid.
+| FGDT                   |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
 | ISV                    |   24:24 |    1 | Instruction Syndrome Valid. Indicates whether the syndrome information in ISS[23:14] is valid.
+| FGDT                   |   24:24 |    1 | Exception was the result of FGDT configuration.
 | IDS                    |   24:24 |    1 | IMPLEMENTATION DEFINED syndrome.
-| isSETG                 |   23:23 |    1 | Indicates whether the instruction belongs to SETGM* or SETGE* class of instruction.
+| FGDT                   |   24:24 |    1 | Indicates the exception was the result of FGDT configuration.
+| isSETG                 |   23:23 |    1 | Indicates whether the instruction belongs to one of the following instruction classes: SETGE*, SETGM*. If FEAT_MOPS_GO is implemented, SETGOE*, SETGOM*.
 | TFV                    |   23:23 |    1 | Trapped Fault Valid bit. Indicates whether the IDF, IXF, UFF, OFF, DZF, and IOF bits hold valid information about trapped floating-point exceptions.
 | SAS                    |   23:22 |    2 | Syndrome Access Size. Indicates the size of the access attempted by the faulting operation.
 | S2PTW                  |   21:21 |    1 | Indicates whether the Granule Protection Check exception was on an access made for a stage 2 translation table walk.
@@ -825,10 +904,13 @@ be executed each time an update of the Arm architecture is published.
 | ExType                 |   23:20 |    4 | The first level classification of GCS exceptions.
 | Options                |   22:19 |    4 | Options : the Options field of the instruction.
 | CCKNOWNPASS            |   19:19 |    1 | Indicates whether the instruction might have failed its condition code check.
-| FromEpilogue           |   18:18 |    1 | Indicates whether the instruction belongs to the epilogue class of Memory Copy or Memory Set instructions.
+| FromEpilogue           |   18:18 |    1 | Indicates whether the instruction belongs to one of the following epilogue classes of Memory Copy or Memory Set instructions: CPYE*, CPYFE*. SETE*, SETGE*. If FEAT_MOPS_GO is implemented, SETGOE.
 | ELS                    |   18:18 |    1 | Meaning of ELR_ELx.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the DPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
+| FPOIndex               |   23:17 |    7 | FPOIndex for the fault. For a stage 1 Permission fault, if the Overlay field is 1, this field reports the FPOIndex from the translation for the access that generated the fault. This applies whether the Overlay fault was generated as a result of FEAT_S1POE or FEAT_S1POE2 configuration.
 | Opc2                   |   19:17 |    3 | The Opc2 value from the issued instruction. For a trapped VMRS access, holds the value 0b000 .
 | Op2                    |   19:17 |    3 | The Op2 value from the issued instruction.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table. Indicates whether a fetch of IRT, DPOT, or TTT information generated the fault.
 | Opc1                   |   19:16 |    4 | The Opc1 value from the issued instruction.
 | FormatOption           |   17:16 |    2 | Reports the Option used to encode the initial Xs, Xd, and Xn register values provided to the instruction that generated the exception.
 | SRT                    |   20:16 |    5 |
@@ -842,9 +924,12 @@ be executed each time an update of the Arm architecture is published.
 | GPCSC                  |   19:14 |    6 | Granule Protection Check Status Code.
 | AR                     |   14:14 |    1 | Acquire/Release.
 | PFV                    |   14:14 |    1 | PFAR Valid. Describes whether the MFAR_EL3 register is valid.
+| LST2                   |   15:13 |    3 | Load/Store type 2. Reports the properties of the instruction that caused the Data Abort.
 | VNCR                   |   13:13 |    1 | Indicates that the fault came from use of VNCR_EL2 register by EL1 code.
 | IESB                   |   13:13 |    1 | Implicit error synchronization event.
+| Unpriv                 |   12:12 |    1 | Unprivileged memory access. Reports whether the Data Abort was caused by the execution of an instruction at an Exception level above EL0 that generates an unprivileged memory access.
 | imm8                   |   19:12 |    8 | The immediate value from the issued instruction.
+| TPLIM                  |   11:11 |    1 | Indicates that a stage 1 Permission fault was as a result of TPLIM checks.
 | HDBSSF                 |   11:11 |    1 | Indicates that the fault was caused by the HDBSS. When DFSC indicates a synchronous External abort on translation table walk or hardware update of translation table, this field indicates whether the fault was caused by a write to the HDBSS.
 | SET                    |   12:11 |    2 | Synchronous Error Type. Describes the PE error state after taking the Instruction Abort exception.
 | LST                    |   12:11 |    2 | Load/Store Type. Used when a Translation fault, Access flag fault, or Permission fault generates a Data Abort.
@@ -856,7 +941,9 @@ be executed each time an update of the Arm architecture is published.
 | CRn                    |   13:10 |    4 | The CRn value from the issued instruction.
 | FnV                    |   10:10 |    1 | FAR not Valid, for a synchronous External abort other than a synchronous External abort on a translation table walk.
 | Raddr                  |   14:10 |    5 | Indicates the data address register number supplied in the instruction that has been trapped.
+| TOOR                   |   10:10 |    1 | TIndex Out Of Range.
 | AET                    |   12:10 |    3 | Asynchronous Error Type. Describes the PE error state after taking the SError exception.
+| TagAccess              |     9:9 |    1 | NoTagAccess fault. This field indicates whether a Data abort is due to an access using a Tag VA.
 | EA                     |     9:9 |    1 | External abort type. This bit can provide an IMPLEMENTATION DEFINED classification of External aborts. For any abort other than an External abort this bit returns a value of 0.
 | GCS                    |     8:8 |    1 | Guarded Control Stack data access. If a memory access generates a Data Abort, this field indicates whether the fault is due to a Guarded Control Stack data access.
 | CM                     |     8:8 |    1 | Cache maintenance. Indicates whether the Data Abort came from a cache maintenance or address translation instruction:
@@ -871,14 +958,14 @@ be executed each time an update of the Arm architecture is published.
 | RN                     |     9:5 |    5 | Register Number. Indicates the register number supplied for a WFET or WFIT instruction.
 | Rt                     |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. If the Rt value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rt value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' .
 | Rn                     |     9:5 |    5 | The Rn value from the issued instruction, the general-purpose register used for the transfer. If the Rn value is not 0b1111 , then the reported value gives the AArch64 view of the register. Otherwise, if the Rn value is 0b1111 : If the instruction that generated the exception is not UNPREDICTABLE , then the register specifier takes the value 0b11111 . If the instruction that generated the exception is UNPREDICTABLE , then the register specifier takes an UNKNOWN value, which is restricted to either: The AArch64 view of one of the registers that could have been used in AArch32 state at the Exception level that the instruction was executed at. The value 0b11111 . See 'Mapping of the general-purpose registers between the Execution states' . This field is valid only when AM[2] is 0, indicating an immediate form of the LDC or STC instruction. When AM[2] is 1, indicating a literal form of the LDC or STC instruction, this field is UNKNOWN .
-| srcreg                 |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data.
+| srcreg                 |     9:5 |    5 | The source register value from the issued instruction, containing either the source address or the source data. If FEAT_MOPS_GO the instruction belongs to the SETGO* instruction class, this field is RES1 .
 | Rt                     |     9:5 |    5 | The Rt value from the issued instruction, the general-purpose register used for the transfer. For system instructions which require that the opcode Rt field is set to 0b11111 , but where the trapped instruction has a different value of Rt, an implementation is permitted to return the value 0b11111 , instead of the value of Rt from the trapped instruction.
 | Rn                     |     9:5 |    5 | Indicates a register number used by the instruction that caused the Guarded Control Stack Data Check Exception.
 | Rvalue                 |     9:5 |    5 | Indicates the data value register number supplied in the instruction that has been trapped.
-| Rd                     |     9:5 |    5 | The Rd value from the issued instruction, the general purpose register used for the destination.
 | Offset                 |     4:4 |    1 | Indicates whether the offset is added or subtracted:
 | IXF                    |     4:4 |    1 | Inexact floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | UFF                    |     3:3 |    1 | Underflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
+| TT                     |     9:3 |    7 | Target TIndex.
 | RV                     |     2:2 |    1 | Register field Valid. If TI[1] == 1, then this field indicates whether RN holds a valid register number for the register argument to the trapped WFET or WFIT instruction.
 | OFF                    |     2:2 |    1 | Overflow floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | CRm                    |     4:1 |    4 | The CRm value from the issued instruction. For a trapped VMRS access, holds the value 0b0000 .
@@ -904,9 +991,10 @@ be executed each time an update of the Arm architecture is published.
 | DFSC                   |     5:0 |    6 | Data Fault Status Code.
 | IOF                    |     0:0 |    1 | Invalid Operation floating-point exception trapped bit. If the TFV field is 0, this bit is UNKNOWN . Otherwise, the possible values of this bit are:
 | IT                     |     4:0 |    5 | Type of the instruction that caused the Guarded Control Stack Data Check Exception.
+| TCT                    |     2:0 |    3 | TIndex change type.
 | DFSC                   |     5:0 |    6 | Data Fault Status Code.
 | Comment                |    15:0 |   16 | Set to the instruction comment field value, zero extended as necessary. For the AArch32 BKPT instructions, the comment field is described as the immediate field.
-| BTYPE                  |     1:0 |    2 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
+| BTYPE                  |     2:0 |    3 | This field is set to the PSTATE.BTYPE value that generated the Branch Target Exception.
 | BnA                    |     0:0 |    1 | This field indicates whether the exception is as a result of an A key or a B key.
 
 ## FGWTE3_EL3 bitfields
@@ -1189,9 +1277,9 @@ be executed each time an update of the Arm architecture is published.
 | TWEDEn   |   59:59 |    1 | TWE Delay Enable. Enables a configurable delayed trap of the WFE* instruction caused by HCR_EL2.TWE.
 | TID5     |   58:58 |    1 | Trap ID group 5. Traps the following register accesses to EL2, when EL2 is enabled in the current Security state: AArch64: GMID_EL1 .
 | DCT      |   57:57 |    1 | Default Cacheability Tagging. When HCR_EL2.DC is in effect, controls whether EL1&0 stage 1 translations have the Tagged attribute.
-| ATA      |   56:56 |    1 | Allocation Tag Access. Controls access to Allocation Tags, System registers for Memory tagging, and prevention of Tag checking, at EL1 and EL0
-| TTLBOS   |   55:55 |    1 | Trap TLB maintenance instructions that operate on the Outer Shareable domain. Traps execution of those TLB maintenance instructions at EL1 using AArch64 to EL2, when EL2 is enabled in the current Security state. The following instructions are trapped and reported with EC syndrome value 0x18 : TLBI VMALLE1OS , TLBI VAE1OS , TLBI ASIDE1OS , TLBI VAAE1OS , TLBI VALE1OS , and TLBI VAALE1OS . If FEAT_TLBIRANGE is implemented, TLBI RVAE1OS , TLBI RVAAE1OS , TLBI RVALE1OS , and TLBI RVAALE1OS . If FEAT_XS is implemented then the *OSNXS variants are also trapped.
-| TTLBIS   |   54:54 |    1 | Trap TLB maintenance instructions that operate on the Inner Shareable domain. Traps execution of those TLB maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x18 : TLBI VMALLE1IS , TLBI VAE1IS , TLBI ASIDE1IS , TLBI VAAE1IS , TLBI VALE1IS , TLBI VAALE1IS , TLBI RVAE1IS , TLBI RVAAE1IS , TLBI RVALE1IS , and TLBI RVAALE1IS . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : TLBIALLIS , TLBIMVAIS , TLBIASIDIS , TLBIMVAAIS , TLBIMVALIS , and TLBIMVAALIS . If FEAT_XS is implemented then the *ISNXS variants are also trapped.
+| ATA      |   56:56 |    1 | Physical tagging enable override: Overrides enabling of Physical tagging at EL1 and EL0. Accesses to the following registers at EL1 are trapped to EL2 and reported using EC syndrome value 0x18 : GCR_EL1 . RGSR_EL1 . TFSRE0_EL1 . TFSR_EL1 . Accesses with the register name TFSR_EL2 that are not UNDEFINED . Prior to FEAT_VMTE, the only memory tagging is Physical Tagging.
+| TTLBOS   |   55:55 |    1 | Trap TLB maintenance instructions that operate on the Outer Shareable domain. Traps execution of those TLB maintenance instructions at EL1 using AArch64 to EL2, when EL2 is enabled in the current Security state. The following instructions are trapped and reported with EC syndrome value 0x18 : TLBI VMALLE1OS , TLBI VAE1OS , TLBI ASIDE1OS , TLBI VAAE1OS , TLBI VALE1OS , and TLBI VAALE1OS . If FEAT_TLBIRANGE is implemented, TLBI RVAE1OS , TLBI RVAAE1OS , TLBI RVALE1OS , and TLBI RVAALE1OS . If FEAT_XS is implemented, then the *OSNXS variants are also trapped.
+| TTLBIS   |   54:54 |    1 | Trap TLB maintenance instructions that operate on the Inner Shareable domain. Traps execution of those TLB maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x18 : TLBI VMALLE1IS , TLBI VAE1IS , TLBI ASIDE1IS , TLBI VAAE1IS , TLBI VALE1IS , TLBI VAALE1IS , TLBI RVAE1IS , TLBI RVAAE1IS , TLBI RVALE1IS , and TLBI RVAALE1IS . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : TLBIALLIS , TLBIMVAIS , TLBIASIDIS , TLBIMVAAIS , TLBIMVALIS , and TLBIMVAALIS . If FEAT_XS is implemented, then the *ISNXS variants are also trapped.
 | EnSCXT   |   53:53 |    1 | Enable Access to the SCXTNUM_EL1 and SCXTNUM_EL0 registers. The defined values are:
 | TOCU     |   52:52 |    1 | Trap cache maintenance instructions that operate to the Point of Unification. Traps execution of those cache maintenance instructions at EL0 and EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL0 is using AArch64, the value of SCTLR_EL1 .UCI is 1, and the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, then the following instructions at EL0 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU , and DC CVAU . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU , IC IALLU , and DC CVAU . If EL1 is using AArch32, then the following instructions are trapped at EL1 to EL2 and reported with EC syndrome value 0x03 : ICIMVAU , ICIALLU , and DCCMVAU . When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: IC IALLUIS and IC IALLU are always UNDEFINED at EL0 using AArch64. ICIMVAU , ICIALLU , ICIALLUIS , and DCCMVAU are always UNDEFINED at EL0 using AArch32.
 | AMVOFFEN |   51:51 |    1 | Activity Monitors Virtual Offsets Enable.
@@ -1206,7 +1294,6 @@ be executed each time an update of the Arm architecture is published.
 | NV       |   42:42 |    1 | Nested Virtualization. When the Effective value of HCR_EL2.NV2 is 1, redefines register accesses so that: Instructions accessing the Special purpose registers SPSR_EL2 and ELR_EL2 instead access SPSR_EL1 and ELR_EL1 respectively. Instructions accessing the System registers ESR_EL2 and FAR_EL2 instead access ESR_EL1 and FAR_EL1 . When the Effective value of HCR_EL2.NV2 is 0, traps functionality that is permitted at EL2 and would be UNDEFINED at EL1 if this field was 0, when EL2 is enabled in the current Security state. This applies to the following operations: EL1 accesses to Special-purpose registers that are not UNDEFINED at EL2. EL1 accesses to System registers that are not UNDEFINED at EL2. Execution of EL1 or EL2 translation regime address translation and TLB maintenance instructions for EL2 and above.
 | API      |   41:41 |    1 | Controls the use of instructions related to Pointer Authentication: PACGA. AUTDA, AUTDB, AUTDZA, AUTDZB, AUTIA, AUTIA1716, AUTIASP, AUTIAZ, AUTIB, AUTIB1716, AUTIBSP, AUTIBZ, AUTIZA, AUTIZB. PACDA, PACDB, PACDZA, PACDZB, PACIA, PACIA1716, PACIASP, PACIAZ, PACIB, PACIB1716, PACIBSP, PACIBZ, PACIZA, PACIZB. RETAA, RETAB, BRAA, BRAB, BLRAA, BLRAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ. ERETAA, ERETAB, LDRAA, and LDRAB. When FEAT_PAuth_LR is implemented, AUTIASPPC, AUTIASPPCR, AUTIA171615, AUTIBSPPC, AUTIBSPPCR, AUTIB171615, PACIASPPC, PACNBIASPPC, PACIA171615, PACIBSPPC, PACNBIBSPPC, PACIB171615, RETAASPPC, RETAASPPCR, RETABSPPC, RETABSPPCR. This field is ignored if the instruction is disabled as a result of the SCTLR_ELx.{EnIB, EnIA, EnDA, EnDB} fields.
 | APK      |   40:40 |    1 | Trap registers holding "key" values for Pointer Authentication. Traps accesses to the following registers from EL1 to EL2, when EL2 is enabled in the current Security state, reported using EC syndrome value 0x18 : APIAKeyLo_EL1 , APIAKeyHi_EL1 , APIBKeyLo_EL1 , APIBKeyHi_EL1 , APDAKeyLo_EL1 , APDAKeyHi_EL1 , APDBKeyLo_EL1 , APDBKeyHi_EL1 , APGAKeyLo_EL1 , and APGAKeyHi_EL1 .
-| TME      |   39:39 |    1 | Enables access to the TSTART, TCOMMIT, TTEST, and TCANCEL instructions at EL0 and EL1.
 | TEA      |   37:37 |    1 | Route synchronous External abort exceptions to EL2.
 | TERR     |   36:36 |    1 | Trap accesses of Error Record registers. Enables a trap to EL2 on accesses of Error Record registers.
 | TLOR     |   35:35 |    1 | Trap LOR registers. Traps Non-secure and Realm EL1 accesses to LORSA_EL1 , LOREA_EL1 , LORN_EL1 , LORC_EL1 , and LORID_EL1 registers to EL2.
@@ -1216,14 +1303,14 @@ be executed each time an update of the Arm architecture is published.
 | RW       |   31:31 |    1 | Execution state control for lower Exception levels:
 | TRVM     |   30:30 |    1 | Trap Reads of Virtual Memory controls. Traps reads of the virtual memory control registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, EL1 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MRS and 0x14 for MRRS : SCTLR_EL1 , TTBR0_EL1 , TTBR1_EL1 , TCR_EL1 , ESR_EL1 , FAR_EL1 , AFSR0_EL1 , AFSR1_EL1 , MAIR_EL1 , AMAIR_EL1 , and CONTEXTIDR_EL1 . If FEAT_AIE is implemented, MAIR2_EL1 and AMAIR2_EL1 . If FEAT_S1PIE is implemented, PIRE0_EL1 and PIR_EL1 . If FEAT_S1POE is implemented, POR_EL0 and POR_EL1 . If FEAT_S2POE is implemented, S2POR_EL1 . If FEAT_TCR2 is implemented, TCR2_EL1 . If FEAT_SCTLR2 is implemented, SCTLR2_EL1 . If the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, and EL0 is using AArch64, EL0 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MRS : If FEAT_S1POE is implemented, POR_EL0 . If EL1 is using AArch32, EL1 accesses using MRC to the following registers are trapped to EL2 and reported using EC syndrome value 0x03 , accesses using MRRC are trapped to EL2 and reported using EC syndrome value 0x04 : SCTLR , TTBR0 , TTBR1 , TTBCR , TTBCR2 , DACR , DFSR , IFSR , DFAR , IFAR , ADFSR , AIFSR , PRRR , NMRR , MAIR0 , MAIR1 , AMAIR0 , AMAIR1 , and CONTEXTIDR .
 | HCD      |   29:29 |    1 | HVC instruction disable. Disables EL1 and EL2 execution of HVC instructions, from both Execution states, when EL2 is enabled in the current Security state, reported using EC syndrome value 0x00 .
-| TDZ      |   28:28 |    1 | Trap DC ZVA instructions. Traps EL0 and EL1 execution of DC ZVA instructions to EL2, when EL2 is enabled in the current Security state, from AArch64 state only, reported using EC syndrome value 0x18 . If FEAT_MTE is implemented, this trap also applies to DC GVA and DC GZVA .
+| TDZ      |   28:28 |    1 | Traps EL0 and EL1 execution of the following instructions to EL2, when EL2 is enabled in the current Security state, from AArch64 state only, reported using EC syndrome value 0x18 : DC ZVA . If FEAT_MTE is implemented, DC GVA and DC GZVA . If FEAT_MTETC is implemented, DC GBVA and DC ZGBVA .
 | TGE      |   27:27 |    1 | Trap General Exceptions, from EL0.
 | TVM      |   26:26 |    1 | Trap Virtual Memory controls. Traps writes to the virtual memory control registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MSR and 0x14 for MSRR : SCTLR_EL1 , TTBR0_EL1 , TTBR1_EL1 , TCR_EL1 , ESR_EL1 , FAR_EL1 , AFSR0_EL1 , AFSR1_EL1 , MAIR_EL1 , AMAIR_EL1 , and CONTEXTIDR_EL1 . If FEAT_AIE is implemented, MAIR2_EL1 and AMAIR2_EL1 . If FEAT_S1PIE is implemented, PIRE0_EL1 and PIR_EL1 . If FEAT_S1POE is implemented, POR_EL0 and POR_EL1 . If FEAT_S2POE is implemented, S2POR_EL1 . If FEAT_TCR2 is implemented, TCR2_EL1 . If FEAT_SCTLR2 is implemented, SCTLR2_EL1 . If the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, and EL0 is using AArch64, EL0 accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 for MSR : If FEAT_S1POE is implemented, POR_EL0 . If EL1 is using AArch32, EL1 accesses using MCR to the following registers are trapped to EL2 and reported using EC syndrome value 0x03 , accesses using MCRR are trapped to EL2 and reported using EC syndrome value 0x04 : SCTLR , TTBR0 , TTBR1 , TTBCR , TTBCR2 , DACR , DFSR , IFSR , DFAR , IFAR , ADFSR , AIFSR , PRRR , NMRR , MAIR0 , MAIR1 , AMAIR0 , AMAIR1 , and CONTEXTIDR .
 | TTLB     |   25:25 |    1 | Trap TLB maintenance instructions. Traps execution of TLB maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported using EC syndrome value 0x18 : TLBI VMALLE1 , TLBI VAE1 , TLBI ASIDE1 , TLBI VAAE1 , TLBI VALE1 , and TLBI VAALE1 . TLBI VMALLE1IS , TLBI VAE1IS , TLBI ASIDE1IS , TLBI VAAE1IS , TLBI VALE1IS , and TLBI VAALE1IS . If FEAT_TLBIOS is implemented, TLBI VMALLE1OS , TLBI VAE1OS , TLBI ASIDE1OS , TLBI VAAE1OS , TLBI VALE1OS , and TLBI VAALE1OS . If FEAT_TLBIRANGE is implemented, TLBI RVAE1 , TLBI RVAAE1 , TLBI RVALE1 , TLBI RVAALE1 , TLBI RVAE1IS , TLBI RVAAE1IS , TLBI RVALE1IS , and TLBI RVAALE1IS . If FEAT_TLBIOS and FEAT_TLBIRANGE are implemented, TLBI RVAE1OS , TLBI RVAAE1OS , TLBI RVALE1OS , and TLBI RVAALE1OS . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported using EC syndrome value 0x03 : TLBIALLIS , TLBIMVAIS , TLBIASIDIS , TLBIMVAAIS , TLBIMVALIS , and TLBIMVAALIS . TLBIALL , TLBIMVA , TLBIASID , TLBIMVAA , TLBIMVAL , and TLBIMVAAL ITLBIALL , ITLBIMVA , and ITLBIASID . DTLBIALL , DTLBIMVA , and DTLBIASID .
 | TPU      |   24:24 |    1 | Trap cache maintenance instructions that operate to the Point of Unification. Traps execution of those cache maintenance instructions at EL0 and EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL0 is using AArch64 and the value of SCTLR_EL1 .UCI is 1, then the following instructions at EL0 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU and DC CVAU . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported with EC syndrome value 0x18 : IC IVAU , IC IALLU , IC IALLUIS , and DC CVAU . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : ICIMVAU , ICIALLU , ICIALLUIS , and DCCMVAU . When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: IC IALLUIS and IC IALLU are always UNDEFINED at EL0 using AArch64. ICIMVAU , ICIALLU , ICIALLUIS , and DCCMVAU are always UNDEFINED at EL0 using AArch32.
 | TPCP     |   23:23 |    1 | Trap data or unified cache maintenance instructions that operate to the Point of Coherency, Persistence, or Physical Storage. When EL2 is enabled in the current Security state, traps execution of cache maintenance instructions at EL0 and EL1 to EL2 as follows: If EL0 is using AArch64 and the value of SCTLR_EL1 .UCI is 1, then the following instructions at EL0 are trapped to EL2 and reported using EC syndrome value 0x18 : DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC . If EL1 is using AArch64, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x18 : DC IVAC , DC CIVAC and DC CVAC . If FEAT_MTE is implemented, DC CIGVAC , DC CIGDVAC , DC IGVAC , DC IGDVAC , DC CGVAC , and DC CGDVAC . If FEAT_DPB is implemented, DC CVAP . If FEAT_DPB and FEAT_MTE are implemented, DC CGVAP and DC CGDVAP . If FEAT_DPB2 is implemented, DC CVADP . If FEAT_DPB2 and FEAT_MTE are implemented, DC CGVADP and DC CGDVADP . If FEAT_PoPS is implemented, DC CIVAPS . If FEAT_PoPS and FEAT_MTE2 are implemented, DC CIGDVAPS . If FEAT_OCCMO is implemented, DC CIVAOC , DC CIGDVAOC , DC CVAOC and DC CGDVAOC . If EL1 is using AArch32, then the following instructions at EL1 are trapped to EL2 and reported using EC syndrome value 0x03 : DCIMVAC , DCCIMVAC , and DCCMVAC . This field was previously named TPC. When SCTLR_EL1 .UCI is 0, the trap on execution of instructions at EL0 is higher priority than this control. An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2. In addition: AArch64 instructions which invalidate by VA to the Point of Coherency or Physical Storage are always UNDEFINED at EL0 using AArch64. DCIMVAC , DCCIMVAC , and DCCMVAC are always UNDEFINED at EL0 using AArch32.
 | TSW      |   22:22 |    1 | Trap data or unified cache maintenance instructions that operate by Set/Way. Traps execution of those cache maintenance instructions at EL1 to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x18 : DC ISW , DC CSW , and DC CISW . If FEAT_MTE2 is implemented, DC IGSW , DC IGDSW , DC CGSW , DC CGDW , DC CIGSW , and DC CIGDSW . If EL1 is using AArch32, then the following instructions are trapped to EL2 and reported with EC syndrome value 0x03 : DCISW , DCCSW , and DCCISW . An exception generated because an instruction is UNDEFINED at EL0 is higher priority than this trap to EL2, and these instructions are always UNDEFINED at EL0.
-| TACR     |   21:21 |    1 | Trap Auxiliary Control Registers. Traps EL1 accesses to the Auxiliary Control Registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, accesses to ACTLR_EL1 to EL2, are trapped to EL2 and reported using EC syndrome value 0x18 . If EL1 is using AArch32, accesses to ACTLR and, if implemented, ACTLR2 are trapped to EL2 and reported using EC syndrome value 0x03 .
+| TACR     |   21:21 |    1 | Trap Auxiliary Control Registers. Traps EL1 accesses to the Auxiliary Control Registers to EL2, when EL2 is enabled in the current Security state, as follows: If EL1 is using AArch64, accesses to ACTLR_EL1 to EL2, are trapped to EL2 and reported using EC syndrome value 0x18 . If EL1 is using AArch32, accesses to ACTLR and, if implemented, ACTLR2 are trapped to EL2 and reported using EC syndrome value 0x03 . If FEAT_S1POE2 is implemented, accesses to AFGDTP<n>_EL1 and AFGDTU<n>_EL1 are trapped to EL2 and reported using EC syndrome value 0x18 .
 | TIDCP    |   20:20 |    1 | Trap IMPLEMENTATION DEFINED functionality. Traps EL1 accesses to the encodings reserved for IMPLEMENTATION DEFINED functionality to EL2, when EL2 is enabled in the current Security state as follows: In AArch64 state, EL0 access to the encodings in the following reserved encoding spaces are trapped: IMPLEMENTATION DEFINED System instructions, which are accessed using SYS and SYSL, with CRn == {11, 15}, and are reported using EC syndrome value 0x18 . IMPLEMENTATION DEFINED System instructions, which are accessed using SYSP, with CRn == {11, 15}, and are reported using EC syndrome value 0x14 . IMPLEMENTATION DEFINED System registers, which are accessed using MRS and MSR with the S3_<op1>_<Cn>_<Cm>_<op2> register name, and are reported using EC syndrome 0x18 . IMPLEMENTATION DEFINED System registers, which are accessed using MRRS and MSRR with the S3_<op1>_<Cn>_<Cm>_<op2> register name, and are reported using EC syndrome 0x14 . In AArch32 state, MCR and MRC access to instructions with the following encodings are trapped and reported using EC syndrome value 0x03 : All coproc==p15, CRn==c9, opc1 == {0-7}, CRm == {c0-c2, c5-c8}, opc2 == {0-7}. All coproc==p15, CRn==c10, opc1 =={0-7}, CRm == {c0, c1, c4, c8}, opc2 == {0-7}. All coproc==p15, CRn==c11, opc1=={0-7}, CRm == {c0-c8, c15}, opc2 == {0-7}. When this functionality is accessed from EL0: If FEAT_TIDCP1 is implemented and the Effective value of SCTLR_EL1 .TIDCP is 1, any accesses from EL0 are trapped to EL1. Otherwise, if FEAT_TIDCP1 is implemented and the Effective value of SCTLR_EL2 .TIDCP is 1, any accesses from EL0 are trapped to EL2. Otherwise: If HCR_EL2.TIDCP is 1, it is IMPLEMENTATION DEFINED whether any accesses from EL0 are trapped to EL2. If HCR_EL2.TIDCP is 0, any accesses from EL0 are UNDEFINED and generate an exception that is taken to EL1 or EL2.
 | TSC      |   19:19 |    1 | Trap SMC instructions. Traps EL1 execution of SMC instructions to EL2, when EL2 is enabled in the current Security state. If execution is in AArch64 state, the trap is reported using EC syndrome value 0x17 . If execution is in AArch32 state, the trap is reported using EC syndrome value 0x13 . HCR_EL2.TSC traps execution of the SMC instruction. It is not a routing control for the SMC exception. Trap exceptions and SMC exceptions have different preferred return addresses.
 | TID3     |   18:18 |    1 | Trap ID group 3. Traps EL1 reads of group 3 ID registers to EL2, when EL2 is enabled in the current Security state, as follows: In AArch64 state: Reads of the following registers are trapped to EL2, reported using EC syndrome value 0x18 : ID_PFR0_EL1 , ID_PFR1_EL1 , ID_DFR0_EL1 , ID_AFR0_EL1 , ID_MMFR0_EL1 , ID_MMFR1_EL1 , ID_MMFR2_EL1 , ID_MMFR3_EL1 , ID_ISAR0_EL1 , ID_ISAR1_EL1 , ID_ISAR2_EL1 , ID_ISAR3_EL1 , ID_ISAR4_EL1 , ID_ISAR5_EL1 , MVFR0_EL1 , MVFR1_EL1 , and MVFR2_EL1 . ID_AA64PFR0_EL1 , ID_AA64PFR1_EL1 , ID_AA64DFR0_EL1 , ID_AA64DFR1_EL1 , ID_AA64ISAR0_EL1 , ID_AA64ISAR1_EL1 , ID_AA64MMFR0_EL1 , ID_AA64MMFR1_EL1 , ID_AA64AFR0_EL1 , and ID_AA64AFR1_EL1 . If FEAT_FGT is implemented, reads of the following registers are trapped to EL2. If FEAT_FGT is not implemented, reads of the following registers are trapped to EL2, unless the registers are implemented as RAZ, when it is IMPLEMENTATION DEFINED whether accesses are trapped to EL2. ID_PFR2_EL1 , ID_MMFR4_EL1 and ID_MMFR5_EL1 . ID_AA64MMFR3_EL1 . ID_AA64MMFR4_EL1 . ID_AA64PFR2_EL1 . ID_AA64MMFR2_EL1 and ID_ISAR6_EL1 . ID_DFR1_EL1 . ID_AA64ZFR0_EL1 . ID_AA64SMFR0_EL1 . ID_AA64ISAR2_EL1 . If FEAT_FGT is implemented, this field traps all MRS accesses to registers in the following range that are not already mentioned in this field description: op0 == 3, op1 == 0, CRn == 0, CRm == {2-7}, op2 == {0-7}. If FEAT_FGT is not implemented, it is IMPLEMENTATION DEFINED whether this field traps accesses to registers in the range. In AArch32 state: VMRS access to MVFR0 , MVFR1 , and MVFR2 , are trapped to EL2, reported using EC syndrome value 0x08 , unless access is also trapped by HCPTR which takes priority. MRC access to the following registers are trapped to EL2, reported using EC syndrome value 0x03 : ID_PFR0 , ID_PFR1 , ID_PFR2 , ID_DFR0 , ID_AFR0 , ID_MMFR0 , ID_MMFR1 , ID_MMFR2 , ID_MMFR3 , ID_ISAR0 , ID_ISAR1 , ID_ISAR2 , ID_ISAR3 , ID_ISAR4 , and ID_ISAR5 . If FEAT_FGT is implemented: ID_MMFR4 and ID_MMFR5 . ID_ISAR6 . ID_DFR1 . This field traps all MRC accesses to encodings in the following range that are not already mentioned in this field description: coproc == p15, opc1 == 0, CRn == c0, CRm == {c2-c7}, opc2 == {0-7}. If FEAT_FGT is not implemented: ID_MMFR4 and ID_MMFR5 are trapped to EL2, unless implemented as RAZ, when it is IMPLEMENTATION DEFINED whether accesses to ID_MMFR4 or ID_MMFR5 are trapped. ID_ISAR6 is trapped to EL2, unless implemented as RAZ, when it is IMPLEMENTATION DEFINED whether accesses to ID_ISAR6 are trapped to EL2. ID_DFR1 is trapped to EL2, unless implemented as RAZ, when it is IMPLEMENTATION DEFINED whether accesses to ID_DFR1 are trapped to EL2. Otherwise, it is IMPLEMENTATION DEFINED whether this bit traps all MRC accesses to registers in the following range not already mentioned in this field description with coproc == p15, opc1 == 0, CRn == c0, CRm == {c2-c7}, opc2 == {0-7}.
@@ -1234,7 +1321,7 @@ be executed each time an update of the Arm architecture is published.
 | TWI      |   13:13 |    1 | Traps EL0 and EL1 execution of WFI instructions to EL2, when EL2 is enabled in the current Security state, from both Execution states, reported using EC syndrome value 0x01 . When FEAT_WFxT is implemented, this trap also applies to the WFIT instruction.
 | DC       |   12:12 |    1 | Default Cacheability.
 | BSU      |   11:10 |    2 | Barrier Shareability upgrade. This field determines the minimum shareability domain that is applied to any barrier instruction executed from EL1 or EL0:
-| FB       |     9:9 |    1 | Force broadcast. Causes the following Non-shareable invalidate instructions to be broadcast within the Inner Shareable domain when executed from EL1: In AArch32 state: BPIALL , TLBIALL , TLBIMVA , TLBIASID , DTLBIALL , DTLBIMVA , DTLBIASID , ITLBIALL , ITLBIMVA , ITLBIASID , TLBIMVAA , ICIALLU , TLBIMVAL , and TLBIMVAAL . In AArch64 state: All TLBI instructions that are executable at EL1 and do not specify IS or OS. All TLBIP instructions that are executable at EL1 and do not specify IS or OS. IC IALLU . For more information, see 'A64 System instructions for TLB maintenance' .
+| FB       |     9:9 |    1 | Force broadcast. Configures how TLBI and IC instructions are broadcast when executed from EL1. The Non-shareable invalidate instructions affected by this bit are: In AArch32 state: BPIALL , TLBIALL , TLBIMVA , TLBIASID , DTLBIALL , DTLBIMVA , DTLBIASID , ITLBIALL , ITLBIMVA , ITLBIASID , TLBIMVAA , ICIALLU , TLBIMVAL , and TLBIMVAAL . In AArch64 state: All TLBI instructions that are executable at EL1 and do not specify IS or OS. All TLBIP instructions that are executable at EL1 and do not specify IS or OS. IC IALLU . The Inner-shareable invalidate instructions affected by this bit are: In AArch64 state: All TLBI instructions that are executable at EL1 and specify IS. All TLBIP instructions that are executable at EL1 and specify IS. IC IALLUIS . This field is used in combination with HCRX_EL2 .FNB control, as follows:
 | VSE      |     8:8 |    1 | Virtual SError exception.
 | VI       |     7:7 |    1 | Virtual IRQ Interrupt.
 | VF       |     6:6 |    1 | Virtual FIQ Interrupt.
@@ -1245,34 +1332,152 @@ be executed each time an update of the Arm architecture is published.
 | SWIO     |     1:1 |    1 | Set/Way Invalidation Override. Causes EL1 execution of the data cache invalidate by set/way instructions to perform a data cache clean and invalidate by set/way:
 | VM       |     0:0 |    1 | Virtualization enable. Enables stage 2 address translation for the EL1&0 translation regime, when EL2 is enabled in the current Security state.
 
+## HCRMASK_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TWEDEL   |   60:60 |    1 | Mask bit for TWEDEL.
+| TWEDEn   |   59:59 |    1 | Mask bit for TWEDEn.
+| TID5     |   58:58 |    1 | Mask bit for TID5.
+| DCT      |   57:57 |    1 | Mask bit for DCT.
+| ATA      |   56:56 |    1 | Mask bit for ATA.
+| TTLBOS   |   55:55 |    1 | Mask bit for TTLBOS.
+| TTLBIS   |   54:54 |    1 | Mask bit for TTLBIS.
+| EnSCXT   |   53:53 |    1 | Mask bit for EnSCXT.
+| TOCU     |   52:52 |    1 | Mask bit for TOCU.
+| AMVOFFEN |   51:51 |    1 | Mask bit for AMVOFFEN.
+| TICAB    |   50:50 |    1 | Mask bit for TICAB.
+| TID4     |   49:49 |    1 | Mask bit for TID4.
+| GPF      |   48:48 |    1 | Mask bit for GPF.
+| FIEN     |   47:47 |    1 | Mask bit for FIEN.
+| FWB      |   46:46 |    1 | Mask bit for FWB.
+| NV2      |   45:45 |    1 | Mask bit for NV2.
+| AT       |   44:44 |    1 | Mask bit for AT.
+| NV1      |   43:43 |    1 | Mask bit for NV1.
+| NV       |   42:42 |    1 | Mask bit for NV.
+| API      |   41:41 |    1 | Mask bit for API.
+| APK      |   40:40 |    1 | Mask bit for APK.
+| TEA      |   37:37 |    1 | Mask bit for TEA.
+| TERR     |   36:36 |    1 | Mask bit for TERR.
+| TLOR     |   35:35 |    1 | Mask bit for TLOR.
+| E2H      |   34:34 |    1 | Mask bit for E2H.
+| ID       |   33:33 |    1 | Mask bit for ID.
+| CD       |   32:32 |    1 | Mask bit for CD.
+| RW       |   31:31 |    1 | Mask bit for RW.
+| TRVM     |   30:30 |    1 | Mask bit for TRVM.
+| HCD      |   29:29 |    1 | Mask bit for HCD.
+| TDZ      |   28:28 |    1 | Mask bit for TDZ.
+| TGE      |   27:27 |    1 | Mask bit for TGE.
+| TVM      |   26:26 |    1 | Mask bit for TVM.
+| TTLB     |   25:25 |    1 | Mask bit for TTLB.
+| TPU      |   24:24 |    1 | Mask bit for TPU.
+| TPCP     |   23:23 |    1 | Mask bit for TPCP.
+| TSW      |   22:22 |    1 | Mask bit for TSW.
+| TACR     |   21:21 |    1 | Mask bit for TACR.
+| TIDCP    |   20:20 |    1 | Mask bit for TIDCP.
+| TSC      |   19:19 |    1 | Mask bit for TSC.
+| TID3     |   18:18 |    1 | Mask bit for TID3.
+| TID2     |   17:17 |    1 | Mask bit for TID2.
+| TID1     |   16:16 |    1 | Mask bit for TID1.
+| TID0     |   15:15 |    1 | Mask bit for TID0.
+| TWE      |   14:14 |    1 | Mask bit for TWE.
+| TWI      |   13:13 |    1 | Mask bit for TWI.
+| DC       |   12:12 |    1 | Mask bit for DC.
+| BSU      |   10:10 |    1 | Mask bit for BSU.
+| FB       |     9:9 |    1 | Mask bit for FB.
+| VSE      |     8:8 |    1 | Mask bit for VSE.
+| VI       |     7:7 |    1 | Mask bit for VI.
+| VF       |     6:6 |    1 | Mask bit for VF.
+| AMO      |     5:5 |    1 | Mask bit for AMO.
+| IMO      |     4:4 |    1 | Mask bit for IMO.
+| FMO      |     3:3 |    1 | Mask bit for FMO.
+| PTW      |     2:2 |    1 | Mask bit for PTW.
+| SWIO     |     1:1 |    1 | Mask bit for SWIO.
+| VM       |     0:0 |    1 | Mask bit for VM.
+
 ## HCRX_EL2 bitfields
 
-| Bitfield  | msb:lsb | Size | Description
-| --------- | ------: | ---: | -----------
-| SRMASKEn  |   26:26 |    1 | If EL1 is using AArch64, accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 : CPACRMASK_EL1 . SCTLRMASK_EL1 . SCTLR2MASK_EL1 . TCRMASK_EL1 . TCR2MASK_EL1 . ACTLRMASK_EL1 , if it is implemented.
-| PACMEn    |   24:24 |    1 | PACM Enable. Controls the effect of a PACM instruction at EL1 and EL0.
-| EnFPM     |   23:23 |    1 | Enables direct and indirect accesses to FPMR from EL0 and EL1. When accesses to FPMR are disabled by this control: Direct accesses to FPMR from EL0 and EL1 are trapped to EL2 and reported using EC syndrome value 0x18 . Execution of FP8 data-processing instructions that indirectly access FPMR is UNDEFINED at EL0 and EL1.
-| GCSEn     |   22:22 |    1 | Guarded Control Stack enable. Controls Guarded Control Stack behavior at EL1 and EL0.
-| EnIDCP128 |   21:21 |    1 | Enables access to IMPLEMENTATION DEFINED 128-bit System registers.
-| EnSDERR   |   20:20 |    1 | Enable Synchronous Device Read Error. Override SCTLR2_EL1 .EnADERR.
-| TMEA      |   19:19 |    1 | Trap Masked External Aborts. Controls whether a masked error exception at a lower Exception level is taken to EL2.
-| EnSNERR   |   18:18 |    1 | Enable Synchronous Normal Read Error. Override SCTLR2_EL1 .EnANERR.
-| D128En    |   17:17 |    1 | 128-bit System Register trap control. Enable access to 128-bit System Registers that relate to VMSAv9-128 via MRRS , MSRR instructions. If EL1 is using AArch64, accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x14 : TTBR0_EL1 . TTBR1_EL1 . If FEAT_THE is implemented, RCWMASK_EL1 , RCWSMASK_EL1 . PAR_EL1 .
-| PTTWI     |   16:16 |    1 | Permit Translation Table Walk Incoherence. Permits RCWS instructions to generate writes that have the Reduced Coherence property.
-| SCTLR2En  |   15:15 |    1 | SCTLR2_EL1 Enable. In AArch64 state, accesses to SCTLR2_EL1 are trapped to EL2 and reported using EC syndrome value 0x18 .
-| TCR2En    |   14:14 |    1 | TCR2_EL1 Enable. In AArch64 state, accesses to TCR2_EL1 are trapped to EL2 and reported using EC syndrome value 0x18 .
-| MSCEn     |   11:11 |    1 | Memory Set and Memory Copy instructions Enable. Enables execution of the CPY*, SETG*, SETP*, SETM*, and SETE* instructions at EL1 or EL0.
-| MCE2      |   10:10 |    1 | Controls Memory Copy and Memory Set exceptions generated as part of attempting to execute the Memory Copy and Memory Set instructions from EL1.
-| CMOW      |     9:9 |    1 | Controls cache maintenance instruction permission for the following instructions executed at EL1 or EL0. IC IVAU and DC CIVAC . If FEAT_MTE is implemented, DC CIGDVAC and DC CIGVAC . If FEAT_PoPS is implemented, DC CIVAPS . If FEAT_PoPS and FEAT_MTE2 are implemented, DC CIGDVAPS . ICIMVAU and DCCIMVAC .
-| VFNMI     |     8:8 |    1 | Virtual FIQ Interrupt with Superpriority. Enables signaling of virtual FIQ interrupts with Superpriority.
-| VINMI     |     7:7 |    1 | Virtual IRQ Interrupt with Superpriority. Enables signaling of virtual IRQ interrupts with Superpriority.
-| TALLINT   |     6:6 |    1 | Traps the following writes at EL1 using AArch64 to EL2, when EL2 is implemented and enabled: MSR (register) writes of ALLINT . MSR (immediate) writes of ALLINT with a value of 1.
-| SMPME     |     5:5 |    1 | Streaming Mode Priority Mapping Enable. Controls mapping of the value of SMPRI_EL1 .Priority for streaming execution priority at EL0 or EL1.
-| FGTnXS    |     4:4 |    1 | Determines if the fine-grained traps in HFGITR_EL2 that apply to each of the TLBI maintenance instructions that are accessible at EL1 also apply to the corresponding TLBI maintenance instructions with the nXS qualifier.
-| FnXS      |     3:3 |    1 | Determines the behavior of TLBI instructions affected by the XS attribute. This control field also determines whether an AArch64 DSB instruction behaves as a DSB instruction with an nXS qualifier when executed at EL0 and EL1.
-| EnASR     |     2:2 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV instruction at EL0 or EL1 to EL2.
-| EnALS     |     1:1 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an LD64B or ST64B instruction at EL0 or EL1 to EL2.
-| EnAS0     |     0:0 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV0 instruction at EL0 or EL1 to EL2.
+| Bitfield   | msb:lsb | Size | Description
+| ---------- | ------: | ---: | -----------
+| VTCO       |   39:39 |    1 | Guest tag check override.
+| VTAO       |   38:38 |    1 | Guest tag access override.
+| VTE        |   37:37 |    1 | Virtual tagging enable override: Overrides enabling of Virtual tagging at EL1 and EL0. Accesses to the following registers at EL1 are trapped to EL2 and reported using EC syndrome value 0x18 : GCR_EL1 . RGSR_EL1 . TFSRE0_EL1 . TFSR_EL1 . Accesses with the register name TFSR_EL2 that are not UNDEFINED .
+| FNB        |   36:36 |    1 | This field, evaluated with HCR_EL2 .FB, configures how TLBI and IC instructions are broadcast when executed from EL1.
+| VTLBIDOSEn |   35:35 |    1 | Enable application of VTLBIDOS transformations. This control applies to TLBI OS instructions executed at EL1.
+| NVnTTLBOS  |   34:34 |    1 | Nested Virtualization override of HCR_EL2 .{TTLB, TTLBOS} for TLBI E1 instructions that specify the OS Shareability domain.
+| NVnTTLBIS  |   33:33 |    1 | Nested Virtualization override of HCR_EL2 .{TTLB, TTLBIS} for TLBI E1 instructions that specify the IS Shareability domain.
+| NVnTTLB    |   32:32 |    1 | Nested Virtualization override of HCR_EL2 .TTLB for TLBI E1 instructions that do not specify an IS or OS Shareability domain.
+| FDIT       |   31:31 |    1 | Enforce data-independent timing for execution at EL1 and EL0.
+| TPLIMEn    |   30:30 |    1 | Enable access to TP limit registers at EL1 and EL0. If EL0 is using AArch64 and the Effective value of HCR_EL2.{E2H, TGE} is not {1, 1}, then accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 : TPMAX0_EL0 , TPMIN0_EL0 . TPMAX1_EL0 , TPMIN1_EL0 . If EL1 is using AArch64, then accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 : TPMAX0_EL0 , TPMIN0_EL0 . TPMAX1_EL0 , TPMIN1_EL0 . If FEAT_TPSP is implemented, TPMAX0_EL1 , TPMIN0_EL1 , TPMAX1_EL1 , TPMIN1_EL1 .
+| POE2En     |   29:29 |    1 | Enable access to POE2 registers at EL1 and EL0. When disabled by this control, direct MRS and MSR accesses at EL1 to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 : DPOTBR0_EL1 , DPOTBR1_EL1 . IRTBRU_EL1 , IRTBRP_EL1 . TTTBRU_EL1 , TTTBRP_EL1 . FGDTU<n>_EL1 , FGDTP<n>_EL1 . AFGDTU<n>_EL1 , AFGDTP<n>_EL1 . TINDEX_EL1 , TINDEX_EL0 . STINDEX_EL1 . LDSTT_EL1 . TPIDR3_EL1 , TPIDR3_EL0 . If HCR_EL2 .{E2H, TGE} is not {1, 1}, MRS accesses from EL0 to TINDEX_EL0 using AArch64 are also trapped to EL2. If HCR_EL2 .{E2H, TGE} is not {1, 1}, MSR and MRS accesses from EL0 to TPIDR3_EL0 using AArch64 are also trapped to EL2.
+| NVTGE      |   27:27 |    1 | Nested Virtualization Guest TGE behavior enable.
+| SRMASKEn   |   26:26 |    1 | If EL1 is using AArch64, accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x18 : CPACRMASK_EL1 . SCTLRMASK_EL1 . SCTLR2MASK_EL1 . TCRMASK_EL1 . TCR2MASK_EL1 . ACTLRMASK_EL1 , if it is implemented.
+| VTLBIDEn   |   25:25 |    1 | Enable application of VTLBID transformations. This control applies to TLBI IS and IC IALLUIS instructions executed at EL1. This control additionally applies to TLBI and IC IALLU instructions executed at EL1, if they apply to the Inner Shareable shareability domain as the result of HCR_EL2 .FB configuration.
+| PACMEn     |   24:24 |    1 | PACM Enable. Controls the effect of a PACM instruction at EL1 and EL0.
+| EnFPM      |   23:23 |    1 | Enables direct and indirect accesses to FPMR from EL0 and EL1. When accesses to FPMR are disabled by this control: Direct accesses to FPMR from EL0 and EL1 are trapped to EL2 and reported using EC syndrome value 0x18 . Execution of FP8 data-processing instructions that indirectly access FPMR is UNDEFINED at EL0 and EL1.
+| GCSEn      |   22:22 |    1 | Guarded Control Stack enable. Controls Guarded Control Stack behavior at EL1 and EL0.
+| EnIDCP128  |   21:21 |    1 | Enables access to IMPLEMENTATION DEFINED 128-bit System registers.
+| EnSDERR    |   20:20 |    1 | Enable Synchronous Device Read Error. Override SCTLR2_EL1 .EnADERR.
+| TMEA       |   19:19 |    1 | Trap Masked External Aborts. Controls whether a masked error exception at a lower Exception level is taken to EL2.
+| EnSNERR    |   18:18 |    1 | Enable Synchronous Normal Read Error. Override SCTLR2_EL1 .EnANERR.
+| D128En     |   17:17 |    1 | 128-bit System Register trap control. Enable access to 128-bit System Registers that relate to VMSAv9-128 via MRRS , MSRR instructions. If EL1 is using AArch64, accesses to the following registers are trapped to EL2 and reported using EC syndrome value 0x14 : TTBR0_EL1 . TTBR1_EL1 . If FEAT_THE is implemented, RCWMASK_EL1 , RCWSMASK_EL1 . PAR_EL1 .
+| PTTWI      |   16:16 |    1 | Permit Translation Table Walk Incoherence. Permits RCWS instructions to generate writes that have the Reduced Coherence property.
+| SCTLR2En   |   15:15 |    1 | SCTLR2_EL1 Enable. In AArch64 state, accesses to SCTLR2_EL1 are trapped to EL2 and reported using EC syndrome value 0x18 .
+| TCR2En     |   14:14 |    1 | TCR2_EL1 Enable. In AArch64 state, accesses to TCR2_EL1 are trapped to EL2 and reported using EC syndrome value 0x18 .
+| MSCEn      |   11:11 |    1 | Memory Set and Memory Copy instructions Enable. Enables execution of the CPY*, SETG*, SETP*, SETM*, and SETE* instructions at EL1 or EL0.
+| MCE2       |   10:10 |    1 | Controls Memory Copy and Memory Set exceptions generated as part of attempting to execute the Memory Copy and Memory Set instructions from EL1.
+| CMOW       |     9:9 |    1 | Controls the required permissions for the following cache maintenance instructions executed at EL1 or EL0: Any DC instruction that operates by VA and performs a clean and invalidate operation. Any IC instruction that operates by VA.
+| VFNMI      |     8:8 |    1 | Virtual FIQ Interrupt with Superpriority. Enables signaling of virtual FIQ interrupts with Superpriority.
+| VINMI      |     7:7 |    1 | Virtual IRQ Interrupt with Superpriority. Enables signaling of virtual IRQ interrupts with Superpriority.
+| TALLINT    |     6:6 |    1 | Traps the following writes at EL1 using AArch64 to EL2, when EL2 is implemented and enabled: MSR (register) writes of ALLINT . MSR (immediate) writes of ALLINT with a value of 1.
+| SMPME      |     5:5 |    1 | Streaming Mode Priority Mapping Enable. Controls mapping of the value of SMPRI_EL1 .Priority for streaming execution priority at EL0 or EL1.
+| FGTnXS     |     4:4 |    1 | Determines if the fine-grained traps in HFGITR_EL2 that apply to each of the TLBI maintenance instructions that are accessible at EL1 also apply to the corresponding TLBI maintenance instructions with the nXS qualifier.
+| FnXS       |     3:3 |    1 | Determines the behavior of TLBI instructions affected by the XS attribute. This control field also determines whether an AArch64 DSB instruction behaves as a DSB instruction with an nXS qualifier when executed at EL0 and EL1.
+| EnASR      |     2:2 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV instruction at EL0 or EL1 to EL2.
+| EnALS      |     1:1 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an LD64B or ST64B instruction at EL0 or EL1 to EL2.
+| EnAS0      |     0:0 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV0 instruction at EL0 or EL1 to EL2.
+
+## HCRXMASK_EL2 bitfields
+
+| Bitfield   | msb:lsb | Size | Description
+| ---------- | ------: | ---: | -----------
+| VTCO       |   39:39 |    1 | Mask bit for VTCO.
+| VTAO       |   38:38 |    1 | Mask bit for VTAO.
+| VTE        |   37:37 |    1 | Mask bit for VTE.
+| FNB        |   36:36 |    1 | Mask bit for FNB.
+| VTLBIDOSEn |   35:35 |    1 | Mask bit for VTLBIDOSEn.
+| NVnTTLBOS  |   34:34 |    1 | Mask bit for NVnTTLBOS.
+| NVnTTLBIS  |   33:33 |    1 | Mask bit for NVnTTLBIS.
+| NVnTTLB    |   32:32 |    1 | Mask bit for NVnTTLB.
+| FDIT       |   31:31 |    1 | Mask bit for FDIT.
+| TPLIMEn    |   30:30 |    1 | Mask bit for TPLIMEn.
+| POE2En     |   29:29 |    1 | Mask bit for POE2En.
+| NVTGE      |   27:27 |    1 | Mask bit for NVTGE.
+| SRMASKEn   |   26:26 |    1 | Mask bit for SRMASKEn.
+| VTLBIDEn   |   25:25 |    1 | Mask bit for VTLBIDEn.
+| PACMEn     |   24:24 |    1 | Mask bit for PACMEn.
+| EnFPM      |   23:23 |    1 | Mask bit for EnFPM.
+| GCSEn      |   22:22 |    1 | Mask bit for GCSEn.
+| EnIDCP128  |   21:21 |    1 | Mask bit for EnIDCP128.
+| EnSDERR    |   20:20 |    1 | Mask bit for EnSDERR.
+| TMEA       |   19:19 |    1 | Mask bit for TMEA.
+| EnSNERR    |   18:18 |    1 | Mask bit for EnSNERR.
+| D128En     |   17:17 |    1 | Mask bit for D128En.
+| PTTWI      |   16:16 |    1 | Mask bit for PTTWI.
+| SCTLR2En   |   15:15 |    1 | Mask bit for SCTLR2En.
+| TCR2En     |   14:14 |    1 | Mask bit for TCR2En.
+| MSCEn      |   11:11 |    1 | Mask bit for MSCEn.
+| MCE2       |   10:10 |    1 | Mask bit for MCE2.
+| CMOW       |     9:9 |    1 | Mask bit for CMOW.
+| VFNMI      |     8:8 |    1 | Mask bit for VFNMI.
+| VINMI      |     7:7 |    1 | Mask bit for VINMI.
+| TALLINT    |     6:6 |    1 | Mask bit for TALLINT.
+| SMPME      |     5:5 |    1 | Mask bit for SMPME.
+| FGTnXS     |     4:4 |    1 | Mask bit for FGTnXS.
+| FnXS       |     3:3 |    1 | Mask bit for FnXS.
+| EnASR      |     2:2 |    1 | Mask bit for EnASR.
+| EnALS      |     1:1 |    1 | Mask bit for EnALS.
+| EnAS0      |     0:0 |    1 | Mask bit for EnAS0.
 
 ## HDBSSBR_EL2 bitfields
 
@@ -1463,10 +1668,23 @@ be executed each time an update of the Arm architecture is published.
 
 ## HFGITR2_EL2 bitfields
 
-| Bitfield  | msb:lsb | Size | Description
-| --------- | ------: | ---: | -----------
-| nDCCIVAPS |     1:1 |    1 | Trap execution of any of the following AArch64 instructions at EL1  to EL2: DC CIVAPS . DC CIGDVAPS , if FEAT_MTE2 is implemented. If the Point of Physical Storage is before any level of data cache, it is IMPLEMENTATION DEFINED whether the execution of the affected instruction is trapped when the value of this control is 1.
-| TSBCSYNC  |     0:0 |    1 | Trap execution of TSB CSYNC at EL1 and EL0 using AArch64 to EL2.
+| Bitfield      | msb:lsb | Size | Description
+| ------------- | ------: | ---: | -----------
+| DCGBVA        |   14:14 |    1 | Trap execution of any of the following AArch64 instructions at EL1 and EL0 to EL2: DC GBVA . DC ZGBVA .
+| PLBIPERMAE1   |   13:13 |    1 | Trap execution of PLBI PERMAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERMAE1NXS.
+| PLBIPERMAE1IS |   12:12 |    1 | Trap execution of PLBI PERMAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERMAE1ISNXS.
+| PLBIPERMAE1OS |   11:11 |    1 | Trap execution of PLBI PERMAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERMAE1OSNXS.
+| PLBIVMALLE1   |   10:10 |    1 | Trap execution of PLBI VMALLE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI VMALLE1NXS.
+| PLBIASIDE1    |     9:9 |    1 | Trap execution of PLBI ASIDE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI ASIDE1NXS.
+| PLBIPERME1    |     8:8 |    1 | Trap execution of PLBI PERME1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERME1NXS.
+| PLBIVMALLE1IS |     7:7 |    1 | Trap execution of PLBI VMALLE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI VMALLE1ISNXS.
+| PLBIASIDE1IS  |     6:6 |    1 | Trap execution of PLBI ASIDE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI ASIDE1ISNXS.
+| PLBIPERME1IS  |     5:5 |    1 | Trap execution of PLBI PERME1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERME1ISNXS.
+| PLBIVMALLE1OS |     4:4 |    1 | Trap execution of PLBI VMALLE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI VMALLE1OSNXS.
+| PLBIASIDE1OS  |     3:3 |    1 | Trap execution of PLBI ASIDE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI ASIDE1OSNXS.
+| PLBIPERME1OS  |     2:2 |    1 | Trap execution of PLBI PERME1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of PLBI PERME1OSNXS.
+| nDCCIVAPS     |     1:1 |    1 | Trap execution of any of the following AArch64 instructions at EL1  to EL2: DC CIVAPS . DC CIGDVAPS , if FEAT_MTE2 is implemented. If the Point of Physical Storage is before any level of data cache, it is IMPLEMENTATION DEFINED whether the execution of the affected instruction is trapped when the value of this control is 1.
+| TSBCSYNC      |     0:0 |    1 | Trap execution of TSB CSYNC at EL1 and EL0 using AArch64 to EL2.
 
 ## HFGITR_EL2 bitfields
 
@@ -1487,36 +1705,36 @@ be executed each time an update of the Arm architecture is published.
 | CPPRCTX       |   50:50 |    1 | Trap execution of CPP RCTX at EL1 and EL0 using AArch64 and execution of CPPRCTX at EL0 using AArch32 when EL1 is using AArch64 to EL2.
 | DVPRCTX       |   49:49 |    1 | Trap execution of DVP RCTX at EL1 and EL0 using AArch64 and execution of DVPRCTX at EL0 using AArch32 when EL1 is using AArch64 to EL2.
 | CFPRCTX       |   48:48 |    1 | Trap execution of CFP RCTX at EL1 and EL0 using AArch64 and execution of CFPRCTX at EL0 using AArch32 when EL1 is using AArch64 to EL2.
-| TLBIVAALE1    |   47:47 |    1 | Trap execution of TLBI VAALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1NXS .
-| TLBIVALE1     |   46:46 |    1 | Trap execution of TLBI VALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1NXS .
-| TLBIVAAE1     |   45:45 |    1 | Trap execution of TLBI VAAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1NXS .
-| TLBIASIDE1    |   44:44 |    1 | Trap execution of TLBI ASIDE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1NXS .
-| TLBIVAE1      |   43:43 |    1 | Trap execution of TLBI VAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1NXS .
-| TLBIVMALLE1   |   42:42 |    1 | Trap execution of TLBI VMALLE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1NXS .
-| TLBIRVAALE1   |   41:41 |    1 | Trap execution of TLBI RVAALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1NXS .
-| TLBIRVALE1    |   40:40 |    1 | Trap execution of TLBI RVALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1NXS .
-| TLBIRVAAE1    |   39:39 |    1 | Trap execution of TLBI RVAAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1NXS .
-| TLBIRVAE1     |   38:38 |    1 | Trap execution of TLBI RVAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1NXS .
-| TLBIRVAALE1IS |   37:37 |    1 | Trap execution of TLBI RVAALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1ISNXS .
-| TLBIRVALE1IS  |   36:36 |    1 | Trap execution of TLBI RVALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1ISNXS .
-| TLBIRVAAE1IS  |   35:35 |    1 | Trap execution of TLBI RVAAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1ISNXS .
-| TLBIRVAE1IS   |   34:34 |    1 | Trap execution of TLBI RVAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1ISNXS .
-| TLBIVAALE1IS  |   33:33 |    1 | Trap execution of TLBI VAALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1ISNXS .
-| TLBIVALE1IS   |   32:32 |    1 | Trap execution of TLBI VALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1ISNXS .
-| TLBIVAAE1IS   |   31:31 |    1 | Trap execution of TLBI VAAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1ISNXS .
-| TLBIASIDE1IS  |   30:30 |    1 | Trap execution of TLBI ASIDE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1ISNXS .
-| TLBIVAE1IS    |   29:29 |    1 | Trap execution of TLBI VAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1ISNXS .
-| TLBIVMALLE1IS |   28:28 |    1 | Trap execution of TLBI VMALLE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1ISNXS .
-| TLBIRVAALE1OS |   27:27 |    1 | Trap execution of TLBI RVAALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1OSNXS .
-| TLBIRVALE1OS  |   26:26 |    1 | Trap execution of TLBI RVALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1OSNXS .
-| TLBIRVAAE1OS  |   25:25 |    1 | Trap execution of TLBI RVAAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1OSNXS .
-| TLBIRVAE1OS   |   24:24 |    1 | Trap execution of TLBI RVAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1OSNXS .
-| TLBIVAALE1OS  |   23:23 |    1 | Trap execution of TLBI VAALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1OSNXS .
-| TLBIVALE1OS   |   22:22 |    1 | Trap execution of TLBI VALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1OSNXS .
-| TLBIVAAE1OS   |   21:21 |    1 | Trap execution of TLBI VAAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1OSNXS .
-| TLBIASIDE1OS  |   20:20 |    1 | Trap execution of TLBI ASIDE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1OSNXS .
-| TLBIVAE1OS    |   19:19 |    1 | Trap execution of TLBI VAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1OSNXS .
-| TLBIVMALLE1OS |   18:18 |    1 | Trap execution of TLBI VMALLE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1OSNXS .
+| TLBIVAALE1    |   47:47 |    1 | Trap execution of TLBI VAALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1NXS .
+| TLBIVALE1     |   46:46 |    1 | Trap execution of TLBI VALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1NXS .
+| TLBIVAAE1     |   45:45 |    1 | Trap execution of TLBI VAAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1NXS .
+| TLBIASIDE1    |   44:44 |    1 | Trap execution of TLBI ASIDE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1NXS .
+| TLBIVAE1      |   43:43 |    1 | Trap execution of TLBI VAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1NXS .
+| TLBIVMALLE1   |   42:42 |    1 | Trap execution of TLBI VMALLE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1NSX .
+| TLBIRVAALE1   |   41:41 |    1 | Trap execution of TLBI RVAALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1NXS .
+| TLBIRVALE1    |   40:40 |    1 | Trap execution of TLBI RVALE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1NXS .
+| TLBIRVAAE1    |   39:39 |    1 | Trap execution of TLBI RVAAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAAE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAAE1NXS .
+| TLBIRVAE1     |   38:38 |    1 | Trap execution of TLBI RVAE1 at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1NXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1 . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1NXS .
+| TLBIRVAALE1IS |   37:37 |    1 | Trap execution of TLBI RVAALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1ISNXS .
+| TLBIRVALE1IS  |   36:36 |    1 | Trap execution of TLBI RVALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1ISNXS .
+| TLBIRVAAE1IS  |   35:35 |    1 | Trap execution of TLBI RVAAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAAE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAAE1ISNXS .
+| TLBIRVAE1IS   |   34:34 |    1 | Trap execution of TLBI RVAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1ISNXS .
+| TLBIVAALE1IS  |   33:33 |    1 | Trap execution of TLBI VAALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1ISNXS .
+| TLBIVALE1IS   |   32:32 |    1 | Trap execution of TLBI VALE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1ISNXS .
+| TLBIVAAE1IS   |   31:31 |    1 | Trap execution of TLBI VAAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1ISNXS .
+| TLBIASIDE1IS  |   30:30 |    1 | Trap execution of TLBI ASIDE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1ISNXS .
+| TLBIVAE1IS    |   29:29 |    1 | Trap execution of TLBI VAE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1ISNXS .
+| TLBIVMALLE1IS |   28:28 |    1 | Trap execution of TLBI VMALLE1IS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1ISNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1IS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1ISNXS .
+| TLBIRVAALE1OS |   27:27 |    1 | Trap execution of TLBI RVAALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAALE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAALE1OSNXS .
+| TLBIRVALE1OS  |   26:26 |    1 | Trap execution of TLBI RVALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVALE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVALE1OSNXS .
+| TLBIRVAAE1OS  |   25:25 |    1 | Trap execution of TLBI RVAAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAAE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAAE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of x[TLBIP RVAAE1OSNXS]#(AArch64.tlbip_rvaae1osnxs).
+| TLBIRVAE1OS   |   24:24 |    1 | Trap execution of TLBI RVAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI RVAE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP RVAE1OSNXS .
+| TLBIVAALE1OS  |   23:23 |    1 | Trap execution of TLBI VAALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAALE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAALE1OSNXS .
+| TLBIVALE1OS   |   22:22 |    1 | Trap execution of TLBI VALE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VALE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VALE1OSNXS .
+| TLBIVAAE1OS   |   21:21 |    1 | Trap execution of TLBI VAAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAAE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAAE1OSNXS .
+| TLBIASIDE1OS  |   20:20 |    1 | Trap execution of TLBI ASIDE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI ASIDE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP ASIDE1OSNXS .
+| TLBIVAE1OS    |   19:19 |    1 | Trap execution of TLBI VAE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VAE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VAE1OSNXS .
+| TLBIVMALLE1OS |   18:18 |    1 | Trap execution of TLBI VMALLE1OS at EL1  using AArch64 to EL2. If FEAT_XS is implemented and HCRX_EL2 .FGTnXS == 0, this field also traps execution of TLBI VMALLE1OSNXS . If FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1OS . If FEAT_XS and FEAT_D128 is implemented, then this field also traps execution of TLBIP VMALLE1OSNXS .
 | ATS1E1WP      |   17:17 |    1 | Trap execution of AT S1E1WP at EL1  using AArch64 to EL2.
 | ATS1E1RP      |   16:16 |    1 | Trap execution of AT S1E1RP at EL1  using AArch64 to EL2.
 | ATS1E0W       |   15:15 |    1 | Trap execution of AT S1E0W at EL1  using AArch64 to EL2.
@@ -1540,11 +1758,32 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield         | msb:lsb | Size | Description
 | ---------------- | ------: | ---: | -----------
+| nTPIDR3_EL1      |   37:37 |    1 | Trap MRS reads of TPIDR3_EL1 at EL1 using AArch64 to EL2.
+| nTPIDR3_EL0      |   36:36 |    1 | Trap MRS reads of TPIDR3_EL0 at EL1 and EL0 using AArch64 to EL2.
+| GCR_EL1          |   35:35 |    1 | Trap MRS reads of GCR_EL1 at EL1 using AArch64 to EL2.
+| RGSR_EL1         |   34:34 |    1 | Trap MRS reads of RGSR_EL1 at EL1 using AArch64 to EL2.
+| TFSR_EL1         |   33:33 |    1 | Trap MRS reads at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TFSRE0_EL1 . TFSR_EL1 .
+| nAFGDTn_EL1      |   32:31 |    2 | Trap MRS reads at EL1 using AArch64 of any of the following AArch64 System registers to EL2: AFGDTP<n>_EL1 . AFGDTU<n>_EL1 .
+| nTLBIDIDR_EL1    |   30:30 |    1 | Trap MRS reads of TLBIDIDR_EL1 at EL1 using AArch64 to EL2.
+| nTPMIN0_EL0      |   29:29 |    1 | Trap MRS reads at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN0_EL0 . TPMAX0_EL0 .
+| nTPMIN1_EL0      |   28:28 |    1 | Trap MRS reads at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN1_EL0 . TPMAX1_EL0 .
+| nTPMIN0_EL1      |   27:27 |    1 | Trap MRS reads at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN0_EL1 . TPMAX0_EL1 .
+| nTPMIN1_EL1      |   26:26 |    1 | Trap MRS reads at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN1_EL1 . TPMAX1_EL1 .
+| nDPOTBR0_EL1     |   25:25 |    1 | Trap MRS reads of DPOTBR0_EL1 at EL1 using AArch64 to EL2.
+| nDPOTBR1_EL1     |   24:24 |    1 | Trap MRS reads of DPOTBR1_EL1 at EL1 using AArch64 to EL2.
+| nIRTBRU_EL1      |   23:23 |    1 | Trap MRS reads of IRTBRU_EL1 at EL1 using AArch64 to EL2.
+| nIRTBRP_EL1      |   22:22 |    1 | Trap MRS reads of IRTBRP_EL1 at EL1 using AArch64 to EL2.
+| nTTTBRU_EL1      |   21:21 |    1 | Trap MRS reads of TTTBRU_EL1 at EL1 using AArch64 to EL2.
+| nTTTBRP_EL1      |   20:20 |    1 | Trap MRS reads of TTTBRP_EL1 at EL1 using AArch64 to EL2.
+| nFGDTn_EL1       |   19:18 |    2 | Trap MRS reads at EL1 using AArch64 of any of the following AArch64 System registers to EL2: FGDTP<n>_EL1 . FGDTU<n>_EL1 .
+| nSTINDEX_EL1     |   17:17 |    1 | Trap MRS reads of STINDEX_EL1 at EL1 using AArch64 to EL2.
+| nTINDEX_EL1      |   16:16 |    1 | Trap MRS reads of TINDEX_EL1 at EL1 using AArch64 to EL2.
+| nTINDEX_EL0      |   15:15 |    1 | Trap MRS reads of TINDEX_EL0 at EL1 and EL0 using AArch64 to EL2.
 | nACTLRALIAS_EL1  |   14:14 |    1 | Trap MRS reads of ACTLRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nACTLRMASK_EL1   |   13:13 |    1 | Trap MRS reads of ACTLRMASK_EL1 at EL1 using AArch64 to EL2.
 | nTCR2ALIAS_EL1   |   12:12 |    1 | Trap MRS reads of TCR2ALIAS_EL1 at EL1 using AArch64 to EL2.
 | nTCRALIAS_EL1    |   11:11 |    1 | Trap MRS reads of TCRALIAS_EL1 at EL1 using AArch64 to EL2.
-| nSCTLRALIAS2_EL1 |   10:10 |    1 | Trap MRS reads of SCTLRALIAS2_EL1 at EL1 using AArch64 to EL2.
+| nSCTLR2ALIAS_EL1 |   10:10 |    1 | Trap MRS reads of SCTLR2ALIAS_EL1 at EL1 using AArch64 to EL2.
 | nSCTLRALIAS_EL1  |     9:9 |    1 | Trap MRS reads of SCTLRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nCPACRALIAS_EL1  |     8:8 |    1 | Trap MRS reads of CPACRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nTCR2MASK_EL1    |     7:7 |    1 | Trap MRS reads of TCR2MASK_EL1 at EL1 using AArch64 to EL2.
@@ -1628,11 +1867,31 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield         | msb:lsb | Size | Description
 | ---------------- | ------: | ---: | -----------
+| nTPIDR3_EL1      |   37:37 |    1 | Trap MSR writes of TPIDR3_EL1 at EL1 using AArch64 to EL2.
+| nTPIDR3_EL0      |   36:36 |    1 | Trap MSR writes of TPIDR3_EL0 at EL1 and EL0 using AArch64 to EL2.
+| GCR_EL1          |   35:35 |    1 | Trap MSR writes of GCR_EL1 at EL1 using AArch64 to EL2.
+| RGSR_EL1         |   34:34 |    1 | Trap MSR writes of RGSR_EL1 at EL1 using AArch64 to EL2.
+| TFSR_EL1         |   33:33 |    1 | Trap MSR writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TFSRE0_EL1 . TFSR_EL1 .
+| nAFGDTn_EL1      |   32:31 |    2 | Trap MSR writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2: AFGDTP<n>_EL1 . AFGDTU<n>_EL1 .
+| nTPMIN0_EL0      |   29:29 |    1 | Trap MSR writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN0_EL0 . TPMAX0_EL0 .
+| nTPMIN1_EL0      |   28:28 |    1 | Trap MSR writes at EL1 and EL0 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN1_EL0 . TPMAX1_EL0 .
+| nTPMIN0_EL1      |   27:27 |    1 | Trap MSR writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN0_EL1 . TPMAX0_EL1 .
+| nTPMIN1_EL1      |   26:26 |    1 | Trap MSR writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2: TPMIN1_EL1 . TPMAX1_EL1 .
+| nDPOTBR0_EL1     |   25:25 |    1 | Trap MSR writes of DPOTBR0_EL1 at EL1 using AArch64 to EL2.
+| nDPOTBR1_EL1     |   24:24 |    1 | Trap MSR writes of DPOTBR1_EL1 at EL1 using AArch64 to EL2.
+| nIRTBRU_EL1      |   23:23 |    1 | Trap MSR writes of IRTBRU_EL1 at EL1 using AArch64 to EL2.
+| nIRTBRP_EL1      |   22:22 |    1 | Trap MSR writes of IRTBRP_EL1 at EL1 using AArch64 to EL2.
+| nTTTBRU_EL1      |   21:21 |    1 | Trap MSR writes of TTTBRU_EL1 at EL1 using AArch64 to EL2.
+| nTTTBRP_EL1      |   20:20 |    1 | Trap MSR writes of TTTBRP_EL1 at EL1 using AArch64 to EL2.
+| nFGDTn_EL1       |   19:18 |    2 | Trap MSR writes at EL1 using AArch64 of any of the following AArch64 System registers to EL2: FGDTP<n>_EL1 . FGDTU<n>_EL1 .
+| nSTINDEX_EL1     |   17:17 |    1 | Trap MSR writes of STINDEX_EL1 at EL1 using AArch64 to EL2.
+| nTINDEX_EL1      |   16:16 |    1 | Trap MSR writes of TINDEX_EL1 at EL1 using AArch64 to EL2.
+| nTINDEX_EL0      |   15:15 |    1 | Trap MSR writes of TINDEX_EL0 at EL1 and EL0 using AArch64 to EL2.
 | nACTLRALIAS_EL1  |   14:14 |    1 | Trap MSR writes of ACTLRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nACTLRMASK_EL1   |   13:13 |    1 | Trap MSR writes of ACTLRMASK_EL1 at EL1 using AArch64 to EL2.
 | nTCR2ALIAS_EL1   |   12:12 |    1 | Trap MSR writes of TCR2ALIAS_EL1 at EL1 using AArch64 to EL2.
 | nTCRALIAS_EL1    |   11:11 |    1 | Trap MSR writes of TCRALIAS_EL1 at EL1 using AArch64 to EL2.
-| nSCTLRALIAS2_EL1 |   10:10 |    1 | Trap MSR writes of SCTLRALIAS2_EL1 at EL1 using AArch64 to EL2.
+| nSCTLR2ALIAS_EL1 |   10:10 |    1 | Trap MSR writes of SCTLR2ALIAS_EL1 at EL1 using AArch64 to EL2.
 | nSCTLRALIAS_EL1  |     9:9 |    1 | Trap MSR writes of SCTLRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nCPACRALIAS_EL1  |     8:8 |    1 | Trap MSR writes of CPACRALIAS_EL1 at EL1 using AArch64 to EL2.
 | nTCR2MASK_EL1    |     7:7 |    1 | Trap MSR writes of TCR2MASK_EL1 at EL1 using AArch64 to EL2.
@@ -1725,6 +1984,18 @@ be executed each time an update of the Arm architecture is published.
 | T1       |     1:1 |    1 | The remaining fields control whether EL0 and EL1 accesses, using MCR, MRC, MCRR, and MRRC instructions, to the System registers in the coproc == 0b1111 encoding space, are trapped to EL2 as follows: MCR or MRC accesses to these registers that are trapped to EL2 are reported using EC syndrome value 0x03 , unless the access is UNDEFINED . MCRR or MRRC accesses to these registers that are trapped to EL2 are reported using EC syndrome value 0x04 , unless the access is UNDEFINED .
 | T0       |     0:0 |    1 | The remaining fields control whether EL0 and EL1 accesses, using MCR, MRC, MCRR, and MRRC instructions, to the System registers in the coproc == 0b1111 encoding space, are trapped to EL2 as follows: MCR or MRC accesses to these registers that are trapped to EL2 are reported using EC syndrome value 0x03 , unless the access is UNDEFINED . MCRR or MRRC accesses to these registers that are trapped to EL2 are reported using EC syndrome value 0x04 , unless the access is UNDEFINED .
 
+## ICC_APR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| P<x>     |    31:0 |   32 | Provides access to the active priorities.
+
+## ICC_APR_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| P<x>     |    31:0 |   32 | Provides access to the active priorities.
+
 ## ICC_ASGI1R_EL1 bitfields
 
 | Bitfield   | msb:lsb | Size | Description
@@ -1748,6 +2019,25 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield    | msb:lsb | Size | Description
 | ----------- | ------: | ---: | -----------
 | BinaryPoint |     2:0 |    3 | If the GIC is configured to use separate binary point fields for Group 0 and Group 1 interrupts, the value of this field controls how the 8-bit interrupt priority field is split into a group priority field, that determines interrupt preemption, and a subpriority field. For more information about priorities, see 'Priority grouping' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . The minimum value of the Non-secure copy of this register is the minimum value of ICC_BPR0_EL1 + 1. The minimum value of the Secure copy of this register is the minimum value of ICC_BPR0_EL1 . If EL3 is implemented and ICC_CTLR_EL3 .CBPR_EL1S is 1: Accesses to this register from Secure EL2 access the state of ICC_BPR0_EL1 . Accesses to this register from Secure EL1: When SCR_EL3 .EEL2 is 1 and HCR_EL2 .IMO is 1, access the state of ICV_BPR1_EL1 . Otherwise, access the state of ICC_BPR0_EL1 . If EL3 is implemented and ICC_CTLR_EL3 .CBPR_EL1NS is 1, Non-secure accesses to this register at EL1 and EL2 behave as follows, depending on the values of HCR_EL2 .IMO and SCR_EL3 .IRQ: HCR_EL2.IMO SCR_EL3.IRQ Behavior 0b0 0b0 Non-secure EL1 and EL2 reads return ICC_BPR0_EL1 + 1 saturated to 0b111 . Non-secure EL1 and EL2 writes are ignored. 0b0 0b1 Non-secure EL1 and EL2 accesses trap to EL3. 0b1 0b0 Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 reads return ICC_BPR0_EL1 + 1 saturated to 0b111 . Non-secure EL2 writes are ignored. 0b1 0b1 Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 accesses trap to EL3. If EL3 is not implemented and ICC_CTLR_EL1 .CBPR is 1, Non-secure accesses to this register at EL1 and EL2 behave as follows, depending on the values of HCR_EL2 .IMO: HCR_EL2.IMO Behavior 0b0 Non-secure EL1 and EL2 reads return ICC_BPR0_EL1 + 1 saturated to 0b111 . Non-secure EL1 and EL2 writes are ignored. 0b1 Non-secure EL1 accesses affect virtual interrupts. Non-secure EL2 reads return ICC_BPR0_EL1 + 1 saturated to 0b111 . Non-secure EL2 writes are ignored.
+
+## ICC_CR0_EL1 bitfields
+
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| PID       |   38:38 |    1 | Preemptive Interrupt Domain. Indicates whether the Interrupt Domain associated with the Security state selected by SCR_EL3.{NSE,NS} is the Preemptive Interrupt Domain.
+| IPPT      |   37:32 |    6 | Interrupt Preemptive Priority Threshold value for the Preemptive Interrupt Domain. ICC_CR0_EL1 .IPPT is a 6 bits field to ensure it can be strictly higher than the interrupt priority, which is a 5-bit unsigned value. See 'Preemptive interrupts' in Arm® Generic Interrupt Controller Architecture Specification, GIC architecture version 5 (ARM AES 0070) for more information.
+| LINK_IDLE |     2:2 |    1 | Whether the link between the CPU interface and the IRI is in the process of connecting or disconnecting.
+| LINK      |     1:1 |    1 | Whether the link between the CPU interface and the IRI is connected.
+| EN        |     0:0 |    1 | Enable interrupts for the Interrupt Domain. When this field is 0, there is no HPPI of Sufficient priority for the Interrupt Domain.
+
+## ICC_CR0_EL3 bitfields
+
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| PID       |   33:32 |    2 | Preemptive Interrupt Domain. The PE behaves as if there is no Preemptive Interrupt Domain when any of the following are true: This field is set to 0b10 . This field is set to an Interrupt Domain that is not implemented.
+| LINK_IDLE |     2:2 |    1 | Whether the link between the CPU interface and the IRI is in the process of connecting or disconnecting.
+| LINK      |     1:1 |    1 | Whether the link between the CPU interface and the IRI is connected.
+| EN        |     0:0 |    1 | Enable interrupts for the EL3 Interrupt Domain. When this field is set to 0, the PE behaves as if there is no HPPI of Sufficient priority in the EL3 Interrupt Domain.
 
 ## ICC_CTLR_EL1 bitfields
 
@@ -1788,6 +2078,15 @@ be executed each time an update of the Arm architecture is published.
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the interrupt to be deactivated. This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICC_CTLR_EL1 .IDbits and ICC_CTLR_EL3 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
 
+## ICC_DOMHPPIR_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| P_HPPI   |     3:3 |    1 | Preemptive HPPI for the Preemptive Interrupt Domain valid bit.
+| RL_HPPI  |     2:2 |    1 | HPPI for Realm Interrupt Domain valid bit.
+| S_HPPI   |     1:1 |    1 | HPPI for Secure Interrupt Domain valid bit.
+| NS_HPPI  |     0:0 |    1 | HPPI for Non-secure Interrupt Domain valid bit.
+
 ## ICC_EOIR0_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -1799,6 +2098,12 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID from the corresponding ICC_IAR1_EL1 access. This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICC_CTLR_EL1 .IDbits and ICC_CTLR_EL3 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 . If the EOImode bit for the current Exception level and Security state is 0, a write to this register drops the priority for the interrupt, and also deactivates the interrupt. If the EOImode bit for the current Exception level and Security state is 1, a write to this register only drops the priority for the interrupt. Software must write to ICC_DIR_EL1 to deactivate the interrupt. The EOImode bit for the current Exception level and Security state is determined as follows: If EL3 is not implemented, the appropriate bit is ICC_CTLR_EL1 .EOIMode. If EL3 is implemented and the software is executing at EL3, the appropriate bit is ICC_CTLR_EL3 .EOImode_EL3. If EL3 is implemented and the software is not executing at EL3, the bit depends on the current Security state: If the software is executing in Secure state, the bit is ICC_CTLR_EL3 .EOImode_EL1S. If the software is executing in Non-secure state, the bit is ICC_CTLR_EL3 .EOImode_EL1NS.
+
+## ICC_HAPR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| PRIORITY |     7:0 |    8 | The running priority for the Current Physical Interrupt Domain. If there are no active priorities on the CPU interface in the applicable Interrupt Domain, or all active priorities have undergone a priority drop, the value returned is the Idle priority.
 
 ## ICC_HPPIR0_EL1 bitfields
 
@@ -1812,6 +2117,28 @@ be executed each time an update of the Arm architecture is published.
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the highest priority pending interrupt, if that interrupt is observable at the current Security state and Exception level. If the highest priority pending interrupt is not observable, this field contains a special INTID to indicate the reason. These special INTIDs can be one of: 1020, 1021, or 1023. For more information, see 'Special INTIDs' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICC_CTLR_EL1 .IDbits and ICC_CTLR_EL3 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
 
+## ICC_HPPIR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| HPPIV    |   32:32 |    1 | HPPI valid. There is an HPPI with Sufficient priority for the Interrupt Domain.
+| TYPE     |   31:29 |    3 | The encoding of this field depends on the value of HPPIV as described below: If ICC_HPPIR_EL1.HPPIV is 0, TYPE is RES0 . If ICC_HPPIR_EL1.HPPIV is 1, TYPE specifies the Type of the interrupt.
+| ID       |    23:0 |   24 | The encoding of this field depends on the value of HPPIV as described below: If ICC_HPPIR_EL1.HPPIV is 0, ID is RES0 . If ICC_HPPIR_EL1.HPPIV is 1, ID specifies the interrupt ID.
+
+## ICC_HPPIR_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| HPPIV    |   32:32 |    1 | HPPI valid. There is an HPPI with Sufficient priority for the Interrupt Domain.
+| TYPE     |   31:29 |    3 | The encoding of this field depends on the value of HPPIV as described below: If ICC_HPPIR_EL3.HPPIV is 0, TYPE is RES0 . If ICC_HPPIR_EL3.HPPIV is 1, TYPE specifies the Type of the interrupt.
+| ID       |    23:0 |   24 | The encoding of this field depends on the value of HPPIV as described below: If ICC_HPPIR_EL3.HPPIV is 0, ID is RES0 . If ICC_HPPIR_EL3.HPPIV is 1, ID specifies the interrupt ID.
+
+## ICC_IAFFIDR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| IAFFID   |    15:0 |   16 | PE interrupt Affinity ID.
+
 ## ICC_IAR0_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -1823,6 +2150,27 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the signaled interrupt. This is the INTID of the highest priority pending interrupt, if that interrupt is of sufficient priority for it to be signaled to the PE, and if it can be acknowledged at the current Security state and Exception level. If the highest priority pending interrupt is not observable, this field contains a special INTID to indicate the reason. For more information, see 'Special INTIDs' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICC_CTLR_EL1 .IDbits and ICC_CTLR_EL3 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
+
+## ICC_ICSR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| IAFFID   |   47:32 |   16 | The interrupt Affinity value. The IRS may support fewer than 16 bits of IAFFID. Upper bits not implemented by the IRS are returned as zero. When IRM is 1, this field is IMPSPEC.
+| Priority |   15:11 |    5 | The priority of the interrupt.
+| HM       |     5:5 |    1 | The Handling mode of the interrupt.
+| Active   |     4:4 |    1 | The interrupt's Active state.
+| IRM      |     3:3 |    1 | Interrupt Routing mode.
+| Pending  |     2:2 |    1 | The interrupt's Pending state.
+| Enabled  |     1:1 |    1 | The interrupt's individual enable.
+| F        |     0:0 |    1 | Indicates whether the IRS returned valid data.
+
+## ICC_IDR0_EL1 bitfields
+
+| Bitfield    | msb:lsb | Size | Description
+| ----------- | ------: | ---: | -----------
+| GCIE_LEGACY |    11:8 |    4 | Indicates support for legacy GICv3.3 virtual CPU interface.
+| PRI_BITS    |     7:4 |    4 | The number of priority bits implemented, minus one. The number of supported priority bits is 5.
+| ID_BITS     |     3:0 |    4 | Identifier bits. The number of interrupt identifier bits supported.
 
 ## ICC_IGRPEN0_EL1 bitfields
 
@@ -1848,6 +2196,18 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the signaled interrupt. This is the INTID of the highest priority pending interrupt, if that interrupt has the Non-maskable property and is of sufficient priority for it to be signaled to the PE, and if it can be acknowledged at the current Security state and Exception level. If the highest priority pending interrupt is not observable, this field contains a special INTID to indicate the reason. For more information, see 'Special INTIDs' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICC_CTLR_EL1 .IDbits and ICC_CTLR_EL3 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
+
+## ICC_PCR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| PRIORITY |     4:0 |    5 | The priority mask for the Interrupt Domain.
+
+## ICC_PCR_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| PRIORITY |     4:0 |    5 | The priority mask for the EL3 Interrupt Domain.
 
 ## ICC_PMR_EL1 bitfields
 
@@ -1913,6 +2273,24 @@ be executed each time an update of the Arm architecture is published.
 | DFB      |     1:1 |    1 | Disable FIQ bypass.
 | SRE      |     0:0 |    1 | System Register Enable.
 
+## ICH_APR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| P<x>     |    31:0 |   32 | Provides access to the active virtual priorities.
+
+## ICH_CONTEXTR_EL2 bitfields
+
+| Bitfield    | msb:lsb | Size | Description
+| ----------- | ------: | ---: | -----------
+| V           |   63:63 |    1 | Indicates whether a VPE is currently resident. If EL2 is not enabled in the Security state identified by SCR_EL3.{NSE,NS}, the Effective value of this field is 0.
+| F           |   62:62 |    1 | Indicates whether the last write that set V to 1 succeeded in making a VPE resident.
+| IRICHPPIDIS |   61:61 |    1 | Specifies whether the candidate HPPI presented by the IRI for the resident VPE is considered when selecting the HPPI for the Virtual Interrupt Domain. When V is 0, this field is IGNORED.
+| DB          |   60:60 |    1 | Specifies whether a doorbell interrupt is requested when making a VPE non-resident.
+| DBPM        |   59:55 |    5 | Doorbell priority mask.
+| VPE         |   47:32 |   16 | When V is 1, identifies the resident VPE. When V is 0, this field is IGNORED. This field has no effect if EL2 is not enabled in the Security state identified by SCR_EL3.{NSE,NS}.
+| VM          |    15:0 |   16 | When V is 1, identifies the resident VM. When V is 0, this field is IGNORED. This field has no effect if EL2 is not enabled in the Security state identified by SCR_EL3.{NSE,NS}.
+
 ## ICH_EISR_EL2 bitfields
 
 | Bitfield  | msb:lsb | Size | Description
@@ -1946,6 +2324,61 @@ be executed each time an update of the Arm architecture is published.
 | UIE          |     1:1 |    1 | Underflow Interrupt Enable. Enables the signaling of a maintenance interrupt when the List registers are empty, or hold only one valid entry:
 | En           |     0:0 |    1 | Enable. Global enable bit for the virtual CPU interface:
 
+## ICH_HFGITR_EL2 bitfields
+
+| Bitfield   | msb:lsb | Size | Description
+| ---------- | ------: | ---: | -----------
+| GICRCDNMIA |   10:10 |    1 | Trap execution of GICR CDNMIA at EL1 to EL2.
+| GICRCDIA   |     9:9 |    1 | Trap execution of GICR CDIA at EL1 to EL2.
+| GICCDDI    |     8:8 |    1 | Trap execution of GIC CDDI at EL1 to EL2.
+| GICCDEOI   |     7:7 |    1 | Trap execution of GIC CDEOI at EL1 to EL2.
+| GICCDHM    |     6:6 |    1 | Trap execution of GIC CDHM at EL1 to EL2.
+| GICCDRCFG  |     5:5 |    1 | Trap execution of GIC CDRCFG at EL1 to EL2.
+| GICCDPEND  |     4:4 |    1 | Trap execution of GIC CDPEND at EL1 to EL2.
+| GICCDAFF   |     3:3 |    1 | Trap execution of GIC CDAFF at EL1 to EL2.
+| GICCDPRI   |     2:2 |    1 | Trap execution of GIC CDPRI at EL1 to EL2.
+| GICCDDIS   |     1:1 |    1 | Trap execution of GIC CDDIS at EL1 to EL2.
+| GICCDEN    |     0:0 |    1 | Trap execution of GIC CDEN at EL1 to EL2.
+
+## ICH_HFGRTR_EL2 bitfields
+
+| Bitfield               | msb:lsb | Size | Description
+| ---------------------- | ------: | ---: | -----------
+| ICC_PPI_ACTIVERn_EL1   |   20:20 |    1 | Trap MRS reads of ICC_PPI_CACTIVER<n>_EL1, ICC_PPI_SACTIVER<n>_EL1, ICV_PPI_CACTIVER<n>_EL1 and ICV_PPI_SACTIVER<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_PRIORITYRn_EL1 |   19:19 |    1 | Trap MRS reads of ICC_PPI_PRIORITYR<n>_EL1 and ICV_PPI_PRIORITYR<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_PENDRn_EL1     |   18:18 |    1 | Trap MRS reads of ICC_PPI_CPENDR<n>_EL1, ICC_PPI_SPENDR<n>_EL1 ICV_PPI_CPENDR<n>_EL1 and ICV_PPI_SPENDR<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_ENABLERn_EL1   |   17:17 |    1 | Trap MRS reads of ICC_PPI_ENABLER<n>_EL1 and ICV_PPI_ENABLER<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_HMRn_EL1       |   16:16 |    1 | Trap MRS reads of ICC_PPI_HMR<n>_EL1 and ICV_PPI_HMR<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_IAFFIDR_EL1        |     7:7 |    1 | Trap MRS reads of ICC_IAFFIDR_EL1 at EL1 using AArch64 to EL2.
+| ICC_ICSR_EL1           |     6:6 |    1 | Trap MRS reads of ICC_ICSR_EL1 at EL1 using AArch64 to EL2.
+| ICC_PCR_EL1            |     5:5 |    1 | Trap MRS reads of ICC_PCR_EL1 and ICV_PCR_EL1 at EL1 using AArch64 to EL2.
+| ICC_HPPIR_EL1          |     4:4 |    1 | Trap MRS reads of ICC_HPPIR_EL1 and ICV_HPPIR_EL1 at EL1 using AArch64 to EL2.
+| ICC_HAPR_EL1           |     3:3 |    1 | Trap MRS reads of ICC_HAPR_EL1 and ICV_HAPR_EL1 at EL1 using AArch64 to EL2.
+| ICC_CR0_EL1            |     2:2 |    1 | Trap MRS reads of ICC_CR0_EL1 and ICV_CR0_EL1 at EL1 using AArch64 to EL2.
+| ICC_IDRn_EL1           |     1:1 |    1 | Trap MRS reads of ICC_IDR0_EL1 at EL1 using AArch64 to EL2.
+| ICC_APR_EL1            |     0:0 |    1 | Trap MRS reads of ICC_APR_EL1 and ICV_APR_EL1 at EL1 using AArch64 to EL2.
+
+## ICH_HFGWTR_EL2 bitfields
+
+| Bitfield               | msb:lsb | Size | Description
+| ---------------------- | ------: | ---: | -----------
+| ICC_PPI_ACTIVERn_EL1   |   20:20 |    1 | Trap MSR writes of ICC_PPI_CACTIVER<n>_EL1, ICC_PPI_SACTIVER<n>_EL1, ICV_PPI_CACTIVER<n>_EL1 and ICV_PPI_SACTIVER<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_PRIORITYRn_EL1 |   19:19 |    1 | Trap MSR writes of ICC_PPI_PRIORITYR<n>_EL1 and ICV_PPI_PRIORITYR<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_PENDRn_EL1     |   18:18 |    1 | Trap MSR writes of ICC_PPI_CPENDR<n>_EL1, ICC_PPI_SPENDR<n>_EL1 ICV_PPI_CPENDR<n>_EL1 and ICV_PPI_SPENDR<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_PPI_ENABLERn_EL1   |   17:17 |    1 | Trap MSR writes of ICC_PPI_ENABLER<n>_EL1 and ICV_PPI_ENABLER<n>_EL1 at EL1 using AArch64 to EL2.
+| ICC_ICSR_EL1           |     6:6 |    1 | Trap MSR writes of ICC_ICSR_EL1 at EL1 using AArch64 to EL2.
+| ICC_PCR_EL1            |     5:5 |    1 | Trap MSR writes of ICC_PCR_EL1 and ICV_PCR_EL1 at EL1 using AArch64 to EL2.
+| ICC_CR0_EL1            |     2:2 |    1 | Trap MSR writes of ICC_CR0_EL1 and ICV_CR0_EL1 at EL1 using AArch64 to EL2.
+| ICC_APR_EL1            |     0:0 |    1 | Trap MSR writes of ICC_APR_EL1 and ICV_APR_EL1 at EL1 using AArch64 to EL2.
+
+## ICH_HPPIR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| HPPIV    |   32:32 |    1 | HPPI valid. There is an HPPI with Sufficient priority for the Interrupt Domain.
+| TYPE     |   31:29 |    3 | The encoding of this field depends on the value of HPPIV as described below: If ICH_HPPIR_EL2.HPPIV is 0, TYPE is RES0 . If ICH_HPPIR_EL2.HPPIV is 1, TYPE specifies the Type of the interrupt.
+| ID       |    23:0 |   24 | The encoding of this field depends on the value of HPPIV as described below: If ICH_HPPIR_EL2.HPPIV is 0, ID is RES0 . If ICH_HPPIR_EL2.HPPIV is 1, ID specifies the interrupt ID.
+
 ## ICH_MISR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -1959,33 +2392,39 @@ be executed each time an update of the Arm architecture is published.
 | U        |     1:1 |    1 | Underflow.
 | EOI      |     0:0 |    1 | End Of Interrupt.
 
+## ICH_VCTLR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| V3       |     1:1 |    1 | Enable bit for Legacy operation. If EL2 is not enabled in the Security state identified by SCR_EL3.{NSE,NS}, the Effective value of this field is 0. When the Effective value of this field is 0, the Effective value of ICH_HCR_EL2.En is 0. See 'Legacy virtual CPU interface' for more information.
+| EN       |     0:0 |    1 | Enable interrupts for the Virtual Interrupt Domain. If EL2 is not enabled in the Security state identified by SCR_EL3.{NSE,NS}, the Effective value of this field is 0.
+
 ## ICH_VMCR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| VPMR     |   31:24 |    8 | Virtual Priority Mask. The priority mask level for the virtual CPU interface. If the priority of a pending virtual interrupt is higher than the value indicated by this field, the interface signals the virtual interrupt to the PE. This field is an alias of ICV_PMR_EL1 .Priority.
-| VBPR0    |   23:21 |    3 | Virtual Binary Point Register, Group 0. Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 0 interrupt preemption, and also determines Group 1 interrupt preemption if ICH_VMCR_EL2.VCBPR == 1. This field is an alias of ICV_BPR0_EL1 .BinaryPoint. The minimum value of this field is determined by ICH_VTR_EL2 .PREbits. An attempt to program the binary point field to a value less than the minimum value sets the field to the minimum value.
-| VBPR1    |   20:18 |    3 | Virtual Binary Point Register, Group 1. Defines the point at which the priority value fields split into two parts, the group priority field and the subpriority field. The group priority field determines Group 1 interrupt preemption if ICH_VMCR_EL2 .VCBPR == 0. This field is an alias of ICV_BPR1_EL1 .BinaryPoint. This field is always accessible to EL2 accesses, regardless of the setting of the ICH_VMCR_EL2.VCBPR field. For Non-secure writes, the minimum value of this field is the minimum value of ICH_VMCR_EL2.VBPR0 plus one. For Secure writes, the minimum value of this field is the minimum value of ICH_VMCR_EL2.VBPR0. An attempt to program the binary point field to a value less than the minimum value sets the field to the minimum value.
-| VEOIM    |     9:9 |    1 | Virtual EOI mode. Controls whether a write to an End of Interrupt register also deactivates the virtual interrupt:
-| VCBPR    |     4:4 |    1 | Virtual Common Binary Point Register. Possible values of this bit are:
-| VFIQEn   |     3:3 |    1 | Virtual FIQ enable. Possible values of this bit are:
-| VAckCtl  |     2:2 |    1 | Virtual AckCtl. Possible values of this bit are:
-| VENG1    |     1:1 |    1 | Virtual Group 1 interrupt enable. Possible values of this bit are:
-| VENG0    |     0:0 |    1 | Virtual Group 0 interrupt enable. Possible values of this bit are:
+| VPMR     |   31:27 |    5 | Virtual priority mask. This field is an alias of ICV_PCR_EL1.Priority.
+| EN       |     0:0 |    1 | Enables interrupts for the Virtual Interrupt Domain. When this field is 0, there is no HPPI of Sufficient priority for the Virtual Interrupt Domain. This field is an alias of ICV_CR0_EL1.EN.
 
 ## ICH_VTR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| PRIbits  |   31:29 |    3 | Priority bits. Indicates the number of virtual priority bits implemented, minus one. An implementation must implement at least 32 levels of virtual priority (5 priority bits). This field is an alias of ICV_CTLR_EL1 .PRIbits.
-| PREbits  |   28:26 |    3 | Preemption bits. Indicates the number of virtual preemption bits implemented, minus one. An implementation must implement at least 32 levels of virtual preemption priority (5 preemption bits). The value of this field must be less than or equal to the value of ICH_VTR_EL2.PRIbits. This field determines the minimum value of ICH_VMCR_EL2 .VBPR0.
+| PRIbits  |   31:29 |    3 | Priority bits. Indicates the number of virtual priority bits implemented, minus one. An implementation must implement at least 32 levels of virtual priority (5 priority bits). This field is an alias of ICV_CTLR_EL1 .PRIbits. If FEAT_GCIE_LEGACY is implemented, this field returns 4 (5 bits of priority).
+| PREbits  |   28:26 |    3 | Preemption bits. Indicates the number of virtual preemption bits implemented, minus one. An implementation must implement at least 32 levels of virtual preemption priority (5 preemption bits). The value of this field must be less than or equal to the value of ICH_VTR_EL2.PRIbits. This field determines the minimum value of ICH_VMCR_EL2 .VBPR0. If FEAT_GCIE_LEGACY is implemented, this field returns 4 (5 bits of preemption).
 | IDbits   |   25:23 |    3 | The number of virtual interrupt identifier bits supported:
-| SEIS     |   22:22 |    1 | SEI Support. Indicates whether the virtual CPU interface supports generation of SEIs:
+| SEIS     |   22:22 |    1 | SEI Support. The virtual CPU interface does not support generation of SEIs.
 | A3V      |   21:21 |    1 | Affinity 3 Valid.
 | nV4      |   20:20 |    1 | Direct injection of virtual interrupts not supported.
 | TDS      |   19:19 |    1 | Separate trapping of EL1 writes to ICV_DIR_EL1 supported.
 | DVIM     |   18:18 |    1 | Masking of directly-injected virtual interrupts.
 | ListRegs |     4:0 |    5 | List Registers. Indicates the number of List registers implemented, minus one.
+
+## ICV_APR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| P<x>     |    31:0 |   32 | Provides access to the active priorities.
 
 ## ICV_BPR0_EL1 bitfields
 
@@ -1998,6 +2437,14 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield    | msb:lsb | Size | Description
 | ----------- | ------: | ---: | -----------
 | BinaryPoint |     2:0 |    3 | If the GIC is configured to use separate binary point fields for Group 0 and Group 1 interrupts, the value of this field controls how the 8-bit interrupt priority field is split into a group priority field, that determines interrupt preemption, and a subpriority field. For more information about priorities, see 'Priority grouping' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . An attempt to program this field to a value less than the minimum value sets the field to the minimum value. If ICV_CTLR_EL1 .CBPR is set to 1, Non-secure EL1 reads return ICV_BPR0_EL1 + 1 saturated to 0b111 . Non-secure EL1 writes are ignored. If ICV_CTLR_EL1 .CBPR is set to 1, Secure EL1 reads return ICV_BPR0_EL1 . Secure EL1 writes modify ICV_BPR0_EL1 .
+
+## ICV_CR0_EL1 bitfields
+
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| LINK_IDLE |     2:2 |    1 | Whether the link between the CPU interface and the IRI is in the process of connecting or disconnecting.
+| LINK      |     1:1 |    1 | Whether the link between the CPU interface and the IRI is connected.
+| EN        |     0:0 |    1 | Enable interrupts for the Interrupt Domain. When this field is 0, there is no HPPI of Sufficient priority for the Interrupt Domain.
 
 ## ICV_CTLR_EL1 bitfields
 
@@ -2030,6 +2477,12 @@ be executed each time an update of the Arm architecture is published.
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID from the corresponding ICV_IAR1_EL1 access. This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICV_CTLR_EL1 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 . If the ICV_CTLR_EL1 .EOImode bit is 0, a write to this register drops the priority for the virtual interrupt, and also deactivates the virtual interrupt. If the ICV_CTLR_EL1 .EOImode bit is 1, a write to this register only drops the priority for the virtual interrupt. Software must write to ICV_DIR_EL1 to deactivate the virtual interrupt.
 
+## ICV_HAPR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| PRIORITY |     7:0 |    8 | The running priority for the Virtual Interrupt Domain. If there are no active priorities on the CPU interface in the applicable Interrupt Domain, or all active priorities have undergone a priority drop, the value returned is the Idle priority.
+
 ## ICV_HPPIR0_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -2041,6 +2494,14 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the highest priority pending virtual interrupt. If the highest priority pending interrupt is not observable, this field contains a special INTID to indicate the reason. This special INTID can take the value 1023 only. For more information, see 'Special INTIDs' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICV_CTLR_EL1 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
+
+## ICV_HPPIR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| HPPIV    |   32:32 |    1 | HPPI valid. There is an HPPI with Sufficient priority for the Interrupt Domain.
+| TYPE     |   31:29 |    3 | The encoding of this field depends on the value of HPPIV as described below: If ICV_HPPIR_EL1.HPPIV is 0, TYPE is RES0 . If ICV_HPPIR_EL1.HPPIV is 1, TYPE specifies the Type of the interrupt.
+| ID       |    23:0 |   24 | The encoding of this field depends on the value of HPPIV as described below: If ICV_HPPIR_EL1.HPPIV is 0, ID is RES0 . If ICV_HPPIR_EL1.HPPIV is 1, ID specifies the interrupt ID.
 
 ## ICV_IAR0_EL1 bitfields
 
@@ -2071,6 +2532,12 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | INTID    |    23:0 |   24 | The INTID of the signaled virtual interrupt. This is the INTID of the highest priority pending virtual interrupt, if that virtual interrupt has the Non-maskable property and is of sufficient priority for it to be signaled to the PE, and if it can be acknowledged at the current Security state and Exception level. If the highest priority pending interrupt is not observable, this field contains a special INTID to indicate the reason. For more information, see 'Special INTIDs' in ARM® Generic Interrupt Controller Architecture Specification, GIC architecture version 3.0 and version 4.0 (ARM IHI 0069) . This field has either 16 or 24 bits implemented. The number of implemented bits can be found in ICV_CTLR_EL1 .IDbits. If only 16 bits are implemented, bits [23:16] of this register are RES0 .
+
+## ICV_PCR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| PRIORITY |     4:0 |    5 | The priority mask for the Interrupt Domain.
 
 ## ICV_PMR_EL1 bitfields
 
@@ -2107,7 +2574,7 @@ be executed each time an update of the Arm architecture is published.
 | SEBEP       |   27:24 |    4 | Synchronous-exception-based event profiling.
 | WRPs        |   23:20 |    4 | Number of watchpoints, minus 1.
 | PMSS        |   19:16 |    4 | PMU Snapshot extension.
-| BRPs        |   15:12 |    4 | Number of breakpoints, minus 1.
+| BRPs        |   15:12 |    4 | Index of the highest numbered context-aware breakpoint. Identifies which of the implemented breakpoints are context-aware breakpoints.
 | PMUVer      |    11:8 |    4 | Performance Monitors Extension version. This field does not follow the standard ID scheme, but uses the alternative ID scheme described in 'Alternative ID scheme used for the Performance Monitors Extension version' .
 | TraceVer    |     7:4 |    4 | Trace support. Indicates whether System register interface to a trace unit is implemented.
 | DebugVer    |     3:0 |    4 | Debug architecture version. Indicates presence of Armv8 debug architecture.
@@ -2148,6 +2615,7 @@ be executed each time an update of the Arm architecture is published.
 | F8DP2    |   28:28 |    1 | Indicates support for the following instructions: Advanced SIMD FP8 to half-precision 2-way dot product FDOT (2-way) instructions. When FEAT_SVE2 is implemented and the PE is not in Streaming SVE mode, SVE FP8 to half-precision 2-way dot product FDOT (2-way) instructions.
 | F8MM8    |   27:27 |    1 | Indicates support for the following instructions: Advanced SIMD FP8 to single-precision matrix multiply FMMLA (8-way, FP8 to FP32) instruction. If FEAT_SVE2 is implemented, SVE FP8 to single-precision matrix multiply FMMLA (widening, FP8 to FP32) instruction is implemented when the PE is not in Streaming SVE mode.
 | F8MM4    |   26:26 |    1 | Indicates support for the following instructions: Advanced SIMD FP8 to half-precision matrix multiply FMMLA (4-way, FP8 to FP16) instruction. If FEAT_SVE2 is implemented, SVE FP8 to half-precision matrix multiply FMMLA (widening, FP8 to FP16) instruction is implemented when the PE is not in Streaming SVE mode.
+| F16MM2   |   15:15 |    1 | Indicates support for the following instructions: Advanced SIMD half-precision matrix multiply-accumulate instruction FMMLA . If FEAT_SVE2p2 is implemented, the SVE half-precision matrix multiply-accumulate instruction FMMLA .
 | F8E4M3   |     1:1 |    1 | Indicates support for OFP8 E4M3 format and behavior for FP8 instructions.
 | F8E5M2   |     0:0 |    1 | Indicates support for OFP8 E5M2 format and behavior for FP8 instructions.
 
@@ -2164,7 +2632,6 @@ be executed each time an update of the Arm architecture is published.
 | SM3      |   39:36 |    4 | Indicates support for the following SM3 instructions SM3SS1 , SM3TT1A , SM3TT1B , SM3TT2A , SM3TT2B , SM3PARTW1 , and SM3PARTW2 in AArch64 state.
 | SHA3     |   35:32 |    4 | Indicates support for the following  SHA3 instructions EOR3 , RAX1 , XAR , and BCAX in AArch64 state.
 | RDM      |   31:28 |    4 | Indicates support for SQRDMLAH and SQRDMLSH instructions in AArch64 state.
-| TME      |   27:24 |    4 | Indicates support for the following TME instructions TCANCEL , TCOMMIT , TSTART , and TTEST .
 | Atomic   |   23:20 |    4 | Indicates support for Atomic instructions in AArch64 state.
 | CRC32    |   19:16 |    4 | Indicates support for the following CRC32 instructions CRC32B , CRC32H , CRC32W , CRC32X , CRC32CB , CRC32CH , CRC32CW , and CRC32CX in AArch64 state.
 | SHA2     |   15:12 |    4 | Indicates support for SHA2 instructions in AArch64 state.
@@ -2197,7 +2664,7 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield     | msb:lsb | Size | Description
 | ------------ | ------: | ---: | -----------
 | ATS1A        |   63:60 |    4 | Indicates support for address translation instructions, which perform stage 1 address translation for the given virtual address without checking for stage 1 permissions.
-| LUT          |   59:56 |    4 | Indicates support for: Advanced SIMD lookup table instructions with 2-bit and 4-bit indices. If FEAT_SVE2 or FEAT_SME2 is implemented, SVE lookup table instructions with 2-bit and 4-bit indices.
+| LUT          |   59:56 |    4 | Indicates support for: Advanced SIMD lookup table instructions with 2-bit and 4-bit indices. If FEAT_SVE2 or FEAT_SME2 is implemented, SVE lookup table instructions with 2-bit and 4-bit indices. If FEAT_SVE2p3 or FEAT_SME2p3 is implemented, SVE lookup table instructions with 6-bit indices.
 | CSSC         |   55:52 |    4 | Indicates support for common short sequence compression instructions. If FEAT_CMPBR is implemented, indicates support for compare and branch instructions.
 | RPRFM        |   51:48 |    4 | RPRFM hint instruction.
 | PCDPHINT     |   47:44 |    4 | Indicates support for producer-consumer data placement hints.
@@ -2215,16 +2682,20 @@ be executed each time an update of the Arm architecture is published.
 
 ## ID_AA64ISAR3_EL1 bitfields
 
-| Bitfield | msb:lsb | Size | Description
-| -------- | ------: | ---: | -----------
-| FPRCVT   |   31:28 |    4 | Indicates support for the following conversions between floating-point and integer instructions with only scalar SIMD&FP register operands and results, and with different input and output register sizes: FCVTAS (scalar SIMD&FP), FCVTAU (scalar SIMD&FP). FCVTMS (scalar SIMD&FP), FCVTMU (scalar SIMD&FP). FCVTNS (scalar SIMD&FP), FCVTNU (scalar SIMD&FP). FCVTPS (scalar SIMD&FP), FCVTPU (scalar SIMD&FP). FCVTZS (scalar SIMD&FP), FCVTZU (scalar SIMD&FP). SCVTF (scalar SIMD&FP), UCVTF (scalar SIMD&FP). If FEAT_SME2p1 is implemented, FEAT_FPRCVT indicates support for the following conversions between floating-point and integer instructions with only scalar SIMD&FP register operands and results, and with the same input and output register sizes when the PE is in Streaming SVE mode: FCVTAS (vector), FCVTAU (vector). FCVTMS (vector), FCVTMU (vector). FCVTNS (vector), FCVTNU (vector). FCVTPS (vector), FCVTPU (vector). FCVTZS (vector), FCVTZU (vector). SCVTF (vector), UCVTF (vector).
-| LSUI     |   27:24 |    4 | Support for the following load and store unprivileged instructions: LDTXR , STTXR . CAST , CASAT , CASALT , CASLT . CASP , CASPA , CASPAL , CASPL . LDTP , STTP . LDTP (SIMD&FP) , STTP (SIMD&FP) . LDTNP , STTNP . LDTNP (SIMD&FP) , STTNP (SIMD&FP) .
-| OCCMO    |   23:20 |    4 | Indicates support for the following cache maintenance operation to the Outer cache level instructions: DC CIVAOC . DC CVAOC . If FEAT_MTE is implemented: DC CIGDVAOC . DC CGDVAOC .
-| LSFE     |   19:16 |    4 | Indicates support for the following A64 Base atomic floating-point in-memory instructions: Floating-point atomic add in memory: LDFADD , LDFADDA , LDFADDAL , and LDFADDL . BFloat16 atomic add in memory: LDBFADD , LDBFADDA , LDBFADDAL , and LDBFADDL . Floating-point atomic maximum in memory: LDFMAX , LDFMAXA , LDFMAXAL , and LDFMAXL . BFloat16 atomic maximum in memory: LDBFMAX , LDBFMAXA , LDBFMAXAL , and LDBFMAXL . Floating-point atomic maximum number in memory: LDFMAXNM , LDFMAXNMA , LDFMAXNMAL , and LDFMAXNML . BFloat16 atomic maximum number in memory: LDBFMAXNM , LDBFMAXNMA , LDBFMAXNMAL , and LDBFMAXNML . Floating-point atomic minimum in memory: LDFMIN , LDFMINA , LDFMINAL , and LDFMINL . BFloat16 atomic minimum in memory: LDBFMIN , LDBFMINA , LDBFMINAL , and LDBFMINL . Floating-point atomic minimum number in memory: LDFMINNM , LDFMINNMA , LDFMINNMAL , and LDFMINNML . BFloat16 atomic minimum number in memory: LDBFMINNM , LDBFMINNMA , LDBFMINNMAL , and LDBFMINNML . Floating-point atomic add in memory, without return: STFADD and STFADDL . BFloat16 atomic add in memory, without return: STBFADD and STBFADDL . Floating-point atomic maximum in memory, without return: STFMAX and STFMAXL . BFloat16 atomic maximum in memory, without return: STBFMAX and STBFMAXL . Floating-point atomic maximum number in memory, without return: STFMAXNM and STFMAXNML . BFloat16 atomic maximum number in memory, without return: STBFMAXNM and STBFMAXNML . Floating-point atomic minimum in memory, without return: STFMIN and STFMINL . BFloat16 atomic minimum in memory, without return: STBFMIN and STBFMINL . Floating-point atomic minimum number in memory, without return: STFMINNM and STFMINNML . BFloat16 atomic minimum number in memory, without return: STBFMINNM and STBFMINNML .
-| PACM     |   15:12 |    4 | Indicates the implementation of PSTATE.PACM.
-| TLBIW    |    11:8 |    4 | Support for TLBI VMALL for Dirty state.
-| FAMINMAX |     7:4 |    4 | Indicates support for the following Advanced SIMD, SVE2, and SME2 instructions that compute maximum and minimum absolute value: When Advanced SIMD is implemented, the Advanced SIMD instructions FAMAX and FAMIN . When FEAT_SVE2 or FEAT_SME2 is implemented, the SVE2 instructions FAMAX and FAMIN . When FEAT_SME2 is implemented, the SME2 instructions FAMAX (multiple and single vectors), FAMIN (multiple and single vectors), FAMAX (multiple vectors), and FAMIN (multiple vectors).
-| CPA      |     3:0 |    4 | Indicates support for Checked Pointer Arithmetic instructions.
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| LSCP      |   47:44 |    4 | Indicates support for the following Load and Store Consistency Pair instructions: LDAP . LDAPP . STLP
+| LSCSHINT  |   43:40 |    4 | Indicates support for the following hint instructions: SHUH . STCPH .
+| MTETC     |   39:36 |    4 | Indicates support for the following store instructions: DC ZGBVA. DC GBVA.
+| PAC_frac2 |   35:32 |    4 | Indicates support for the following pointer authentication controls: To independently control pointer authentication at EL0. To disable BTI landing pad behavior on pointer authentication instructions.
+| FPRCVT    |   31:28 |    4 | Indicates support for the following conversion between floating-point and integer instructions with only scalar SIMD&FP register operands and results, and with different input and output register sizes, when the PE is not in Streaming SVE mode: FCVTAS (scalar SIMD&FP), FCVTAU (scalar SIMD&FP). FCVTMS (scalar SIMD&FP), FCVTMU (scalar SIMD&FP). FCVTNS (scalar SIMD&FP), FCVTNU (scalar SIMD&FP). FCVTPS (scalar SIMD&FP), FCVTPU (scalar SIMD&FP). FCVTZS (scalar SIMD&FP), FCVTZU (scalar SIMD&FP). SCVTF (scalar SIMD&FP), UCVTF (scalar SIMD&FP). If FEAT_SME is implemented, indicates support for the above instructions, as well as the following conversion between floating-point and integer instructions with only scalar SIMD&FP register operands and results, and with the same input and output register sizes, when the PE is in Streaming SVE mode: FCVTAS (vector), FCVTAU (vector). FCVTMS (vector), FCVTMU (vector). FCVTNS (vector), FCVTNU (vector). FCVTPS (vector), FCVTPU (vector). FCVTZS (vector), FCVTZU (vector). SCVTF (vector), UCVTF (vector).
+| LSUI      |   27:24 |    4 | Support for the following load and store unprivileged instructions: LDTXR , STTXR . LDATXR , STLTXR . CAST , CASAT , CASALT , CASLT . CASPT , CASPAT , CASPALT , CASPLT . LDTP , STTP . LDTP (SIMD&FP) , STTP (SIMD&FP) . LDTNP , STTNP . LDTNP (SIMD&FP) , STTNP (SIMD&FP) . SWPT , SWPTA , SWPTL , SWPTAL . LDTADD , LDTADDA , LDTADDAL , LDTADDL . LDTSET , LDTSETA , LDTSETAL , LDTSETL . LDTCLR , LDTCLRA , LDTCLRAL , LDTCLRL . STTADD , STTADDL . STTSET , STTSETL . STTCLR , STTCLRL .
+| OCCMO     |   23:20 |    4 | Indicates support for the following cache maintenance operation to the Outer cache level instructions: DC CIVAOC . DC CVAOC . If FEAT_MTE is implemented: DC CIGDVAOC . DC CGDVAOC .
+| LSFE      |   19:16 |    4 | Indicates support for the following A64 Base atomic floating-point in-memory instructions: Floating-point atomic add in memory: LDFADD , LDFADDA , LDFADDAL , and LDFADDL . BFloat16 atomic add in memory: LDBFADD , LDBFADDA , LDBFADDAL , and LDBFADDL . Floating-point atomic maximum in memory: LDFMAX , LDFMAXA , LDFMAXAL , and LDFMAXL . BFloat16 atomic maximum in memory: LDBFMAX , LDBFMAXA , LDBFMAXAL , and LDBFMAXL . Floating-point atomic maximum number in memory: LDFMAXNM , LDFMAXNMA , LDFMAXNMAL , and LDFMAXNML . BFloat16 atomic maximum number in memory: LDBFMAXNM , LDBFMAXNMA , LDBFMAXNMAL , and LDBFMAXNML . Floating-point atomic minimum in memory: LDFMIN , LDFMINA , LDFMINAL , and LDFMINL . BFloat16 atomic minimum in memory: LDBFMIN , LDBFMINA , LDBFMINAL , and LDBFMINL . Floating-point atomic minimum number in memory: LDFMINNM , LDFMINNMA , LDFMINNMAL , and LDFMINNML . BFloat16 atomic minimum number in memory: LDBFMINNM , LDBFMINNMA , LDBFMINNMAL , and LDBFMINNML . Floating-point atomic add in memory, without return: STFADD and STFADDL . BFloat16 atomic add in memory, without return: STBFADD and STBFADDL . Floating-point atomic maximum in memory, without return: STFMAX and STFMAXL . BFloat16 atomic maximum in memory, without return: STBFMAX and STBFMAXL . Floating-point atomic maximum number in memory, without return: STFMAXNM and STFMAXNML . BFloat16 atomic maximum number in memory, without return: STBFMAXNM and STBFMAXNML . Floating-point atomic minimum in memory, without return: STFMIN and STFMINL . BFloat16 atomic minimum in memory, without return: STBFMIN and STBFMINL . Floating-point atomic minimum number in memory, without return: STFMINNM and STFMINNML . BFloat16 atomic minimum number in memory, without return: STBFMINNM and STBFMINNML .
+| PACM      |   15:12 |    4 | Indicates the implementation of PSTATE.PACM.
+| TLBIW     |    11:8 |    4 | Support for TLBI VMALL for Dirty state.
+| FAMINMAX  |     7:4 |    4 | Indicates support for the following Advanced SIMD, SVE2, and SME2 instructions that compute maximum and minimum absolute value: When Advanced SIMD is implemented, the Advanced SIMD instructions FAMAX and FAMIN . When FEAT_SVE2 or FEAT_SME2 is implemented, the SVE2 instructions FAMAX and FAMIN . When FEAT_SME2 is implemented, the SME2 instructions FAMAX (multiple and single vectors), FAMIN (multiple and single vectors), FAMAX (multiple vectors), and FAMIN (multiple vectors).
+| CPA       |     3:0 |    4 | Indicates support for Checked Pointer Arithmetic instructions.
 
 ## ID_AA64MMFR0_EL1 bitfields
 
@@ -2256,7 +2727,7 @@ be executed each time an update of the Arm architecture is published.
 | AFP      |   47:44 |    4 | Indicates support for FPCR .{AH, FIZ, NEP}.
 | HCX      |   43:40 |    4 | Indicates support for HCRX_EL2 and its associated EL3 trap.
 | ETS      |   39:36 |    4 | Indicates support for Enhanced Translation Synchronization.
-| TWED     |   35:32 |    4 | Indicates support for the configurable delayed trapping of WFE.
+| TWED     |   35:32 |    4 | Indicates support for the configurable delayed trapping of WFE and WFET.
 | XNX      |   31:28 |    4 | Indicates support for execute-never control distinction by Exception level at stage 2.
 | SpecSEI  |   27:24 |    4 | Describes whether the PE can generate SError exceptions from speculative reads of memory, including speculative instruction fetches.
 | PAN      |   23:20 |    4 | Privileged Access Never. Indicates support for the PAN bit in PSTATE, SPSR_EL1 , SPSR_EL2 , SPSR_EL3 , and DSPSR_EL0 .
@@ -2310,8 +2781,14 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| SRMASK   |   47:44 |    4 | Indicates support for bitwise write masks for the following registers: ACTLR_EL1 . CPACR_EL1 . SCTLR_EL1 . SCTLR2_EL1 . TCR_EL1 . TCR2_EL1 . ACTLR_EL2 . CPTR_EL2 . SCTLR_EL2 . SCTLR2_EL2 . TCR_EL2 . TCR2_EL2 .
+| MTEFGT   |   63:60 |    4 | If FEAT_MTE2 or FEAT_VMTE is implemented, indicates support for fine grained traps on RGSR_EL1 and GCR_EL1 . If FEAT_MTE_ASYNC is implemented, indicates support for fine grained traps on TFSR_EL1 and TFSRE0_EL1 .
+| SCRX     |   59:56 |    4 | Indicates support for SCR2_EL3 .
+| TEV      |   55:52 |    4 | TIndex Exception-like Vector. Indicates support for exception-like changes to TIndex and the associated changes to interpretation of exception vectors and VBAR_ELx.
+| TPS      |   51:48 |    4 | Thread Private State. Indicates support for thread-private region permissions.
+| SRMASK   |   47:44 |    4 | Indicates support for bitwise write masks for the following registers: ACTLR_EL1 . CPACR_EL1 . SCTLR_EL1 . SCTLR2_EL1 . TCR_EL1 . TCR2_EL1 . ACTLR_EL2 . CPTR_EL2 . SCTLR_EL2 . SCTLR2_EL2 . TCR_EL2 . TCR2_EL2 . When FEAT_SRMASK2 is implemented, indicates support for bitwise write masks for the following registers: HCR_EL2 and HCRX_EL2 . If FEAT_NV3 is implemented, indicates support for the following: The NVHCRX_EL2 register. Bitwise masks for NVHCRX_EL2 and NVHCR_EL2 .
+| TLBID    |   43:40 |    4 | Support for TLBI Domains.
 | E3DSE    |   39:36 |    4 | Delegated SError exceptions from EL3. Describes support for delegated SError injection from EL3.
+| EAESR    |   35:32 |    4 | Indicates support for Enhanced Abort Syndrome.
 | RMEGDI   |   31:28 |    4 | RME Granular Data Isolation.
 | E2H0     |   27:24 |    4 | Indicates support for programming HCR_EL2 .E2H.
 | NV_frac  |   23:20 |    4 | Indicates support for a subset of FEAT_NV and FEAT_NV2 behaviors.
@@ -2366,8 +2843,15 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield     | msb:lsb | Size | Description
 | ------------ | ------: | ---: | -----------
+| VMTETCL      |   47:44 |    4 | Support for tag checking of data loads when Virtual tagging is implemented and enabled.
+| VMTETC       |   43:40 |    4 | Support for tag checking when Virtual tagging is implemented and enabled.
+| VMTE         |   39:36 |    4 | Support for Virtual tagging.
 | FPMR         |   35:32 |    4 | Indicates support for FPMR .
+| MPAM2        |   31:28 |    4 | Support for MPAM 2 Extension.
+| FGDT         |   27:24 |    4 | Indicates the how many bits of FGDTIndex are implemented, and how many (A)FGDTp<n>_ELx registers are implemented.
+| MTEEIRG      |   23:20 |    4 | Support for the Enhanced Insert Random taG algorithm.
 | UINJ         |   19:16 |    4 | Support for software injection of Undefined Instruction exceptions.
+| GCIE         |   15:12 |    4 | Support for the GICv5 CPU interface extension.
 | MTEFAR       |    11:8 |    4 | Indicates whether FAR_ELx[63:60] are UNKNOWN on a synchronous exception due to a Tag Check Fault.
 | MTESTOREONLY |     7:4 |    4 | Support for Store-only Tag checking.
 | MTEPERM      |     3:0 |    4 | Support for Allocation tag access permissions.
@@ -2377,8 +2861,9 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | FA64     |   63:63 |    1 | Indicates support at each Exception Level for execution of the full AArch64 Advanced SIMD and SVE instruction sets when the PE is in Streaming SVE mode.
+| LUT6     |   61:61 |    1 | Indicates support for SME lookup table instructions with 6-bit indices.
 | LUTv2    |   60:60 |    1 | Indicates support for the following additional variants of SME2 lookup table LUTI4 and MOVT instructions: A LUTI4 instruction with 8-bit result elements, two consecutively numbered source vectors, and four consecutively numbered destination vectors. If FEAT_SME2p1 is implemented, a LUTI4 instruction with 8-bit result elements, two consecutively numbered source vectors, and four destination vectors with strided register numbering. A MOVT instruction that copies a single Z source vector to ZT0.
-| SMEver   |   59:56 |    4 | Indicates support for SME instructions when FEAT_SME is implemented.
+| SMEver   |   59:56 |    4 | Indicates support for SME instructions.
 | I16I64   |   55:52 |    4 | Indicates support for the following SME instructions that accumulate into 64-bit integer elements in the ZA array: The variants of the ADDHA , ADDVA , SMOPA , SMOPS , SUMOPA , SUMOPS , UMOPA , UMOPS , USMOPA , and USMOPS instructions that accumulate into 64-bit integer tiles. When FEAT_SME2 is implemented, the variants of the ADD , ADDA , SDOT , SMLALL , SMLSLL , SUB , SUBA , SVDOT , UDOT , UMLALL , UMLSLL , and UVDOT instructions that accumulate into 64-bit integer elements in ZA array vectors.
 | F64F64   |   48:48 |    1 | Indicates support for the following SME instructions that accumulate into double-precision floating-point elements in the ZA array: The variants of the FMOPA and FMOPS instructions that accumulate into double-precision tiles. When FEAT_SME2 is implemented, the variants of the FADD , FMLA , FMLS , and FSUB instructions that accumulate into double-precision elements in ZA array vectors.
 | I16I32   |   47:44 |    4 | Indicates support for SME2 SMOPA (2-way), SMOPS (2-way), UMOPA (2-way), and UMOPS (2-way) instructions that accumulate 16-bit outer products into 32-bit integer tiles.
@@ -2415,7 +2900,7 @@ be executed each time an update of the Arm architecture is published.
 | BitPerm  |   19:16 |    4 | Indicates support for the SVE bit permute instructions BDEP , BEXT , and BGRP .
 | EltPerm  |   15:12 |    4 | If FEAT_SVE2p2 is implemented, the following SVE instructions are implemented when the PE is not in Streaming SVE mode: 8-bit and 16-bit element COMPACT . 8-bit, 16-bit, 32-bit, and 64-bit element EXPAND . If FEAT_SME2p2 is implemented, the following SVE instructions are implemented when the PE is in Streaming SVE mode: 8-bit, 16-bit, 32-bit, and 64-bit element COMPACT and EXPAND .
 | AES      |     7:4 |    4 | Indicates support for SVE Advanced Encryption Standard instructions and 128-bit polynomial multiply long instructions.
-| SVEver   |     3:0 |    4 | Indicates support for SVE instructions when FEAT_SME or FEAT_SVE is implemented.
+| SVEver   |     3:0 |    4 | Indicates support for SVE instructions.
 
 ## ID_AFR0_EL1 bitfields
 
@@ -2648,6 +3133,55 @@ be executed each time an update of the Arm architecture is published.
 | LPAE     |     9:9 |    1 | On taking a Data Abort exception, this bit is set as follows:
 | FS[3:0]  |     3:0 |    4 | This field is bits[3:0] of FS[4:0]. See FS[4] for the field description.
 
+## IRTBRP_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of Instruction Region Table. Bits [63:6] of the address are the value of this field. Bits [5:0] of the address are zero.
+| ETCSVC   |     5:5 |    1 | Exclude TIndex from the hardware-defined context for CSV2.
+| FNG      |     4:4 |    1 | Force non-global.
+| TIW      |     3:1 |    3 | TIndex width. The effective width of the TIndex field. Bits of TINDEX_EL1 .TIndex above the configured width are treated as zero.
+| POE2     |     0:0 |    1 | Enable POE2 checks for the Exception level EL1.
+
+## IRTBRP_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of Instruction Region Table. Bits [63:6] of the address are the value of this field. Bits [5:0] of the address are zero.
+| ETCSVC   |     5:5 |    1 | Exclude TIndex from the hardware-defined context for CSV2.
+| FNG      |     4:4 |    1 | Force non-global.
+| TIW      |     3:1 |    3 | TIndex width. The effective width of the TIndex field. Bits of TINDEX_EL2 .TIndex above the configured width are treated as zero.
+| POE2     |     0:0 |    1 | Enable POE2 checks for the Exception level EL2.
+
+## IRTBRP_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of Instruction Region Table. Bits [63:6] of the address are the value of this field. Bits [5:0] of the address are zero.
+| ETCSVC   |     5:5 |    1 | Exclude TIndex from the hardware-defined context for CSV2.
+| TIW      |     3:1 |    3 | TIndex width. The effective width of the TIndex field. Bits of TINDEX_EL3 .TIndex above the configured width are treated as zero.
+| POE2     |     0:0 |    1 | Enable POE2 checks for the Exception level EL3.
+
+## IRTBRU_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of Instruction Region Table. Bits [63:6] of the address are the value of this field. Bits [5:0] of the address are zero.
+| ETCSVC   |     5:5 |    1 | Exclude TIndex from the hardware-defined context for CSV2.
+| FNG      |     4:4 |    1 | Force non-global.
+| TIW      |     3:1 |    3 | TIndex width. The effective width of the TIndex field. Bits of TINDEX_EL0 .TIndex above the configured width are treated as zero.
+| POE2     |     0:0 |    1 | Enable POE2 checks for the Exception level EL0.
+
+## IRTBRU_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of Instruction Region Table. Bits [63:6] of the address are the value of this field. Bits [5:0] of the address are zero.
+| ETCSVC   |     5:5 |    1 | Exclude TIndex from the hardware-defined context for CSV2.
+| FNG      |     4:4 |    1 | Force non-global.
+| TIW      |     3:1 |    3 | TIndex width. The effective width of the TIndex field. Bits of TINDEX_EL0 .TIndex above the configured width are treated as zero.
+| POE2     |     0:0 |    1 | Enable POE2 checks for the Exception level EL0 when the Effective value of HCR_EL2 .{E2H, TGE} == {1, 1}.
+
 ## ISR_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -2657,6 +3191,22 @@ be executed each time an update of the Arm architecture is published.
 | A        |     8:8 |    1 | SError exception pending bit. Indicates whether an SError exception is pending.
 | I        |     7:7 |    1 | IRQ pending bit. Indicates whether an IRQ interrupt is pending.
 | F        |     6:6 |    1 | FIQ pending bit. Indicates whether an FIQ interrupt is pending.
+
+## LDSTT_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FPOIndex |    14:8 |    7 | Value of FPOIndex to be used for unprivileged accesses generated by unprivileged memory access instructions. Bits of this field above the configured POIndex size in TCR2_EL1 .POIW are RES0 .
+| TIndex   |     7:1 |    7 | Value of TIndex to be used for unprivileged accesses generated by unprivileged memory access instructions. Bits of this field above the configured TIndex size in IRTBRU_EL1 .TIW are RES0 .
+| TTBA     |     0:0 |    1 | Selects which ASID to use for IRT PLB lookups for checking unprivileged accesses generated by unprivileged memory access instructions, if TCR2_EL1 .A2 is 1.
+
+## LDSTT_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FPOIndex |    14:8 |    7 | Value of FPOIndex to be used for unprivileged accesses generated by unprivileged memory access instructions. Bits of this field above the configured POIndex size in TCR2_EL2 .POIW are RES0 .
+| TIndex   |     7:1 |    7 | Value of TIndex to be used for unprivileged accesses generated by unprivileged memory access instructions. Bits of this field above the configured TIndex size in IRTBRU_EL2 .TIW are RES0 .
+| TTBA     |     0:0 |    1 | Selects which ASID to use for IRT PLB lookups for checking unprivileged accesses generated by unprivileged memory access instructions, if TCR2_EL2 .A2 is 1.
 
 ## LORC_EL1 bitfields
 
@@ -2677,6 +3227,7 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| RL       |   63:63 |    1 | Indicates support for matching Realm PA space addresses to LORegions.
 | LD       |   23:16 |    8 | Number of LORegion descriptors supported by the PE. This is an 8-bit binary number.
 | LR       |     7:0 |    8 | Number of LORegions supported by the PE. This is an 8-bit binary number. If LORID_EL1 indicates that no LORegions are implemented, then LoadLOAcquire and StoreLORelease will behave as LoadAcquire and StoreRelease.
 
@@ -2691,6 +3242,8 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | SA       |   55:16 |   40 |
+| RL       |     1:1 |    1 | Configures the PA space that can match the LORegion.
+| SA       |    39:0 |   40 | Bits [55:16] of the start physical address of the LORegion described in the current LORegion descriptor selected by LORC_EL1 .DS. Bits[15:0] of this address are 0x0000 . For implementations with fewer than 56 physical address bits, the corresponding upper bits of this field are RES0 .
 | Valid    |     0:0 |    1 | Indicates whether the current LORegion descriptor is enabled.
 
 ## MDCCINT_EL1 bitfields
@@ -2884,58 +3437,39 @@ be executed each time an update of the Arm architecture is published.
 
 ## MPAM0_EL1 bitfields
 
-| Bitfield | msb:lsb | Size | Description
-| -------- | ------: | ---: | -----------
-| PMG_D    |   47:40 |    8 | Performance monitoring group property for PARTID_D.
-| PMG_I    |   39:32 |    8 | Performance monitoring group property for PARTID_I.
-| PARTID_D |   31:16 |   16 | Partition ID for data accesses, including load and store accesses, made from EL0.
-| PARTID_I |    15:0 |   16 | Partition ID for instruction accesses made from EL0.
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| altPMG    |   63:48 |   16 | Alternative performance monitoring group for accesses made from EL0.
+| PMG       |   47:32 |   16 | Performance monitoring group for accesses made from EL0.
+| altPARTID |   31:16 |   16 | Alternative Partition ID for accesses made from EL0.
+| PARTID    |    15:0 |   16 | Partition ID for accesses made from EL0.
 
 ## MPAM1_EL1 bitfields
 
-| Bitfield   | msb:lsb | Size | Description
-| ---------- | ------: | ---: | -----------
-| MPAMEN     |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.
-| FORCED_NS  |   60:60 |    1 | In the Secure state, FORCED_NS indicates the state of MPAM3_EL3 .FORCE_NS.
-| ALTSP_FRCD |   54:54 |    1 | Alternative PARTID forced for PARTIDs in this register.
-| PMG_D      |   47:40 |    8 | Performance monitoring group property for PARTID_D.
-| PMG_I      |   39:32 |    8 | Performance monitoring group property for PARTID_I.
-| PARTID_D   |   31:16 |   16 | Partition ID for data accesses, including load and store accesses, made from EL1.
-| PARTID_I   |    15:0 |   16 | Partition ID for instruction accesses made from EL1.
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| altPMG    |   63:48 |   16 | Alternative performance monitoring group for accesses made from EL1.
+| PMG       |   47:32 |   16 | Performance monitoring group for accesses made from EL1.
+| altPARTID |   31:16 |   16 | Alternative Partition ID for accesses made from EL1.
+| PARTID    |    15:0 |   16 | Partition ID for accesses made from EL1.
 
 ## MPAM2_EL2 bitfields
 
-| Bitfield     | msb:lsb | Size | Description
-| ------------ | ------: | ---: | -----------
-| MPAMEN       |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.
-| TIDR         |   58:58 |    1 | TIDR traps accesses to MPAMIDR_EL1 from EL1 to EL2.
-| ALTSP_HFC    |   56:56 |    1 | Hierarchical force of alternative PARTID space controls. When MPAM3_EL3 .ALTSP_HEN is 0, ALTSP controls in MPAM2_EL2 have no effect.  When MPAM3_EL3 .ALTSP_HEN is 1, this bit selects whether the PARTIDs in MPAM1_EL1 and MPAM0_EL1 are in the primary (0) or alternative (1) PARTID space for the security state.
-| ALTSP_EL2    |   55:55 |    1 | Select alternative PARTID space for PARTIDs in MPAM2_EL2 when MPAM3_EL3 .ALTSP_HEN is 1.
-| ALTSP_FRCD   |   54:54 |    1 | Alternative PARTID forced for PARTIDs in this register.
-| EnMPAMSM     |   50:50 |    1 | Traps execution at EL1 of instructions that directly access the MPAMSM_EL1 register to EL2. The exception is reported using ESR_ELx .EC syndrome value 0x18 .
-| TRAPMPAM0EL1 |   49:49 |    1 | Trap accesses from EL1 to the MPAM0_EL1 register trap to EL2.
-| TRAPMPAM1EL1 |   48:48 |    1 | Trap accesses from EL1 to the MPAM1_EL1 register trap to EL2.
-| PMG_D        |   47:40 |    8 | Performance monitoring group for data accesses.
-| PMG_I        |   39:32 |    8 | Performance monitoring group for instruction accesses.
-| PARTID_D     |   31:16 |   16 | Partition ID for data accesses, including load and store accesses, made from EL2.
-| PARTID_I     |    15:0 |   16 | Partition ID for instruction accesses made from EL2.
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| altPMG    |   63:48 |   16 | Alternative performance monitoring group for accesses made from EL2.
+| PMG       |   47:32 |   16 | Performance monitoring group for accesses made from EL2.
+| altPARTID |   31:16 |   16 | Alternative Partition ID for accesses made from EL2.
+| PARTID    |    15:0 |   16 | Partition ID for accesses made from EL2.
 
 ## MPAM3_EL3 bitfields
 
-| Bitfield    | msb:lsb | Size | Description
-| ----------- | ------: | ---: | -----------
-| MPAMEN      |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space. Values of this field are:
-| TRAPLOWER   |   62:62 |    1 | Trap direct accesses to MPAM System registers that are not UNDEFINED from all ELn lower than EL3.
-| SDEFLT      |   61:61 |    1 | SDEFLT overrides the PARTID and PMG with the default PARTID and default PMG when executing in the Secure state.
-| FORCE_NS    |   60:60 |    1 | FORCE_NS forces MPAM_NS to always be 1 in the Secure state.
-| ALTSP_HEN   |   57:57 |    1 | Hierarchical enable for alternative PARTID space controls. Alternative PARTID space controls in MPAM2_EL2 have no effect when this field is zero.
-| ALTSP_HFC   |   56:56 |    1 | Hierarchical force of alternative PARTID space controls. When MPAM3_EL3.ALTSP_HEN is 0, the PARTID space for PARTIDs in MPAM2_EL2 , MPAM1_EL1 , and MPAM0_EL1 is selected by the value of this bit.
-| ALTSP_EL3   |   55:55 |    1 | Select alternative PARTID space for PARTIDs in MPAM3_EL3.
-| RT_ALTSP_NS |   52:52 |    1 | Selects whether the alternative PARTID space for the Root security state is the Secure PARTID space or the Non-secure PARTID space. MPAM3_EL3 .RT_ALTSP_NS selects the alternative PARTID space for the Root Security state when MPAM3_EL3 .ALTSP_EL3 == 1.
-| PMG_D       |   47:40 |    8 | Performance monitoring group for data accesses.
-| PMG_I       |   39:32 |    8 | Performance monitoring group for instruction accesses.
-| PARTID_D    |   31:16 |   16 | Partition ID for data accesses, including load and store accesses, made from EL3.
-| PARTID_I    |    15:0 |   16 | Partition ID for instruction accesses made from EL3.
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| altPMG    |   63:48 |   16 | Alternative performance monitoring group for accesses made from EL3.
+| PMG       |   47:32 |   16 | Performance monitoring group for accesses made from EL3.
+| altPARTID |   31:16 |   16 | Alternative Partition ID for accesses made from EL3.
+| PARTID    |    15:0 |   16 | Partition ID for accesses made from EL3.
 
 ## MPAMBW0_EL1 bitfields
 
@@ -3003,36 +3537,87 @@ be executed each time an update of the Arm architecture is published.
 | HARDLIM         |   61:61 |    1 | PE-side Maximum-bandwidth Limit Behavior Selection.
 | MAX             |    31:0 |   32 |
 
+## MPAMCTL_EL1 bitfields
+
+| Bitfield           | msb:lsb | Size | Description
+| ------------------ | ------: | ---: | -----------
+| MPAMEN             |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.
+| EN_ALT_IPMG        |   52:52 |    1 | Enables use of the alternative PMG configured in MPAM1_EL1 .altPMG for instruction fetch accesses originating at EL1.
+| EN_ALT_IPARTID     |   51:51 |    1 | Enables use of the alternative PARTID configured in MPAM1_EL1 .altPARTID for instruction fetch accesses originating at EL1.
+| EN_ALT_IPMG_EL0    |   50:50 |    1 | Enables use of the alternative PMG configured in MPAM0_EL1 .altPMG for instruction fetch accesses originating at EL0.
+| EN_ALT_IPARTID_EL0 |   49:49 |    1 | Enables use of the alternative PARTID configured in MPAM0_EL1 .altPARTID for instruction fetch accesses originating at EL0.
+
+## MPAMCTL_EL2 bitfields
+
+| Bitfield           | msb:lsb | Size | Description
+| ------------------ | ------: | ---: | -----------
+| MPAMEN             |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.
+| EN_ALT_IPMG        |   52:52 |    1 | Enables use of the alternative PMG configured in MPAM2_EL2 .altPMG for instruction fetch accesses originating at EL2.
+| EN_ALT_IPARTID     |   51:51 |    1 | Enables use of the alternative PARTID configured in MPAM2_EL2 .altPARTID for instruction fetch accesses originating at EL2.
+| EN_ALT_IPMG_EL0    |   50:50 |    1 | Enables use of the alternative PMG configured in MPAM0_EL1 .altPMG for instruction fetch accesses originating at EL0.
+| EN_ALT_IPARTID_EL0 |   49:49 |    1 | Enables use of the alternative PARTID configured in MPAM0_EL1 .altPARTID for instruction fetch accesses originating at EL0.
+
+## MPAMCTL_EL3 bitfields
+
+| Bitfield       | msb:lsb | Size | Description
+| -------------- | ------: | ---: | -----------
+| MPAMEN         |   63:63 |    1 | MPAM Enable. MPAM is enabled when MPAMEN == 1. When disabled, all PARTIDs and PMGs are output as their default value in the corresponding ID space.
+| nTRAPLOWER     |   62:62 |    1 | Trap direct accesses to MPAM System registers that are not UNDEFINED from all ELn lower than EL3.
+| EN_ALT_IPMG    |   52:52 |    1 | Enables use of the alternative PMG configured in MPAM3_EL3 .altPMG for instruction fetch accesses originating at EL3.
+| EN_ALT_IPARTID |   51:51 |    1 | Enables use of the alternative PARTID configured in MPAM3_EL3 .altPARTID for instruction fetch accesses originating at EL3.
+
 ## MPAMHCR_EL2 bitfields
 
-| Bitfield         | msb:lsb | Size | Description
-| ---------------- | ------: | ---: | -----------
-| TRAP_MPAMIDR_EL1 |   31:31 |    1 | Trap accesses from EL1 to MPAMIDR_EL1 to EL2.
-| GSTAPP_PLK       |     8:8 |    1 | Make the PARTIDs at EL0 the same as the PARTIDs at EL1. When executing at EL0, EL2 is enabled, HCR_EL2 .TGE == 0 and GSTAPP_PLK = 1, MPAM1_EL1 is used instead of MPAM0_EL1 to generate MPAM labels for memory requests.
-| EL1_VPMEN        |     1:1 |    1 | Enable the virtual PARTID mapping of the PARTID fields in MPAM1_EL1 when executing at EL1. This bit also enables virtual PARTID mapping when MPAM1_EL1 is used to generate MPAM labels for memory requests at EL0 due to GSTAPP_PLK == 1.
-| EL0_VPMEN        |     0:0 |    1 | Enable the virtual PARTID mapping of the PARTID fields of MPAM0_EL1 unless the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}. When the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}, EL0_VPMEN is ignored and MPAM0_EL1 PARTID fields are not mapped. When MPAMHCR_EL2 .GSTAPP_PLK == 1 and HCR_EL2 .TGE == 0, MPAM1_EL1 is used as the source of PARTIDs and the virtual PARTID mapping of MPAM1_EL1 PARTIDs is controlled by MPAMHCR_EL2 .EL1_VPMEN.
+| Bitfield      | msb:lsb | Size | Description
+| ------------- | ------: | ---: | -----------
+| nTIDR         |   58:58 |    1 | Traps accesses to MPAMIDR_EL1 from EL1 to EL2.
+| nTRAPMPAMSM   |   50:50 |    1 | Traps accesses to MPAMSM_EL1 from EL1 to EL2.
+| nTRAPMPAM0EL1 |   49:49 |    1 | Traps accesses to MPAM0_EL1 from EL1 to EL2.
+| nTRAPMPAM1EL1 |   48:48 |    1 | Traps accesses to MPAM1_EL1 and MPAMCTL_EL1 from EL1 to EL2.
+| SMVMMEN       |     5:5 |    1 | Enable PMG virtualization for SME or Streaming SVE memory accesses.
+| SMVPMEN       |     4:4 |    1 | Enable PARTID virtualization for SME or Streaming SVE memory accesses.
+| VMMEN         |     3:3 |    1 | Enable virtualized PMG in MPAM0_EL1 .PMG and MPAM1_EL1 .PMG.
+| VPMEN         |     2:2 |    1 | Enable virtualized PARTID in MPAM0_EL1 .PARTID and MPAM1_EL1 .PARTID.
 
 ## MPAMIDR_EL1 bitfields
 
-| Bitfield     | msb:lsb | Size | Description
-| ------------ | ------: | ---: | -----------
-| HAS_SDEFLT   |   61:61 |    1 | HAS_SDEFLT indicates support for MPAM3_EL3 .SDEFLT bit.
-| HAS_FORCE_NS |   60:60 |    1 | HAS_FORCE_NS indicates support for MPAM3_EL3 .FORCE_NS bit.
-| SP4          |   59:59 |    1 | Supports 4 MPAM PARTID spaces.
-| HAS_TIDR     |   58:58 |    1 | HAS_TIDR indicates support for MPAM2_EL2 .TIDR bit.
-| HAS_ALTSP    |   57:57 |    1 | HAS_ALTSP indicates support for alternative PARTID spaces.
-| HAS_BW_CTRL  |   56:56 |    1 | HAS_BW_CTRL indicates support for PE-side bandwidth controls.
-| PMG_MAX      |   39:32 |    8 | The largest value of PMG that the implementation can generate. The PMG_I and PMG_D fields of every MPAMn_ELx must implement at least enough bits to represent PMG_MAX.
-| VPMR_MAX     |   20:18 |    3 | Indicates the maximum register index n for the MPAMVPM<n>_EL2 registers.
-| HAS_HCR      |   17:17 |    1 | HAS_HCR indicates that the PE implementation supports MPAM virtualization, including MPAMHCR_EL2 , MPAMVPMV_EL2 , and MPAMVPM<n>_EL2 with n in the range 0 to VPMR_MAX. Must be 0 if EL2 is not implemented in either Security state.
-| PARTID_MAX   |    15:0 |   16 | The largest value of PARTID that the implementation can generate. The PARTID_I and PARTID_D fields of every MPAMn_ELx must implement at least enough bits to represent PARTID_MAX.
+| Bitfield         | msb:lsb | Size | Description
+| ---------------- | ------: | ---: | -----------
+| HAS_BW_CTRL      |   56:56 |    1 | Indicates support for PE-side bandwidth controls.
+| PMG_MAX          |   47:32 |   16 | Indicates the largest value of PMG supported by the implementation. The PMG field of every MPAMn_ELx register must implement at least enough bits to represent this value.
+| HAS_INSTR_ALT_ID |   22:22 |    1 | Indicates support for tagging instruction fetches generated by PE traffic with the configured alternative PARTID and PMG values.
+| HAS_ALT_ID       |   21:21 |    1 | Indicates support for configuring and using alternative PARTID and PMG values.
+| HAS_HCR          |   17:17 |    1 | Indicates support for MPAM virtualization.
+| PARTID_MAX       |    15:0 |   16 | Indicates the largest value of PARTID supported by the implementation. The PARTID field of every MPAMn_ELx register must implement at least enough bits to represent this value.
 
 ## MPAMSM_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| PMG_D    |   47:40 |    8 | Performance monitoring group property for PARTID_D.
-| PARTID_D |   31:16 |   16 | Partition ID for requests issued due to the execution at any Exception level of SME load and store instructions and, when the PE is in Streaming SVE mode, SVE and SIMD&FP load and store instructions and SVE prefetch instructions.
+| PMG      |   47:32 |   16 | Performance monitoring group for requests issued due to the execution at any Exception level of SME load and store instructions and, when the PE is in Streaming SVE mode, SVE and SIMD&FP load and store instructions and SVE prefetch instructions.
+| PARTID   |   31:16 |   16 | Partition ID for requests issued due to the execution at any Exception level of SME load and store instructions and, when the PE is in Streaming SVE mode, SVE and SIMD&FP load and store instructions and SVE prefetch instructions.
+
+## MPAMVIDCR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |   55:12 |   44 | MPAM VMS base address, bits [55:12]. Bits [55:12] of the base address are the value of this field. Bits [11:0] of the base address are 0. Bits of this field that correspond to address bits beyond the implemented physical address size, as indicated by ID_AA64MMFR0_EL1 .PARange, are RES0 .
+
+## MPAMVIDSR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FSC      |   63:62 |    2 | Fault Status Code. Reports the fault type generated on an MVMS or MITT access.
+| ELX      |   61:61 |    1 | EL that initiated the virtual ID lookup where the fault occurred.
+| FADDR    |    55:0 |   56 | Bits [55:12] of the physical address of the MVMS or MITT entry accessed by the memory access that generated the fault. Bits [55:12] of the address are the value of this field. Bits [11:0] of the address are 0. Bits of this field that correspond to address bits beyond the implemented physical address size, as indicated by ID_AA64MMFR0_EL1 .PARange, are RES0 .
+
+## MPAMVIDSR_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FSC      |   63:62 |    2 | Fault Status Code. Reports the fault type generated on an MVMS or MITT access.
+| ELX      |   61:61 |    1 | EL that initiated the virtual ID lookup where the fault occurred.
+| FADDR    |    55:0 |   56 | Bits [55:12] of the physical address of the MVMS or MITT entry accessed by the memory access that generated the fault. Bits [55:12] of the address are the value of this field. Bits [11:0] of the address are 0. Bits of this field that correspond to address bits beyond the implemented physical address size, as indicated by ID_AA64MMFR0_EL1 .PARange, are RES0 .
 
 ## MPAMVPM0_EL2 bitfields
 
@@ -3156,6 +3741,210 @@ be executed each time an update of the Arm architecture is published.
 | FPMisc   |     7:4 |    4 | Indicates whether the floating-point implementation provides support for miscellaneous VFP features.
 | SIMDMisc |     3:0 |    4 | Indicates whether the Advanced SIMD implementation provides support for miscellaneous Advanced SIMD features.
 
+## NVHCR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TWEDEL   |   60:60 |    1 | Storage for the virtual view of HCR_EL2 .TWEDEL under nested virtualization.
+| TWEDEn   |   59:59 |    1 | Storage for the virtual view of HCR_EL2 .TWEDEn under nested virtualization.
+| TID5     |   58:58 |    1 | Storage for the virtual view of HCR_EL2 .TID5 under nested virtualization.
+| DCT      |   57:57 |    1 | Storage for the virtual view of HCR_EL2 .DCT under nested virtualization.
+| ATA      |   56:56 |    1 | Storage for the virtual view of HCR_EL2 .ATA under nested virtualization.
+| TTLBOS   |   55:55 |    1 | Storage for the virtual view of HCR_EL2 .TTLBOS under nested virtualization.
+| TTLBIS   |   54:54 |    1 | Storage for the virtual view of HCR_EL2 .TTLBIS under nested virtualization.
+| EnSCXT   |   53:53 |    1 | Storage for the virtual view of HCR_EL2 .EnSCXT under nested virtualization.
+| TOCU     |   52:52 |    1 | Storage for the virtual view of HCR_EL2 .TOCU under nested virtualization.
+| AMVOFFEN |   51:51 |    1 | Storage for the virtual view of HCR_EL2 .AMVOFFEN under nested virtualization.
+| TICAB    |   50:50 |    1 | Storage for the virtual view of HCR_EL2 .TICAB under nested virtualization.
+| TID4     |   49:49 |    1 | Storage for the virtual view of HCR_EL2 .TID4 under nested virtualization.
+| GPF      |   48:48 |    1 | Storage for the virtual view of HCR_EL2 .GPF under nested virtualization.
+| FIEN     |   47:47 |    1 | Storage for the virtual view of HCR_EL2 .FIEN under nested virtualization.
+| FWB      |   46:46 |    1 | Storage for the virtual view of HCR_EL2 .FWB under nested virtualization.
+| NV2      |   45:45 |    1 | Storage for the virtual view of HCR_EL2 .NV2 under nested virtualization.
+| AT       |   44:44 |    1 | Storage for the virtual view of HCR_EL2 .AT under nested virtualization.
+| NV1      |   43:43 |    1 | Storage for the virtual view of HCR_EL2 .NV1 under nested virtualization.
+| NV       |   42:42 |    1 | Storage for the virtual view of HCR_EL2 .NV under nested virtualization.
+| API      |   41:41 |    1 | Storage for the virtual view of HCR_EL2 .API under nested virtualization.
+| APK      |   40:40 |    1 | Storage for the virtual view of HCR_EL2 .APK under nested virtualization.
+| TEA      |   37:37 |    1 | Storage for the virtual view of HCR_EL2 .TEA under nested virtualization.
+| TERR     |   36:36 |    1 | Storage for the virtual view of HCR_EL2 .TERR under nested virtualization.
+| TLOR     |   35:35 |    1 | Storage for the virtual view of HCR_EL2 .TLOR under nested virtualization.
+| E2H      |   34:34 |    1 | Storage for the virtual view of HCR_EL2 .E2H under nested virtualization.
+| ID       |   33:33 |    1 | Storage for the virtual view of HCR_EL2 .ID under nested virtualization.
+| CD       |   32:32 |    1 | Storage for the virtual view of HCR_EL2 .CD under nested virtualization.
+| RW       |   31:31 |    1 | Storage for the virtual view of HCR_EL2 .RW under nested virtualization.
+| TRVM     |   30:30 |    1 | Storage for the virtual view of HCR_EL2 .TRVM under nested virtualization.
+| HCD      |   29:29 |    1 | Storage for the virtual view of HCR_EL2 .HCD under nested virtualization.
+| TDZ      |   28:28 |    1 | Storage for the virtual view of HCR_EL2 .TDZ under nested virtualization.
+| TGE      |   27:27 |    1 | Guest TGE control bit.
+| TVM      |   26:26 |    1 | Storage for the virtual view of HCR_EL2 .TVM under nested virtualization.
+| TTLB     |   25:25 |    1 | Storage for the virtual view of HCR_EL2 .TTLB under nested virtualization.
+| TPU      |   24:24 |    1 | Storage for the virtual view of HCR_EL2 .TPU under nested virtualization.
+| TPCP     |   23:23 |    1 | Storage for the virtual view of HCR_EL2 .TPCP under nested virtualization.
+| TSW      |   22:22 |    1 | Storage for the virtual view of HCR_EL2 .TSW under nested virtualization.
+| TACR     |   21:21 |    1 | Storage for the virtual view of HCR_EL2 .TACR under nested virtualization.
+| TIDCP    |   20:20 |    1 | Storage for the virtual view of HCR_EL2 .TIDCP under nested virtualization.
+| TSC      |   19:19 |    1 | Storage for the virtual view of HCR_EL2 .TSC under nested virtualization.
+| TID3     |   18:18 |    1 | Storage for the virtual view of HCR_EL2 .TID3 under nested virtualization.
+| TID2     |   17:17 |    1 | Storage for the virtual view of HCR_EL2 .TID2 under nested virtualization.
+| TID1     |   16:16 |    1 | Storage for the virtual view of HCR_EL2 .TID1 under nested virtualization.
+| TID0     |   15:15 |    1 | Storage for the virtual view of HCR_EL2 .TID0 under nested virtualization.
+| TWE      |   14:14 |    1 | Storage for the virtual view of HCR_EL2 .TWE under nested virtualization.
+| TWI      |   13:13 |    1 | Storage for the virtual view of HCR_EL2 .TWI under nested virtualization.
+| DC       |   12:12 |    1 | Storage for the virtual view of HCR_EL2 .DC under nested virtualization.
+| BSU      |   10:10 |    1 | Storage for the virtual view of HCR_EL2 .BSU under nested virtualization.
+| FB       |     9:9 |    1 | Storage for the virtual view of HCR_EL2 .FB under nested virtualization.
+| VSE      |     8:8 |    1 | Storage for the virtual view of HCR_EL2 .VSE under nested virtualization.
+| VI       |     7:7 |    1 | Storage for the virtual view of HCR_EL2 .VI under nested virtualization.
+| VF       |     6:6 |    1 | Storage for the virtual view of HCR_EL2 .VF under nested virtualization.
+| AMO      |     5:5 |    1 | Storage for the virtual view of HCR_EL2 .AMO under nested virtualization.
+| IMO      |     4:4 |    1 | Storage for the virtual view of HCR_EL2 .IMO under nested virtualization.
+| FMO      |     3:3 |    1 | Storage for the virtual view of HCR_EL2 .FMO under nested virtualization.
+| PTW      |     2:2 |    1 | Storage for the virtual view of HCR_EL2 .PTW under nested virtualization.
+| SWIO     |     1:1 |    1 | Storage for the virtual view of HCR_EL2 .SWIO under nested virtualization.
+| VM       |     0:0 |    1 | Storage for the virtual view of HCR_EL2 .VM under nested virtualization.
+
+## NVHCRMASK_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TWEDEL   |   60:60 |    1 | Mask bit for TWEDEL.
+| TWEDEn   |   59:59 |    1 | Mask bit for TWEDEn.
+| TID5     |   58:58 |    1 | Mask bit for TID5.
+| DCT      |   57:57 |    1 | Mask bit for DCT.
+| ATA      |   56:56 |    1 | Mask bit for ATA.
+| TTLBOS   |   55:55 |    1 | Mask bit for TTLBOS.
+| TTLBIS   |   54:54 |    1 | Mask bit for TTLBIS.
+| EnSCXT   |   53:53 |    1 | Mask bit for EnSCXT.
+| TOCU     |   52:52 |    1 | Mask bit for TOCU.
+| AMVOFFEN |   51:51 |    1 | Mask bit for AMVOFFEN.
+| TICAB    |   50:50 |    1 | Mask bit for TICAB.
+| TID4     |   49:49 |    1 | Mask bit for TID4.
+| GPF      |   48:48 |    1 | Mask bit for GPF.
+| FIEN     |   47:47 |    1 | Mask bit for FIEN.
+| FWB      |   46:46 |    1 | Mask bit for FWB.
+| NV2      |   45:45 |    1 | Mask bit for NV2.
+| AT       |   44:44 |    1 | Mask bit for AT.
+| NV1      |   43:43 |    1 | Mask bit for NV1.
+| NV       |   42:42 |    1 | Mask bit for NV.
+| API      |   41:41 |    1 | Mask bit for API.
+| APK      |   40:40 |    1 | Mask bit for APK.
+| TEA      |   37:37 |    1 | Mask bit for TEA.
+| TERR     |   36:36 |    1 | Mask bit for TERR.
+| TLOR     |   35:35 |    1 | Mask bit for TLOR.
+| E2H      |   34:34 |    1 | Mask bit for E2H.
+| ID       |   33:33 |    1 | Mask bit for ID.
+| CD       |   32:32 |    1 | Mask bit for CD.
+| RW       |   31:31 |    1 | Mask bit for RW.
+| TRVM     |   30:30 |    1 | Mask bit for TRVM.
+| HCD      |   29:29 |    1 | Mask bit for HCD.
+| TDZ      |   28:28 |    1 | Mask bit for TDZ.
+| TGE      |   27:27 |    1 | Mask bit for TGE.
+| TVM      |   26:26 |    1 | Mask bit for TVM.
+| TTLB     |   25:25 |    1 | Mask bit for TTLB.
+| TPU      |   24:24 |    1 | Mask bit for TPU.
+| TPCP     |   23:23 |    1 | Mask bit for TPCP.
+| TSW      |   22:22 |    1 | Mask bit for TSW.
+| TACR     |   21:21 |    1 | Mask bit for TACR.
+| TIDCP    |   20:20 |    1 | Mask bit for TIDCP.
+| TSC      |   19:19 |    1 | Mask bit for TSC.
+| TID3     |   18:18 |    1 | Mask bit for TID3.
+| TID2     |   17:17 |    1 | Mask bit for TID2.
+| TID1     |   16:16 |    1 | Mask bit for TID1.
+| TID0     |   15:15 |    1 | Mask bit for TID0.
+| TWE      |   14:14 |    1 | Mask bit for TWE.
+| TWI      |   13:13 |    1 | Mask bit for TWI.
+| DC       |   12:12 |    1 | Mask bit for DC.
+| BSU      |   10:10 |    1 | Mask bit for BSU.
+| FB       |     9:9 |    1 | Mask bit for FB.
+| VSE      |     8:8 |    1 | Mask bit for VSE.
+| VI       |     7:7 |    1 | Mask bit for VI.
+| VF       |     6:6 |    1 | Mask bit for VF.
+| AMO      |     5:5 |    1 | Mask bit for AMO.
+| IMO      |     4:4 |    1 | Mask bit for IMO.
+| FMO      |     3:3 |    1 | Mask bit for FMO.
+| PTW      |     2:2 |    1 | Mask bit for PTW.
+| SWIO     |     1:1 |    1 | Mask bit for SWIO.
+| VM       |     0:0 |    1 | Mask bit for VM.
+
+## NVHCRX_EL2 bitfields
+
+| Bitfield   | msb:lsb | Size | Description
+| ---------- | ------: | ---: | -----------
+| FNB        |   36:36 |    1 | Storage for the virtual view of HCRX_EL2 .FNB under nested virtualization.
+| VTLBIDOSEn |   35:35 |    1 | Storage for the virtual view of HCRX_EL2 .VTLBIDOSEn under nested virtualization.
+| NVnTTLBOS  |   34:34 |    1 | Storage for the virtual view of HCRX_EL2 .NVnTTLBOS under nested virtualization.
+| NVnTTLBIS  |   33:33 |    1 | Storage for the virtual view of HCRX_EL2 .NVnTTLBIS under nested virtualization.
+| NVnTTLB    |   32:32 |    1 | Storage for the virtual view of HCRX_EL2 .NVnTTLB under nested virtualization.
+| FDIT       |   31:31 |    1 | Storage for the virtual view of HCRX_EL2 .FDIT under nested virtualization.
+| TPLIMEn    |   30:30 |    1 | Storage for the virtual view of HCRX_EL2 .TPLIMEn under nested virtualization.
+| POE2En     |   29:29 |    1 | Storage for the virtual view of HCRX_EL2 .POE2En under nested virtualization.
+| NVTGE      |   27:27 |    1 | Storage for the virtual view of HCRX_EL2 .NVTGE under nested virtualization.
+| SRMASKEn   |   26:26 |    1 | Storage for the virtual view of HCRX_EL2 .SRMASKEn under nested virtualization.
+| VTLBIDEn   |   25:25 |    1 | Storage for the virtual view of HCRX_EL2 .VTLBIDEn under nested virtualization.
+| PACMEn     |   24:24 |    1 | Storage for the virtual view of HCRX_EL2 .PACMEn under nested virtualization.
+| EnFPM      |   23:23 |    1 | Storage for the virtual view of HCRX_EL2 .EnFPM under nested virtualization.
+| GCSEn      |   22:22 |    1 | Storage for the virtual view of HCRX_EL2 .GCSEn under nested virtualization.
+| EnIDCP128  |   21:21 |    1 | Storage for the virtual view of HCRX_EL2 .EnIDCP128 under nested virtualization.
+| EnSDERR    |   20:20 |    1 | Storage for the virtual view of HCRX_EL2 .EnSDERR under nested virtualization.
+| TMEA       |   19:19 |    1 | Storage for the virtual view of HCRX_EL2 .TMEA under nested virtualization.
+| EnSNERR    |   18:18 |    1 | Storage for the virtual view of HCRX_EL2 .EnSNERR under nested virtualization.
+| D128En     |   17:17 |    1 | Storage for the virtual view of HCRX_EL2 .D128En under nested virtualization.
+| PTTWI      |   16:16 |    1 | Storage for the virtual view of HCRX_EL2 .PTTWI under nested virtualization.
+| SCTLR2En   |   15:15 |    1 | Storage for the virtual view of HCRX_EL2 .SCTLR2En under nested virtualization.
+| TCR2En     |   14:14 |    1 | Storage for the virtual view of HCRX_EL2 .TCR2En under nested virtualization.
+| MSCEn      |   11:11 |    1 | Storage for the virtual view of HCRX_EL2 .MSCEn under nested virtualization.
+| MCE2       |   10:10 |    1 | Storage for the virtual view of HCRX_EL2 .MCE2 under nested virtualization.
+| CMOW       |     9:9 |    1 | Storage for the virtual view of HCRX_EL2 .CMOW under nested virtualization.
+| VFNMI      |     8:8 |    1 | Storage for the virtual view of HCRX_EL2 .VFNMI under nested virtualization.
+| VINMI      |     7:7 |    1 | Storage for the virtual view of HCRX_EL2 .VINMI under nested virtualization.
+| TALLINT    |     6:6 |    1 | Storage for the virtual view of HCRX_EL2 .TALLINT under nested virtualization.
+| SMPME      |     5:5 |    1 | Storage for the virtual view of HCRX_EL2 .SMPME under nested virtualization.
+| FGTnXS     |     4:4 |    1 | Storage for the virtual view of HCRX_EL2 .FGTnXS under nested virtualization.
+| FnXS       |     3:3 |    1 | Storage for the virtual view of HCRX_EL2 .FnXS under nested virtualization.
+| EnASR      |     2:2 |    1 | Storage for the virtual view of HCRX_EL2 .EnASR under nested virtualization.
+| EnALS      |     1:1 |    1 | Storage for the virtual view of HCRX_EL2 .EnALS under nested virtualization.
+| EnAS0      |     0:0 |    1 | Storage for the virtual view of HCRX_EL2 .EnAS0 under nested virtualization.
+
+## NVHCRXMASK_EL2 bitfields
+
+| Bitfield   | msb:lsb | Size | Description
+| ---------- | ------: | ---: | -----------
+| FNB        |   36:36 |    1 | Mask bit for FNB.
+| VTLBIDOSEn |   35:35 |    1 | Mask bit for VTLBIDOSEn.
+| NVnTTLBOS  |   34:34 |    1 | Mask bit for NVnTTLBOS.
+| NVnTTLBIS  |   33:33 |    1 | Mask bit for NVnTTLBIS.
+| NVnTTLB    |   32:32 |    1 | Mask bit for NVnTTLB.
+| FDIT       |   31:31 |    1 | Mask bit for FDIT.
+| TPLIMEn    |   30:30 |    1 | Mask bit for TPLIMEn.
+| POE2En     |   29:29 |    1 | Mask bit for POE2En.
+| NVTGE      |   27:27 |    1 | Mask bit for NVTGE.
+| SRMASKEn   |   26:26 |    1 | Mask bit for SRMASKEn.
+| VTLBIDEn   |   25:25 |    1 | Mask bit for VTLBIDEn.
+| PACMEn     |   24:24 |    1 | Mask bit for PACMEn.
+| EnFPM      |   23:23 |    1 | Mask bit for EnFPM.
+| GCSEn      |   22:22 |    1 | Mask bit for GCSEn.
+| EnIDCP128  |   21:21 |    1 | Mask bit for EnIDCP128.
+| EnSDERR    |   20:20 |    1 | Mask bit for EnSDERR.
+| TMEA       |   19:19 |    1 | Mask bit for TMEA.
+| EnSNERR    |   18:18 |    1 | Mask bit for EnSNERR.
+| D128En     |   17:17 |    1 | Mask bit for D128En.
+| PTTWI      |   16:16 |    1 | Mask bit for PTTWI.
+| SCTLR2En   |   15:15 |    1 | Mask bit for SCTLR2En.
+| TCR2En     |   14:14 |    1 | Mask bit for TCR2En.
+| MSCEn      |   11:11 |    1 | Mask bit for MSCEn.
+| MCE2       |   10:10 |    1 | Mask bit for MCE2.
+| CMOW       |     9:9 |    1 | Mask bit for CMOW.
+| VFNMI      |     8:8 |    1 | Mask bit for VFNMI.
+| VINMI      |     7:7 |    1 | Mask bit for VINMI.
+| TALLINT    |     6:6 |    1 | Mask bit for TALLINT.
+| SMPME      |     5:5 |    1 | Mask bit for SMPME.
+| FGTnXS     |     4:4 |    1 | Mask bit for FGTnXS.
+| FnXS       |     3:3 |    1 | Mask bit for FnXS.
+| EnASR      |     2:2 |    1 | Mask bit for EnASR.
+| EnALS      |     1:1 |    1 | Mask bit for EnALS.
+| EnAS0      |     0:0 |    1 | Mask bit for EnAS0.
+
 ## NZCV bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -3217,6 +4006,7 @@ be executed each time an update of the Arm architecture is published.
 | PA                     |  119:76 |   44 | Output address. The output address (OA) corresponding to the supplied input address. This field returns address bits[55:12].
 | D128                   |   64:64 |    1 | Indicates if the PAR_EL1 uses the 128-bit format.
 | ATTR                   |   63:56 |    8 | Memory attributes for the returned output address. This field uses the same encoding as the Attr<n> fields in MAIR_EL1 , MAIR_EL2 , and MAIR_EL3 . If FEAT_MTE_PERM is implemented and the instruction performed a stage 2 translation, the following additional encoding is defined: ATTR Meaning 0b11100000 Tagged NoTagAccess Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. This encoding in MAIR_ELx is Reserved. The value returned in this field can be the resulting attribute that is actually implemented by the implementation, as determined by any permitted implementation choices and any applicable configuration bits, instead of the value that appears in the Translation table descriptor. The attributes presented are consistent with the stages of translation applied in the address translation instruction. If the instruction performed a stage 1 translation only, the attributes are from the stage 1 translation. If the instruction performed a stage 1 and stage 2 translation, the attributes are from the combined stage 1 and stage 2 translation.
+| POIndex                |   55:52 |    4 | Stage 1 POIndex for the returned output address. If POE2 is disabled for the translation regime targeted by the AT operation, this field is RES0 .
 | NSE                    |   11:11 |    1 | Reports the NSE attribute for a translation table descriptor from the EL3 translation regime. For a description of the values derived by evaluating NS and NSE together, see PAR_EL1.NS. For a result from a Secure, Non-secure, or Realm translation regime, this bit is unknown.
 | IMPLEMENTATION DEFINED |   10:10 |    1 | IMPLEMENTATION DEFINED .
 | NS                     |     9:9 |    1 | Non-secure. The NS attribute for a translation table entry from a Secure translation regime, a Realm translation regime, and the EL3 translation regime.
@@ -3237,8 +4027,9 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
-| NS        |   63:63 |    1 | Together with PFAR_EL2.NSE, reports the physical address space of the access that triggered the exception. NSE NS Meaning 0b0 0b0 When Secure state is implemented, Secure. Otherwise reserved. 0b0 0b1 Non-secure. 0b1 0b0 Reserved. 0b1 0b1 Realm.
+| NS        |   63:63 |    1 | Together with PFAR_EL2.NSE and PFAR_EL2.NSE2, reports the physical address space of the access that triggered the exception. NSE2 NSE NS Meaning 0b0 0b0 0b0 When Secure state is implemented, Secure. Otherwise reserved. 0b0 0b0 0b1 Non-secure. 0b0 0b1 0b0 Reserved. 0b0 0b1 0b1 Realm. 0b1 0b0 0b0 System Agent. 0b1 0b0 0b1 NS Protected. 0b1 0b1 0b0 Reserved. 0b1 0b1 0b1 Reserved.
 | NSE       |   62:62 |    1 | Together with PFAR_EL2.NS, reports the physical address space of the access that triggered the exception. For a description of the values derived by evaluating NS and NSE together, see MFAR_EL3.NS.
+| NSE2      |   61:61 |    1 | Together with PFAR_EL2.NS and PFAR_EL2.NSE, reports the physical address space of the access that triggered the exception. For a description of the values derived by evaluating NS, NSE, and NSE2 together, see PFAR_EL2.NS.
 | PA[55:52] |   55:52 |    4 | When FEAT_D128 is implemented, extension to PFAR_EL2.PA[47:0].
 | PA[51:48] |   51:48 |    4 | When FEAT_LPA is implemented, extension to PFAR_EL2.PA[47:0].
 | PA        |    47:0 |   48 | Physical Address. Bits [47:0] of the aborting physical address.
@@ -3274,8 +4065,11 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| FPOIndex |   46:40 |    7 | FPOIndex to use for the Profiling Buffer.
+| TIndex   |   39:33 |    7 | Privileged TIndex to use for the Profiling Buffer.
+| TTBA     |   32:32 |    1 | Selects which ASID for the Owning Exception level to use for IRT PLB lookups for the Profiling Buffer, if TCR2_ELx.A2 is 1.
 | SH       |     9:8 |    2 | Profiling Buffer shareability domain. Defines the shareability domain for Normal memory used by the Profiling Buffer.
-| Attr     |     7:0 |    8 | Profiling Buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the Profiling Buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
+| Attr     |     7:0 |    8 | Profiling Buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the Profiling Buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 or FEAT_VMTE is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
 
 ## PMBSR_EL1 bitfields
 
@@ -3283,9 +4077,11 @@ be executed each time an update of the Arm architecture is published.
 | ---------------------- | ------: | ---: | -----------
 | MSS2                   |   55:32 |   24 | Management event Specific Syndrome 2. Contains syndrome specific to the management event. The syndrome contents for each management event are described in the following sections.
 | EC                     |   31:26 |    6 | Event class. Top-level description of the cause of the Profiling Buffer management event.
-| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event other than an asynchronous External abort, indicates whether the last record written to the Profiling Buffer is complete.
+| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event, indicates whether the last record written to the Profiling Buffer is complete. PMBSR_EL1.DL is also set to 1 when an asynchronous External abort is reported to the SPU.
 | EA                     |   18:18 |    1 | External abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Service. Indicates that a Profiling Buffer management event has been recorded.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | COLL                   |   16:16 |    1 | Collision detected.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
@@ -3303,9 +4099,11 @@ be executed each time an update of the Arm architecture is published.
 | ---------------------- | ------: | ---: | -----------
 | MSS2                   |   55:32 |   24 | Management event Specific Syndrome 2. Contains syndrome specific to the management event. The syndrome contents for each management event are described in the following sections.
 | EC                     |   31:26 |    6 | Event class. Top-level description of the cause of the Profiling Buffer management event.
-| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event other than an asynchronous External abort, indicates whether the last record written to the Profiling Buffer is complete.
+| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event, indicates whether the last record written to the Profiling Buffer is complete. PMBSR_EL2.DL is also set to 1 when an asynchronous External abort is reported to the SPU.
 | EA                     |   18:18 |    1 | External abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Service. Indicates that a Profiling Buffer management event has been recorded.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | COLL                   |   16:16 |    1 | Collision detected.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
@@ -3323,9 +4121,11 @@ be executed each time an update of the Arm architecture is published.
 | ---------------------- | ------: | ---: | -----------
 | MSS2                   |   55:32 |   24 | Management event Specific Syndrome 2. Contains syndrome specific to the management event. The syndrome contents for each management event are described in the following sections.
 | EC                     |   31:26 |    6 | Event class. Top-level description of the cause of the Profiling Buffer management event.
-| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event other than an asynchronous External abort, indicates whether the last record written to the Profiling Buffer is complete.
+| DL                     |   19:19 |    1 | Partial record lost. Following a buffer management event, indicates whether the last record written to the Profiling Buffer is complete. PMBSR_EL3.DL is also set to 1 when an asynchronous External abort is reported to the SPU.
 | EA                     |   18:18 |    1 | External abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Service. Indicates that a Profiling Buffer management event has been recorded.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | COLL                   |   16:16 |    1 | Collision detected.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
@@ -3349,7 +4149,6 @@ be executed each time an update of the Arm architecture is published.
 | NSH      |   27:27 |    1 | EL2 filtering. Controls counting cycles in EL2.
 | M        |   26:26 |    1 | EL3 filtering. Controls counting cycles in  EL3. If PMCCFILTR_EL0.M is not equal to PMCCFILTR_EL0.P, then the PE does not count cycles in  EL3. Otherwise, this mechanism has no effect on filtering of cycles in  EL3.
 | SH       |   24:24 |    1 | Secure EL2 filtering. Controls counting cycles in Secure EL2. If PMCCFILTR_EL0.SH is equal to PMCCFILTR_EL0.NSH, then the PE does not count cycles in Secure EL2. Otherwise, this mechanism has no effect on filtering of cycles in Secure EL2.
-| T        |   23:23 |    1 | Non-Transactional state filtering field. Controls counting of cycles in Non-transactional state.
 | RLK      |   22:22 |    1 | Realm EL1 filtering. Controls counting cycles in Realm EL1. If PMCCFILTR_EL0.RLK is not equal to PMCCFILTR_EL0.P, then the PE does not count cycles in Realm EL1. Otherwise, this mechanism has no effect on filtering of cycles in Realm EL1.
 | RLU      |   21:21 |    1 | Realm EL0 filtering. Controls counting cycles in Realm EL0. If PMCCFILTR_EL0.RLU is not equal to PMCCFILTR_EL0.U, then the PE does not count cycles in Realm EL0. Otherwise, this mechanism has no effect on filtering of cycles in Realm EL0.
 | RLH      |   20:20 |    1 | Realm EL2 filtering. Controls counting cycles in Realm EL2. If PMCCFILTR_EL0.RLH is equal to PMCCFILTR_EL0.NSH, then the PE does not count cycles in Realm EL2. Otherwise, this mechanism has no effect on filtering of cycles in Realm EL2.
@@ -3423,7 +4222,6 @@ be executed each time an update of the Arm architecture is published.
 | NSH      |   27:27 |    1 | EL2 filtering. Controls counting instructions in EL2.
 | M        |   26:26 |    1 | EL3 filtering. Controls counting instructions in  EL3. If PMICFILTR_EL0.M is not equal to PMICFILTR_EL0.P, then the PE does not count instructions in  EL3. Otherwise, this mechanism has no effect on filtering of instructions in  EL3.
 | SH       |   24:24 |    1 | Secure EL2 filtering. Controls counting instructions in Secure EL2. If PMICFILTR_EL0.SH is equal to PMICFILTR_EL0.NSH, then the PE does not count instructions in Secure EL2. Otherwise, this mechanism has no effect on filtering of instructions in Secure EL2.
-| T        |   23:23 |    1 | Non-Transactional state filtering field. Controls counting of instructions in Non-transactional state.
 | RLK      |   22:22 |    1 | Realm EL1 filtering. Controls counting instructions in Realm EL1. If PMICFILTR_EL0.RLK is not equal to PMICFILTR_EL0.P, then the PE does not count instructions in Realm EL1. Otherwise, this mechanism has no effect on filtering of instructions in Realm EL1.
 | RLU      |   21:21 |    1 | Realm EL0 filtering. Controls counting instructions in Realm EL0. If PMICFILTR_EL0.RLU is not equal to PMICFILTR_EL0.U, then the PE does not count instructions in Realm EL0. Otherwise, this mechanism has no effect on filtering of instructions in Realm EL0.
 | RLH      |   20:20 |    1 | Realm EL2 filtering. Controls counting instructions in Realm EL2. If PMICFILTR_EL0.RLH is equal to PMICFILTR_EL0.NSH, then the PE does not count instructions in Realm EL2. Otherwise, this mechanism has no effect on filtering of instructions in Realm EL2.
@@ -3484,7 +4282,7 @@ be executed each time an update of the Arm architecture is published.
 | PA       |     4:4 |    1 | Physical Address sample enable.
 | CX       |     3:3 |    1 | CONTEXTIDR_EL1 sample enable. Enables recording of a Context packet containing the value of CONTEXTIDR_EL1 .
 | E1SPE    |     1:1 |    1 | EL1 Statistical Profiling Enable.
-| E0SPE    |     0:0 |    1 | EL0 Statistical Profiling Enable. Controls sampling at EL0 when HCR_EL2 .TGE == 0 or if EL2 is disabled or not implemented.
+| E0SPE    |     0:0 |    1 | EL0 Statistical Profiling Enable. Controls sampling at EL0 when the Effective value of HCR_EL2 .TGE is 0 or if EL2 is disabled or not implemented.
 
 ## PMSCR_EL2 bitfields
 
@@ -3541,7 +4339,6 @@ be executed each time an update of the Arm architecture is published.
 | E[19]    |   19:19 |    1 | Filter on  Level 2 data cache access  event.
 | E[18]    |   18:18 |    1 | Filter on  Empty predicate  event.
 | E[17]    |   17:17 |    1 | Filter on  Partial or empty predicate  event.
-| E[16]    |   16:16 |    1 | Filter on  Transactional  event.
 | E[15]    |   15:15 |    1 | Filter on IMPLEMENTATION DEFINED event 15.
 | E[14]    |   14:14 |    1 | Filter on IMPLEMENTATION DEFINED event 14.
 | E[13]    |   13:13 |    1 | Filter on IMPLEMENTATION DEFINED event 13.
@@ -3585,18 +4382,18 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | ECOUNT   |   63:56 |    8 | Secondary sample interval counter. Provides the secondary counter used after the primary counter reaches zero. While the secondary counter is nonzero and profiling is enabled, the secondary counter decrements by 1 for each member of the sample population. The primary counter also continues to decrement since it is also nonzero. When the secondary counter reaches zero, a member of the sampling population is selected for sampling.
-| COUNT    |    31:0 |   32 | Primary sample interval counter. Provides the primary counter used for sampling. When the PE moves from a state or Exception level where profiling is disabled to a state or Exception level where profiling is enabled, if the value of this register is zero, then the primary counter is loaded from PMSIRR_EL1 . While the primary counter is nonzero and sampling is enabled, the primary counter decrements by 1 for each member of the sample population. The sample interval counter counts either a number of operations or a number of instructions, depending on the IMPLEMENTATION DEFINED value of PMSIDR_EL1 .ArchInst. When the counter reaches zero, the behavior depends on the values of PMSIDR_EL1 .ERnd and PMSIRR_EL1 .RND: If PMSIRR_EL1 .RND is 1 and PMSIDR_EL1 .ERnd is 1, then the secondary counter is set to a random or pseudorandom value in the range 0x00 to 0xFF . Otherwise, a member of the sampling population is selected for sampling. The primary counter is loaded from PMSIRR_EL1 . The primary counter is loaded from PMSIRR_EL1 means: PMSICR_EL1.COUNT[31:8] is set to the value of PMSIRR_EL1 .INTERVAL. If PMSIRR_EL1 .RND is 1 and PMSIDR_EL1 .ERnd is 0, then PMSICR_EL1.COUNT[7:0] is set to a random or pseudorandom value in the range 0x00 to 0xFF . Otherwise, PMSICR_EL1.COUNT[7:0] is set to 0x00 . For more information, see Initializing the sample interval counters and Behavior of the sample interval counter while profiling is enabled .
+| COUNT    |    31:0 |   32 | Primary sample interval counter. Provides the primary counter used for sampling. When the PE moves from a state or Exception level where profiling is disabled to a state or Exception level where profiling is enabled, if the value of this register is zero, then the primary counter is loaded from PMSIRR_EL1 . While the primary counter is nonzero and sampling is enabled, the primary counter decrements by 1 for each member of the sample population. The sample interval counter counts either a number of operations or a number of instructions, depending on the IMPLEMENTATION DEFINED value of PMSIDR_EL1 .ArchInst. When the counter reaches zero, the behavior depends on the value of PMSIRR_EL1 .RND and whether FEAT_SPE_ERnd is implemented: If PMSIRR_EL1 .RND is 1 and FEAT_SPE_ERnd is implemented, then the secondary counter is set to a random or pseudorandom value in the range 0x00 to 0xFF . Otherwise, a member of the sampling population is selected for sampling. The primary counter is loaded from PMSIRR_EL1 . The primary counter is loaded from PMSIRR_EL1 means: PMSICR_EL1.COUNT[31:8] is set to the value of PMSIRR_EL1 .INTERVAL. If PMSIRR_EL1 .RND is 1 and FEAT_SPE_ERnd is not implemented, then PMSICR_EL1.COUNT[7:0] is set to a random or pseudorandom value in the range 0x00 to 0xFF . Otherwise, PMSICR_EL1.COUNT[7:0] is set to 0x00 . For more information, see Initializing the sample interval counters and Behavior of the sample interval counter while profiling is enabled .
 
 ## PMSIDR_EL1 bitfields
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
-| SME       |   32:32 |    1 | SPE for SME. Adds support for the Scalable Matrix Extensions to Statistical Profiling.
+| SME       |   32:32 |    1 | SPE for SME. Describes support for the Scalable Matrix Extensions to Statistical Profiling.
 | ALTCLK    |   31:28 |    4 | Alternate clock domain.
-| FPF       |   27:27 |    1 | Floating-point flag.
-| EFT       |   26:26 |    1 | Extended filtering by operation type.
-| CRR       |   25:25 |    1 | Call Return branch records.
-| PBT       |   24:24 |    1 | Previous branch target Address packet.
+| FPF       |   27:27 |    1 | Floating-point flag. Describes whether Operation Type packets for sampled scalar and SIMD operations contain floating-point and Advanced SIMD indications.
+| EFT       |   26:26 |    1 | Extended filtering by type. Describes whether Extended filtering by operation type is supported.
+| CRR       |   25:25 |    1 | Call Return branch records. Describes whether the Operation Type packets for sampled branch operations contain Call Return information.
+| PBT       |   24:24 |    1 | Previous branch target Address packet. Describes whether the Previous branch target Address packet is supported.
 | Format    |   23:20 |    4 | Defines the format of the sample records.
 | CountSize |   19:16 |    4 | Defines the size of the counters.
 | MaxSize   |   15:12 |    4 | Defines the largest size for a single record, rounded up to a power-of-two. If this is the same as the minimum alignment ( PMBIDR_EL1 .Align), then each record is exactly this size.
@@ -3605,7 +4402,7 @@ be executed each time an update of the Arm architecture is published.
 | FnE       |     6:6 |    1 | Filtering by events, inverted.
 | ERnd      |     5:5 |    1 | Defines how the random number generator is used in determining the interval between samples, when enabled by PMSIRR_EL1 .RND.
 | LDS       |     4:4 |    1 | Data source indicator for sampled load instructions.
-| ArchInst  |     3:3 |    1 | Architectural instruction profiling.
+| ArchInst  |     3:3 |    1 | Architectural instruction profiling. Defines the subject of the profiling population.
 | FL        |     2:2 |    1 | Filtering by latency.
 | FT        |     1:1 |    1 | Filtering by operation type.
 | FE        |     0:0 |    1 | Filtering by events.
@@ -3658,7 +4455,6 @@ be executed each time an update of the Arm architecture is published.
 | E[19]    |   19:19 |    1 | Filter on  No level 2 data cache access  event.
 | E[18]    |   18:18 |    1 | Filter on  Not empty predicate  event.
 | E[17]    |   17:17 |    1 | Filter on  Not partial predicate  event.
-| E[16]    |   16:16 |    1 | Filter on  Not transactional  event.
 | E[15]    |   15:15 |    1 | Filter on IMPLEMENTATION DEFINED event 15.
 | E[14]    |   14:14 |    1 | Filter on IMPLEMENTATION DEFINED event 14.
 | E[13]    |   13:13 |    1 | Filter on IMPLEMENTATION DEFINED event 13.
@@ -3720,8 +4516,8 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| SEED     |    23:8 |   16 | Seed register used for generating values returned by RandomTag().
-| TAG      |     3:0 |    4 | Tag generated by the most recent IRG instruction.
+| SEED     |    23:8 |   16 | Seed register used for generating values returned by RandomTag() or, if FEAT_MTE_EIRG is implemented, ChooseTag()
+| TAG      |     3:0 |    4 | Tag generated by the most recent IRG instruction or, if FEAT_MTE_EIRG is implemented, EIRG state
 
 ## RMR_EL1 bitfields
 
@@ -3744,18 +4540,29 @@ be executed each time an update of the Arm architecture is published.
 | RR       |     1:1 |    1 | Reset Request. Setting this bit to 1 requests a Warm reset.
 | AA64     |     0:0 |    1 | When EL3 can use AArch32, determines which Execution state the PE boots into after a Warm reset:
 
+## SCR2_EL3 bitfields
+
+| Bitfield  | msb:lsb | Size | Description
+| --------- | ------: | ---: | -----------
+| VTE       |     3:3 |    1 | Virtual tagging enable override: Overrides enabling of Virtual tagging at EL2, EL1 and EL0. If not trapped to EL2, accesses to the following registers at EL1 and EL2 are trapped to EL3 and reported using EC syndrome value 0x18 : GCR_EL1 . RGSR_EL1 . TFSRE0_EL1 . TFSR_EL1 . TFSR_EL2 . Accesses with the register name TFSR_EL12 that are not UNDEFINED .
+| SRMASK2En |     2:2 |    1 | Enables access to the following registers: HCRMASK_EL2 . HCRXMASK_EL2 . If FEAT_NV3 is implemented, NVHCRX_EL2 , NVHCRMASK_EL2 , and NVHCRXMASK_EL2 .
+| NV3En     |     1:1 |    1 | Enables access to the NVHCR_EL2 register at EL2.
+| FDIT      |     0:0 |    1 | Enforce data-independent timing for execution at EL2, EL1 and EL0.
+
 ## SCR_EL3 bitfields
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
+| TPLIMEn   |   63:63 |    1 | Enable access TP limit registers at EL2, EL1 and EL0. If EL0, EL1 or EL2 is using AArch64, then accesses to the following registers are trapped to EL3 and reported using EC syndrome value 0x18 : TPMAX0_EL0 , TPMIN0_EL0 . TPMAX1_EL0 , TPMIN1_EL0 . If FEAT_TPSP is implemented, and EL1 or EL2 is using AArch64, then accesses to the following registers are trapped to EL3 and reported using EC syndrome value 0x18 : TPMAX0_EL1 , TPMIN0_EL1 , TPMAX1_EL1 , TPMIN1_EL1 . TPMAX0_EL2 , TPMIN0_EL2 , TPMAX1_EL2 , TPMIN1_EL2 .
 | NSE       |   62:62 |    1 | This field, evaluated with SCR_EL3.NS, selects the Security state of EL2 and lower Exception levels.
 | HACDBSEn  |   61:61 |    1 | Enables access to the HACDBSBR_EL2 and HACDBSCONS_EL2 registers at EL2.
 | HDBSSEn   |   60:60 |    1 | Enables access to HDBSSBR_EL2 and HDBSSPROD_EL2 registers at EL2.
 | FGTEn2    |   59:59 |    1 | Fine-Grained Traps Enable 2. When EL2 is implemented, enables the traps to EL2 controlled by HDFGRTR2_EL2 , HDFGWTR2_EL2 , HFGITR2_EL2 , HFGRTR2_EL2 , and HFGWTR2_EL2 , and controls access to those registers.
 | EnDSE     |   58:58 |    1 | Enable for delegated SError exceptions pended by SCR_EL3.DSE.
 | DSE       |   57:57 |    1 | Delegated SError exception for EL2, EL1, and EL0.
+| VTLBIDEn  |   56:56 |    1 | Enable EL2 access to VTLBID<n>_EL2 and VTLBIDOS<n>_EL2 registers.
 | EnIDCP128 |   55:55 |    1 | Enables access to IMPLEMENTATION DEFINED 128-bit System registers.
-| SRMASKEn  |   54:54 |    1 | Enables access to the following MASK registers: CPACRMASK_EL1 , and CPACRMASK_EL12 . SCTLRMASK_EL1 , and SCTLRMASK_EL12 . SCTLR2MASK_EL1 , and SCTLR2MASK_EL12 . TCRMASK_EL1 , and TCRMASK_EL12 . TCR2MASK_EL1 , and TCR2MASK_EL12 . ACTLRMASK_EL1 and ACTLRMASK_EL12 , if they are implemented. CPTRMASK_EL2 . SCTLRMASK_EL2 . SCTLR2MASK_EL2 . TCRMASK_EL2 . TCR2MASK_EL2 . ACTLRMASK_EL2 , if it is implemented.
+| SRMASKEn  |   54:54 |    1 | Enables access to the following MASK registers: CPACRMASK_EL1 , and CPACRMASK_EL12. SCTLRMASK_EL1 , and SCTLRMASK_EL12. SCTLR2MASK_EL1 , and SCTLR2MASK_EL12. TCRMASK_EL1 , and TCRMASK_EL12. TCR2MASK_EL1 , and TCR2MASK_EL12. ACTLRMASK_EL1 and ACTLRMASK_EL12, if they are implemented. CPTRMASK_EL2 . SCTLRMASK_EL2 . SCTLR2MASK_EL2 . TCRMASK_EL2 . TCR2MASK_EL2 . ACTLRMASK_EL2 , if it is implemented.
 | PFAREn    |   53:53 |    1 | Enable access to Physical Fault Address Registers. When disabled, accesses to Physical Fault Address Registers generate a trap to EL3.
 | TWERR     |   52:52 |    1 | Trap writes of Error Record registers. Enables a trap to EL3 on writes of Error Record registers.
 | TMEA      |   51:51 |    1 | Trap Masked External Aborts. Controls whether a masked error exception at a lower Exception level is taken to EL3.
@@ -3775,15 +4582,15 @@ be executed each time an update of the Arm architecture is published.
 | ADEn      |   37:37 |    1 | Enables access to the ACCDATA_EL1 register at EL1 and EL2.
 | EnAS0     |   36:36 |    1 | Traps execution of an ST64BV0 instruction at EL0, EL1, or EL2 to EL3.
 | AMVOFFEN  |   35:35 |    1 | Activity Monitors Virtual Offsets Enable.
-| TME       |   34:34 |    1 | Enables access to the TSTART, TCOMMIT, TTEST and TCANCEL instructions at EL0, EL1 and EL2.
 | TWEDEL    |   33:30 |    4 | TWE Delay. A 4-bit unsigned number that, when SCR_EL3.TWEDEn is 1, encodes the minimum delay in taking a trap of WFE* caused by SCR_EL3.TWE as 2 (TWEDEL + 8) cycles.
 | TWEDEn    |   29:29 |    1 | TWE Delay Enable. Enables a configurable delayed trap of the WFE* instruction caused by SCR_EL3.TWE. Traps are reported using EC syndrome value 0x01 .
 | ECVEn     |   28:28 |    1 | ECV Enable. Enables access to the CNTPOFF_EL2 register.
 | FGTEn     |   27:27 |    1 | Fine-Grained Traps Enable. When EL2 is implemented, enables the traps to EL2 controlled by HAFGRTR_EL2 , HDFGRTR_EL2 , HDFGWTR_EL2 , HFGRTR_EL2 , HFGITR_EL2 , and HFGWTR_EL2 , and controls access to those registers. If EL2 is not implemented but EL3 is implemented, FEAT_FGT implements the MDCR_EL3 .TDCC traps.
-| ATA       |   26:26 |    1 | Allocation Tag Access. Controls access to Allocation Tags, System registers for Memory tagging, and prevention of Tag checking, at EL2, EL1 and EL0.
+| ATA       |   26:26 |    1 | Physical tagging enable override: Overrides enabling of Physical tagging at EL2, EL1 and EL0. If not trapped to EL2, accesses to the following registers at EL1 and EL2 are trapped to EL3 and reported using EC syndrome value 0x18 : GCR_EL1 . RGSR_EL1 . TFSRE0_EL1 . TFSR_EL1 . TFSR_EL2 . Accesses with the register name TFSR_EL12 that are not UNDEFINED . Prior to FEAT_VMTE, the only memory tagging is Physical Tagging.
 | EnSCXT    |   25:25 |    1 | Enables access to the SCXTNUM_EL2 , SCXTNUM_EL1 , and SCXTNUM_EL0 registers.
+| POE2En    |   24:24 |    1 | Enable access to POE2 registers at EL2, EL1, and EL0. When disabled by this control, direct accesses to the following registers are trapped to EL3: MRS accesses from EL0 to TINDEX_EL0 using AArch64 are trapped to EL3 and reported using EC syndrome value 0x18 . MSR and MRS accesses from EL0 to TPIDR3_EL0 using AArch64 are trapped to EL3 and reported using EC syndrome value 0x18 . MSR and MRS accesses from EL1 and EL2 using AArch64 to the following registers: DPOTBR0_EL1 , DPOTBR1_EL1 . IRTBRU_EL1 , IRTBRP_EL1 . TTTBRU_EL1 , TTTBRP_EL1 . FGDTU<n>_EL1 , FGDTP<n>_EL1 . AFGDTU<n>_EL1 , AFGDTP<n>_EL1 . TINDEX_EL1 , TINDEX_EL0 . STINDEX_EL1 . LDSTT_EL1 . TPIDR3_EL1 , TPIDR3_EL0 . MSR and MRS accesses from EL2 using AArch64 are trapped to EL3 and reported using EC syndrome value 0x18 . DPOTBR0_EL2 , DPOTBR1_EL2 . IRTBRU_EL2 , IRTBRP_EL2 . TTTBRU_EL2 , TTTBRP_EL2 . FGDTU<n>_EL2 , FGDTP<n>_EL2 . AFGDTU<n>_EL2 , AFGDTP<n>_EL2 . TINDEX_EL2 , STINDEX_EL2 . LDSTT_EL2 . TPIDR3_EL2 . If FEAT_NV2 is implemented, VNCCR_EL2 .
 | TID5      |   23:23 |    1 | Trap ID group 5. EL2 and EL1 reads of the group 5 ID register GMID_EL1 are trapped to EL3, reported using EC syndrome value 0x18 , unless the instruction generates a higher priority exception.
-| TID3      |   22:22 |    1 | Trap ID group 3. EL2 and EL1 reads of the following group 3 registers are trapped to EL3, reported using EC syndrome value 0x18 , unless the instruction generates a higher priority exception: ID_PFR0_EL1 , ID_PFR1_EL1 , ID_DFR0_EL1 , ID_AFR0_EL1 , ID_MMFR0_EL1 , ID_MMFR1_EL1 , ID_MMFR2_EL1 , ID_MMFR3_EL1 , ID_ISAR0_EL1 , ID_ISAR1_EL1 , ID_ISAR2_EL1 , ID_ISAR3_EL1 , ID_ISAR4_EL1 , ID_ISAR5_EL1 , MVFR0_EL1 , MVFR1_EL1 , and MVFR2_EL1 . ID_AA64PFR0_EL1 , ID_AA64PFR1_EL1 , ID_AA64DFR0_EL1 , ID_AA64DFR1_EL1 , ID_AA64ISAR0_EL1 , ID_AA64ISAR1_EL1 , ID_AA64MMFR0_EL1 , ID_AA64MMFR1_EL1 , ID_AA64AFR0_EL1 , and ID_AA64AFR1_EL1 . ID_PFR2_EL1 , ID_MMFR4_EL1 and ID_MMFR5_EL1 . ID_AA64MMFR3_EL1 . ID_AA64MMFR4_EL1 . ID_AA64PFR2_EL1 . ID_AA64MMFR2_EL1 and ID_ISAR6_EL1 . ID_DFR1_EL1 . ID_AA64ZFR0_EL1 . ID_AA64SMFR0_EL1 . ID_AA64ISAR2_EL1 . This field traps all MRS accesses to registers in the following range that are not already mentioned in this field description: op0 == 3, op1 == 0, CRn == 0, CRm == {2-7}, op2 == {0-7}.
+| TID3      |   22:22 |    1 | Trap ID group 3. EL2 and EL1 reads of the following group 3 registers are trapped to EL3, reported using EC syndrome value 0x18 , unless the instruction generates a higher priority exception: ID_PFR0_EL1 , ID_PFR1_EL1 , ID_DFR0_EL1 , ID_AFR0_EL1 , ID_MMFR0_EL1 , ID_MMFR1_EL1 , ID_MMFR2_EL1 , ID_MMFR3_EL1 , ID_ISAR0_EL1 , ID_ISAR1_EL1 , ID_ISAR2_EL1 , ID_ISAR3_EL1 , ID_ISAR4_EL1 , ID_ISAR5_EL1 , MVFR0_EL1 , MVFR1_EL1 , and MVFR2_EL1 . ID_AA64PFR0_EL1 , ID_AA64PFR1_EL1 , ID_AA64DFR0_EL1 , ID_AA64DFR1_EL1 , ID_AA64ISAR0_EL1 , ID_AA64ISAR1_EL1 , ID_AA64MMFR0_EL1 , ID_AA64MMFR1_EL1 , ID_AA64AFR0_EL1 , and ID_AA64AFR1_EL1 . ID_PFR2_EL1 , and ID_MMFR4_EL1 . ID_MMFR5_EL1 . ID_AA64MMFR3_EL1 . ID_AA64MMFR4_EL1 . ID_AA64PFR2_EL1 . ID_AA64MMFR2_EL1 and ID_ISAR6_EL1 . ID_DFR1_EL1 . ID_AA64DFR2_EL1 . ID_AA64ZFR0_EL1 . ID_AA64SMFR0_EL1 . ID_AA64FPFR0_EL1 . ID_AA64ISAR2_EL1 . ID_AA64ISAR3_EL1 . This field traps all MRS accesses to registers in the following range that are not already mentioned in this field description: op0 == 3, op1 == 0, CRn == 0, CRm == {2-7}, op2 == {0-7}.
 | FIEN      |   21:21 |    1 | Fault Injection enable. Trap accesses to the registers ERXPFGCDN_EL1 , ERXPFGCTL_EL1 , and ERXPFGF_EL1 from EL1 and EL2 to EL3, reported using EC syndrome value 0x18 .
 | NMEA      |   20:20 |    1 | Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL3.
 | EASE      |   19:19 |    1 | External aborts to SError exception vector.
@@ -3808,6 +4615,19 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
+| EnTP3     |   28:28 |    1 | Traps instructions executed at EL0 that access TPIDR3_EL0 to EL1. The exception is reported using EC syndrome value 0x18 .
+| TLBOSNIS  |   26:26 |    1 | TLBI for Outer shareable excludes Inner shareable. This control applies to TLBI OS instructions executed at EL1.
+| FDIT      |   25:25 |    1 | Enforce data-independent timing for execution at EL0.
+| BTD       |   24:24 |    1 | Controls the implicit BTI behavior of the following instructions at EL1: PACIASP and PACIBSP
+| BTD0      |   23:23 |    1 | Controls the implicit BTI behavior of the following instructions at EL0 in the EL1&0 translation regime: PACIASP and PACIBSP
+| EnIA2     |   22:22 |    1 | Controls enabling of pointer authentication of instruction addresses using the APIAKey_EL1 key, at EL0 in the EL1&0 translation regime. This field is used in conjunction with SCTLR_EL1 .EnIA as follows: EnIA2 EnIA Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnIB2     |   21:21 |    1 | Controls enabling of pointer authentication of instruction addresses using the APIBKey_EL1 key, at EL0 in the EL1&0 translation regime. This field is used in conjunction with SCTLR_EL1 .EnIB as follows: EnIB2 EnIB Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnDA2     |   20:20 |    1 | Controls enabling of pointer authentication of data addresses using the APDAKey_EL1 key, at EL0 in the EL1&0 translation regime. This field is used in conjunction with SCTLR_EL1 .EnDA as follows: EnDA2 EnDA Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnDB2     |   19:19 |    1 | Controls enabling of pointer authentication of data addresses using the APDBKey_EL1 key, at EL0 in the EL1&0 translation regime. This field is used in conjunction with SCTLR_EL1 .EnDB as follows: EnDB2 EnDB Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| VT        |   17:17 |    1 | Select Virtual Tagging at EL1 and EL0.
+| TEOS      |   16:16 |    1 | Exception returns generated by a TEXIT are context-synchronizing events.
+| TEIS      |   15:15 |    1 | TENTER exceptions are context-synchronizing events.
+| DTZ       |   14:14 |    1 | Default TIndex value of zero on exception entry.
 | CPTM0     |   12:12 |    1 | This field controls unprivileged Checked Pointer Arithmetic for Multiplication.
 | CPTM      |   11:11 |    1 | This field controls Checked Pointer Arithmetic for Multiplication at EL1.
 | CPTA0     |   10:10 |    1 | This field controls unprivileged Checked Pointer Arithmetic for Addition.
@@ -3818,12 +4638,25 @@ be executed each time an update of the Arm architecture is published.
 | EASE      |     5:5 |    1 | External Aborts to SError exception vector.
 | EnANERR   |     4:4 |    1 | Enable Asynchronous Normal Read Error.
 | EnADERR   |     3:3 |    1 | Enable Asynchronous Device Read Error.
-| NMEA      |     2:2 |    1 | Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL1.
+| NMEA      |     2:2 |    1 | Non-maskable External Aborts. Controls whether PSTATE.A masks physical SError exceptions at EL1.
 
 ## SCTLR2_EL2 bitfields
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
+| EnTP3     |   28:28 |    1 | Traps instructions executed at EL0 that access TPIDR3_EL0 to EL2. The exception is reported using EC syndrome value 0x18 .
+| TLBOSNIS  |   26:26 |    1 | TLBI for Outer shareable excludes Inner shareable. This control applies to TLBI OS instructions executed at EL2.
+| FDIT      |   25:25 |    1 | Enforce data-independent timing for execution at EL0.
+| BTD       |   24:24 |    1 | Controls the implicit BTI behavior of the following instructions at EL2: PACIASP and PACIBSP
+| BTD0      |   23:23 |    1 | Controls the implicit BTI behavior of the following instructions at EL0 in the EL2&0 translation regime: PACIASP and PACIBSP
+| EnIA2     |   22:22 |    1 | Controls enabling of pointer authentication of instruction addresses using the APIAKey_EL1 key, at EL0 in the EL2&0 translation regime. This field is used in conjunction with SCTLR_EL2 .EnIA as follows: EnIA2 EnIA Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnIB2     |   21:21 |    1 | Controls enabling of pointer authentication of instruction addresses using the APIBKey_EL1 key, at EL0 in the EL2&0 translation regime. This field is used in conjunction with SCTLR_EL2 .EnIB as follows: EnIB2 EnIB Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnDA2     |   20:20 |    1 | Controls enabling of pointer authentication of data addresses using the APDAKey_EL1 key, at EL0 in the EL2&0 translation regime. This field is used in conjunction with SCTLR_EL2 .EnDA as follows: EnDA2 EnDA Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| EnDB2     |   19:19 |    1 | Controls enabling of pointer authentication of data addresses using the APDBKey_EL1 key, at EL0 in the EL2&0 translation regime. This field is used in conjunction with SCTLR_EL2 .EnDB as follows: EnDB2 EnDB Behavior at EL0 0b0 0b0 Disabled 0b0 0b1 Enabled 0b1 0b0 Enabled 0b1 0b1 Disabled
+| VT        |   17:17 |    1 | Select Virtual Tagging at EL2 and EL0.
+| TEOS      |   16:16 |    1 | Exception returns generated by a TEXIT are context-synchronizing events.
+| TEIS      |   15:15 |    1 | TENTER exceptions are context-synchronizing events.
+| DTZ       |   14:14 |    1 | Default TIndex value of zero on exception entry.
 | CPTM0     |   12:12 |    1 | This field controls unprivileged Checked Pointer Arithmetic for Multiplication.
 | CPTM      |   11:11 |    1 | This field controls Checked Pointer Arithmetic for Multiplication at EL2.
 | CPTA0     |   10:10 |    1 | This field controls unprivileged Checked Pointer Arithmetic for Addition.
@@ -3834,13 +4667,18 @@ be executed each time an update of the Arm architecture is published.
 | EASE      |     5:5 |    1 | External Aborts to SError exception vector.
 | EnANERR   |     4:4 |    1 | Enable Asynchronous Normal Read Error.
 | EnADERR   |     3:3 |    1 | Enable Asynchronous Device Read Error.
-| NMEA      |     2:2 |    1 | Non-maskable External Aborts. Controls whether PSTATE.A masks SError exceptions at EL2.
+| NMEA      |     2:2 |    1 | Non-maskable External Aborts. Controls whether physical SError exceptions are masked at EL2 when PSTATE.A is 1 or HCR_EL2.{AMO, TGE} is {0, 0}.
 | EMEC      |     1:1 |    1 | Enables MEC. When enabled, memory accesses to the Realm physical address space are associated with a MECID.
 
 ## SCTLR2_EL3 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| BTD      |   24:24 |    1 | Controls the implicit BTI behavior of the following instructions at EL3: PACIASP and PACIBSP
+| VT       |   17:17 |    1 | Select Virtual Tagging at EL3.
+| TEOS     |   16:16 |    1 | Exception returns generated by a TEXIT are context-synchronizing events.
+| TEIS     |   15:15 |    1 | TENTER exceptions are context-synchronizing events.
+| DTZ      |   14:14 |    1 | Default TIndex value of zero on exception entry.
 | CPTM     |   11:11 |    1 | This field controls Checked Pointer Arithmetic for Multiplication at EL3.
 | CPTA     |     9:9 |    1 | This field controls Checked Pointer Arithmetic for Addition at EL3.
 | EnPACM   |     7:7 |    1 | PACM Enable at EL3. Controls the effect of a PACM instruction at EL3.
@@ -3852,6 +4690,19 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
+| EnTP3     |   28:28 |    1 | Mask bit for EnTP3.
+| TLBOSNIS  |   26:26 |    1 | Mask bit for TLBOSNIS.
+| FDIT      |   25:25 |    1 | Mask bit for FDIT.
+| BTD       |   24:24 |    1 | Mask bit for BTD.
+| BTD0      |   23:23 |    1 | Mask bit for BTD0.
+| EnIA2     |   22:22 |    1 | Mask bit for EnIA2.
+| EnIB2     |   21:21 |    1 | Mask bit for EnIB2.
+| EnDA2     |   20:20 |    1 | Mask bit for EnDA2.
+| EnDB2     |   19:19 |    1 | Mask bit for EnDB2.
+| VT        |   17:17 |    1 | Mask bit for VT.
+| TEOS      |   16:16 |    1 | Mask bit for TEOS.
+| TEIS      |   15:15 |    1 | Mask bit for TEIS.
+| DTZ       |   14:14 |    1 | Mask bit for DTZ.
 | CPTM0     |   12:12 |    1 | Mask bit for CPTM0.
 | CPTM      |   11:11 |    1 | Mask bit for CPTM.
 | CPTA0     |   10:10 |    1 | Mask bit for CPTA0.
@@ -3868,6 +4719,19 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield  | msb:lsb | Size | Description
 | --------- | ------: | ---: | -----------
+| EnTP3     |   28:28 |    1 | Mask bit for EnTP3.
+| TLBOSNIS  |   26:26 |    1 | Mask bit for TLBOSNIS.
+| FDIT      |   25:25 |    1 | Mask bit for FDIT.
+| BTD       |   24:24 |    1 | Mask bit for BTD.
+| BTD0      |   23:23 |    1 | Mask bit for BTD0.
+| EnIA2     |   22:22 |    1 | Mask bit for EnIA2.
+| EnIB2     |   21:21 |    1 | Mask bit for EnIB2.
+| EnDA2     |   20:20 |    1 | Mask bit for EnDA2.
+| EnDB2     |   19:19 |    1 | Mask bit for EnDB2.
+| VT        |   17:17 |    1 | Mask bit for VT.
+| TEOS      |   16:16 |    1 | Mask bit for TEOS.
+| TEIS      |   15:15 |    1 | Mask bit for TEIS.
+| DTZ       |   14:14 |    1 | Mask bit for DTZ.
 | CPTM0     |   12:12 |    1 | Mask bit for CPTM0.
 | CPTM      |   11:11 |    1 | Mask bit for CPTM.
 | CPTA0     |   10:10 |    1 | Mask bit for CPTA0.
@@ -3895,15 +4759,11 @@ be executed each time an update of the Arm architecture is published.
 | EnALS     |   56:56 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an LD64B or ST64B instruction at EL0 to EL1.
 | EnAS0     |   55:55 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV0 instruction at EL0 to EL1.
 | EnASR     |   54:54 |    1 | When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, traps execution of an ST64BV instruction at EL0 to EL1.
-| TME       |   53:53 |    1 | Enables the Transactional Memory Extension at EL1.
-| TME0      |   52:52 |    1 | Enables the Transactional Memory Extension at EL0.
-| TMT       |   51:51 |    1 | Forces a trivial implementation of the Transactional Memory Extension at EL1.
-| TMT0      |   50:50 |    1 | Forces a trivial implementation of the Transactional Memory Extension at EL0.
 | TWEDEL    |   49:46 |    4 | TWE Delay. A 4-bit unsigned number that, when SCTLR_EL1.TWEDEn is 1, encodes the minimum delay in taking a trap of WFE* caused by SCTLR_EL1.nTWE as 2 (TWEDEL + 8) cycles.
 | TWEDEn    |   45:45 |    1 | TWE Delay Enable. Enables a configurable delayed trap of the WFE* instruction caused by SCTLR_EL1.nTWE.
 | DSSBS     |   44:44 |    1 | Default PSTATE.SSBS value on Exception Entry.
-| ATA       |   43:43 |    1 | Allocation Tag Access in EL1. When SCR_EL3 .ATA == 1 and HCR_EL2 .ATA == 1, controls access to Allocation Tags and Tag Check operations in EL1.
-| ATA0      |   42:42 |    1 | Allocation Tag Access in EL0. When SCR_EL3 .ATA == 1, HCR_EL2 .ATA == 1, and the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, controls access to Allocation Tags and Tag Check operations in EL0.
+| ATA       |   43:43 |    1 | Allocation Tag Access in EL1. Controls use of Memory tagging in EL1.
+| ATA0      |   42:42 |    1 | Allocation Tag Access in EL0. Controls access to Allocation Tags and Tag Check operations in EL0 when HCR_EL2 ,{E2H,TGE} is not {1,1}.
 | TCF       |   41:40 |    2 | Tag Check Fault in EL1. Controls the effect of Tag Check Faults due to Loads and Stores in EL1.
 | TCF0      |   39:38 |    2 | Tag Check Fault in EL0. When the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, controls the effect of Tag Check Faults due to Loads and Stores in EL0.
 | ITFSB     |   37:37 |    1 | When synchronous exceptions are not being generated by Tag Check Faults, this field controls whether on exception entry into EL1, all Tag Check Faults due to instructions executed before exception entry, that are reported asynchronously, are synchronized into TFSRE0_EL1 and TFSR_EL1 registers.
@@ -3911,7 +4771,7 @@ be executed each time an update of the Arm architecture is published.
 | BT0       |   35:35 |    1 | Configures the Branch Type compatibility of the implicit BTI behavior for the following instructions at EL0: PACIASP . PACIBSP . If FEAT_PAuth_LR is implemented, PACIASPPC . If FEAT_PAuth_LR is implemented, PACIBSPPC .
 | EnFPM     |   34:34 |    1 | Enables direct and indirect accesses to FPMR from EL0. When accesses to FPMR are disabled by this control: Direct accesses to FPMR from EL0 are trapped to EL1, or to EL2 when EL2 is implemented and enabled in the current Security state and HCR_EL2 .TGE is 1. These exceptions are reported using EC syndrome value 0x18 . Execution of FP8 data-processing instructions that indirectly access FPMR is UNDEFINED at EL0.
 | MSCEn     |   33:33 |    1 | Memory Copy and Memory Set instructions Enable. Enables execution of the Memory Copy and Memory Set instructions at EL0.
-| CMOW      |   32:32 |    1 | Controls cache maintenance instruction permission for the following instructions executed at EL0. IC IVAU and DC CIVAC . If FEAT_MTE is implemented, DC CIGDVAC and DC CIGVAC .
+| CMOW      |   32:32 |    1 | Controls the required permissions for the following cache maintenance instructions executed at EL0: Any DC instruction that operates by VA and performs a clean and invalidate operation. Any IC instruction that operates by VA.
 | EnIA      |   31:31 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APIAKey_EL1 key, at EL1 and at EL0 in the EL1&0 translation regime.
 | EnIB      |   30:30 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APIBKey_EL1 key, at EL1 and at EL0 in the EL1&0 translation regime.
 | LSMAOE    |   29:29 |    1 | Load Multiple and Store Multiple Atomicity and Ordering Enable.
@@ -3921,17 +4781,17 @@ be executed each time an update of the Arm architecture is published.
 | EE        |   25:25 |    1 | Endianness of data accesses at EL1, and stage 1 translation table walks in the EL1&0 translation regime.
 | E0E       |   24:24 |    1 | Endianness of data accesses at EL0.
 | SPAN      |   23:23 |    1 | Set Privileged Access Never, on taking an exception to EL1.
-| EIS       |   22:22 |    1 | Exception Entry is Context Synchronizing.
+| EIS       |   22:22 |    1 | Exception Entry is a context synchronization event.
 | IESB      |   21:21 |    1 | Implicit Error Synchronization event enable. Possible values are:
 | TSCXT     |   20:20 |    1 | Trap EL0 Access to the SCXTNUM_EL0 register, when EL0 is using AArch64.
 | WXN       |   19:19 |    1 | Write permission implies XN (Execute-never). For the EL1&0 translation regime, this bit can restrict execute permissions on writeable pages.
 | nTWE      |   18:18 |    1 | Traps EL0 execution of WFE instructions to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from both Execution states, reported using EC syndrome value 0x01 . When FEAT_WFxT is implemented, this trap also applies to the WFET instruction.
 | nTWI      |   16:16 |    1 | Traps EL0 execution of WFI instructions to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from both Execution states, reported using EC syndrome value 0x01 . When FEAT_WFxT is implemented, this trap also applies to the WFIT instruction.
 | UCT       |   15:15 |    1 | Traps EL0 accesses to the CTR_EL0 to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 .
-| DZE       |   14:14 |    1 | Traps EL0 execution of DC ZVA instructions to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 . If FEAT_MTE is implemented, this trap also applies to DC GVA and DC GZVA .
+| DZE       |   14:14 |    1 | Traps EL0 execution of the following instructions to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 : DC ZVA . If FEAT_MTE is implemented, DC GVA and DC GZVA . If FEAT_MTETC is implemented, DC GBVA and DC ZGBVA . Traps EL0 execution of DC ZVA instructions to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 .
 | EnDB      |   13:13 |    1 | Controls enabling of pointer authentication of data addresses, using the APDBKey_EL1 key, at EL1 and at EL0 in the EL1&0 translation regime.
 | I         |   12:12 |    1 | Stage 1 instruction access Cacheability control, for accesses at EL0 and EL1:
-| EOS       |   11:11 |    1 | Exception Exit is Context Synchronizing.
+| EOS       |   11:11 |    1 | Exception Exit is a context synchronization event.
 | EnRCTX    |   10:10 |    1 | Enable EL0 access to the following System instructions: CFPRCTX , DVPRCTX and CPPRCTX instructions. If FEAT_SPECRES2 is implemented, COSPRCTX . CFP RCTX , DVP RCTX and CPP RCTX instructions. If FEAT_SPECRES2 is implemented, COSP RCTX .
 | UMA       |     9:9 |    1 | User Mask Access. Traps EL0 execution of MSR and MRS instructions that access the PSTATE.{D, A, I, F} masks to EL1, or to EL2 when it is implemented and enabled for the current Security state and HCR_EL2 .TGE is 1, from AArch64 state only, reported using EC syndrome value 0x18 .
 | SED       |     8:8 |    1 | SETEND instruction disable. Disables SETEND instructions at EL0 using AArch32.
@@ -3958,15 +4818,11 @@ be executed each time an update of the Arm architecture is published.
 | EnALS     |   56:56 |    1 | Traps execution of an LD64B or ST64B instruction at EL0 to EL2.
 | EnAS0     |   55:55 |    1 | Traps execution of an ST64BV0 instruction at EL0 to EL2.
 | EnASR     |   54:54 |    1 | Traps execution of an ST64BV instruction at EL0 to EL2.
-| TME       |   53:53 |    1 | Enables the Transactional Memory Extension at EL2.
-| TME0      |   52:52 |    1 | Enables the Transactional Memory Extension at EL0.
-| TMT       |   51:51 |    1 | Forces a trivial implementation of the Transactional Memory Extension at EL2.
-| TMT0      |   50:50 |    1 | Forces a trivial implementation of the Transactional Memory Extension at EL0.
-| TWEDEL    |   49:46 |    4 | TWE Delay. A 4-bit unsigned number that, when SCTLR_EL2.TWEDEn is 1, encodes the minimum delay in taking a trap of WFE caused by SCTLR_EL2.nTWE as 2 (TWEDEL + 8) cycles.
-| TWEDEn    |   45:45 |    1 | TWE Delay Enable. Enables a configurable delayed trap of the WFE instruction caused by SCTLR_EL2.nTWE.
+| TWEDEL    |   49:46 |    4 | TWE Delay. A 4-bit unsigned number that, when SCTLR_EL2.TWEDEn is 1, encodes the minimum delay in taking a trap of WFE* caused by SCTLR_EL2.nTWE as 2 (TWEDEL + 8) cycles.
+| TWEDEn    |   45:45 |    1 | TWE Delay Enable. Enables a configurable delayed trap of the WFE* instruction caused by SCTLR_EL2.nTWE.
 | DSSBS     |   44:44 |    1 | Default PSTATE.SSBS value on exception entry.
-| ATA       |   43:43 |    1 | Allocation Tag Access in EL2. When SCR_EL3 .ATA is 1, controls access to Allocation Tags and Tag Check operations in EL2.
-| ATA0      |   42:42 |    1 | Allocation Tag Access in EL0. When SCR_EL3 .ATA is 1, controls access to Allocation Tags and Tag Check operations in EL0.
+| ATA       |   43:43 |    1 | Allocation Tag Access in EL2. Controls use of Memory tagging in EL2.
+| ATA0      |   42:42 |    1 | Allocation Tag Access in EL0. Controls use of Memory Tagging in EL0.
 | TCF       |   41:40 |    2 | Tag Check Fault in EL2. Controls the effect of Tag Check Faults due to Loads and Stores in EL2.
 | TCF0      |   39:38 |    2 | Tag Check Fault in EL0. Controls the effect of Tag Check Faults due to Loads and Stores in EL0.
 | ITFSB     |   37:37 |    1 | When synchronous exceptions are not being generated by Tag Check Faults, this field controls whether on exception entry into EL2, all Tag Check Faults due to instructions executed before exception entry, that are reported asynchronously, are synchronized into TFSRE0_EL1 , TFSR_EL1 , and TFSR_EL2 registers.
@@ -3974,7 +4830,7 @@ be executed each time an update of the Arm architecture is published.
 | BT0       |   35:35 |    1 | Indicates the Branch Type compatibility of the implicit BTI behavior for the following instructions at EL0: PACIASP . PACIBSP . If FEAT_PAuth_LR is implemented, PACIASPPC . If FEAT_PAuth_LR is implemented, PACIBSPPC .
 | EnFPM     |   34:34 |    1 | Enables direct and indirect accesses to FPMR from EL0. When accesses to FPMR are disabled by this control: Direct accesses to FPMR from EL0 are trapped to EL2 and reported using EC syndrome value 0x18 . Execution of FP8 data-processing instructions that indirectly access FPMR is UNDEFINED at EL0.
 | MSCEn     |   33:33 |    1 | Memory Copy and Memory Set instructions Enable. Enables execution of the Memory Copy and Memory Set instructions at EL0.
-| CMOW      |   32:32 |    1 | Controls cache maintenance instruction permission for the following instructions executed at EL0. IC IVAU and DC CIVAC . If FEAT_MTE is implemented, DC CIGDVAC and DC CIGVAC .
+| CMOW      |   32:32 |    1 | Controls the required permissions for the following cache maintenance instructions executed at EL0: Any DC instruction that operates by VA and performs a clean and invalidate operation. Any IC instruction that operates by VA.
 | EnIA      |   31:31 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APIAKey_EL1 key, at EL2 and at EL0 in the EL2&0 translation regime.
 | EnIB      |   30:30 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APIBKey_EL1 key, at EL2 and at EL0 in the EL2&0 translation regime.
 | LSMAOE    |   29:29 |    1 | Load Multiple and Store Multiple Atomicity and Ordering Enable.
@@ -3991,11 +4847,12 @@ be executed each time an update of the Arm architecture is published.
 | nTWE      |   18:18 |    1 | Traps execution of WFE instructions at EL0 to EL2, from both Execution states. When FEAT_WFxT is implemented, this trap also applies to the WFET instruction.
 | nTWI      |   16:16 |    1 | Traps execution of WFI instructions at EL0 to EL2, from both Execution states. When FEAT_WFxT is implemented, this trap also applies to the WFIT instruction.
 | UCT       |   15:15 |    1 | Traps EL0 accesses to the CTR_EL0 to EL2, from AArch64 state only.
-| DZE       |   14:14 |    1 | Traps execution of DC ZVA instructions at EL0 to EL2, from AArch64 state only. If FEAT_MTE is implemented, this trap also applies to DC GVA and DC GZVA .
+| DZE       |   14:14 |    1 | Traps execution of the following instructions at EL0 to EL2, from AArch64 state only: DC ZVA . If FEAT_MTE is implemented, DC GVA and DC GZVA . If FEAT_MTETC is implemented, DC GBVA and DC ZGBVA .
 | EnDB      |   13:13 |    1 | Controls enabling of pointer authentication of data addresses, using the APDBKey_EL1 key, at EL2 and at EL0 in the EL2&0 translation regime.
 | I         |   12:12 |    1 | Instruction access Cacheability control, for accesses at EL2 and, when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}, EL0.
 | EOS       |   11:11 |    1 | Exception exit is a context synchronization event.
 | EnRCTX    |   10:10 |    1 | Enable EL0 access to the following System instructions: CFPRCTX , DVPRCTX and CPPRCTX instructions. If FEAT_SPECRES2 is implemented, COSPRCTX . CFP RCTX , DVP RCTX and CPP RCTX instructions. If FEAT_SPECRES2 is implemented, COSP RCTX .
+| UMA       |     9:9 |    1 | User Mask Access. Traps EL0 execution of MSR and MRS instructions that access the PSTATE.{D, A, I, F} masks to EL2 from AArch64 state only, reported using EC syndrome value 0x18 .
 | SED       |     8:8 |    1 | SETEND instruction disable. Disables SETEND instructions at EL0 using AArch32.
 | ITD       |     7:7 |    1 | IT Disable. Disables some uses of IT instructions at EL0 using AArch32.
 | nAA       |     6:6 |    1 | Non-aligned access. This bit controls generation of Alignment faults under certain conditions at EL2, and, when the Effective value of HCR_EL2 .{E2H, TGE} is {1, 1}, EL0. The following instructions generate an Alignment fault if all bytes being accessed are not within a single naturally aligned 16-byte quantity, for access: LDAPR, LDAPRH, LDAPUR, LDAPURH, LDAPURSH, LDAPURSW, LDAR, LDARH, LDLAR, LDLARH. STLLR, STLLRH, STLR, STLRH, STLUR, and STLURH. If FEAT_LRCPC3 is implemented, the post index versions of LDAPR and the pre index versions of STLR. If FEAT_LRCPC3 and Advanced SIMD and floating-point instructions are implemented, LDAPUR (SIMD&FP), LDAP1 (SIMD&FP), STLUR (SIMD&FP), and STL1 (SIMD&FP). If FEAT_LRCPC3 is implemented, the following instructions generate an Alignment fault if all bytes being accessed for a single register are not within a single naturally aligned 16-byte quantity, for access: LDIAPP, STILP.
@@ -4013,10 +4870,8 @@ be executed each time an update of the Arm architecture is published.
 | SPINTMASK |   62:62 |    1 | SP Interrupt Mask enable. When SCTLR_EL3.NMI is 1, controls whether PSTATE.SP acts as an interrupt mask, and controls the value of PSTATE.ALLINT on taking an exception to EL3.
 | NMI       |   61:61 |    1 | Non-maskable Interrupt enable.
 | TCSO      |   59:59 |    1 | Tag Checking Store Only.
-| TME       |   53:53 |    1 | Enables the Transactional Memory Extension at EL3.
-| TMT       |   51:51 |    1 | Forces a trivial implementation of the Transactional Memory Extension at EL3.
 | DSSBS     |   44:44 |    1 | Default PSTATE.SSBS value on Exception Entry.
-| ATA       |   43:43 |    1 | Allocation Tag Access in EL3. Controls access to Allocation Tags and Tag Check operations in EL3.
+| ATA       |   43:43 |    1 | Allocation Tag Access in EL3. Controls use of Memory tagging in EL3.
 | TCF       |   41:40 |    2 | Tag Check Fault in EL3. Controls the effect of Tag Check Faults due to Loads and Stores in EL3.
 | ITFSB     |   37:37 |    1 | When synchronous exceptions are not being generated by Tag Check Faults, this field controls whether on exception entry into EL3, all Tag Check Faults due to instructions executed before exception entry, that are reported asynchronously, are synchronized into TFSRE0_EL1 and TFSR_ELx registers.
 | BT        |   36:36 |    1 | Indicates the Branch Type compatibility of the implicit BTI behavior for the following instructions at EL3: PACIASP . PACIBSP . If FEAT_PAuth_LR is implemented, PACIASPPC . If FEAT_PAuth_LR is implemented, PACIBSPPC .
@@ -4024,12 +4879,12 @@ be executed each time an update of the Arm architecture is published.
 | EnIB      |   30:30 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APIBKey_EL1 key, in the EL3 translation regime. Possible values of this bit are:
 | EnDA      |   27:27 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APDAKey_EL1 key, in the EL3 translation regime.
 | EE        |   25:25 |    1 | Endianness of data accesses at EL3, and stage 1 translation table walks in the EL3 translation regime.
-| EIS       |   22:22 |    1 | Exception Entry is Context Synchronizing.
+| EIS       |   22:22 |    1 | Exception Entry is a context synchronization event.
 | IESB      |   21:21 |    1 | Implicit Error Synchronization event enable.
 | WXN       |   19:19 |    1 | Write permission implies XN (Execute-never). For the EL3 translation regime, this bit can force all memory regions that are writable to be treated as XN.
 | EnDB      |   13:13 |    1 | Controls enabling of pointer authentication of instruction addresses, using the APDBKey_EL1 key, in the EL3 translation regime.
 | I         |   12:12 |    1 | Instruction access Cacheability control, for accesses at EL3:
-| EOS       |   11:11 |    1 | Exception Exit is Context Synchronizing.
+| EOS       |   11:11 |    1 | Exception Exit is a context synchronization event.
 | nAA       |     6:6 |    1 | Non-aligned access. This bit controls generation of Alignment faults at EL3 under certain conditions. The following instructions generate an Alignment fault if all bytes being accessed are not within a single naturally aligned 16-byte quantity, for access: LDAPR, LDAPRH, LDAPUR, LDAPURH, LDAPURSH, LDAPURSW, LDAR, LDARH, LDLAR, LDLARH. STLLR, STLLRH, STLR, STLRH, STLUR, and STLURH. If FEAT_LRCPC3 is implemented, the post index versions of LDAPR and the pre index versions of STLR. If FEAT_LRCPC3 and Advanced SIMD and floating-point instructions are implemented, LDAPUR (SIMD&FP), LDAP1 (SIMD&FP), STLUR (SIMD&FP), and STL1 (SIMD&FP). If FEAT_LRCPC3 is implemented, the following instructions generate an Alignment fault if all bytes being accessed for a single register are not within a single naturally aligned 16-byte quantity, for access: LDIAPP, STILP.
 | SA        |     3:3 |    1 | SP Alignment check enable. When set to 1, if a load or store instruction executed at EL3 uses the SP as the base address and the SP is not aligned to a 16-byte boundary, then a SP alignment fault exception is generated. For more information, see 'SP alignment checking' .
 | C         |     2:2 |    1 | Cacheability control, for data accesses.
@@ -4050,10 +4905,6 @@ be executed each time an update of the Arm architecture is published.
 | EnALS     |   56:56 |    1 | Mask bit for EnALS.
 | EnAS0     |   55:55 |    1 | Mask bit for EnAS0.
 | EnASR     |   54:54 |    1 | Mask bit for EnASR.
-| TME       |   53:53 |    1 | Mask bit for TME.
-| TME0      |   52:52 |    1 | Mask bit for TME0.
-| TMT       |   51:51 |    1 | Mask bit for TMT.
-| TMT0      |   50:50 |    1 | Mask bit for TMT0.
 | TWEDEL    |   46:46 |    1 | Mask bit for TWEDEL.
 | TWEDEn    |   45:45 |    1 | Mask bit for TWEDEn.
 | DSSBS     |   44:44 |    1 | Mask bit for DSSBS.
@@ -4113,10 +4964,6 @@ be executed each time an update of the Arm architecture is published.
 | EnALS     |   56:56 |    1 | Mask bit for EnALS.
 | EnAS0     |   55:55 |    1 | Mask bit for EnAS0.
 | EnASR     |   54:54 |    1 | Mask bit for EnASR.
-| TME       |   53:53 |    1 | Mask bit for TME.
-| TME0      |   52:52 |    1 | Mask bit for TME0.
-| TMT       |   51:51 |    1 | Mask bit for TMT.
-| TMT0      |   50:50 |    1 | Mask bit for TMT0.
 | TWEDEL    |   46:46 |    1 | Mask bit for TWEDEL.
 | TWEDEn    |   45:45 |    1 | Mask bit for TWEDEn.
 | DSSBS     |   44:44 |    1 | Mask bit for DSSBS.
@@ -4151,6 +4998,7 @@ be executed each time an update of the Arm architecture is published.
 | I         |   12:12 |    1 | Mask bit for I.
 | EOS       |   11:11 |    1 | Mask bit for EOS.
 | EnRCTX    |   10:10 |    1 | Mask bit for EnRCTX.
+| UMA       |     9:9 |    1 | Mask bit for UMA.
 | SED       |     8:8 |    1 | Mask bit for SED.
 | ITD       |     7:7 |    1 | Mask bit for ITD.
 | nAA       |     6:6 |    1 | Mask bit for nAA.
@@ -4414,12 +5262,30 @@ be executed each time an update of the Arm architecture is published.
 | -------- | ------: | ---: | -----------
 | SSBS     |   12:12 |    1 | Speculative Store Bypass Safe. Prohibits speculative loads or stores which might practically allow a cache timing side channel. A speculative value in a register is used in a potentially speculatively exploitable manner if it is used to form an address, generate condition codes, or generate SVE predicate values to be used by other instructions in the speculative sequence or if the execution timing of any other instructions in the speculative sequence is a function of the data loaded under speculation.
 
+## STINDEX_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The saved value of TIndex for EL1.
+
+## STINDEX_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The saved value of TIndex for EL2.
+
+## STINDEX_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The saved value of TIndex for EL3.
+
 ## SVCR bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| ZA       |     1:1 |    1 | Enables SME ZA storage. If FEAT_SME2 is implemented, also enables SME2 ZT0 storage. When this storage is disabled, execution of an instruction which can access it is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x3 }. The possible values of this bit are:
-| SM       |     0:0 |    1 | Enables Streaming SVE mode. When the PE is in Streaming SVE mode, the Streaming SVE vector length (SVL) applies to SVE instructions, and execution at any Exception level of an instruction which is illegal in that mode is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x1 }. When the PE is not in Streaming SVE mode, the SVE vector length (VL) applies to SVE instructions, and execution at any Exception level of an instruction which is only legal in that mode is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x2 }. The possible values of this bit are:
+| ZA       |     1:1 |    1 | Access to PSTATE.ZA, SME storage enable. When this storage is disabled, execution of an instruction which can access it is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x3 }. The possible values of this bit are:
+| SM       |     0:0 |    1 | Access to PSTATE.SM, Streaming SVE mode. When the PE is in Streaming SVE mode, the Streaming SVE vector length (SVL) applies to SVE instructions, and execution at any Exception level of an instruction which is illegal in that mode is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x1 }. When the PE is not in Streaming SVE mode, the SVE vector length (VL) applies to SVE instructions, and execution at any Exception level of an instruction which is only legal in that mode is trapped. The exception is reported using an ESR_ELx .{EC, SMTC} value of { 0x1D , 0x2 }. The possible values of this bit are:
 
 ## TCO bitfields
 
@@ -4431,8 +5297,14 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| TVAD1    |   36:36 |    1 | Faulting control for access to an address that is a Tag VA determined by TCR2_EL1 .VTB1.
+| TVAD0    |   35:35 |    1 | Faulting control for access to an address that is a Tag VA determined by TCR2_EL1 .VTB0.
+| VTB1     |   34:30 |    5 | Base address of the range of Tag VAs translated by TTBR1_EL1 . The base address is Zeros(64-iasize):VTB1:Zeros(iasize-5), where iasize = 64- TCR_EL1 .T1SZ.
+| VTB0     |   29:25 |    5 | Base address of the range of Tag VAs translated by TTBR0_EL1 . The base address is Zeros(64-iasize):VTB0:Zeros(iasize-5), where iasize = 64- TCR_EL1 .T0SZ.
+| POIW     |   24:22 |    3 | POIndex width.
 | FNGNA1   |   21:21 |    1 | Force non-global for unassured translations using TTBR1_EL1 .
 | FNGNA0   |   20:20 |    1 | Force non-global for unassured translations using TTBR0_EL1 .
+| POE2F    |   19:19 |    1 | Enable POE2 translation table descriptor format for the EL1&0 stage 1 translation regime.
 | FNG1     |   18:18 |    1 | Force non-global translations for TTBR1_EL1 .
 | FNG0     |   17:17 |    1 | Force non-global translations for TTBR0_EL1 .
 | A2       |   16:16 |    1 | Enable use of two ASIDs.
@@ -4463,8 +5335,14 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| TVAD1    |   36:36 |    1 | Mask bit for TVAD1.
+| TVAD0    |   35:35 |    1 | Mask bit for TVAD0.
+| VTB1     |   30:30 |    1 | Mask bit for VTB1.
+| VTB0     |   25:25 |    1 | Mask bit for VTB0.
+| POIW     |   22:22 |    1 | Mask bit for POIW.
 | FNGNA1   |   21:21 |    1 | Mask bit for FNGNA1.
 | FNGNA0   |   20:20 |    1 | Mask bit for FNGNA0.
+| POE2F    |   19:19 |    1 | Mask bit for POE2F.
 | FNG1     |   18:18 |    1 | Mask bit for FNG1.
 | FNG0     |   17:17 |    1 | Mask bit for FNG0.
 | A2       |   16:16 |    1 | Mask bit for A2.
@@ -4483,11 +5361,25 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| TVAD1    |   36:36 |    1 | Mask bit for TVAD1.
+| TVAD0    |   35:35 |    1 | Mask bit for TVAD0.
+| VTB1     |   30:30 |    1 | Mask bit for VTB1.
+| VTB0     |   25:25 |    1 | Mask bit for VTB0.
+| POIW     |   22:22 |    1 | Mask bit for POIW.
+| POE2F    |   19:19 |    1 | Mask bit for POE2F.
+| FNG1     |   18:18 |    1 | Mask bit for FNG1.
+| FNG0     |   17:17 |    1 | Mask bit for FNG0.
+| A2       |   16:16 |    1 | Mask bit for A2.
+| DisCH1   |   15:15 |    1 | Mask bit for DisCH1.
+| DisCH0   |   14:14 |    1 | Mask bit for DisCH0.
+| AMEC1    |   13:13 |    1 | Mask bit for AMEC1.
 | AMEC0    |   12:12 |    1 | Mask bit for AMEC0.
 | HAFT     |   11:11 |    1 | Mask bit for HAFT.
 | PTTWI    |   10:10 |    1 | Mask bit for PTTWI.
+| D128     |     5:5 |    1 | Mask bit for D128.
 | AIE      |     4:4 |    1 | Mask bit for AIE.
 | POE      |     3:3 |    1 | Mask bit for POE.
+| E0POE    |     2:2 |    1 | Mask bit for E0POE.
 | PIE      |     1:1 |    1 | Mask bit for PIE.
 | PnCH     |     0:0 |    1 | Mask bit for PnCH.
 
@@ -4495,15 +5387,15 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| MTX1     |   61:61 |    1 | Extended memory tag checking. This field controls address generation and tag checking when EL0 and EL1 are using AArch64 where the data address would be translated by tables pointed to by TTBR1_EL1 . This control has an effect regardless of whether stage 1 of the EL1&0 translation regime is enabled or not.
-| MTX0     |   60:60 |    1 | Extended memory tag checking. This field controls address generation and tag checking when EL0 and EL1 are using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL1 . This control has an effect regardless of whether stage 1 of the EL1&0 translation regime is enabled or not.
+| MTX1     |   61:61 |    1 | Extended memory tag checking. This field controls address generation and Canonical tagging when EL0 and EL1 are using AArch64 where the data address would be translated by tables pointed to by TTBR1_EL1 . This control has an effect regardless of whether stage 1 of the EL1&0 translation regime is enabled or not.
+| MTX0     |   60:60 |    1 | Extended memory tag checking. This field controls address generation and Canonical tagging when EL0 and EL1 are using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL1 . This control has an effect regardless of whether stage 1 of the EL1&0 translation regime is enabled or not.
 | DS       |   59:59 |    1 | This field affects: Whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules. The minimum value of TCR_EL1.{T0SZ,T1SZ}. How and where shareability for Block and Page descriptors are encoded.
 | TCMA1    |   58:58 |    1 | Controls the generation of Unchecked accesses at EL1, and at EL0 if the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, when address[59:55] = 0b11111 .
 | TCMA0    |   57:57 |    1 | Controls the generation of Unchecked accesses at EL1, and at EL0 if the Effective value of HCR_EL2 .{E2H, TGE} is not {1, 1}, when address[59:55] = 0b00000 .
 | E0PD1    |   56:56 |    1 | Faulting control for unprivileged access to any address translated by TTBR1_EL1 .
 | E0PD0    |   55:55 |    1 | Faulting control for unprivileged access to any address translated by TTBR0_EL1 .
-| NFD1     |   54:54 |    1 | Non-Fault translation timing Disable when using TTBR1_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR1_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible. If FEAT_TME is implemented, the affected access types include all accesses generated by a load or store instruction in Transactional state.
-| NFD0     |   53:53 |    1 | Non-Fault translation timing Disable when using TTBR0_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR0_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible. If FEAT_TME is implemented, the affected access types include all accesses generated by a load or store instruction in Transactional state.
+| NFD1     |   54:54 |    1 | Non-Fault translation timing Disable when using TTBR1_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR1_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible.
+| NFD0     |   53:53 |    1 | Non-Fault translation timing Disable when using TTBR0_EL1 . Controls how a TLB miss is reported in response to a non-fault unprivileged access for a virtual address that is translated using TTBR0_EL1 . If SVE is implemented, the affected access types include: All accesses due to an SVE non-fault contiguous load instruction. Accesses due to an SVE first-fault gather load instruction that are not for the First active element. Accesses due to an SVE first-fault contiguous load instruction are not affected. Accesses due to prefetch instructions might be affected, but the effect is not architecturally visible.
 | TBID1    |   52:52 |    1 | Controls the use of the top byte of instruction addresses for address matching. For the purpose of this field, all cache maintenance and address translation instructions that perform address translation are treated as data accesses. For more information, see 'Address tagging' .
 | TBID0    |   51:51 |    1 | Controls the use of the top byte of instruction addresses for address matching. For the purpose of this field, all cache maintenance and address translation instructions that perform address translation are treated as data accesses. For more information, see 'Address tagging' .
 | HWU162   |   50:50 |    1 | Hardware Use. Indicates IMPLEMENTATION DEFINED hardware use of bit[62] of the stage 1 translation table Block or Page entry for translations using TTBR1_EL1 .
@@ -4540,7 +5432,9 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| MTX      |   33:33 |    1 | Extended memory tag checking. This field controls address generation and tag checking when EL2 is using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL2 . This control has an effect regardless of whether stage 1 of the EL2 translation regime is enabled or not.
+| TVAD     |   53:53 |    1 | Faulting control for access to an address that is a Tag VA determined by TCR_EL2 .VTB.
+| VTB      |   52:48 |    5 | Base address of the range of Tag VAs translated by TTBR0_EL2 . The base address is Zeros(64-iasize):VTB:Zeros(iasize-5), where iasize = 64- TCR_EL2 .T0SZ.
+| MTX      |   33:33 |    1 | Extended memory tag checking. This field controls address generation and Canonical tagging when EL2 is using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL2 . This control has an effect regardless of whether stage 1 of the EL2 translation regime is enabled or not.
 | DS       |   32:32 |    1 | This field affects: Whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules. The minimum value of TCR_EL2.T0SZ. How and where shareability for Block and Page descriptors are encoded.
 | TCMA     |   30:30 |    1 | Controls the generation of Unchecked accesses at EL2 when address [59:56] = 0b0000 .
 | TBID     |   29:29 |    1 | Controls the use of the top byte of instruction addresses for address matching. For the purpose of this field, all cache maintenance and address translation instructions that perform address translation are treated as data accesses. For more information, see 'Address tagging' .
@@ -4563,6 +5457,10 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| TVAD     |   53:53 |    1 | Faulting control for access to an address that is a Tag VA determined by TCR_EL3 .VTB.
+| VTB      |   52:48 |    5 | Base address of the range of Tag VAs translated by TTBR0_EL3 . The base address is Zeros(64-iasize):VTB:Zeros(iasize-5), where iasize = 64- TCR_EL3 .T0SZ.
+| POIW     |   47:45 |    3 | POIndex width.
+| POE2F    |   44:44 |    1 | Enable POE2 translation table descriptor format for the EL3 stage 1 translation regime.
 | DisCH0   |   43:43 |    1 | Disable the Contiguous bit for the Start Table.
 | HAFT     |   42:42 |    1 | Hardware managed Access Flag for Table descriptors. Enables the Hardware managed Access Flag for Table descriptors.
 | PTTWI    |   41:41 |    1 | Permit Translation table walk Incoherence. Permits RCWS instructions to generate writes that have the Reduced Coherence property.
@@ -4571,7 +5469,7 @@ be executed each time an update of the Arm architecture is published.
 | POE      |   36:36 |    1 | Enables Permission Overlay for EL3 accesses.
 | PIE      |   35:35 |    1 | Enables usage of Indirect Permission Scheme.
 | PnCH     |   34:34 |    1 | Protected attribute enable. Enables use of bit[52] of the stage 1 translation table entries as the Protected bit, for translations using TTBR0_EL3 .
-| MTX      |   33:33 |    1 | Extended memory tag checking. This field controls address generation and tag checking when EL3 is using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL3 . This control has an effect regardless of whether stage 1 of the EL3 translation regime is enabled or not.
+| MTX      |   33:33 |    1 | Extended memory tag checking. This field controls address generation and Canonical tagging when EL3 is using AArch64 where the data address would be translated by tables pointed to by TTBR0_EL3 . This control has an effect regardless of whether stage 1 of the EL3 translation regime is enabled or not.
 | DS       |   32:32 |    1 | This field affects: Whether a 52-bit output address can be described by the translation tables of the 4KB or 16KB translation granules. The minimum value of TCR_EL3.T0SZ. How and where shareability for Block and Page descriptors are encoded.
 | TCMA     |   30:30 |    1 | Controls the generation of Unchecked accesses at EL3 when address [59:56] = 0b0000 .
 | TBID     |   29:29 |    1 | Controls the use of the top byte of instruction addresses for address matching.
@@ -4639,23 +5537,45 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
-| MTX      |   33:33 |    1 | Mask bit for MTX.
-| DS       |   32:32 |    1 | Mask bit for DS.
-| TCMA     |   30:30 |    1 | Mask bit for TCMA.
-| TBID     |   29:29 |    1 | Mask bit for TBID.
-| HWU62    |   28:28 |    1 | Mask bit for HWU62.
-| HWU61    |   27:27 |    1 | Mask bit for HWU61.
-| HWU60    |   26:26 |    1 | Mask bit for HWU60.
-| HWU59    |   25:25 |    1 | Mask bit for HWU59.
-| HPD      |   24:24 |    1 | Mask bit for HPD.
-| HD       |   22:22 |    1 | Mask bit for HD.
-| HA       |   21:21 |    1 | Mask bit for HA.
-| TBI      |   20:20 |    1 | Mask bit for TBI.
-| PS       |   16:16 |    1 | Mask bit for PS.
+| MTX1     |   61:61 |    1 | Mask bit for MTX1.
+| MTX0     |   60:60 |    1 | Mask bit for MTX0.
+| DS       |   59:59 |    1 | Mask bit for DS.
+| TCMA1    |   58:58 |    1 | Mask bit for TCMA1.
+| TCMA0    |   57:57 |    1 | Mask bit for TCMA0.
+| E0PD1    |   56:56 |    1 | Mask bit for E0PD1.
+| E0PD0    |   55:55 |    1 | Mask bit for E0PD0.
+| NFD1     |   54:54 |    1 | Mask bit for NFD1.
+| NFD0     |   53:53 |    1 | Mask bit for NFD0.
+| TBID1    |   52:52 |    1 | Mask bit for TBID1.
+| TBID0    |   51:51 |    1 | Mask bit for TBID0.
+| HWU162   |   50:50 |    1 | Mask bit for HWU162.
+| HWU161   |   49:49 |    1 | Mask bit for HWU161.
+| HWU160   |   48:48 |    1 | Mask bit for HWU160.
+| HWU159   |   47:47 |    1 | Mask bit for HWU159.
+| HWU062   |   46:46 |    1 | Mask bit for HWU062.
+| HWU061   |   45:45 |    1 | Mask bit for HWU061.
+| HWU060   |   44:44 |    1 | Mask bit for HWU060.
+| HWU059   |   43:43 |    1 | Mask bit for HWU059.
+| HPD1     |   42:42 |    1 | Mask bit for HPD1.
+| HPD0     |   41:41 |    1 | Mask bit for HPD0.
+| HD       |   40:40 |    1 | Mask bit for HD.
+| HA       |   39:39 |    1 | Mask bit for HA.
+| TBI1     |   38:38 |    1 | Mask bit for TBI1.
+| TBI0     |   37:37 |    1 | Mask bit for TBI0.
+| AS       |   36:36 |    1 | Mask bit for AS.
+| IPS      |   32:32 |    1 | Mask bit for IPS.
+| TG1      |   30:30 |    1 | Mask bit for TG1.
+| SH1      |   28:28 |    1 | Mask bit for SH1.
+| ORGN1    |   26:26 |    1 | Mask bit for ORGN1.
+| IRGN1    |   24:24 |    1 | Mask bit for IRGN1.
+| EPD1     |   23:23 |    1 | Mask bit for EPD1.
+| A1       |   22:22 |    1 | Mask bit for A1.
+| T1SZ     |   16:16 |    1 | Mask bit for T1SZ.
 | TG0      |   14:14 |    1 | Mask bit for TG0.
 | SH0      |   12:12 |    1 | Mask bit for SH0.
 | ORGN0    |   10:10 |    1 | Mask bit for ORGN0.
 | IRGN0    |     8:8 |    1 | Mask bit for IRGN0.
+| EPD0     |     7:7 |    1 | Mask bit for EPD0.
 | T0SZ     |     0:0 |    1 | Mask bit for T0SZ.
 
 ## TFSR_EL1 bitfields
@@ -4685,6 +5605,120 @@ be executed each time an update of the Arm architecture is published.
 | TF1      |     1:1 |    1 | Tag Check Fault. Asynchronously set to 1 when a Tag Check Fault using a virtual address with bit[55] == 0b1 occurs.
 | TF0      |     0:0 |    1 | Tag Check Fault. Asynchronously set to 1 when a Tag Check Fault using a virtual address with bit[55] == 0b0 occurs.
 
+## TINDEX_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The current value of TIndex for EL0.
+
+## TINDEX_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The current value of TIndex for EL1.
+
+## TINDEX_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The current value of TIndex for EL2.
+
+## TINDEX_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| TIndex   |     6:0 |    7 | The current value of TIndex for EL3.
+
+## TLBIDIDR_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| NVOS     |   44:40 |    5 | Number of bits of Virtual TLBI Domain supported for Outer Shareable TLBI instructions.
+| NOS      |   36:32 |    5 | Number of bits of TLBI Domain supported for Outer Shareable TLBI instructions. Values greater than 16 are reserved. The value of this field additionally determines the width of the VTLBIDOS<n>_EL2.TD<m> fields, as follows:
+| NVIS     |    12:8 |    5 | Number of bits of Virtual TLBI Domain supported for Inner Shareable TLBI instructions.
+| NIS      |     4:0 |    5 | Number of bits of TLBI Domain supported for Inner Shareable TLBI instructions. Values greater than 16 are reserved. The value of this field additionally determines the width of the VTLBID<n>_EL2.TD<m> fields, as follows:
+
+## TPMAX0_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN0_EL0 and TPMAX0_EL0 . VA bits [3:0] are 0b1111 .
+
+## TPMAX0_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN0_EL1 and TPMAX0_EL1 . VA bits [3:0] are 0b1111 .
+
+## TPMAX0_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN0_EL2 and TPMAX0_EL2 . VA bits [3:0] are 0b1111 .
+
+## TPMAX1_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN1_EL0 and TPMAX1_EL0 . VA bits [3:0] are 0b1111 .
+
+## TPMAX1_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN1_EL1 and TPMAX1_EL1 . VA bits [3:0] are 0b1111 .
+
+## TPMAX1_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MAX      |    63:4 |   60 | This field configures bits [63:4] of the highest accessible address of the thread-private region defined by TPMIN1_EL2 and TPMAX1_EL2 . VA bits [3:0] are 0b1111 .
+
+## TPMIN0_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN0_EL0 and TPMAX0_EL0 . VA bits [3:0] are zero.
+| TPRW     |     1:1 |    1 | This field configures whether TPLIM applies to read accesses.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to unprivileged data accesses and cache maintenance operations, of the type configured in TPMIN0_EL0.TPRW, made to thread-private pages.
+
+## TPMIN0_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN0_EL1 and TPMAX0_EL1 . VA bits [3:0] are zero.
+| TPRW     |     1:1 |    1 | This field configures whether TPLIM applies to read accesses.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to data accesses, other than unprivileged accesses, and cache maintenance operations, of the type configured in TPMIN0_EL1.TPRW, made to thread-private pages.
+
+## TPMIN0_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN0_EL2 and TPMAX0_EL2 . VA bits [3:0] are zero.
+| TPRW     |     1:1 |    1 | This field configures whether TPLIM applies to read accesses.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to data accesses, other than unprivileged accesses, and cache maintenance operations, of the type configured in TPMIN0_EL2.TPRW, made to thread-private pages.
+
+## TPMIN1_EL0 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN1_EL0 and TPMAX1_EL0 . VA bits [3:0] are zero.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to unprivileged data accesses and cache maintenance operations, of the type configured in TPMIN0_EL0 .TPRW, made to thread-private pages.
+
+## TPMIN1_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN1_EL1 and TPMAX1_EL1 . VA bits [3:0] are zero.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to data accesses, other than unprivileged accesses, and cache maintenance operations, of the type configured in TPMIN0_EL1 .TPRW, made to thread-private pages.
+
+## TPMIN1_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| MIN      |    63:4 |   60 | This field configures bits [63:4] of the lowest accessible address of the thread-private region defined by TPMIN1_EL2 and TPMAX1_EL2 . VA bits [3:0] are zero.
+| TPLIM    |     0:0 |    1 | Enable checking of accesses to thread-private memory. This control applies to data accesses, other than unprivileged accesses, and cache maintenance operations, of the type configured in TPMIN0_EL2 .TPRW, made to thread-private pages.
+
 ## TRBBASER_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -4696,7 +5730,8 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield    | msb:lsb | Size | Description
 | ----------- | ------: | ---: | -----------
 | MaxBuffSize |   47:32 |   16 | Maximum supported trace buffer size. Reserved for software use.
-| MPAM        |   15:12 |    4 | MPAM extensions. Indicates Memory Partitioning and Monitoring (MPAM) support in the Trace Buffer Unit when using External mode.
+| MPAM2       |   19:16 |    4 | FEAT_MPAMv2 extensions. Indicates Memory Partitioning and Monitoring (MPAM) support using FEAT_MPAMv2 in the Trace Buffer Unit when using External mode.
+| MPAM        |   15:12 |    4 | FEAT_MPAMv0p1 or FEAT_MPAMv1p0 extensions. Indicates Memory Partitioning and Monitoring (MPAM) support using FEAT_MPAMv0p1 or FEAT_MPAMv1p0 in the Trace Buffer Unit when using External mode.
 | EA          |    11:8 |    4 | External Abort handling. Describes how the PE manages External aborts on writes made by the Trace Buffer Unit to the trace buffer.
 | AddrMode    |     7:6 |    2 | Address Modes. Describes the addressing modes available for the trace buffer.
 | F           |     5:5 |    1 | Flag updates. Describes how address translations performed by the Trace Buffer Unit manage the Access flag and dirty state.
@@ -4718,17 +5753,19 @@ be executed each time an update of the Arm architecture is published.
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| FPOIndex |   46:40 |    7 | FPOIndex to use for the Trace buffer.
+| TIndex   |   39:33 |    7 | Privileged TIndex to use for the Trace buffer.
+| TTBA     |   32:32 |    1 | Selects which ASID for the Owning Exception level to use for IRT PLB lookups for the Trace buffer, if TCR2_ELx.A2 is 1.
 | PAS      |   11:10 |    2 | Physical address specifier. Defines the PAS attribute for memory addressed by the buffer in External mode.
 | SH       |     9:8 |    2 | Trace buffer shareability domain. Defines the shareability domain for Normal memory used by the trace buffer.
-| Attr     |     7:0 |    8 | Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
+| Attr     |     7:0 |    8 | Trace buffer memory type and attributes. Defines the memory type and, for Normal memory, the cacheability attributes, for memory addressed by the trace buffer. The encoding of this field is the same as that of a MAIR_ELx .Attr<n> field, as follows: Attr Meaning 0b0000dd00 Device memory. See encoding of 'dd' for the type of Device memory. 0b0000dd01 If FEAT_XS is implemented: Device memory with the XS attribute set to 0. See encoding of 'dd' for the type of Device memory. Otherwise, UNPREDICTABLE . 0b0000dd1x UNPREDICTABLE . 0booooiiii where oooo != 0000 and iiii != 0000 Normal memory. See encoding of 'oooo' and 'iiii' for the type of Normal memory. 0b01000000 If FEAT_XS is implemented: Normal Inner Non-cacheable, Outer Non-cacheable memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b10100000 If FEAT_XS is implemented: Normal Inner Write-through Cacheable, Outer Write-through Cacheable, Read-Allocate, No-Write Allocate, Non-transient memory with the XS attribute set to 0. Otherwise, UNPREDICTABLE . 0b11110000 If FEAT_MTE2 or FEAT_VMTE is implemented: Tagged Normal Inner Write-Back, Outer Write-Back, Read-Allocate, Write-Allocate Non-transient memory. Otherwise, UNPREDICTABLE . 0bxxxx0000 where xxxx != 0000 and xxxx != 0100 and xxxx != 1010 and xxxx != 1111 UNPREDICTABLE . dd is encoded as follows: 'dd' Meaning 0b00 Device-nGnRnE memory. 0b01 Device-nGnRE memory. 0b10 Device-nGRE memory. 0b11 Device-GRE memory. oooo is encoded as follows: 'oooo' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Outer Write-Through Transient. 0b0100 Normal memory, Outer Non-cacheable. 0b01RW where RW != 00 Normal memory, Outer Write-Back Transient. 0b10RW Normal memory, Outer Write-Through Non-transient. 0b11RW Normal memory, Outer Write-Back Non-transient. R encodes the Outer Read-Allocate policy and W encodes the Outer Write-Allocate policy. iiii is encoded as follows: 'iiii' Meaning 0b0000 See encoding of Attr. 0b00RW where RW != 00 Normal memory, Inner Write-Through Transient. 0b0100 Normal memory, Inner Non-cacheable. 0b01RW where RW != 00 Normal memory, Inner Write-Back Transient. 0b10RW Normal memory, Inner Write-Through Non-transient. 0b11RW Normal memory, Inner Write-Back Non-transient. R encodes the Inner Read-Allocate policy and W encodes the Inner Write-Allocate policy. In oooo and iiii , R and W are encoded as follows: 'R' or 'W' Meaning 0b0 No Allocate. 0b1 Allocate. When FEAT_XS is implemented, stage 1 Inner Write-Back Cacheable, Outer Write-Back Cacheable memory types have the XS attribute set to 0.
 
 ## TRBMPAM_EL1 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
+| PMG      |   47:32 |   16 | Performance Monitoring Group. Selects the PMG.
 | EN       |   26:26 |    1 | Enable. Enables use of non-default MPAM values.
-| MPAM_SP  |   25:24 |    2 | Partition Identifier space. Selects the PARTID space.
-| PMG      |   23:16 |    8 | Performance Monitoring Group. Selects the PMG.
 | PARTID   |    15:0 |   16 | Partition Identifier. Selects the PARTID.
 
 ## TRBSR_EL1 bitfields
@@ -4740,8 +5777,10 @@ be executed each time an update of the Arm architecture is published.
 | IRQ                    |   22:22 |    1 | Maintenance status. Indicates that a trace buffer management event has been recorded.
 | TRG                    |   21:21 |    1 | Triggered.
 | WRAP                   |   20:20 |    1 | Wrapped.
-| EA                     |   18:18 |    1 | Reserved, RES0 .
+| EA                     |   18:18 |    1 | External Abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Stopped.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
 | Overlay                |     6:6 |    1 | Overlay flag. If a memory access generates a Data Abort for a Permission fault, then this field holds information about the fault.
@@ -4761,8 +5800,10 @@ be executed each time an update of the Arm architecture is published.
 | IRQ                    |   22:22 |    1 | Maintenance status. Indicates that a trace buffer management event has been recorded.
 | TRG                    |   21:21 |    1 | Triggered.
 | WRAP                   |   20:20 |    1 | Wrapped.
-| EA                     |   18:18 |    1 | Reserved, RES0 .
+| EA                     |   18:18 |    1 | External Abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Stopped.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
 | Overlay                |     6:6 |    1 | Overlay flag. If a memory access generates a Data Abort for a Permission fault, then this field holds information about the fault.
@@ -4782,8 +5823,10 @@ be executed each time an update of the Arm architecture is published.
 | IRQ                    |   22:22 |    1 | Maintenance status. Indicates that a trace buffer management event has been recorded.
 | TRG                    |   21:21 |    1 | Triggered.
 | WRAP                   |   20:20 |    1 | Wrapped.
-| EA                     |   18:18 |    1 | Reserved, RES0 .
+| EA                     |   18:18 |    1 | External Abort.
+| DPOIndex               |   23:17 |    7 | DPOIndex for the fault. For a stage 1 Permission fault, if FEAT_S1POE2 is implemented and MSS2.Overlay is 1, this field reports the POIndex from the translation for the access that generated the fault.
 | S                      |   17:17 |    1 | Stopped.
+| OverlayFetch           |   16:16 |    1 | Fetch of POE2 table.
 | TopLevel               |     8:8 |    1 | TopLevel. Indicates if the fault was due to TopLevel.
 | AssuredOnly            |     7:7 |    1 | AssuredOnly flag. If a memory access generates a stage 2 Data Abort, then this field holds information about the fault.
 | Overlay                |     6:6 |    1 | Overlay flag. If a memory access generates a Data Abort for a Permission fault, then this field holds information about the fault.
@@ -5282,6 +6325,40 @@ be executed each time an update of the Arm architecture is published.
 | SKL         |     2:1 |    2 | Skip Level associated with translation table walks using TTBR1_EL2. This determines the number of levels to be skipped from the regular start level of the stage 1 EL2&0 translation table walks using TTBR1_EL2 .
 | CnP         |     0:0 |    1 | Common not Private. This bit indicates whether each entry that is pointed to by TBR1_EL2 is a member of a common set that can be used by every PE in the Inner Shareable domain for which the value of TTBR1_EL2.CnP is 1.
 
+## TTTBRP_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of the TIndex transition Table. Bits [63:6] of the address are the value in this field. Bits [5:0] of the address are zero.
+| FNG      |     5:5 |    1 | Force non-global.
+
+## TTTBRP_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of the TIndex transition Table. Bits [63:6] of the address are the value in this field. Bits [5:0] of the address are zero.
+| FNG      |     5:5 |    1 | Force non-global.
+
+## TTTBRP_EL3 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of the TIndex transition Table. Bits [63:6] of the address are the value in this field. Bits [5:0] of the address are zero.
+
+## TTTBRU_EL1 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of the TIndex transition Table. Bits [63:6] of the address are the value in this field. Bits [5:0] of the address are zero.
+| FNG      |     5:5 |    1 | Force non-global.
+
+## TTTBRU_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| BADDR    |    63:6 |   58 | Base address of the TIndex transition Table. Bits [63:6] of the address are the value in this field. Bits [5:0] of the address are zero.
+| FNG      |     5:5 |    1 | Force non-global.
+
 ## UAO bitfields
 
 | Bitfield | msb:lsb | Size | Description
@@ -5293,18 +6370,21 @@ be executed each time an update of the Arm architecture is published.
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | VBA      |   63:11 |   53 | Vector Base Address. Base address of the exception vectors for exceptions taken to EL1. If the implementation supports FEAT_LVA3 , then: If tagged addresses are not being used, bits [63:56] of VBAR_EL1 must be the same or else the use of the vector address will result in a recursive exception. Otherwise: If the implementation supports FEAT_LVA , then: If tagged addresses are being used, bits [55:52] of VBAR_EL1 must be the same or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:52] of VBAR_EL1 must be the same or else the use of the vector address will result in a recursive exception. If the implementation does not support FEAT_LVA , then: If tagged addresses are being used, bits [55:48] of VBAR_EL1 must be the same or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:48] of VBAR_EL1 must be the same or else the use of the vector address will result in a recursive exception.
+| UT       |     0:0 |    1 | Unique vector per TIndex.
 
 ## VBAR_EL2 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | VBA      |   63:11 |   53 | Vector Base Address. Base address of the exception vectors for exceptions taken to EL2. If FEAT_LVA3 is implemented: If the Effective value of HCR_EL2 .E2H is 1: If tagged addresses are not being used, bits [63:56] of VBAR_EL2 must be the same or else the use of the vector address will result in a recursive exception. If the Effective value of HCR_EL2 .E2H is not 1: If tagged addresses are not being used, bits [63:56] of VBAR_EL2 must be 0 or else the use of the vector address will result in a recursive exception. Otherwise : If FEAT_LVA is implemented: If the Effective value of HCR_EL2 .E2H is 1: If tagged addresses are being used, bits [55:52] of VBAR_EL2 must be the same or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:52] of VBAR_EL2 must be the same or else the use of the vector address will result in a recursive exception. If the Effective value of HCR_EL2 .E2H is not 1: If tagged addresses are being used, bits [55:52] of VBAR_EL2 must be 0 or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:52] of VBAR_EL2 must be 0 or else the use of the vector address will result in a recursive exception. If FEAT_LVA is not implemented: If the Effective value of HCR_EL2 .E2H is 1: If tagged addresses are being used, bits [55:48] of VBAR_EL2 must be the same or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:48] of VBAR_EL2 must be the same or else the use of the vector address will result in a recursive exception. If the Effective value of HCR_EL2 .E2H is not 1: If tagged addresses are being used, bits [55:48] of VBAR_EL2 must be 0 or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:48] of VBAR_EL2 must be 0 or else the use of the vector address will result in a recursive exception.
+| UT       |     0:0 |    1 | Unique vector per TIndex.
 
 ## VBAR_EL3 bitfields
 
 | Bitfield | msb:lsb | Size | Description
 | -------- | ------: | ---: | -----------
 | VBA      |   63:11 |   53 | Vector Base Address. Base address of the exception vectors for exceptions taken to EL3. If the implementation supports FEAT_LVA3 , then: If tagged addresses are not being used, bits [63:56] of VBAR_EL3 must be 0 or else the use of the vector address will result in a recursive exception. Otherwise: If the implementation supports FEAT_LVA , then: If tagged addresses are being used, bits [55:52] of VBAR_EL3 must be 0 or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:52] of VBAR_EL3 must be 0 or else the use of the vector address will result in a recursive exception. If the implementation does not support FEAT_LVA , then: If tagged addresses are being used, bits [55:48] of VBAR_EL3 must be 0 or else the use of the vector address will result in a recursive exception. If tagged addresses are not being used, bits [63:48] of VBAR_EL3 must be 0 or else the use of the vector address will result in a recursive exception.
+| UT       |     0:0 |    1 | Unique vector per TIndex.
 
 ## VDISR_EL2 bitfields
 
@@ -5344,6 +6424,14 @@ be executed each time an update of the Arm architecture is published.
 | Aff2     |   23:16 |    8 | Affinity level 2. See the description of VMPIDR_EL2.Aff0 for more information.
 | Aff1     |    15:8 |    8 | Affinity level 1. See the description of VMPIDR_EL2.Aff0 for more information.
 | Aff0     |     7:0 |    8 | Affinity level 0. The value of the MPIDR .{Aff2, Aff1, Aff0} or MPIDR_EL1 .{Aff3, Aff2, Aff1, Aff0} set of fields of each PE must be unique within the system as a whole.
+
+## VNCCR_EL2 bitfields
+
+| Bitfield | msb:lsb | Size | Description
+| -------- | ------: | ---: | -----------
+| FPOIndex |    14:8 |    7 | FPOIndex to use for accesses made via VNCR_EL2 . Bits of this field above the configured POIndex size in TCR2_EL2 .POIW are RES0 .
+| TIndex   |     7:1 |    7 | Privileged TIndex to use for accesses made via VNCR_EL2 . Bits of this field above the configured TIndex size in IRTBRP_EL2 .TIW are RES0 .
+| TTBA     |     0:0 |    1 | Selects which ASID to use for IRT PLB lookups for checking accesses made via VNCR_EL2 , if TCR2_ELx.A2 is 1.
 
 ## VNCR_EL2 bitfields
 

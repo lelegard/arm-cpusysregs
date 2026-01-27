@@ -92,7 +92,7 @@ void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange var
         walkparams.orgn  = _feat.TCR_EL1_ORGN0();
         walkparams.sh    = _feat.TCR_EL1_SH0();
         walkparams.tbi   = _feat.TCR_EL1_TBI0();
-        walkparams.nfd   = _feat.FEAT_SVE() || _feat.FEAT_TME() ? _feat.TCR_EL1_NFD0() : 0;
+        walkparams.nfd   = _feat.FEAT_SVE() ? _feat.TCR_EL1_NFD0() : 0;
         walkparams.tbid  = _feat.FEAT_PAuth() ? _feat.TCR_EL1_TBID0() : 0;
         walkparams.e0pd  = _feat.FEAT_E0PD() ? _feat.TCR_EL1_E0PD0() : 0;
         walkparams.hpd   = _feat.FEAT_HPDS() ? _feat.TCR_EL1_HPD0() : 0;
@@ -105,7 +105,7 @@ void ArmPseudoCode::AArch64_S1TTWParamsEL10(S1TTWParams& walkparams, VARange var
         walkparams.orgn  = _feat.TCR_EL1_ORGN1();
         walkparams.sh    = _feat.TCR_EL1_SH1();
         walkparams.tbi   = _feat.TCR_EL1_TBI1();
-        walkparams.nfd   = _feat.FEAT_SVE() || _feat.FEAT_TME() ? _feat.TCR_EL1_NFD1() : 0;
+        walkparams.nfd   = _feat.FEAT_SVE() ? _feat.TCR_EL1_NFD1() : 0;
         walkparams.tbid  = _feat.FEAT_PAuth() ? _feat.TCR_EL1_TBID1() : 0;
         walkparams.e0pd  = _feat.FEAT_E0PD() ? _feat.TCR_EL1_E0PD1() : 0;
         walkparams.hpd   = _feat.FEAT_HPDS() ? _feat.TCR_EL1_HPD1() : 0;
