@@ -9,6 +9,7 @@
 #----------------------------------------------------------------------------
 
 import os, sys
+from functools import cmp_to_key
 
 rootdir = os.path.dirname(__file__)
 inputdir = rootdir + '/collect'
@@ -42,7 +43,21 @@ for d in (d for d in os.listdir(rootdir) if os.path.isdir(rootdir + '/' + d)):
                     systems[core][f] = fields[1].strip()
 
 # Generate the output markdown
-cores = sorted(systems.keys())
+def compare_cores(a, b):
+    # Cortex cores are numbered with "bigger number better", do a numeric comparison for those.
+    # It is more useful to compare A520 and A720 rather than A72 and A720.
+    if a.startswith("Cortex-A") and b.startswith("Cortex-A"):
+        a_num = int(a[8:])
+        b_num = int(b[8:])
+        return a_num - b_num
+
+    if a < b:
+        return -1
+    if a > b:
+        return 1
+    return 0
+
+cores = sorted(systems.keys(), key=cmp_to_key(compare_cores))
 features = sorted(features, key=str.casefold)
 title = 'Feature'
 width = len(title)
