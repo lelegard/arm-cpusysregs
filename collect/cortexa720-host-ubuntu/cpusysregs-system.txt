@@ -1,0 +1,18 @@
+Kernel
+------
+Linux 7.0.0-12-generic #12-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr  2 14:41:28 UTC 2026 aarch64 unknown
+
+Operating system
+----------------
+Distributor ID: Ubuntu
+Description:    Ubuntu Resolute Raccoon (development branch)
+Release:        26.04
+Codename:       resolute
+
+Compiler
+--------
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Copyright (C) 2025 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+

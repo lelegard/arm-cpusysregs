@@ -1,0 +1,118 @@
+
+---- Testing key IA (lower addresses)
+
+Initial IA key........... 96EC357D-8111B8BE-AC898091-8A07A96F
+Before PACIA............. 00000012-3456789A
+After PACIA (user)....... 003C0012-3456789A
+After AUTIA (user)....... 00000012-3456789A (passed)
+After PACIA (kernel)..... 00230012-3456789A
+After AUTIA (kernel)..... 00000012-3456789A (passed)
+PACIA mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ 4AA62E03-F0FFF008
+AddPAC (soft)............ 00260012-3456789A (failed)
+
+---- Testing key IA (upper addresses)
+
+Initial IA key........... 96EC357D-8111B8BE-AC898091-8A07A96F
+Before PACIA............. FFFFFF12-3456789A
+After PACIA (user)....... A8D6FF12-3456789A
+After AUTIA (user)....... FFFFFF12-3456789A (passed)
+After PACIA (kernel)..... B7D1FF12-3456789A
+After AUTIA (kernel)..... FFFFFF12-3456789A (passed)
+PACIA mask............... FF7F0000-00000000 (15 bits)
+QARMA3 (soft)............ 2F357B8A-F7FCA786
+AddPAC (soft)............ D0CAFF12-3456789A (failed)
+
+---- Testing key IB (lower addresses)
+
+Initial IB key........... 7589AD1B-ABD11BBE-F06E2450-099A3023
+Before PACIB............. 00000012-3456789A
+After PACIB (user)....... 00610012-3456789A
+After AUTIB (user)....... 00000012-3456789A (passed)
+After PACIB (kernel)..... 00610012-3456789A
+After AUTIB (kernel)..... 00000012-3456789A (passed)
+PACIB mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ F7697994-E536FFE5
+AddPAC (soft)............ 00690012-3456789A (failed)
+
+---- Testing key IB (upper addresses)
+
+Initial IB key........... 7589AD1B-ABD11BBE-F06E2450-099A3023
+Before PACIB............. FFFFFF12-3456789A
+After PACIB (user)....... 3AEAFF12-3456789A
+After AUTIB (user)....... FFFFFF12-3456789A (passed)
+After PACIB (kernel)..... 3AEAFF12-3456789A
+After AUTIB (kernel)..... FFFFFF12-3456789A (passed)
+PACIB mask............... FF7F0000-00000000 (15 bits)
+QARMA3 (soft)............ C5E28A6F-E11F1500
+AddPAC (soft)............ 3A9DFF12-3456789A (failed)
+
+---- Testing key DA (lower addresses)
+
+Initial DA key........... F05F99DB-1FDF338F-3B65136D-06F8E935
+Before PACDA............. 00000012-3456789A
+After PACDA (user)....... 00380012-3456789A
+After AUTDA (user)....... 00000012-3456789A (passed)
+After PACDA (kernel)..... 00380012-3456789A
+After AUTDA (kernel)..... 00000012-3456789A (passed)
+PACDA mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ 41178533-C1ABC623
+AddPAC (soft)............ 00170012-3456789A (failed)
+
+---- Testing key DA (upper addresses)
+
+Initial DA key........... F05F99DB-1FDF338F-3B65136D-06F8E935
+Before PACDA............. FFFFFF12-3456789A
+After PACDA (user)....... FF84FF12-3456789A
+After AUTDA (user)....... FFFFFF12-3456789A (passed)
+After PACDA (kernel)..... FF84FF12-3456789A
+After AUTDA (kernel)..... FFFFFF12-3456789A (passed)
+PACDA mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ C9C17743-6B167341
+AddPAC (soft)............ FFBEFF12-3456789A (failed)
+
+---- Testing key DB (lower addresses)
+
+Initial DB key........... 5112E5E5-D3F3B235-0A16D673-D21E9CEC
+Before PACDB............. 00000012-3456789A
+After PACDB (user)....... 00060012-3456789A
+After AUTDB (user)....... 00000012-3456789A (passed)
+After PACDB (kernel)..... 00060012-3456789A
+After AUTDB (kernel)..... 00000012-3456789A (passed)
+PACDB mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ 47E70B85-9ED7B711
+AddPAC (soft)............ 00670012-3456789A (failed)
+
+---- Testing key DB (upper addresses)
+
+Initial DB key........... 5112E5E5-D3F3B235-0A16D673-D21E9CEC
+Before PACDB............. FFFFFF12-3456789A
+After PACDB (user)....... FF87FF12-3456789A
+After AUTDB (user)....... FFFFFF12-3456789A (passed)
+After PACDB (kernel)..... FF87FF12-3456789A
+After AUTDB (kernel)..... FFFFFF12-3456789A (passed)
+PACDB mask............... 007F0000-00000000 (7 bits)
+QARMA3 (soft)............ 33BEA10E-843F5235
+AddPAC (soft)............ FFC1FF12-3456789A (failed)
+
+---- Testing key GA
+
+Initial GA key........... 3BEF5F96-47B671EC-AD2F8066-C1D5BB5A
+Input value.............. FEDCBA98-76543210
+PACGA (user)............. A99D2F94-00000000
+PACGA (kernel)........... A99D2F94-00000000
+QARMA3 (soft)............ DC2D7025-1C76F701 (failed)
+AddPACGA (soft).......... DC2D7025-00000000 (failed)
+Update GA key............ 01234567-89ABCDEF-DEADBEEF-BADC0FFE
+Updated GA key........... 01234567-89ABCDEF-DEADBEEF-BADC0FFE
+PACGA (user)............. 39F02FE9-00000000
+PACGA (kernel)........... 39F02FE9-00000000
+QARMA3 (soft)............ A085A1BE-79E7633C (failed)
+AddPACGA (soft).......... A085A1BE-00000000 (failed)
+Restore GA key........... 3BEF5F96-47B671EC-AD2F8066-C1D5BB5A
+Restored GA key.......... 3BEF5F96-47B671EC-AD2F8066-C1D5BB5A
+PACGA (user)............. A99D2F94-00000000
+PACGA (kernel)........... A99D2F94-00000000
+QARMA3 (soft)............ DC2D7025-1C76F701 (failed)
+AddPACGA (soft).......... DC2D7025-00000000 (failed)
+

@@ -1,0 +1,4 @@
+cpu: Cix P1 (CD8180)
+core: Cortex-A520
+machine: radxa Orion O6
+taskset: 004, 008, 010, 020
